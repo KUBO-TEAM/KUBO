@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kubo/constants/text_styles.constants.dart';
 import 'package:kubo/modules/camera/screens/camera_screen.dart';
 import 'package:kubo/widgets/buttons/rounded_button.dart';
-import 'package:kubo/widgets/clippers/welcome_clipper.dart';
+import 'package:kubo/widgets/clippers/welcome.clipper.dart';
 
 class WelcomeScreen extends StatelessWidget {
   static const String id = 'welcome_screen';
@@ -54,8 +54,12 @@ class WelcomeScreen extends StatelessWidget {
                         vertical: 20.0,
                       ),
                       child: RoundedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, CameraScreen.id);
+                        onPressed: () async {
+                          Navigator.pushNamed(
+                            context,
+                            CameraScreen.id,
+                            arguments: {},
+                          );
                         },
                         title: 'Try Now',
                       ),
