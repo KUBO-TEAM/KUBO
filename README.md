@@ -1,4 +1,4 @@
-# kubo
+# KUBO
 
 Food Planner
 
