@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kubo/constants/colors.constants.dart';
 
 class CameraClipper extends StatelessWidget {
   const CameraClipper({Key? key}) : super(key: key);
@@ -8,7 +9,7 @@ class CameraClipper extends StatelessWidget {
     return ClipPath(
       clipper: _Clipper(),
       child: Container(
-        color: Colors.black,
+        color: kBrownPrimary,
       ),
     );
   }
@@ -20,20 +21,20 @@ class _Clipper extends CustomClipper<Path> {
     Path path = Path();
 
     path.moveTo(80, 0);
-    path.lineTo(80, 80 - 50);
-    path.quadraticBezierTo(80, 80, 80 + 50, 80);
-    path.lineTo(size.width, 80);
+    path.lineTo(80, 65 - 30);
+    path.quadraticBezierTo(80, 65, 80 + 30, 65);
+    path.lineTo(size.width, 65);
     path.lineTo(size.width, 0);
 
-    path.moveTo(50, 0);
+    path.moveTo(65, 0);
     path.lineTo(80, 0);
     path.lineTo(80, 25);
-    path.lineTo(50, 25);
+    path.lineTo(65, 25);
     path.lineTo(80, 25);
     path.quadraticBezierTo(
       80,
       0,
-      50,
+      60,
       0,
     );
 

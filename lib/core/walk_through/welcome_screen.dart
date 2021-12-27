@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/constants/text_styles.constants.dart';
-import 'package:kubo/modules/camera/screens/camera_screen.dart';
-import 'package:kubo/widgets/buttons/rounded_button.dart';
+import 'package:kubo/modules/camera/screens/camera.screen.dart';
+import 'package:kubo/widgets/buttons/rounded.button.dart';
 import 'package:kubo/widgets/clippers/welcome.clipper.dart';
 
 class WelcomeScreen extends StatelessWidget {
