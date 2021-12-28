@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/text_styles.constants.dart';
-import 'package:kubo/modules/camera/screens/camera.screen.dart';
+import 'package:kubo/modules/home/screens/home.screen.dart';
 import 'package:kubo/widgets/buttons/rounded.button.dart';
 import 'package:kubo/widgets/clippers/welcome.clipper.dart';
 
@@ -37,15 +36,27 @@ class WelcomeScreen extends StatelessWidget {
                 children: [
                   const Text(
                     'Welcome',
-                    style: kSubTitleTextStyle,
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff285E01),
+                    ),
                   ),
                   const Text(
                     'KUBO',
-                    style: kTitleTextStyle,
+                    style: TextStyle(
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
                   const Text(
                     'Giving you a strategic meal plan with the \ningredients at your disposal',
-                    style: kCaptionTextStyle,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
                   Expanded(
                     child: Padding(
@@ -57,11 +68,16 @@ class WelcomeScreen extends StatelessWidget {
                         onPressed: () async {
                           Navigator.pushNamed(
                             context,
-                            CameraScreen.id,
+                            HomeScreen.id,
                             arguments: {},
                           );
                         },
-                        title: 'Try Now',
+                        title: const Text(
+                          'Try Now',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                          ),
+                        ),
                       ),
                     ),
                   )

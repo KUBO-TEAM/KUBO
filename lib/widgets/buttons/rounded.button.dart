@@ -7,26 +7,23 @@ class RoundedButton extends StatelessWidget {
     required this.title,
     this.color = kBrownPrimary,
     required this.onPressed,
+    this.elevation = 5.0,
   }) : super(key: key);
 
-  final String title;
+  final Text title;
   final Function() onPressed;
   final Color color;
+  final double elevation;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      child: const Text(
-        "Try Now",
-        style: TextStyle(
-          fontSize: 20.0,
-        ),
-      ),
+      child: title,
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         primary: color,
         onPrimary: Colors.white,
-        elevation: 10.0,
+        elevation: elevation,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(32.0),
         ),
