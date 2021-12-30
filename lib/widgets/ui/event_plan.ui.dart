@@ -40,7 +40,7 @@ class EventPlan extends StatelessWidget {
             title: 'Pending events',
             subTitle: 'There are no events',
             caption:
-                'You can add new events with the button in the \nbottom right corner',
+                'You can add new events with the button in the bottom right corner',
           )
         ],
       ),

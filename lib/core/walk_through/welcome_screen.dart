@@ -1,11 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/modules/home/screens/home.screen.dart';
 import 'package:kubo/widgets/buttons/rounded.button.dart';
 import 'package:kubo/widgets/clippers/welcome.clipper.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   static const String id = 'welcome_screen';
   const WelcomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  final List<AssetImage> _carouselImages = [
+    const AssetImage(
+      "assets/images/carousel/welcome_screen_bg.png",
+    ),
+    const AssetImage(
+      "assets/images/carousel/welcome_screen_bg_2.png",
+    ),
+    const AssetImage(
+      "assets/images/carousel/welcome_screen_bg_3.jpg",
+    ),
+    const AssetImage(
+      "assets/images/carousel/welcome_screen_bg_4.jpg",
+    ),
+    const AssetImage(
+      "assets/images/carousel/welcome_screen_bg_5.jpg",
+    ),
+    const AssetImage(
+      "assets/images/carousel/welcome_screen_bg_6.jpg",
+    ),
+    const AssetImage(
+      "assets/images/carousel/welcome_screen_bg_7.jpg",
+    ),
+    const AssetImage(
+      "assets/images/carousel/welcome_screen_bg_8.jpg",
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +49,28 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/welcome_screen_bg.png"),
-                fit: BoxFit.cover,
-              ),
+          CarouselSlider(
+            options: CarouselOptions(
+              height: double.infinity,
+              viewportFraction: 1,
+              autoPlay: true,
             ),
+            items: [0, 1, 2, 3, 4, 5, 6, 7].map(
+              (i) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: _carouselImages[i],
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ).toList(),
           ),
           const WelcomeClipper(),
           Positioned(
@@ -39,6 +88,7 @@ class WelcomeScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'Arvo Bold',
                       color: Color(0xff285E01),
                     ),
                   ),
@@ -46,16 +96,17 @@ class WelcomeScreen extends StatelessWidget {
                     'KUBO',
                     style: TextStyle(
                       fontSize: 50,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: kBlackPrimary,
+                      fontWeight: FontWeight.w900,
+                      fontFamily: 'JosefinSans Bold',
                     ),
                   ),
                   const Text(
                     'Giving you a strategic meal plan with the \ningredients at your disposal',
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: kBlackPrimary,
+                      fontFamily: 'Arvo',
                     ),
                   ),
                   Expanded(
@@ -66,11 +117,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       child: RoundedButton(
                         onPressed: () async {
-                          Navigator.pushNamed(
-                            context,
-                            HomeScreen.id,
-                            arguments: {},
-                          );
+                          Navigator.popAndPushNamed(context, HomeScreen.id);
                         },
                         title: const Text(
                           'Try Now',

@@ -5,6 +5,7 @@ import 'package:kubo/modules/camera/screens/camera.screen.dart';
 import 'package:kubo/modules/camera/screens/captured.screen.dart';
 import 'package:kubo/modules/calendar/screens/calendar.screen.dart';
 import 'package:kubo/modules/home/screens/home.screen.dart';
+import 'package:kubo/modules/timetable/screens/timetable.screen.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(const Kubo());
@@ -24,6 +25,7 @@ class Kubo extends StatelessWidget {
           CameraScreen.id: (context) => const CameraScreen(),
           CalendarScreen.id: (context) => const CalendarScreen(),
           CapturedScreen.id: (context) => const CapturedScreen(),
+          TimeTableScreen.id: (context) => const TimeTableScreen(),
         },
       ),
     );
