@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/modules/calendar/states/calendar.states.dart';
 
 class CalendarScreen extends StatelessWidget {
@@ -7,9 +8,27 @@ class CalendarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: kBackgroundGrey,
+        iconTheme: const IconThemeData(
+          color: Colors.black, //change your color here
+        ),
+        elevation: 0,
+        title: const Text(
+          'Calendar',
+          style: TextStyle(
+            color: kBlackPrimary,
+            fontFamily: 'Pushster',
+            fontSize: 30.0,
+          ),
+        ),
+      ),
       body: SafeArea(
-        child: Calendar(),
+        child: Container(
+          child: const Calendar(),
+          color: kBackgroundGrey,
+        ),
       ),
     );
   }
