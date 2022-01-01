@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kubo/constants/colors.constants.dart';
+import 'package:kubo/constants/text_styles.constants.dart';
 import 'package:kubo/constants/timetable.constants.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -83,61 +85,250 @@ class _CalendarState extends State<Calendar> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TableCalendar<Event>(
-          firstDay: kFirstDay,
-          lastDay: kLastDay,
-          focusedDay: _focusedDay,
-          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-          rangeStartDay: _rangeStart,
-          rangeEndDay: _rangeEnd,
-          calendarFormat: _calendarFormat,
-          rangeSelectionMode: _rangeSelectionMode,
-          eventLoader: _getEventsForDay,
-          startingDayOfWeek: StartingDayOfWeek.monday,
-          calendarStyle: const CalendarStyle(
-            // Use `CalendarStyle` to customize the UI
-            outsideDaysVisible: false,
-          ),
-          onDaySelected: _onDaySelected,
-          onRangeSelected: _onRangeSelected,
-          onFormatChanged: (format) {
-            if (_calendarFormat != format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            }
-          },
-          onPageChanged: (focusedDay) {
-            _focusedDay = focusedDay;
-          },
-        ),
+        CalendarEventsList(selectedEvents: _selectedEvents),
         const SizedBox(height: 8.0),
-        Expanded(
-          child: ValueListenableBuilder<List<Event>>(
-            valueListenable: _selectedEvents,
-            builder: (context, value, _) {
-              return ListView.builder(
-                itemCount: value.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 4.0,
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    child: ListTile(
-                      onTap: () => debugPrint('${value[index]}'),
-                      title: Text('${value[index]}'),
-                    ),
-                  );
-                },
-              );
+        Container(
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40),
+              topRight: Radius.circular(40),
+            ),
+            color: kBrownPrimary,
+          ),
+          child: TableCalendar<Event>(
+            firstDay: kFirstDay,
+            lastDay: kLastDay,
+            focusedDay: _focusedDay,
+            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+            rangeStartDay: _rangeStart,
+            rangeEndDay: _rangeEnd,
+            calendarFormat: _calendarFormat,
+            rangeSelectionMode: _rangeSelectionMode,
+            eventLoader: _getEventsForDay,
+            startingDayOfWeek: StartingDayOfWeek.monday,
+            daysOfWeekStyle: const DaysOfWeekStyle(
+              weekdayStyle: TextStyle(
+                color: Colors.white,
+              ),
+              weekendStyle: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            headerStyle: const HeaderStyle(
+              formatButtonDecoration: BoxDecoration(
+                border: Border.fromBorderSide(BorderSide(color: Colors.white)),
+                borderRadius: BorderRadius.all(Radius.circular(12.0)),
+              ),
+              leftChevronIcon: Icon(
+                Icons.chevron_left,
+                color: Colors.white,
+              ),
+              rightChevronIcon: Icon(
+                Icons.chevron_right,
+                color: Colors.white,
+              ),
+              titleTextStyle: TextStyle(
+                color: Colors.white,
+              ),
+              formatButtonTextStyle: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            calendarStyle: const CalendarStyle(
+              selectedDecoration: BoxDecoration(
+                color: Colors.green,
+                shape: BoxShape.circle,
+              ),
+              todayDecoration: BoxDecoration(
+                color: kGreenPrimary,
+                shape: BoxShape.circle,
+              ),
+              markerDecoration: BoxDecoration(
+                color: Colors.green,
+                shape: BoxShape.circle,
+              ),
+              weekendTextStyle: TextStyle(
+                color: Colors.white,
+              ),
+              defaultTextStyle: TextStyle(
+                color: Colors.white,
+              ),
+              // Use `CalendarStyle` to customize the UI
+              outsideDaysVisible: false,
+            ),
+            onDaySelected: _onDaySelected,
+            onRangeSelected: _onRangeSelected,
+            onFormatChanged: (format) {
+              if (_calendarFormat != format) {
+                setState(() {
+                  _calendarFormat = format;
+                });
+              }
+            },
+            onPageChanged: (focusedDay) {
+              _focusedDay = focusedDay;
             },
           ),
         ),
+      ],
+    );
+  }
+}
+
+class CalendarEventsList extends StatelessWidget {
+  const CalendarEventsList({
+    Key? key,
+    required ValueNotifier<List<Event>> selectedEvents,
+  })  : _selectedEvents = selectedEvents,
+        super(key: key);
+
+  final ValueNotifier<List<Event>> _selectedEvents;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Stack(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(left: 10),
+                      height: 28.0,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(40),
+                          bottomRight: Radius.circular(40),
+                        ),
+                        color: Colors.grey.shade400,
+                      ),
+                      padding: const EdgeInsets.only(left: 25, right: 15),
+                      child: const Center(
+                        child: Text(
+                          'Your event',
+                          style: TextStyle(
+                            fontFamily: 'Arvo',
+                            color: kBlackPrimary,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const CircleAvatar(
+                      backgroundColor: kGreenPrimary,
+                      radius: 14,
+                      child: Text(
+                        '2',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.insert_invitation,
+                      color: Colors.grey.shade700,
+                    ),
+                    Text(
+                      '1/24/22',
+                      style: TextStyle(color: Colors.grey.shade700),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 6.0),
+                child: ValueListenableBuilder<List<Event>>(
+                  valueListenable: _selectedEvents,
+                  builder: (context, value, _) {
+                    return ListView.builder(
+                      itemCount: value.length,
+                      itemBuilder: (context, index) {
+                        return SizedBox(
+                          height: 70,
+                          child: CalendarListTile(
+                            event: value[index],
+                            isLast: index == value.length - 1,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CalendarListTile extends StatelessWidget {
+  const CalendarListTile({
+    Key? key,
+    required this.event,
+    this.isLast = false,
+  }) : super(key: key);
+
+  final Event event;
+  final bool isLast;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Column(
+          children: [
+            const Expanded(
+              child: VerticalDivider(
+                color: Colors.grey,
+                thickness: 1,
+              ),
+            ),
+            CircleAvatar(
+              backgroundColor: event.color,
+              radius: 5,
+            ),
+            if (!isLast)
+              const Expanded(
+                child: VerticalDivider(
+                  color: Colors.grey,
+                  thickness: 1,
+                ),
+              )
+            else
+              Expanded(
+                child: Container(),
+              ),
+          ],
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              '7:00 - 8:00 am',
+              style: kCaptionTextStyle,
+            ),
+            Text(
+              event.title,
+              style: kPreSubTitleTextStyle,
+            ),
+          ],
+        )
       ],
     );
   }

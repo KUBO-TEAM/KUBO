@@ -116,7 +116,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         vertical: 20.0,
                       ),
                       child: RoundedButton(
-                        onPressed: () async {
+                        onPressed: () {
                           Navigator.popAndPushNamed(context, HomeScreen.id);
                         },
                         title: const Text(

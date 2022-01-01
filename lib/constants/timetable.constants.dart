@@ -1,11 +1,14 @@
-import 'package:table_calendar/table_calendar.dart';
-
 import 'dart:collection';
+
+import 'package:flutter/cupertino.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter/material.dart';
 
 class Event {
   final String title;
+  final Color color;
 
-  const Event(this.title);
+  const Event(this.title, this.color);
 
   @override
   String toString() => title;
@@ -19,11 +22,12 @@ final kEvents = LinkedHashMap<DateTime, List<Event>>(
 final _kEventSource = {
   for (var item in List.generate(50, (index) => index))
     DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5): List.generate(
-        item % 4 + 1, (index) => Event('Event $item | ${index + 1}'))
+        item % 4 + 1,
+        (index) => Event('Event $item | ${index + 1}', Colors.red))
 }..addAll({
     kToday: [
-      const Event('Today\'s Event 1'),
-      const Event('Today\'s Event 2'),
+      const Event('Today\'s Event 1', Colors.red),
+      const Event('Today\'s Event 2', Colors.red),
     ],
   });
 
