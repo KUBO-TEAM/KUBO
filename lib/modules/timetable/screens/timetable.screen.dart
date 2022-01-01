@@ -16,6 +16,21 @@ class TimeTableScreen extends StatelessWidget {
         backgroundColor: kGreenPrimary,
         child: const Icon(Icons.add),
       ),
+      appBar: AppBar(
+        backgroundColor: kBackgroundGrey,
+        iconTheme: const IconThemeData(
+          color: Colors.black, //change your color here
+        ),
+        elevation: 0,
+        title: const Text(
+          'Timetable',
+          style: TextStyle(
+            color: kBlackPrimary,
+            fontFamily: 'Pushster',
+            fontSize: 30.0,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: SfCalendar(
           todayHighlightColor: Colors.green,
