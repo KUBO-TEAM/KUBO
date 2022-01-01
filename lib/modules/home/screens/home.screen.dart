@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: const Color(0xffeeeeee),
       floatingActionButton: const FloatingMenuButton(),
       appBar: AppBar(
-        backgroundColor: const Color(0xffeeeeee),
+        backgroundColor: kBackgroundGrey,
         automaticallyImplyLeading: false,
         elevation: 0,
         title: const Text(
