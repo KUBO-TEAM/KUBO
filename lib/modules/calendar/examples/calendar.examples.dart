@@ -27,7 +27,7 @@ class _TableRangeExampleState extends State<TableRangeExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TableCalendar - Range'),
+        title: const Text('TableCalendar - Range'),
       ),
       body: TableCalendar(
         firstDay: kFirstDay,
@@ -89,7 +89,7 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TableCalendar - Basics'),
+        title: const Text('TableCalendar - Basics'),
       ),
       body: TableCalendar(
         firstDay: kFirstDay,
@@ -222,7 +222,7 @@ class _TableComplexExampleState extends State<TableComplexExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TableCalendar - Complex'),
+        title: const Text('TableCalendar - Complex'),
       ),
       body: Column(
         children: [
@@ -245,13 +245,13 @@ class _TableComplexExampleState extends State<TableComplexExample> {
                 },
                 onLeftArrowTap: () {
                   _pageController.previousPage(
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     curve: Curves.easeOut,
                   );
                 },
                 onRightArrowTap: () {
                   _pageController.nextPage(
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     curve: Curves.easeOut,
                   );
                 },
@@ -301,7 +301,7 @@ class _TableComplexExampleState extends State<TableComplexExample> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: ListTile(
-                        onTap: () => print('${value[index]}'),
+                        onTap: () => debugPrint('${value[index]}'),
                         title: Text('${value[index]}'),
                       ),
                     );
@@ -347,27 +347,27 @@ class _CalendarHeader extends StatelessWidget {
             width: 120.0,
             child: Text(
               headerText,
-              style: TextStyle(fontSize: 26.0),
+              style: const TextStyle(fontSize: 26.0),
             ),
           ),
           IconButton(
-            icon: Icon(Icons.calendar_today, size: 20.0),
+            icon: const Icon(Icons.calendar_today, size: 20.0),
             visualDensity: VisualDensity.compact,
             onPressed: onTodayButtonTap,
           ),
           if (clearButtonVisible)
             IconButton(
-              icon: Icon(Icons.clear, size: 20.0),
+              icon: const Icon(Icons.clear, size: 20.0),
               visualDensity: VisualDensity.compact,
               onPressed: onClearButtonTap,
             ),
           const Spacer(),
           IconButton(
-            icon: Icon(Icons.chevron_left),
+            icon: const Icon(Icons.chevron_left),
             onPressed: onLeftArrowTap,
           ),
           IconButton(
-            icon: Icon(Icons.chevron_right),
+            icon: const Icon(Icons.chevron_right),
             onPressed: onRightArrowTap,
           ),
         ],
@@ -458,7 +458,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TableCalendar - Events'),
+        title: const Text('TableCalendar - Events'),
       ),
       body: Column(
         children: [
@@ -473,7 +473,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
             rangeSelectionMode: _rangeSelectionMode,
             eventLoader: _getEventsForDay,
             startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: CalendarStyle(
+            calendarStyle: const CalendarStyle(
               // Use `CalendarStyle` to customize the UI
               outsideDaysVisible: false,
             ),
@@ -508,7 +508,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: ListTile(
-                        onTap: () => print('${value[index]}'),
+                        onTap: () => debugPrint('${value[index]}'),
                         title: Text('${value[index]}'),
                       ),
                     );
@@ -579,7 +579,7 @@ class _TableMultiExampleState extends State<TableMultiExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TableCalendar - Multi'),
+        title: const Text('TableCalendar - Multi'),
       ),
       body: Column(
         children: [
@@ -607,7 +607,7 @@ class _TableMultiExampleState extends State<TableMultiExample> {
             },
           ),
           ElevatedButton(
-            child: Text('Clear selection'),
+            child: const Text('Clear selection'),
             onPressed: () {
               setState(() {
                 _selectedDays.clear();
@@ -633,7 +633,7 @@ class _TableMultiExampleState extends State<TableMultiExample> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: ListTile(
-                        onTap: () => print('${value[index]}'),
+                        onTap: () => debugPrint('${value[index]}'),
                         title: Text('${value[index]}'),
                       ),
                     );
