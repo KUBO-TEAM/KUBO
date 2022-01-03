@@ -123,11 +123,13 @@ class _CapturedScreenState extends State<CapturedScreen> {
     Size size = MediaQuery.of(context).size;
 
     if (_recognitions != null && _image != null) {
-      stackChildren.add(Positioned(
-        top: 0.0,
-        left: 0.0,
+      stackChildren.add(SizedBox(
+        height: size.height,
         width: size.width,
-        child: Image.file(_image!),
+        child: FittedBox(
+          child: Image.file(_image!),
+          fit: BoxFit.cover,
+        ),
       ));
 
       stackChildren.addAll(renderBoxes(size));
