@@ -29,6 +29,8 @@ class _CameraState extends State<CameraState> {
     super.dispose();
   }
 
+  bool flashSetting = false;
+
   Future<void> _getCameras() async {
     List<CameraDescription> cameras;
 
@@ -65,6 +67,11 @@ class _CameraState extends State<CameraState> {
   }
 
   void _onTakePictureButtonPressed() {
+    if(flashSetting){
+      controller!.setFlashMode(FlashMode.always);
+    }else{
+      controller!.setFlashMode(FlashMode.off);
+    }
     _takePicture().then((XFile? file) {
       if (mounted) {
         if (file != null) {
@@ -87,6 +94,12 @@ class _CameraState extends State<CameraState> {
     });
   }
 
+  void _setFlashMode(){
+    setState(() {
+      flashSetting = !flashSetting;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double kScreenWidth = MediaQuery.of(context).size.width;
@@ -106,7 +119,7 @@ class _CameraState extends State<CameraState> {
             ),
           ),
           const CameraClipper(),
-          const CameraTopButtons(),
+          CameraTopButtons(setFlashMode: _setFlashMode,),
         ],
       );
     }
@@ -117,7 +130,10 @@ class _CameraState extends State<CameraState> {
 class CameraTopButtons extends StatelessWidget {
   const CameraTopButtons({
     Key? key,
+    required this.setFlashMode,
   }) : super(key: key);
+
+  final Function() setFlashMode;
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +155,7 @@ class CameraTopButtons extends StatelessWidget {
             },
           ),
           CostumeIconButton(
-            onPressed: () {},
+            onPressed: setFlashMode,
             icon: const Icon(
               Icons.flash_on,
               color: Colors.amber,
