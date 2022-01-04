@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/constants/colors.constants.dart';
+import 'package:kubo/modules/meal_plan/screens/create_meal_plan.screen.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class TimeTableScreen extends StatelessWidget {
   static const String id = 'timetable_screen';
@@ -9,17 +11,34 @@ class TimeTableScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add your onPressed code here!
-        },
+      floatingActionButton: SpeedDial(
         backgroundColor: kGreenPrimary,
-        child: const Icon(Icons.add),
+        animatedIcon: AnimatedIcons.menu_close,
+        animationSpeed: 800,
+        children: [
+          SpeedDialChild(
+            child: const Icon(
+              Icons.menu_book,
+              color: kBrownPrimary,
+            ),
+            label: 'Create meal plan',
+            onTap: () {
+              Navigator.pushNamed(context, CreateMealPlanScreen.id);
+            },
+          ),
+          SpeedDialChild(
+            child: const Icon(
+              Icons.fact_check,
+              color: kBrownPrimary,
+            ),
+            label: 'Ingredients',
+          ),
+        ],
       ),
       appBar: AppBar(
         backgroundColor: kBackgroundGrey,
         iconTheme: const IconThemeData(
-          color: Colors.black, //change your color here
+          color: kBlackPrimary, //chang color here
         ),
         elevation: 0,
         title: const Text(
