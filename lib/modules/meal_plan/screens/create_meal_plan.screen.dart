@@ -126,8 +126,14 @@ class CreateMealPlanScreen extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext context, int index) {
                     return RecommendedCard(
-                      onPressed: () {
-                        Navigator.pushNamed(context, AssignMealTimeScreen.id);
+                      onPressed: (Recipe recipe) {
+                        Navigator.pushNamed(
+                          context,
+                          AssignMealTimeScreen.id,
+                          arguments: AssignMealTimeScreenArguments(
+                            recipe: recipe,
+                          ),
+                        );
                       },
                       recipe: recommendedRecipes[index],
                     );
@@ -147,8 +153,14 @@ class CreateMealPlanScreen extends StatelessWidget {
                 children: List.generate(
                   popularRecipes.length,
                   (index) => PopularCard(
-                    onPressed: () {
-                      Navigator.pushNamed(context, AssignMealTimeScreen.id);
+                    onPressed: (Recipe recipe) {
+                      Navigator.pushNamed(
+                        context,
+                        AssignMealTimeScreen.id,
+                        arguments: AssignMealTimeScreenArguments(
+                          recipe: recipe,
+                        ),
+                      );
                     },
                     recipe: popularRecipes[index],
                   ),
@@ -170,12 +182,14 @@ class PopularCard extends StatelessWidget {
   }) : super(key: key);
 
   final Recipe recipe;
-  final Function() onPressed;
+  final Function(Recipe) onPressed;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onPressed,
+      onTap: () {
+        onPressed(recipe);
+      },
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -234,12 +248,14 @@ class RecommendedCard extends StatelessWidget {
   }) : super(key: key);
 
   final Recipe recipe;
-  final Function() onPressed;
+  final Function(Recipe) onPressed;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onPressed,
+      onTap: () {
+        onPressed(recipe);
+      },
       child: Padding(
         padding: const EdgeInsets.only(right: 8.0),
         child: Column(
