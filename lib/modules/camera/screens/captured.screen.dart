@@ -56,6 +56,8 @@ class _CapturedScreenState extends State<CapturedScreen> {
 
       await yolov2Tiny(image);
 
+      debugPrint(res);
+
       setState(() {
         _image = image;
       });

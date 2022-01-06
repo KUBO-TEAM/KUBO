@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/constants/colors.constants.dart';
-import 'package:kubo/modules/meal_plan/screens/create_meal_plan.screen.dart';
+import 'package:kubo/modules/meal_plan/screens/select_ingredients.screen.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
@@ -23,7 +23,7 @@ class TimeTableScreen extends StatelessWidget {
             ),
             label: 'Create meal plan',
             onTap: () {
-              Navigator.pushNamed(context, CreateMealPlanScreen.id);
+              Navigator.pushNamed(context, SelectIngredientsScreen.id);
             },
           ),
           SpeedDialChild(
