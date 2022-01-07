@@ -157,7 +157,7 @@ class CameraTopButtons extends StatelessWidget {
             icon: const Icon(
               Icons.arrow_back_ios,
               color: Colors.white,
-              size: 30.0,
+              size: 24.0,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -168,12 +168,12 @@ class CameraTopButtons extends StatelessWidget {
             icon: const Icon(
               Icons.flash_on,
               color: Colors.amber,
-              size: 30.0,
+              size: 24.0,
             ),
             pressedIcon: const Icon(
               Icons.flash_off,
               color: Colors.white,
-              size: 30.0,
+              size: 24.0,
             ),
           ),
           CostumeIconButton(

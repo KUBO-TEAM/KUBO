@@ -8,6 +8,7 @@ import 'package:kubo/modules/home/screens/home.screen.dart';
 import 'package:kubo/modules/meal_plan/screens/select_ingredients.screen.dart';
 import 'package:kubo/modules/meal_plan/screens/create_meal_plan.screen.dart';
 import 'package:kubo/modules/timetable/screens/timetable.screen.dart';
+import 'package:kubo/modules/agenda/screens/agenda.screen.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(const Kubo());
@@ -28,6 +29,7 @@ class Kubo extends StatelessWidget {
           CalendarScreen.id: (context) => const CalendarScreen(),
           CapturedScreen.id: (context) => const CapturedScreen(),
           TimeTableScreen.id: (context) => const TimeTableScreen(),
+          AgendaScreen.id:(context)=> const AgendaScreen(),
           SelectIngredientsScreen.id: (context) =>
               const SelectIngredientsScreen(),
           CreateMealPlanScreen.id: (context) => CreateMealPlanScreen(),
