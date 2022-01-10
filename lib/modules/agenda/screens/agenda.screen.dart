@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/constants/colors.constants.dart';
+import 'package:kubo/widgets/clippers/image.clipper.dart';
 
 class AgendaScreen extends StatelessWidget {
   const AgendaScreen({Key? key}) : super(key: key);
@@ -20,7 +21,8 @@ class AgendaScreen extends StatelessWidget {
         iconTheme: const IconThemeData(
         color: kBlackPrimary, //chang color here
         ),
-      )
+      ),
+      // body: const ImageClipper(),
     );
   }
 }

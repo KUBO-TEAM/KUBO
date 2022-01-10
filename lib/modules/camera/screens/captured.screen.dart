@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kubo/widgets/clippers/camera.clipper.dart';
+import 'package:kubo/widgets/clippers/image.clipper.dart';
 import 'dart:io';
 import 'package:tflite/tflite.dart';
 
@@ -139,7 +140,17 @@ class _CapturedScreenState extends State<CapturedScreen> {
 
       return Scaffold(
         body: SafeArea(
-          child: Stack(children: [...stackChildren,const CameraClipper(),]),
+          child: Stack(children: [
+            // image with annotation
+            ...stackChildren,
+            // ImageClipper(
+            //     colorBlendMode: BlendMode.darken,
+            //     child: FittedBox(
+            //       child: Image.file(_image!),
+            //       fit: BoxFit.cover,
+            //     ),
+            // ),
+          ]),
         ),
       );
     }
