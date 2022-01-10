@@ -9,7 +9,7 @@ class CameraClipper extends StatelessWidget {
     return ClipPath(
       clipper: _Clipper(),
       child: Container(
-        color: kBrownPrimary,
+        color: Colors.black.withOpacity(.7),
       ),
     );
   }
