@@ -30,10 +30,10 @@ class Kubo extends StatelessWidget {
           CalendarScreen.id: (context) => const CalendarScreen(),
           CapturedScreen.id: (context) => const CapturedScreen(),
           TimeTableScreen.id: (context) => const TimeTableScreen(),
-          AgendaScreen.id:(context)=> const AgendaScreen(),
+          AgendaScreen.id: (context) => const AgendaScreen(),
           SelectIngredientsScreen.id: (context) =>
               const SelectIngredientsScreen(),
-          CreateMealPlanScreen.id: (context) => CreateMealPlanScreen(),
+          CreateMealPlanScreen.id: (context) => const CreateMealPlanScreen(),
           AssignMealTimeScreen.id: (context) => const AssignMealTimeScreen(),
         },
       ),

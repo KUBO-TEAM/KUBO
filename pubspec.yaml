@@ -12,7 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   cupertino_icons: ^1.0.2
   camera: ^0.9.4+5
   provider: ^6.0.1
@@ -21,6 +20,7 @@ dependencies:
   syncfusion_flutter_calendar: ^19.4.40
   carousel_slider: ^4.0.0
   tflite: ^1.1.2
+  direct_select_flutter: ^1.1.1
 
 dev_dependencies:
   flutter_test:
