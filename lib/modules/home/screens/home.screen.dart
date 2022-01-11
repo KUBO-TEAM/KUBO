@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:kubo/constants/colors.constants.dart';
+import 'package:kubo/modules/agenda/screens/agenda.screen.dart';
 import 'package:kubo/modules/calendar/screens/calendar.screen.dart';
 import 'package:kubo/modules/camera/screens/camera.screen.dart';
 import 'package:kubo/modules/timetable/screens/timetable.screen.dart';
@@ -102,7 +103,7 @@ class SchedulesButton extends StatelessWidget {
           title: const Text(
             'Agenda',
           ),
-          onPressed: () {},
+          onPressed: () { Navigator.pushNamed(context, AgendaScreen.id);},
         ),
         const SizedBox(
           width: 16.0,

@@ -30,13 +30,14 @@ class _CameraState extends State<CameraState> {
   }
 
   bool flashSetting = false;
+  bool hdrEnabled = false;
 
   Future<void> _getCameras() async {
     List<CameraDescription> cameras;
 
     cameras = await availableCameras();
 
-    controller = CameraController(cameras[0], ResolutionPreset.max);
+    controller = CameraController(cameras[0], hdrEnabled? ResolutionPreset.max: ResolutionPreset.low);
     controller!.initialize().then((_) {
       if (!mounted) {
         return;
@@ -100,6 +101,13 @@ class _CameraState extends State<CameraState> {
     });
   }
 
+  void _enabledHDR(){
+    setState(() {
+      hdrEnabled = !hdrEnabled;
+    });
+    _getCameras();
+  }
+
   @override
   Widget build(BuildContext context) {
     double kScreenWidth = MediaQuery.of(context).size.width;
@@ -119,7 +127,7 @@ class _CameraState extends State<CameraState> {
             ),
           ),
           const CameraClipper(),
-          CameraTopButtons(setFlashMode: _setFlashMode,),
+          CameraTopButtons(setFlashMode: _setFlashMode,enabledHDR:_enabledHDR ,),
         ],
       );
     }
@@ -130,10 +138,11 @@ class _CameraState extends State<CameraState> {
 class CameraTopButtons extends StatelessWidget {
   const CameraTopButtons({
     Key? key,
-    required this.setFlashMode,
+    required this.setFlashMode,required this.enabledHDR,
   }) : super(key: key);
 
   final Function() setFlashMode;
+  final Function() enabledHDR;
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +157,7 @@ class CameraTopButtons extends StatelessWidget {
             icon: const Icon(
               Icons.arrow_back_ios,
               color: Colors.white,
-              size: 30.0,
+              size: 24.0,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -159,16 +168,16 @@ class CameraTopButtons extends StatelessWidget {
             icon: const Icon(
               Icons.flash_on,
               color: Colors.amber,
-              size: 30.0,
+              size: 24.0,
             ),
             pressedIcon: const Icon(
               Icons.flash_off,
               color: Colors.white,
-              size: 30.0,
+              size: 24.0,
             ),
           ),
           CostumeIconButton(
-            onPressed: () {},
+            onPressed: enabledHDR,
             icon: const Icon(
               Icons.hdr_on,
               color: Colors.amber,
