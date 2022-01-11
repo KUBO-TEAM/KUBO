@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/constants/colors.constants.dart';
-import 'package:kubo/widgets/clippers/image.clipper.dart';
+import 'package:kubo/modules/agenda/models/agenda.model.dart';
+
+import 'package:kubo/modules/agenda/states/agenda.state.dart';
+import 'package:provider/provider.dart';
 
 class AgendaScreen extends StatelessWidget {
   const AgendaScreen({Key? key}) : super(key: key);
@@ -9,21 +12,18 @@ class AgendaScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back_ios),
-          ),
-        backgroundColor: kBackgroundGrey,
-        iconTheme: const IconThemeData(
-        color: kBlackPrimary, //chang color here
+    return ChangeNotifierProvider(
+      create: (BuildContext context) => AgendaList(),
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          backgroundColor: kGreenPrimary,
+          foregroundColor: Colors.white,
+          onPressed: () => {},
         ),
+        backgroundColor: Colors.white,
+        body: SafeArea(child: AgendaState()),
       ),
-      // body: const ImageClipper(),
     );
   }
 }
-

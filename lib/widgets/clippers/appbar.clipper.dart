@@ -1,19 +1,23 @@
-import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors.constants.dart';
+import 'package:flutter/cupertino.dart';
 
-class CameraClipper extends StatelessWidget {
-  const CameraClipper({Key? key}) : super(key: key);
+class AppbarClipper extends StatelessWidget {
+  const AppbarClipper({Key? key,
+    required this.color
+  }) : super(key: key);
+
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return ClipPath(
       clipper: _Clipper(),
       child: Container(
-        color: kBrownPrimary,
+        color: color,
       ),
     );
   }
 }
+
 
 class _Clipper extends CustomClipper<Path> {
   @override
@@ -21,15 +25,15 @@ class _Clipper extends CustomClipper<Path> {
     Path path = Path();
 
     path.moveTo(80, 0);
-    path.lineTo(80, 65 - 30);
-    path.quadraticBezierTo(80, 65, 80 + 30, 65);
-    path.lineTo(size.width, 65);
+    path.lineTo(80, 60 - 30);
+    path.quadraticBezierTo(80, 60, 80 + 30, 60);
+    path.lineTo(size.width, 60);
     path.lineTo(size.width, 0);
 
-    path.moveTo(65, 0);
+    path.moveTo(60, 0);
     path.lineTo(80, 0);
     path.lineTo(80, 25);
-    path.lineTo(65, 25);
+    path.lineTo(60, 25);
     path.lineTo(80, 25);
     path.quadraticBezierTo(
       80,
