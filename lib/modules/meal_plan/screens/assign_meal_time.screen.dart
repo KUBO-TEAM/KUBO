@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/constants/list.costants.dart';
 import 'package:kubo/constants/text_styles.constants.dart';
 import 'package:kubo/modules/meal_plan/models/recipe.dart';
+import 'package:kubo/widgets/buttons/square.button.dart';
+import 'package:kubo/widgets/cards/picker.card.dart';
 import 'package:kubo/widgets/clippers/recipe.clipper.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:kubo/widgets/selectors/direct.selector.dart';
@@ -25,6 +28,10 @@ class AssignMealTimeScreen extends StatefulWidget {
 }
 
 class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
+  String? day = 'Monday';
+  TimeOfDay? start;
+  TimeOfDay? end;
+
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments
@@ -90,24 +97,36 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
+                  children: [
+                    const Text(
                       'Pick a schedule',
                       style: kTitleTextStyle,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10.0,
                     ),
                     DirectSelector(
                       list: kDayList,
                       leadingIcon: Icons.calendar_today,
+                      onSelected: (String? daySelected) {
+                        day = daySelected;
+                      },
                     ),
                     TimeSelector(
                       title: 'Start',
+                      onTimePicked: (TimeOfDay? startTimePicked) {
+                        start = startTimePicked;
+                      },
                     ),
                     TimeSelector(
                       title: 'End',
+                      onTimePicked: (TimeOfDay? endTimePicked) {
+                        end = endTimePicked;
+                      },
                     ),
+                    SquareButton(
+                      onPressed: () {},
+                    )
                   ],
                 ),
               ),
@@ -123,7 +142,25 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
                   maxLines: 1,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 15.0,
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: appBar.preferredSize.height + 40.0,
+              left: 16,
+              child: SizedBox(
+                width: size.width - 40,
+                child: const Text(
+                  'No schedule',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w300,
                   ),
                 ),
               ),

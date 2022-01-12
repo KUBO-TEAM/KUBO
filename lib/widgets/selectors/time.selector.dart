@@ -7,9 +7,11 @@ class TimeSelector extends StatefulWidget {
   const TimeSelector({
     Key? key,
     required this.title,
+    required this.onTimePicked,
   }) : super(key: key);
 
   final String title;
+  final Function(TimeOfDay?) onTimePicked;
 
   @override
   State<TimeSelector> createState() => _TimeSelectorState();
@@ -26,6 +28,8 @@ class _TimeSelectorState extends State<TimeSelector> {
           initialTime: TimeOfDay.now(),
           context: context,
         );
+
+        widget.onTimePicked(timeSelected);
 
         setState(() {
           selectedTime = timeSelected;
