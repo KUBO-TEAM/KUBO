@@ -4,16 +4,16 @@ part 'schedule.hive.g.dart';
 @HiveType(typeId: 0)
 class ScheduleHive extends HiveObject {
   @HiveField(0)
-  final String recipeName;
+  String recipeName;
 
   @HiveField(1)
-  final String scheduledDay;
+  String scheduledDay;
 
   @HiveField(2)
-  final String startingTime;
+  String startingTime;
 
   @HiveField(3)
-  final String endingTime;
+  String endingTime;
 
   ScheduleHive({
     required this.recipeName,
