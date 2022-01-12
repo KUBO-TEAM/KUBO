@@ -22,6 +22,7 @@ dependencies:
   tflite: ^1.1.2
   direct_select_flutter: ^1.1.1
   hive: ^2.0.5
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
   flutter_test:

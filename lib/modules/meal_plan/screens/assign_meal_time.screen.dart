@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/constants/list.costants.dart';
+import 'package:kubo/constants/string.constants.dart';
 import 'package:kubo/constants/text_styles.constants.dart';
+import 'package:kubo/core/models/schedule.hive.dart';
 import 'package:kubo/modules/meal_plan/models/recipe.dart';
 import 'package:kubo/widgets/buttons/square.button.dart';
 import 'package:kubo/widgets/cards/picker.card.dart';
@@ -31,6 +34,18 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
   String? day = 'Monday';
   TimeOfDay? start;
   TimeOfDay? end;
+
+  Future checkSchedule() async {
+    var bahayKuboBox = await Hive.openBox(kBahayKuboBox);
+    // print(bahayKuboBox.getAt(0));
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    checkSchedule();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +140,19 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
                       },
                     ),
                     SquareButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        if (day != null && start != null && end != null) {
+                          var bahayKuboBox = await Hive.openBox(kBahayKuboBox);
+                          var newSchedule = ScheduleHive();
+
+                          newSchedule.recipeName = recipe.name;
+                          newSchedule.scheduledDay = day;
+                          newSchedule.startingTime = start;
+                          newSchedule.endingTime = end;
+
+                          bahayKuboBox.add(newSchedule);
+                        }
+                      },
                     )
                   ],
                 ),

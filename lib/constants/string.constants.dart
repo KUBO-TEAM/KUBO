@@ -1,0 +1,1 @@
+const kBahayKuboBox = 'BahayKubo';
