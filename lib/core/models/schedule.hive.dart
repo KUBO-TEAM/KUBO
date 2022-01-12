@@ -1,17 +1,24 @@
 import 'package:hive/hive.dart';
-import 'package:flutter/material.dart';
+part 'schedule.hive.g.dart';
 
 @HiveType(typeId: 0)
 class ScheduleHive extends HiveObject {
   @HiveField(0)
-  String? recipeName;
+  final String recipeName;
 
   @HiveField(1)
-  String? scheduledDay;
+  final String scheduledDay;
 
   @HiveField(2)
-  TimeOfDay? startingTime;
+  final String startingTime;
 
   @HiveField(3)
-  TimeOfDay? endingTime;
+  final String endingTime;
+
+  ScheduleHive({
+    required this.recipeName,
+    required this.scheduledDay,
+    required this.startingTime,
+    required this.endingTime,
+  });
 }
