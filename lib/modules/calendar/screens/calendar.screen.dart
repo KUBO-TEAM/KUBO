@@ -11,8 +11,9 @@ class CalendarScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kBackgroundGrey,
-        iconTheme: const IconThemeData(
-          color: Colors.black, //change your color here
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: kBlackPrimary),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         elevation: 0,
         title: const Text(
