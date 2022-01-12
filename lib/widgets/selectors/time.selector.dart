@@ -8,10 +8,12 @@ class TimeSelector extends StatefulWidget {
     Key? key,
     required this.title,
     required this.onTimePicked,
+    this.initialTime,
   }) : super(key: key);
 
   final String title;
   final Function(TimeOfDay?) onTimePicked;
+  final TimeOfDay? initialTime;
 
   @override
   State<TimeSelector> createState() => _TimeSelectorState();
@@ -20,20 +22,48 @@ class TimeSelector extends StatefulWidget {
 class _TimeSelectorState extends State<TimeSelector> {
   TimeOfDay? selectedTime;
 
+  Text _timeStatus() {
+    if (widget.initialTime != null) {
+      return Text(
+        widget.initialTime!.format(context),
+      );
+    } else {
+      return Text(
+        selectedTime == null ? 'Pick a time' : selectedTime!.format(context),
+        style: kCaptionTextStyle.copyWith(
+          color: kDefaultGrey,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        TimeOfDay? timeSelected = await showTimePicker(
-          initialTime: TimeOfDay.now(),
-          context: context,
-        );
+        if (widget.initialTime != null) {
+          TimeOfDay? timeSelected = await showTimePicker(
+            initialTime: widget.initialTime!,
+            context: context,
+          );
 
-        widget.onTimePicked(timeSelected);
+          widget.onTimePicked(timeSelected);
 
-        setState(() {
-          selectedTime = timeSelected;
-        });
+          setState(() {
+            selectedTime = timeSelected;
+          });
+        } else {
+          TimeOfDay? timeSelected = await showTimePicker(
+            initialTime: TimeOfDay.now(),
+            context: context,
+          );
+
+          widget.onTimePicked(timeSelected);
+
+          setState(() {
+            selectedTime = timeSelected;
+          });
+        }
       },
       child: PickerCard(
         child: Row(
@@ -63,14 +93,7 @@ class _TimeSelectorState extends State<TimeSelector> {
               padding: const EdgeInsets.symmetric(
                 vertical: 16.0,
               ),
-              child: Text(
-                selectedTime == null
-                    ? 'Pick a time'
-                    : selectedTime!.format(context),
-                style: kCaptionTextStyle.copyWith(
-                  color: kDefaultGrey,
-                ),
-              ),
+              child: _timeStatus(),
             )
           ],
         ),
