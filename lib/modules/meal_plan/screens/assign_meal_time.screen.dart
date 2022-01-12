@@ -139,38 +139,20 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
                     ),
                     TimeSelector(
                       title: 'Start',
-                      initialTime: schedule != null
-                          ? stringToTimeOfDay(schedule!.startingTime)
-                          : null,
+                      initialTime: _stringToTimeOfDay(schedule?.startingTime),
                       onTimePicked: (TimeOfDay? startTimePicked) {
                         start = startTimePicked;
                       },
                     ),
                     TimeSelector(
                       title: 'End',
-                      initialTime: schedule != null
-                          ? stringToTimeOfDay(schedule!.endingTime)
-                          : null,
+                      initialTime: _stringToTimeOfDay(schedule?.endingTime),
                       onTimePicked: (TimeOfDay? endTimePicked) {
                         end = endTimePicked;
                       },
                     ),
                     SquareButton(
-                      onPressed: () async {
-                        if (day != null && start != null && end != null) {
-                          ScheduleHive newSchedule = ScheduleHive(
-                            recipeName: recipe.name,
-                            scheduledDay: day!,
-                            startingTime: start!.format(context),
-                            endingTime: end!.format(context),
-                          );
-
-                          scheduleBox!.put(recipe.id, newSchedule);
-                          setState(() {
-                            schedule = newSchedule;
-                          });
-                        }
-                      },
+                      onPressed: () => onSave(recipe),
                     )
                   ],
                 ),
@@ -218,11 +200,43 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
     );
   }
 
+  Future<void> onSave(Recipe recipe) async {
+    if (schedule == null) {
+      if (day != null && start != null && end != null) {
+        ScheduleHive newSchedule = ScheduleHive(
+          recipeName: recipe.name,
+          scheduledDay: day!,
+          startingTime: start!.format(context),
+          endingTime: end!.format(context),
+        );
+
+        scheduleBox!.put(recipe.id, newSchedule);
+
+        setState(() {
+          schedule = newSchedule;
+        });
+      }
+    } else {
+      schedule!.scheduledDay = day != null ? day! : schedule!.scheduledDay;
+      schedule!.startingTime =
+          start != null ? start!.format(context) : schedule!.startingTime;
+      schedule!.endingTime =
+          end != null ? end!.format(context) : schedule!.endingTime;
+
+      schedule!.save();
+
+      setState(() {});
+    }
+  }
+
   String _scheduleFormatter(ScheduleHive? scheduleHive) {
     return '${scheduleHive!.scheduledDay}, ${scheduleHive.startingTime} - ${scheduleHive.endingTime}';
   }
 
-  TimeOfDay stringToTimeOfDay(String time) {
+  TimeOfDay? _stringToTimeOfDay(String? time) {
+    if (time == null) {
+      return null;
+    }
     int hh = 0;
     if (time.endsWith('PM')) hh = 12;
     time = time.split(' ')[0];

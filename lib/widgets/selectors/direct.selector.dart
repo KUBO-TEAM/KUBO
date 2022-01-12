@@ -25,7 +25,7 @@ class DirectSelector extends StatefulWidget {
 class _DirectSelectorState extends State<DirectSelector> {
   int initialIndex = 0;
 
-  DirectSelectItem<String> getDropDownMenuItem(String value) {
+  DirectSelectItem<String> _getDropDownMenuItem(String value) {
     return DirectSelectItem<String>(
       itemHeight: 56,
       value: value,
@@ -42,6 +42,18 @@ class _DirectSelectorState extends State<DirectSelector> {
         top: BorderSide(width: 1, color: Colors.black12),
       ),
     );
+  }
+
+  int _getInitialItemIndex() {
+    if (initialIndex == 0) {
+      if (widget.initialDay != null) {
+        return widget.list.indexOf(widget.initialDay!);
+      } else {
+        return initialIndex;
+      }
+    }
+
+    return initialIndex;
   }
 
   @override
@@ -63,10 +75,8 @@ class _DirectSelectorState extends State<DirectSelector> {
               padding: const EdgeInsets.only(left: 10),
               child: DirectSelectList<String>(
                 values: widget.list,
-                defaultItemIndex: widget.initialDay != null
-                    ? widget.list.indexOf(widget.initialDay!)
-                    : initialIndex,
-                itemBuilder: (String value) => getDropDownMenuItem(value),
+                defaultItemIndex: _getInitialItemIndex(),
+                itemBuilder: (String value) => _getDropDownMenuItem(value),
                 focusedItemDecoration: _getDslDecoration(),
                 onItemSelectedListener: (item, index, context) {
                   widget.onSelected(widget.list[index]);
