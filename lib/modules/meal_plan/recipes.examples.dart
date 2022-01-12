@@ -2,6 +2,7 @@ import 'models/recipe.dart';
 
 final List<Recipe> recommendedRecipes = [
   Recipe(
+    id: '0',
     name: 'Pinakbet Tagalog',
     description:
         'Pinakbet Tagalog is a Filipino vegetable dish. It is composed of a variety of vegetables and it also has a protein component.',
@@ -9,6 +10,7 @@ final List<Recipe> recommendedRecipes = [
         'https://www.foxyfolksy.com/wp-content/uploads/2016/09/pinakbet-640.jpg',
   ),
   Recipe(
+    id: '1',
     name: 'Sinigang na Baboy Ribs',
     description:
         'One of the most beloved and familiar Filipino dishes out there, sinigang introduces a great balance of warmth and sourness.',
@@ -16,6 +18,7 @@ final List<Recipe> recommendedRecipes = [
         'https://panlasangpinoy.com/wp-content/uploads/2021/12/Porknigang-Recipe.jpg',
   ),
   Recipe(
+    id: '2',
     name: 'Ginisang Ampalaya',
     description:
         'We make it with a couple of kitchen basics. This includes garlic, black pepper, eggs and tomatoes.',
@@ -26,6 +29,7 @@ final List<Recipe> recommendedRecipes = [
 
 final List<Recipe> popularRecipes = [
   Recipe(
+    id: '3',
     name: 'Vegetable Okoy',
     description:
         'Okoy is one of the best snacks or appetizers out there. Its stunning, golden brown appearance is one hard to ignore',
@@ -33,6 +37,7 @@ final List<Recipe> popularRecipes = [
         'https://panlasangpinoy.com/wp-content/uploads/2021/12/Crispy-Vegetable-Okoy-Recipe.jpg',
   ),
   Recipe(
+    id: '4',
     name: 'Ginisang Sigarilyas Recipe',
     description:
         'Ginisang Sigarilyas is a classic dish with onion, garlic, and of course, the refreshing taste of crunchy sigarilyas or winged bean, this is a recipe that satisfies everything you’d want in your delicious Filipino ulam. ',
@@ -40,6 +45,7 @@ final List<Recipe> popularRecipes = [
         'https://panlasangpinoy.com/wp-content/uploads/2021/12/Porknigang-Recipe.jpg',
   ),
   Recipe(
+    id: '5',
     name: 'Chopsuey with Chicken and Broccoli',
     description:
         'The Philippines is home to an abundance of fresh vegetables that come alive in an array of dishes within our cuisine. ',
@@ -47,6 +53,7 @@ final List<Recipe> popularRecipes = [
         'https://panlasangpinoy.com/wp-content/uploads/2021/08/How-to-Cook-Chopsuey-683x1024.jpg',
   ),
   Recipe(
+    id: '6',
     name: 'Laswa Recipe',
     description:
         'These days, it might get pretty difficult to get ahold of healthy food from outside. ',
@@ -54,6 +61,7 @@ final List<Recipe> popularRecipes = [
         'https://panlasangpinoy.com/wp-content/uploads/2021/08/Laswa-Recipe-683x1024.jpg',
   ),
   Recipe(
+    id: '7',
     name: 'Binagoongan Bagnet with Talong',
     description:
         'Binagoongan bagnet with talong be considered as a Crispy Binagoongan version. This dish is simply delicious. ',
@@ -61,6 +69,7 @@ final List<Recipe> popularRecipes = [
         'https://panlasangpinoy.com/wp-content/uploads/2021/07/Binagoongan-Bagnet-with-Talong-Recipe.jpg',
   ),
   Recipe(
+    id: '8',
     name: 'Ginisang Munggo',
     description:
         'Some dishes in a certain cuisine are known to best describe the feeling of home-cooked meals from that particular country.',
@@ -68,6 +77,7 @@ final List<Recipe> popularRecipes = [
         'https://panlasangpinoy.com/wp-content/uploads/2021/07/Ginisang-Munggo-704x1024.jpg',
   ),
   Recipe(
+    id: '9',
     name: 'Easy Utan Bisaya',
     description:
         'Have you ever heard of Utan Bisaya before? For locals of the Visayas or those with Visayan origins, Easy Utan Bisaya (or Law-Uy) ',
