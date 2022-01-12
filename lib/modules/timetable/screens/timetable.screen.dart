@@ -37,8 +37,9 @@ class TimeTableScreen extends StatelessWidget {
       ),
       appBar: AppBar(
         backgroundColor: kBackgroundGrey,
-        iconTheme: const IconThemeData(
-          color: kBlackPrimary, //chang color here
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: kBlackPrimary),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         elevation: 0,
         title: const Text(

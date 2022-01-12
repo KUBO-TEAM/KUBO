@@ -25,22 +25,6 @@ class AssignMealTimeScreen extends StatefulWidget {
 }
 
 class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
-  AppBar appBar = AppBar(
-    backgroundColor: Colors.transparent,
-    iconTheme: const IconThemeData(
-      color: Colors.white, //change your color here
-    ),
-    elevation: 0,
-    title: const Text(
-      'Assign Meal Time',
-      style: TextStyle(
-        color: Colors.white,
-        fontFamily: 'Pushster',
-        fontSize: 30.0,
-      ),
-    ),
-  );
-
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments
@@ -49,6 +33,23 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
     final Recipe recipe = args.recipe;
 
     Size size = MediaQuery.of(context).size;
+
+    AppBar appBar = AppBar(
+      backgroundColor: Colors.transparent,
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+        onPressed: () => Navigator.of(context).pop(),
+      ),
+      elevation: 0,
+      title: const Text(
+        'Assign Meal Time',
+        style: TextStyle(
+          color: Colors.white,
+          fontFamily: 'Pushster',
+          fontSize: 30.0,
+        ),
+      ),
+    );
 
     return Scaffold(
       backgroundColor: Colors.white,
