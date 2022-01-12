@@ -23,18 +23,28 @@ class _TimeSelectorState extends State<TimeSelector> {
   TimeOfDay? selectedTime;
 
   Text _timeStatus() {
-    if (widget.initialTime != null) {
+    if (selectedTime != null) {
+      return Text(
+        selectedTime!.format(context),
+        style: kCaptionTextStyle.copyWith(
+          color: kDefaultGrey,
+        ),
+      );
+    } else if (widget.initialTime != null) {
       return Text(
         widget.initialTime!.format(context),
-      );
-    } else {
-      return Text(
-        selectedTime == null ? 'Pick a time' : selectedTime!.format(context),
         style: kCaptionTextStyle.copyWith(
           color: kDefaultGrey,
         ),
       );
     }
+
+    return Text(
+      'Pick a time',
+      style: kCaptionTextStyle.copyWith(
+        color: kDefaultGrey,
+      ),
+    );
   }
 
   @override
