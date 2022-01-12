@@ -10,11 +10,13 @@ class DirectSelector extends StatefulWidget {
     required this.list,
     required this.leadingIcon,
     required this.onSelected,
+    this.initialDay,
   }) : super(key: key);
 
   final List<String> list;
   final IconData leadingIcon;
   final Function(String?) onSelected;
+  final String? initialDay;
 
   @override
   State<DirectSelector> createState() => _DirectSelectorState();
@@ -61,7 +63,9 @@ class _DirectSelectorState extends State<DirectSelector> {
               padding: const EdgeInsets.only(left: 10),
               child: DirectSelectList<String>(
                 values: widget.list,
-                defaultItemIndex: initialIndex,
+                defaultItemIndex: widget.initialDay != null
+                    ? widget.list.indexOf(widget.initialDay!)
+                    : initialIndex,
                 itemBuilder: (String value) => getDropDownMenuItem(value),
                 focusedItemDecoration: _getDslDecoration(),
                 onItemSelectedListener: (item, index, context) {
