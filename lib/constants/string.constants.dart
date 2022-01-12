@@ -1,1 +1,1 @@
-const kBahayKuboBox = 'BahayKubo';
+const kScheduleBox = 'Schedule Box';
