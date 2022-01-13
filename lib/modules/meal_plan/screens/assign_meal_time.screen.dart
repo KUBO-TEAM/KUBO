@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:kubo/constants/list.costants.dart';
+import 'package:kubo/constants/sizes.constants.dart';
 import 'package:kubo/constants/string.constants.dart';
 import 'package:kubo/constants/text_styles.constants.dart';
 import 'package:kubo/core/models/schedule.hive.dart';
@@ -64,27 +65,29 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
 
     Size size = MediaQuery.of(context).size;
 
-    AppBar appBar = AppBar(
-      backgroundColor: Colors.transparent,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-        onPressed: () => Navigator.of(context).pop(),
-      ),
-      elevation: 0,
-      title: const Text(
-        'Assign Meal Time',
-        style: TextStyle(
-          color: Colors.white,
-          fontFamily: 'Pushster',
-          fontSize: 30.0,
-        ),
-      ),
-    );
-
     return Scaffold(
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
-      appBar: appBar,
+      appBar: PreferredSize(
+        preferredSize: kAppBarPrefferedSize,
+        child: AppBar(
+          backgroundColor: Colors.transparent,
+          titleSpacing: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          elevation: 0,
+          title: const Text(
+            'Assign Meal Time',
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Pushster',
+              fontSize: 30.0,
+            ),
+          ),
+        ),
+      ),
       body: DirectSelectContainer(
         child: Stack(
           children: [
@@ -159,7 +162,7 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
               ),
             ),
             Positioned(
-              top: appBar.preferredSize.height + 20.0,
+              top: 65.0,
               left: 16,
               child: SizedBox(
                 width: size.width - 40,
@@ -176,7 +179,7 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
               ),
             ),
             Positioned(
-              top: appBar.preferredSize.height + 40.0,
+              top: 85.0,
               left: 16,
               child: SizedBox(
                 width: size.width - 40,

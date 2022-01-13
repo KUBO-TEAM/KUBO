@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:kubo/constants/colors.constants.dart';
+import 'package:kubo/constants/sizes.constants.dart';
 import 'package:kubo/modules/agenda/screens/agenda.screen.dart';
 import 'package:kubo/modules/calendar/screens/calendar.screen.dart';
 import 'package:kubo/modules/camera/screens/camera.screen.dart';
@@ -20,16 +21,19 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xffeeeeee),
       floatingActionButton: const FloatingMenuButton(),
-      appBar: AppBar(
-        backgroundColor: kBackgroundGrey,
-        automaticallyImplyLeading: false,
-        elevation: 0,
-        title: const Text(
-          'Overview',
-          style: TextStyle(
-            color: kBlackPrimary,
-            fontFamily: 'Pushster',
-            fontSize: 30.0,
+      appBar: PreferredSize(
+        preferredSize: kAppBarPrefferedSize,
+        child: AppBar(
+          backgroundColor: kBackgroundGrey,
+          automaticallyImplyLeading: false,
+          elevation: 0,
+          title: const Text(
+            'Overview',
+            style: TextStyle(
+              color: kBlackPrimary,
+              fontFamily: 'Pushster',
+              fontSize: 30.0,
+            ),
           ),
         ),
       ),
@@ -103,7 +107,9 @@ class SchedulesButton extends StatelessWidget {
           title: const Text(
             'Agenda',
           ),
-          onPressed: () { Navigator.pushNamed(context, AgendaScreen.id);},
+          onPressed: () {
+            Navigator.pushNamed(context, AgendaScreen.id);
+          },
         ),
         const SizedBox(
           width: 16.0,

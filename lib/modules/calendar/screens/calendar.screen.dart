@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/constants/colors.constants.dart';
+import 'package:kubo/constants/sizes.constants.dart';
 import 'package:kubo/modules/calendar/states/calendar.states.dart';
 
 class CalendarScreen extends StatelessWidget {
@@ -9,19 +10,23 @@ class CalendarScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: kBackgroundGrey,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: kBlackPrimary),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        elevation: 0,
-        title: const Text(
-          'Calendar',
-          style: TextStyle(
-            color: kBlackPrimary,
-            fontFamily: 'Pushster',
-            fontSize: 30.0,
+      appBar: PreferredSize(
+        preferredSize: kAppBarPrefferedSize,
+        child: AppBar(
+          backgroundColor: kBackgroundGrey,
+          titleSpacing: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: kBlackPrimary),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          elevation: 0,
+          title: const Text(
+            'Calendar',
+            style: TextStyle(
+              color: kBlackPrimary,
+              fontFamily: 'Pushster',
+              fontSize: 30.0,
+            ),
           ),
         ),
       ),
