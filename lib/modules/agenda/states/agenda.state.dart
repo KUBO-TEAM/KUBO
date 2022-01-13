@@ -22,7 +22,7 @@ class _AgendaStateState extends State<AgendaState> {
           const CustomAppBar(
             title: "Agenda",
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Expanded(
@@ -46,7 +46,7 @@ class _AgendaStateState extends State<AgendaState> {
                             ),
                             subtitle: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.access_alarm_sharp,
                                   size: 18,
                                 ),
@@ -56,6 +56,15 @@ class _AgendaStateState extends State<AgendaState> {
                           ),
                         ),
                       ),
+                      IconButton(
+                          splashColor: kBrownPrimary,
+                          onPressed: () =>
+                              Provider.of<AgendaList>(context, listen: false).deleteTask(agenda),
+                          icon: const Icon(
+                            Icons.delete,
+                            color: kBrownPrimary,
+                            size: 30,
+                          ))
                     ]),
                   );
                 }),

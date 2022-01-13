@@ -23,17 +23,7 @@ class Agenda {
 }
 
 class AgendaList extends ChangeNotifier{
-  List<Agenda> _agendas = [
-    Agenda(name: "Agenda 1"),
-    Agenda(name: "Agenda 2"),
-    Agenda(name: "Agenda 3"),
-    Agenda(name: "Agenda 4"),
-    Agenda(name: "Agenda 5"),
-    Agenda(name: "Agenda 6"),
-    Agenda(name: "Agenda 7"),
-    Agenda(name: "Agenda 8"),
-    Agenda(name: "Agenda 9"),
-  ];
+  final List<Agenda> _agendas = [];
 
   UnmodifiableListView<Agenda> get agendas {
     return UnmodifiableListView(_agendas);
@@ -50,7 +40,6 @@ class AgendaList extends ChangeNotifier{
   }
 
   void updateTask(Agenda agenda) {
-    // Agenda.toggleDone();
     notifyListeners();
   }
 

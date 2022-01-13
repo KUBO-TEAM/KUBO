@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/walk_through/welcome_screen.dart';
+import 'package:kubo/modules/agenda/models/agenda.model.dart';
 import 'package:kubo/modules/camera/models/camera.model.dart';
 import 'package:kubo/modules/camera/screens/camera.screen.dart';
 import 'package:kubo/modules/camera/screens/captured.screen.dart';
@@ -18,8 +19,15 @@ class Kubo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => CameraModel(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => CameraModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AgendaList(),
+        )
+      ],
       child: MaterialApp(
         initialRoute: WelcomeScreen.id,
         routes: {
@@ -29,7 +37,7 @@ class Kubo extends StatelessWidget {
           CalendarScreen.id: (context) => const CalendarScreen(),
           CapturedScreen.id: (context) => const CapturedScreen(),
           TimeTableScreen.id: (context) => const TimeTableScreen(),
-          AgendaScreen.id:(context)=> const AgendaScreen(),
+          AgendaScreen.id: (context) => const AgendaScreen(),
           SelectIngredientsScreen.id: (context) =>
               const SelectIngredientsScreen(),
           CreateMealPlanScreen.id: (context) => CreateMealPlanScreen(),
