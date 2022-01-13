@@ -60,14 +60,8 @@ class EventCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
-              height: 140,
-              child: Center(
-                child: FittedBox(
-                  child: Image.asset('assets/images/no_events.jpg'),
-                  fit: BoxFit.contain,
-                ),
-              ),
+            Center(
+              child: Image.asset('assets/images/no_events.jpg'),
             ),
             Text(
               subTitle,

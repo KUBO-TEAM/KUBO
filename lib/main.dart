@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:kubo/core/models/schedule.hive.dart';
 import 'package:kubo/core/walk_through/welcome_screen.dart';
 import 'package:kubo/modules/agenda/models/agenda.model.dart';
 import 'package:kubo/modules/camera/models/camera.model.dart';
@@ -6,13 +10,22 @@ import 'package:kubo/modules/camera/screens/camera.screen.dart';
 import 'package:kubo/modules/camera/screens/captured.screen.dart';
 import 'package:kubo/modules/calendar/screens/calendar.screen.dart';
 import 'package:kubo/modules/home/screens/home.screen.dart';
+import 'package:kubo/modules/meal_plan/screens/assign_meal_time.screen.dart';
 import 'package:kubo/modules/meal_plan/screens/select_ingredients.screen.dart';
 import 'package:kubo/modules/meal_plan/screens/create_meal_plan.screen.dart';
 import 'package:kubo/modules/timetable/screens/timetable.screen.dart';
 import 'package:kubo/modules/agenda/screens/agenda.screen.dart';
 import 'package:provider/provider.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
-void main() => runApp(const Kubo());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Directory directory = await path_provider.getApplicationDocumentsDirectory();
+  Hive
+    ..init(directory.path)
+    ..registerAdapter(ScheduleHiveAdapter());
+  runApp(const Kubo());
+}
 
 class Kubo extends StatelessWidget {
   const Kubo({Key? key}) : super(key: key);
@@ -40,7 +53,8 @@ class Kubo extends StatelessWidget {
           AgendaScreen.id: (context) => const AgendaScreen(),
           SelectIngredientsScreen.id: (context) =>
               const SelectIngredientsScreen(),
-          CreateMealPlanScreen.id: (context) => CreateMealPlanScreen(),
+          CreateMealPlanScreen.id: (context) => const CreateMealPlanScreen(),
+          AssignMealTimeScreen.id: (context) => const AssignMealTimeScreen(),
         },
       ),
     );

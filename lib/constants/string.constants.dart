@@ -1,0 +1,1 @@
+const kScheduleBox = 'Schedule Box';
