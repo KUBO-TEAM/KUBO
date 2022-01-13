@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/constants/colors.constants.dart';
+import 'package:kubo/constants/sizes.constants.dart';
 import 'package:kubo/constants/text_styles.constants.dart';
 import 'package:kubo/modules/meal_plan/models/recipe.dart';
 import 'package:kubo/modules/meal_plan/screens/assign_meal_time.screen.dart';
@@ -14,19 +15,23 @@ class CreateMealPlanScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: kBlackPrimary),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        elevation: 0,
-        title: const Text(
-          'Create Meal Plan',
-          style: TextStyle(
-            color: kBlackPrimary,
-            fontFamily: 'Pushster',
-            fontSize: 30.0,
+      appBar: PreferredSize(
+        preferredSize: kAppBarPrefferedSize,
+        child: AppBar(
+          backgroundColor: Colors.white,
+          titleSpacing: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: kBlackPrimary),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          elevation: 0,
+          title: const Text(
+            'Create Meal Plan',
+            style: TextStyle(
+              color: kBlackPrimary,
+              fontFamily: 'Pushster',
+              fontSize: 30.0,
+            ),
           ),
         ),
       ),
