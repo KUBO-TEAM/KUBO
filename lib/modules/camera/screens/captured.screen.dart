@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kubo/widgets/clippers/camera.clipper.dart';
-import 'package:kubo/widgets/clippers/image.clipper.dart';
+import 'package:kubo/widgets/buttons/icon.button.dart';
 import 'dart:io';
 import 'package:tflite/tflite.dart';
 
@@ -150,6 +149,34 @@ class _CapturedScreenState extends State<CapturedScreen> {
             //       fit: BoxFit.cover,
             //     ),
             // ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10.0,
+                vertical: 5
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CostumeIconButton(
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.white,
+                      size: 24.0,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  TextButton(
+                    onPressed: () =>Navigator.pop(context),
+                    child: const Text(
+                      "Next",
+                      style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16, color: Colors.white),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ]),
         ),
       );
