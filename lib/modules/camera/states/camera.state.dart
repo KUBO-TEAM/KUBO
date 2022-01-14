@@ -30,7 +30,7 @@ class _CameraState extends State<CameraState> {
   }
 
   bool flashSetting = false;
-  bool hdrEnabled = false;
+  bool hdrEnabled = true;
 
   Future<void> _getCameras() async {
     List<CameraDescription> cameras;
@@ -179,13 +179,13 @@ class CameraTopButtons extends StatelessWidget {
           CostumeIconButton(
             onPressed: enabledHDR,
             icon: const Icon(
-              Icons.hdr_on,
-              color: Colors.amber,
+              Icons.hdr_off,
+              color: Colors.white,
               size: 50.0,
             ),
             pressedIcon: const Icon(
-              Icons.hdr_off,
-              color: Colors.white,
+              Icons.hdr_on,
+              color: Colors.amber,
               size: 50.0,
             ),
           ),
