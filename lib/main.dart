@@ -17,6 +17,8 @@ import 'package:kubo/modules/timetable/screens/timetable.screen.dart';
 import 'package:kubo/modules/agenda/screens/agenda.screen.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,33 +32,56 @@ Future<void> main() async {
 class Kubo extends StatelessWidget {
   const Kubo({Key? key}) : super(key: key);
 
+  Future<String> checkFirstSeen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool _seen = (prefs.getBool('seen') ?? false);
+
+    if (_seen) {
+      await prefs.setBool('seen', false);
+      return HomeScreen.id;
+    } else {
+      // Set the flag to true at the end of onboarding screen if everything is successfull and so I am commenting it out
+      await prefs.setBool('seen', true);
+      return WelcomeScreen.id;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => CameraModel(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => AgendaList(),
-        )
-      ],
-      child: MaterialApp(
-        initialRoute: WelcomeScreen.id,
-        routes: {
-          WelcomeScreen.id: (context) => const WelcomeScreen(),
-          HomeScreen.id: (context) => const HomeScreen(),
-          CameraScreen.id: (context) => const CameraScreen(),
-          CalendarScreen.id: (context) => const CalendarScreen(),
-          CapturedScreen.id: (context) => const CapturedScreen(),
-          TimeTableScreen.id: (context) => const TimeTableScreen(),
-          AgendaScreen.id: (context) => const AgendaScreen(),
-          SelectIngredientsScreen.id: (context) =>
-              const SelectIngredientsScreen(),
-          CreateMealPlanScreen.id: (context) => const CreateMealPlanScreen(),
-          AssignMealTimeScreen.id: (context) => const AssignMealTimeScreen(),
-        },
-      ),
+    return FutureBuilder<String>(
+      future: checkFirstSeen(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return SplashScreen();
+        } else {
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider(
+                create: (_) => CameraModel(),
+              ),
+              ChangeNotifierProvider(
+                create: (_) => AgendaList(),
+              )
+            ],
+            child: MaterialApp(
+              initialRoute: snapshot.data,
+              routes: {
+                WelcomeScreen.id: (context) => const WelcomeScreen(),
+                HomeScreen.id: (context) => const HomeScreen(),
+                CameraScreen.id: (context) => const CameraScreen(),
+                CalendarScreen.id: (context) => const CalendarScreen(),
+                CapturedScreen.id: (context) => const CapturedScreen(),
+                TimeTableScreen.id: (context) => const TimeTableScreen(),
+                AgendaScreen.id: (context) => const AgendaScreen(),
+                SelectIngredientsScreen.id: (context) =>
+                const SelectIngredientsScreen(),
+                CreateMealPlanScreen.id: (context) => const CreateMealPlanScreen(),
+                AssignMealTimeScreen.id: (context) => const AssignMealTimeScreen(),
+              },
+            ),
+          );
+        }
+      }
     );
   }
 }
