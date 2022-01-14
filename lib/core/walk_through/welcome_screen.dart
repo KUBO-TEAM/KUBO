@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/constants/colors.constants.dart';
-import 'package:kubo/modules/home/screens/home.screen.dart';
+import 'package:kubo/core/walk_through/splash_screen.dart';
 import 'package:kubo/widgets/buttons/rounded.button.dart';
 import 'package:kubo/widgets/clippers/welcome.clipper.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -16,7 +16,6 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   _storeWelcomeInfo() async {
-    print("Shared pref called");
     bool _seen = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('seen', _seen);
@@ -126,7 +125,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       child: RoundedButton(
                         onPressed: () {
                           _storeWelcomeInfo();
-                          Navigator.popAndPushNamed(context, HomeScreen.id);
+                          Navigator.popAndPushNamed(context, SplashScreen.id);
                         },
                         title: const Text(
                           'Try Now',
@@ -147,20 +146,3 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 }
 
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: const Center(
-        child: Image(
-          image: AssetImage(
-            "assets/images/logo.png",
-          ),
-        ),
-      ),
-    );
-  }
-}

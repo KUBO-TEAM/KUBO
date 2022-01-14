@@ -103,7 +103,9 @@ class SchedulesButton extends StatelessWidget {
           title: const Text(
             'Agenda',
           ),
-          onPressed: () { Navigator.pushNamed(context, AgendaScreen.id);},
+          onPressed: () {
+            Navigator.pushNamed(context, AgendaScreen.id);
+          },
         ),
         const SizedBox(
           width: 16.0,

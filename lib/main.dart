@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:kubo/core/models/schedule.hive.dart';
+import 'package:kubo/core/walk_through/splash_screen.dart';
 import 'package:kubo/core/walk_through/welcome_screen.dart';
 import 'package:kubo/modules/agenda/models/agenda.model.dart';
 import 'package:kubo/modules/camera/models/camera.model.dart';
@@ -37,11 +37,9 @@ class Kubo extends StatelessWidget {
     bool _seen = (prefs.getBool('seen') ?? false);
 
     if (_seen) {
-      await prefs.setBool('seen', false);
-      return HomeScreen.id;
+      // await prefs.setBool('seen', false);
+      return SplashScreen.id;
     } else {
-      // Set the flag to true at the end of onboarding screen if everything is successfull and so I am commenting it out
-      await prefs.setBool('seen', true);
       return WelcomeScreen.id;
     }
   }
@@ -52,7 +50,7 @@ class Kubo extends StatelessWidget {
       future: checkFirstSeen(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return SplashScreen();
+          return Container(color: Colors.white,);
         } else {
           return MultiProvider(
             providers: [
@@ -66,6 +64,7 @@ class Kubo extends StatelessWidget {
             child: MaterialApp(
               initialRoute: snapshot.data,
               routes: {
+                SplashScreen.id: (context) => const SplashScreen(),
                 WelcomeScreen.id: (context) => const WelcomeScreen(),
                 HomeScreen.id: (context) => const HomeScreen(),
                 CameraScreen.id: (context) => const CameraScreen(),
