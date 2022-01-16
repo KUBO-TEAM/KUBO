@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/constants/colors.constants.dart';
+import 'package:kubo/constants/string.constants.dart';
 import 'package:kubo/core/walk_through/welcome_screen.dart';
 import 'package:kubo/modules/home/screens/home.screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String id = 'splash_screen';
@@ -21,7 +22,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _loading() async {
     await Future.delayed(const Duration(milliseconds: 2500), () {});
-    Navigator.popAndPushNamed(context, HomeScreen.id);
+    var box = await Hive.openBox(kUIBox);
+
+    bool? isWelcomeScreenSeen = box.get('is_welcome_screen_seen');
+
+    // box.deleteAll(box.keys);
+
+    if (isWelcomeScreenSeen == null || isWelcomeScreenSeen == false) {
+      Navigator.popAndPushNamed(context, WelcomeScreen.id);
+    } else {
+      Navigator.popAndPushNamed(context, HomeScreen.id);
+    }
   }
 
   @override
