@@ -26,7 +26,6 @@ dependencies:
   path_provider: ^2.0.8
   hive_generator: ^1.1.2
   flutter_beautiful_popup: ^1.7.0
-  shared_preferences: ^2.0.12
 
 dev_dependencies:
   flutter_test:
