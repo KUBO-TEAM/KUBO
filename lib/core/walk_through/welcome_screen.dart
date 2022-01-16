@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/constants/colors.constants.dart';
-import 'package:kubo/core/walk_through/splash_screen.dart';
+import 'package:kubo/constants/string.constants.dart';
+import 'package:kubo/modules/home/screens/home.screen.dart';
 import 'package:kubo/widgets/buttons/rounded.button.dart';
 import 'package:kubo/widgets/clippers/welcome.clipper.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const String id = 'welcome_screen';
@@ -15,10 +16,13 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  _storeWelcomeInfo() async {
-    bool _seen = true;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('seen', _seen);
+  void _storeWelcomeInfo() {
+    var uiBox = Hive.box(kUIBox);
+    var isWelcomeScreenSeen = uiBox.get('is_welcome_screen_seen');
+    if (isWelcomeScreenSeen == false || isWelcomeScreenSeen == null) {
+      uiBox.put('is_welcome_screen_seen', true);
+      Navigator.popAndPushNamed(context, HomeScreen.id);
+    }
   }
 
   final List<AssetImage> _carouselImages = [
@@ -123,10 +127,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         vertical: 20.0,
                       ),
                       child: RoundedButton(
-                        onPressed: () {
-                          _storeWelcomeInfo();
-                          Navigator.popAndPushNamed(context, SplashScreen.id);
-                        },
+                        onPressed: _storeWelcomeInfo,
                         title: const Text(
                           'Try Now',
                           style: TextStyle(
@@ -145,4 +146,3 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     );
   }
 }
-
