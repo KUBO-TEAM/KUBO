@@ -21,8 +21,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     var isWelcomeScreenSeen = uiBox.get('is_welcome_screen_seen');
     if (isWelcomeScreenSeen == false || isWelcomeScreenSeen == null) {
       uiBox.put('is_welcome_screen_seen', true);
-      Navigator.popAndPushNamed(context, HomeScreen.id);
     }
+    Navigator.popAndPushNamed(context, HomeScreen.id);
   }
 
   final List<AssetImage> _carouselImages = [

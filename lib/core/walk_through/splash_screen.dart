@@ -13,17 +13,33 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(milliseconds: 2300),
+    vsync: this,
+  )..repeat(reverse: true);
+  late final Animation<double> _animation = CurvedAnimation(
+    parent: _controller,
+    curve: Curves.easeIn,
+  );
+
   @override
   void initState() {
     super.initState();
     _loading();
   }
 
-  _loading() async {
-    await Future.delayed(const Duration(milliseconds: 2500), () {});
-    var box = await Hive.openBox(kUIBox);
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
+  _loading() async {
+
+    var box = await Hive.openBox(kUIBox);
+    await Future.delayed(const Duration(milliseconds: 4000), () {});
     bool? isWelcomeScreenSeen = box.get('is_welcome_screen_seen');
 
     // box.deleteAll(box.keys);
@@ -39,28 +55,20 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     double kScreenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              height: kScreenHeight * .5,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                image: DecorationImage(
-                  scale: 2,
-                  image: AssetImage(
-                    "assets/images/logo.png",
-                  ),
-                  // fit: BoxFit.none,
-                ),
-              ),
-            ),
-            const CircularProgressIndicator(
-              color: kGreenPrimary,
-            ),
-          ],
-        ));
+      backgroundColor: Colors.white,
+      body: Container(
+        alignment: Alignment.center,
+        child: FadeTransition(
+          opacity: _animation,
+          child: Image.asset(
+            "assets/images/logo.png",
+            height: kScreenHeight * .4,
+          ),
+        ),
+
+        height: kScreenHeight,
+
+      ),
+    );
   }
 }
