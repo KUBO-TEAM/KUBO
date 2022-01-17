@@ -5,9 +5,9 @@ import 'package:kubo/modules/meal_plan/screens/select_ingredients.screen.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
-class TimeTableScreen extends StatelessWidget {
-  static const String id = 'timetable_screen';
-  const TimeTableScreen({Key? key}) : super(key: key);
+class MenuScreen extends StatelessWidget {
+  static const String id = 'menu_screen';
+  const MenuScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
