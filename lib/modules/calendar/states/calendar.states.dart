@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/constants/text_styles.constants.dart';
-import 'package:kubo/constants/timetable.constants.dart';
+import 'package:kubo/constants/menu.constants.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Calendar extends StatefulWidget {
