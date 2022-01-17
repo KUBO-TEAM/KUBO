@@ -4,7 +4,7 @@ import 'package:kubo/constants/sizes.constants.dart';
 import 'package:kubo/modules/menu_history/states/menu_history.states.dart';
 
 class MenuHistoryScreen extends StatelessWidget {
-  static const String id = 'calendar_screen';
+  static const String id = 'menu_history_screen';
   const MenuHistoryScreen({Key? key}) : super(key: key);
 
   @override
@@ -21,7 +21,7 @@ class MenuHistoryScreen extends StatelessWidget {
           ),
           elevation: 0,
           title: const Text(
-            'Calendar',
+            'Menu History',
             style: TextStyle(
               color: kBlackPrimary,
               fontFamily: 'Pushster',

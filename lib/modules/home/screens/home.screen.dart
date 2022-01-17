@@ -117,7 +117,7 @@ class SchedulesButton extends StatelessWidget {
         RoundedButton(
           elevation: 0,
           title: const Text(
-            'Calendar',
+            'Menu History',
           ),
           onPressed: () {
             Navigator.pushNamed(context, MenuHistoryScreen.id);
