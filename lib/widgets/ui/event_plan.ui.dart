@@ -33,7 +33,7 @@ class EventPlan extends StatelessWidget {
             ],
           ),
           const SizedBox(
-            height: 16.0,
+            height: 5.0,
           ),
           const EventCard(
             icon: Icons.pending_actions,
