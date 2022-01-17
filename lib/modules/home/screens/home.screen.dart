@@ -93,7 +93,7 @@ class SchedulesButton extends StatelessWidget {
         RoundedButton(
           elevation: 0,
           title: const Text(
-            'Timetable',
+            'Menu',
           ),
           onPressed: () {
             Navigator.pushNamed(context, MenuScreen.id);

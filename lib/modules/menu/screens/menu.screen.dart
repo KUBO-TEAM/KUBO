@@ -47,7 +47,7 @@ class MenuScreen extends StatelessWidget {
           ),
           elevation: 0,
           title: const Text(
-            'Timetable',
+            'Menu',
             style: TextStyle(
               color: kBlackPrimary,
               fontFamily: 'Pushster',
