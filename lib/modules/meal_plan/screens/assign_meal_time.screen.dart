@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/constants/list.costants.dart';
 import 'package:kubo/constants/sizes.constants.dart';
+import 'package:kubo/constants/snackbar.constants.dart';
 import 'package:kubo/constants/string.constants.dart';
 import 'package:kubo/constants/text_styles.constants.dart';
 import 'package:kubo/core/models/schedule.hive.dart';
@@ -11,6 +13,7 @@ import 'package:kubo/widgets/clippers/recipe.clipper.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:kubo/widgets/selectors/direct.selector.dart';
 import 'package:kubo/widgets/selectors/time.selector.dart';
+import 'package:flutter_beautiful_popup/main.dart';
 
 class AssignMealTimeScreenArguments {
   AssignMealTimeScreenArguments({
@@ -46,6 +49,8 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
 
       setState(() {
         schedule = scheduleBox!.get(recipe.id);
+        start = _stringToTimeOfDay(schedule?.startingTime);
+        end = _stringToTimeOfDay(schedule?.endingTime);
       });
     }
   }
@@ -155,7 +160,12 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
                       },
                     ),
                     SquareButton(
-                      onPressed: () => onSave(recipe),
+                      onPressed: () => onSave(
+                        recipe: recipe,
+                        start: start,
+                        end: end,
+                        day: day,
+                      ),
                     )
                   ],
                 ),
@@ -203,32 +213,54 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
     );
   }
 
-  Future<void> onSave(Recipe recipe) async {
-    if (schedule == null) {
-      if (day != null && start != null && end != null) {
-        ScheduleHive newSchedule = ScheduleHive(
-          recipeName: recipe.name,
-          scheduledDay: day!,
-          startingTime: start!.format(context),
-          endingTime: end!.format(context),
-        );
+  Future<void> onSave(
+      {Recipe? recipe, TimeOfDay? start, TimeOfDay? end, String? day}) async {
+    if (recipe != null && start != null && end != null && day != null) {
+      final popup = BeautifulPopup(
+        context: context,
+        template: TemplateTerm,
+      );
+      popup.show(
+        title: 'Wait, Are you sure?',
+        content:
+            'You want to save ${recipe.name} to your ${start.format(context)} to ${end.format(context)} meal on $day ?',
+        actions: [
+          popup.button(
+            label: 'Yes',
+            onPressed: () {
+              if (schedule == null) {
+                ScheduleHive newSchedule = ScheduleHive(
+                  recipeName: recipe.name,
+                  scheduledDay: day,
+                  startingTime: start.format(context),
+                  endingTime: end.format(context),
+                );
 
-        scheduleBox!.put(recipe.id, newSchedule);
+                scheduleBox!.put(recipe.id, newSchedule);
 
-        setState(() {
-          schedule = newSchedule;
-        });
-      }
+                setState(() {
+                  schedule = newSchedule;
+                });
+              } else {
+                schedule!.scheduledDay = day;
+                schedule!.startingTime = start.format(context);
+                schedule!.endingTime = end.format(context);
+
+                schedule!.save();
+
+                setState(() {});
+              }
+
+              Navigator.of(context).pop();
+
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(kSuccessfullySaveSnackBar);
+            },
+          ),
+        ],
+      );
     } else {
-      schedule!.scheduledDay = day != null ? day! : schedule!.scheduledDay;
-      schedule!.startingTime =
-          start != null ? start!.format(context) : schedule!.startingTime;
-      schedule!.endingTime =
-          end != null ? end!.format(context) : schedule!.endingTime;
-
-      schedule!.save();
-
-      setState(() {});
+      ScaffoldMessenger.of(context).showSnackBar(kFailedSaveSnackBar);
     }
   }
 
