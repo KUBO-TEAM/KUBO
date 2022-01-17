@@ -24,27 +24,27 @@ class AgendaScreen extends StatelessWidget {
             backgroundColor: Colors.transparent,
             builder: (context) {
               return SingleChildScrollView(
-              child: Container(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25.0),
-                      topRight: Radius.circular(25.0),
+                child: Container(
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(25.0),
+                        topRight: Radius.circular(25.0),
+                      ),
                     ),
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.fromLTRB(16, 52, 16, 10),
-                    child: AddAgendaScreen(),
-                  )),
-            );
+                    child: const Padding(
+                      padding: EdgeInsets.fromLTRB(16, 52, 16, 10),
+                      child: AddAgendaScreen(),
+                    )),
+              );
             },
           );
         },
       ),
       backgroundColor: Colors.white,
-      body: SafeArea(child: const AgendaState()),
+      body: const SafeArea(child: AgendaState()),
     );
   }
 }
