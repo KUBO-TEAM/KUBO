@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/constants/list.costants.dart';
 import 'package:kubo/constants/sizes.constants.dart';
@@ -11,7 +12,8 @@ import 'package:kubo/modules/meal_plan/models/recipe.dart';
 import 'package:kubo/widgets/buttons/square.button.dart';
 import 'package:kubo/widgets/clippers/recipe.clipper.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
-import 'package:kubo/widgets/selectors/direct.selector.dart';
+import 'package:kubo/widgets/selectors/color.selector.dart';
+import 'package:kubo/widgets/selectors/day.selector.dart';
 import 'package:kubo/widgets/selectors/time.selector.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 
@@ -33,24 +35,32 @@ class AssignMealTimeScreen extends StatefulWidget {
 }
 
 class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
-  String? day = 'Monday';
+  int? day = 1;
   TimeOfDay? start;
   TimeOfDay? end;
   Box<dynamic>? scheduleBox;
   ScheduleHive? schedule;
+  Color colorPicked = kGreenPrimary;
 
   Future<void> initializeBox() async {
     scheduleBox = await Hive.openBox(kScheduleBox);
-    if (scheduleBox != null) {
+    if (scheduleBox!.isEmpty == false) {
       final args = ModalRoute.of(context)!.settings.arguments
           as AssignMealTimeScreenArguments;
 
       final Recipe recipe = args.recipe;
 
+      // scheduleBox!.deleteAll(scheduleBox!.keys);
+
       setState(() {
         schedule = scheduleBox!.get(recipe.id);
-        start = _stringToTimeOfDay(schedule?.startingTime);
-        end = _stringToTimeOfDay(schedule?.endingTime);
+
+        if (schedule != null) {
+          day =
+              kDayList.indexOf(DateFormat('EEEE').format(schedule!.startTime));
+          start = _dateTimeToTimeOfDay(schedule!.startTime);
+          end = _dateTimeToTimeOfDay(schedule!.endTime);
+        }
       });
     }
   }
@@ -136,27 +146,41 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
                     const SizedBox(
                       height: 10.0,
                     ),
-                    DirectSelector(
+                    DaySelector(
                       list: kDayList,
-                      initialDay:
-                          schedule != null ? schedule!.scheduledDay : null,
+                      initialDay: _directSelectInitialDay(schedule?.startTime),
                       leadingIcon: Icons.calendar_today,
-                      onSelected: (String? daySelected) {
-                        day = daySelected;
+                      onSelected: (int? daySelected) {
+                        if (daySelected != null) {
+                          setState(() => day = daySelected);
+                        }
                       },
                     ),
                     TimeSelector(
                       title: 'Start',
-                      initialTime: _stringToTimeOfDay(schedule?.startingTime),
+                      initialTime: start,
                       onTimePicked: (TimeOfDay? startTimePicked) {
-                        start = startTimePicked;
+                        if (startTimePicked != null) {
+                          setState(() {
+                            start = startTimePicked;
+                          });
+                        }
                       },
                     ),
                     TimeSelector(
                       title: 'End',
-                      initialTime: _stringToTimeOfDay(schedule?.endingTime),
+                      initialTime: end,
                       onTimePicked: (TimeOfDay? endTimePicked) {
-                        end = endTimePicked;
+                        if (endTimePicked != null) {
+                          setState(() {
+                            end = endTimePicked;
+                          });
+                        }
+                      },
+                    ),
+                    ColorSelector(
+                      onColorPicked: (Color? selectedColor) {
+                        colorPicked = selectedColor!;
                       },
                     ),
                     SquareButton(
@@ -214,7 +238,7 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
   }
 
   Future<void> onSave(
-      {Recipe? recipe, TimeOfDay? start, TimeOfDay? end, String? day}) async {
+      {Recipe? recipe, TimeOfDay? start, TimeOfDay? end, int? day}) async {
     if (recipe != null && start != null && end != null && day != null) {
       final popup = BeautifulPopup(
         context: context,
@@ -229,11 +253,30 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
             label: 'Yes',
             onPressed: () {
               if (schedule == null) {
+                final today = DateTime.now();
+
+                final todayWeekday = DateFormat('EEEE').format(today);
+                final indexTodayWeekDay = kDayList.indexOf(todayWeekday);
+                final scheduleDay = today.day + (day - indexTodayWeekDay);
+
                 ScheduleHive newSchedule = ScheduleHive(
+                  recipeId: recipe.name,
                   recipeName: recipe.name,
-                  scheduledDay: day,
-                  startingTime: start.format(context),
-                  endingTime: end.format(context),
+                  startTime: DateTime(
+                    today.year,
+                    today.month,
+                    scheduleDay,
+                    start.hour,
+                    start.minute,
+                  ),
+                  endTime: DateTime(
+                    today.year,
+                    today.month,
+                    scheduleDay,
+                    end.hour,
+                    end.minute,
+                  ),
+                  color: colorPicked,
                 );
 
                 scheduleBox!.put(recipe.id, newSchedule);
@@ -242,9 +285,27 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
                   schedule = newSchedule;
                 });
               } else {
-                schedule!.scheduledDay = day;
-                schedule!.startingTime = start.format(context);
-                schedule!.endingTime = end.format(context);
+                final today = DateTime.now();
+
+                final todayWeekday = DateFormat('EEEE').format(today);
+                final indexTodayWeekDay = kDayList.indexOf(todayWeekday);
+                final scheduleDay = today.day + (day - indexTodayWeekDay);
+
+                schedule!.startTime = DateTime(
+                  today.year,
+                  today.month,
+                  scheduleDay,
+                  start.hour,
+                  start.minute,
+                );
+
+                schedule!.endTime = DateTime(
+                  today.year,
+                  today.month,
+                  scheduleDay,
+                  end.hour,
+                  end.minute,
+                );
 
                 schedule!.save();
 
@@ -265,21 +326,34 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
   }
 
   String _scheduleFormatter(ScheduleHive? scheduleHive) {
-    return '${scheduleHive!.scheduledDay}, ${scheduleHive.startingTime} - ${scheduleHive.endingTime}';
+    final todayWeekday = DateFormat('EEEE').format(scheduleHive!.startTime);
+
+    return '$todayWeekday, ${_dateTimeToString(scheduleHive.startTime)} - ${_dateTimeToString(scheduleHive.endTime)}';
   }
 
-  TimeOfDay? _stringToTimeOfDay(String? time) {
+  String? _dateTimeToString(DateTime? time) {
     if (time == null) {
       return null;
     }
-    int hh = 0;
-    if (time.endsWith('PM')) hh = 12;
-    time = time.split(' ')[0];
-    return TimeOfDay(
-      hour: hh +
-          int.parse(time.split(":")[0]) %
-              24, // in case of a bad time format entered manually by the user
-      minute: int.parse(time.split(":")[1]) % 60,
-    );
+
+    final format = DateFormat.jm(); //"6:00 AM"
+    return format.format(time);
+  }
+
+  TimeOfDay? _dateTimeToTimeOfDay(DateTime? time) {
+    if (time == null) {
+      return null;
+    }
+
+    return TimeOfDay(hour: time.hour, minute: time.minute);
+  }
+
+  int? _directSelectInitialDay(DateTime? startTime) {
+    if (startTime != null) {
+      final todayWeekday = DateFormat('EEEE').format(startTime);
+      return kDayList.indexOf(todayWeekday);
+    }
+
+    return null;
   }
 }

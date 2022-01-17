@@ -1,11 +1,10 @@
-
 import 'dart:collection';
 import 'package:flutter/foundation.dart';
 
 class Agenda {
   final String name;
   final Duration time;
-  DateTime _deadline = DateTime.now();
+  final DateTime _deadline = DateTime.now();
 
   String get deadline => _deadline.add(time).toString();
 
@@ -18,11 +17,9 @@ class Agenda {
     String twoDigitHours = twoDigits(time.inHours.remainder(60));
     return "${twoDigits(time.inHours)}:$twoDigitHours:$twoDigitMinutes:$twoDigitSeconds";
   }
-
-
 }
 
-class AgendaList extends ChangeNotifier{
+class AgendaList extends ChangeNotifier {
   final List<Agenda> _agendas = [];
 
   UnmodifiableListView<Agenda> get agendas {

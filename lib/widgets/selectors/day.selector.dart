@@ -4,25 +4,27 @@ import 'package:direct_select_flutter/direct_select_list.dart';
 import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/widgets/cards/picker.card.dart';
 
-class DirectSelector extends StatefulWidget {
-  const DirectSelector({
+class DaySelector extends StatefulWidget {
+  const DaySelector({
     Key? key,
     required this.list,
     required this.leadingIcon,
     required this.onSelected,
     this.initialDay,
+    this.customLeadingWidget,
   }) : super(key: key);
 
   final List<String> list;
   final IconData leadingIcon;
-  final Function(String?) onSelected;
-  final String? initialDay;
+  final Function(int?) onSelected;
+  final int? initialDay;
+  final Widget? customLeadingWidget;
 
   @override
-  State<DirectSelector> createState() => _DirectSelectorState();
+  State<DaySelector> createState() => _DaySelectorState();
 }
 
-class _DirectSelectorState extends State<DirectSelector> {
+class _DaySelectorState extends State<DaySelector> {
   int initialIndex = 0;
 
   DirectSelectItem<String> _getDropDownMenuItem(String value) {
@@ -44,10 +46,10 @@ class _DirectSelectorState extends State<DirectSelector> {
     );
   }
 
-  int _getInitialItemIndex() {
+  int? _getInitialItemIndex() {
     if (initialIndex == 0) {
       if (widget.initialDay != null) {
-        return widget.list.indexOf(widget.initialDay!);
+        return widget.initialDay;
       } else {
         return initialIndex;
       }
@@ -75,11 +77,11 @@ class _DirectSelectorState extends State<DirectSelector> {
               padding: const EdgeInsets.only(left: 10),
               child: DirectSelectList<String>(
                 values: widget.list,
-                defaultItemIndex: _getInitialItemIndex(),
+                defaultItemIndex: _getInitialItemIndex()!,
                 itemBuilder: (String value) => _getDropDownMenuItem(value),
                 focusedItemDecoration: _getDslDecoration(),
                 onItemSelectedListener: (item, index, context) {
-                  widget.onSelected(widget.list[index]);
+                  widget.onSelected(index);
 
                   setState(() {
                     initialIndex = index;

@@ -59,7 +59,8 @@ class _AgendaStateState extends State<AgendaState> {
                       IconButton(
                           splashColor: kBrownPrimary,
                           onPressed: () =>
-                              Provider.of<AgendaList>(context, listen: false).deleteTask(agenda),
+                              Provider.of<AgendaList>(context, listen: false)
+                                  .deleteTask(agenda),
                           icon: const Icon(
                             Icons.delete,
                             color: kBrownPrimary,
@@ -82,7 +83,7 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 60,
       child: Stack(
         children: <Widget>[
