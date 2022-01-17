@@ -17,6 +17,13 @@ class CameraState extends StatefulWidget {
 class _CameraState extends State<CameraState> {
   CameraController? controller;
 
+  bool flashSetting = false;
+  bool hdrEnabled = true;
+
+  bool showFocusCircle = false;
+  double y = 0.0;
+  double x = 0.0;
+
   @override
   void initState() {
     super.initState();
@@ -29,15 +36,13 @@ class _CameraState extends State<CameraState> {
     super.dispose();
   }
 
-  bool flashSetting = false;
-  bool hdrEnabled = true;
-
   Future<void> _getCameras() async {
     List<CameraDescription> cameras;
 
     cameras = await availableCameras();
 
-    controller = CameraController(cameras[0], hdrEnabled? ResolutionPreset.max: ResolutionPreset.low);
+    controller = CameraController(
+        cameras[0], hdrEnabled ? ResolutionPreset.max : ResolutionPreset.low);
     controller!.initialize().then((_) {
       if (!mounted) {
         return;
@@ -48,6 +53,13 @@ class _CameraState extends State<CameraState> {
 
   Future<XFile?> _takePicture() async {
     final CameraController? cameraController = controller;
+
+    if (flashSetting) {
+      await controller!.setFlashMode(FlashMode.always);
+    } else {
+      await controller!.setFlashMode(FlashMode.off);
+    }
+
     if (cameraController == null || !cameraController.value.isInitialized) {
       debugPrint('Error: select a camera first.');
       return null;
@@ -68,11 +80,6 @@ class _CameraState extends State<CameraState> {
   }
 
   void _onTakePictureButtonPressed() {
-    if(flashSetting){
-      controller!.setFlashMode(FlashMode.always);
-    }else{
-      controller!.setFlashMode(FlashMode.off);
-    }
     _takePicture().then((XFile? file) {
       if (mounted) {
         if (file != null) {
@@ -95,13 +102,44 @@ class _CameraState extends State<CameraState> {
     });
   }
 
-  void _setFlashMode(){
+  Future<void> _setFocus(TapUpDetails details) async {
+    if (controller!.value.isInitialized) {
+      showFocusCircle = true;
+      x = details.localPosition.dx;
+      y = details.localPosition.dy;
+
+      double kScreenWidth = MediaQuery.of(context).size.width;
+      double cameraHeight = kScreenWidth * controller!.value.aspectRatio;
+
+      double xp = x / kScreenWidth;
+      double yp = y / cameraHeight;
+
+      Offset point = Offset(xp, yp);
+      // print("point : $point");
+
+      // Manually focus
+      await controller!.setFocusPoint(point);
+
+      // Manually set light exposure
+      await controller!.setExposurePoint(point);
+
+      setState(() {
+        Future.delayed(const Duration(milliseconds: 1000)).whenComplete(() {
+          setState(() {
+            showFocusCircle = false;
+          });
+        });
+      });
+    }
+  }
+
+  void _setFlashMode() {
     setState(() {
       flashSetting = !flashSetting;
     });
   }
 
-  void _enabledHDR(){
+  void _enabledHDR() {
     setState(() {
       hdrEnabled = !hdrEnabled;
     });
@@ -114,10 +152,15 @@ class _CameraState extends State<CameraState> {
     if (controller != null) {
       return Stack(
         children: [
-          SizedBox(
-            width: double.infinity,
-            height: double.infinity,
-            child: CameraPreview(controller!),
+          GestureDetector(
+            onTapUp: (details) {
+              _setFocus(details);
+            },
+            child: SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: CameraPreview(controller!),
+            ),
           ),
           Positioned(
             bottom: 20,
@@ -127,7 +170,22 @@ class _CameraState extends State<CameraState> {
             ),
           ),
           const CameraClipper(),
-          CameraTopButtons(setFlashMode: _setFlashMode,enabledHDR:_enabledHDR ,),
+          CameraTopButtons(
+            setFlashMode: _setFlashMode,
+            enabledHDR: _enabledHDR,
+          ),
+          if (showFocusCircle)
+            Positioned(
+                top: y - 20,
+                left: x - 20,
+                child: Container(
+                  height: 60,
+                  width: 60,
+                  decoration: BoxDecoration(
+                      // borderRadius: ,
+                      shape: BoxShape.rectangle,
+                      border: Border.all(color: Colors.yellow, width: 1)),
+                )),
         ],
       );
     }
@@ -138,7 +196,8 @@ class _CameraState extends State<CameraState> {
 class CameraTopButtons extends StatelessWidget {
   const CameraTopButtons({
     Key? key,
-    required this.setFlashMode,required this.enabledHDR,
+    required this.setFlashMode,
+    required this.enabledHDR,
   }) : super(key: key);
 
   final Function() setFlashMode;
