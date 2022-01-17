@@ -115,7 +115,7 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
         },
         onFormatChanged: (format) {
           if (_calendarFormat != format) {
-            // Call `setState()` when updating calendar format
+            // Call `setState()` when updating menu_history format
             setState(() {
               _calendarFormat = format;
             });
@@ -229,7 +229,7 @@ class _TableComplexExampleState extends State<TableComplexExample> {
           ValueListenableBuilder<DateTime>(
             valueListenable: _focusedDay,
             builder: (context, value, _) {
-              return _CalendarHeader(
+              return _MenuHistoryHeader(
                 focusedDay: value,
                 clearButtonVisible: canClearSelection,
                 onTodayButtonTap: () {
@@ -316,7 +316,7 @@ class _TableComplexExampleState extends State<TableComplexExample> {
   }
 }
 
-class _CalendarHeader extends StatelessWidget {
+class _MenuHistoryHeader extends StatelessWidget {
   final DateTime focusedDay;
   final Function() onLeftArrowTap;
   final Function() onRightArrowTap;
@@ -324,7 +324,7 @@ class _CalendarHeader extends StatelessWidget {
   final Function() onClearButtonTap;
   final bool clearButtonVisible;
 
-  const _CalendarHeader({
+  const _MenuHistoryHeader({
     Key? key,
     required this.focusedDay,
     required this.onLeftArrowTap,

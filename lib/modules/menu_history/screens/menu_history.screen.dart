@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/constants/sizes.constants.dart';
-import 'package:kubo/modules/calendar/states/calendar.states.dart';
+import 'package:kubo/modules/menu_history/states/menu_history.states.dart';
 
-class CalendarScreen extends StatelessWidget {
+class MenuHistoryScreen extends StatelessWidget {
   static const String id = 'calendar_screen';
-  const CalendarScreen({Key? key}) : super(key: key);
+  const MenuHistoryScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class CalendarScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: Container(
-          child: const Calendar(),
+          child: const MenuHistory(),
           color: kBackgroundGrey,
         ),
       ),

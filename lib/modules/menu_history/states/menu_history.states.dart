@@ -4,14 +4,14 @@ import 'package:kubo/constants/text_styles.constants.dart';
 import 'package:kubo/constants/menu.constants.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class Calendar extends StatefulWidget {
-  const Calendar({Key? key}) : super(key: key);
+class MenuHistory extends StatefulWidget {
+  const MenuHistory({Key? key}) : super(key: key);
 
   @override
-  _CalendarState createState() => _CalendarState();
+  _MenuHistoryState createState() => _MenuHistoryState();
 }
 
-class _CalendarState extends State<Calendar> {
+class _MenuHistoryState extends State<MenuHistory> {
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
@@ -85,7 +85,7 @@ class _CalendarState extends State<Calendar> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CalendarEventsList(selectedEvents: _selectedEvents),
+        MenuHistoryEventsList(selectedEvents: _selectedEvents),
         const SizedBox(height: 8.0),
         Container(
           decoration: const BoxDecoration(
@@ -175,8 +175,8 @@ class _CalendarState extends State<Calendar> {
   }
 }
 
-class CalendarEventsList extends StatelessWidget {
-  const CalendarEventsList({
+class MenuHistoryEventsList extends StatelessWidget {
+  const MenuHistoryEventsList({
     Key? key,
     required ValueNotifier<List<Event>> selectedEvents,
   })  : _selectedEvents = selectedEvents,
@@ -255,7 +255,7 @@ class CalendarEventsList extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return SizedBox(
                           height: 70,
-                          child: CalendarListTile(
+                          child: MenuHistoryListTile(
                             event: value[index],
                             isLast: index == value.length - 1,
                           ),
@@ -273,8 +273,8 @@ class CalendarEventsList extends StatelessWidget {
   }
 }
 
-class CalendarListTile extends StatelessWidget {
-  const CalendarListTile({
+class MenuHistoryListTile extends StatelessWidget {
+  const MenuHistoryListTile({
     Key? key,
     required this.event,
     this.isLast = false,
