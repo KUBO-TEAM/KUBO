@@ -6,7 +6,7 @@ import 'package:kubo/constants/sizes.constants.dart';
 import 'package:kubo/modules/agenda/screens/agenda.screen.dart';
 import 'package:kubo/modules/calendar/screens/calendar.screen.dart';
 import 'package:kubo/modules/camera/screens/camera.screen.dart';
-import 'package:kubo/modules/timetable/screens/timetable.screen.dart';
+import 'package:kubo/modules/menu/screens/menu.screen.dart';
 import 'package:kubo/widgets/buttons/rounded.button.dart';
 import 'package:kubo/widgets/cards/schedule.card.dart';
 import 'package:kubo/widgets/cards/weekly_event.card.dart';
@@ -93,10 +93,10 @@ class SchedulesButton extends StatelessWidget {
         RoundedButton(
           elevation: 0,
           title: const Text(
-            'Timetable',
+            'Menu',
           ),
           onPressed: () {
-            Navigator.pushNamed(context, TimeTableScreen.id);
+            Navigator.pushNamed(context, MenuScreen.id);
           },
         ),
         const SizedBox(
