@@ -8,7 +8,7 @@ import 'package:kubo/modules/agenda/models/agenda.model.dart';
 import 'package:kubo/modules/camera/models/camera.model.dart';
 import 'package:kubo/modules/camera/screens/camera.screen.dart';
 import 'package:kubo/modules/camera/screens/captured.screen.dart';
-import 'package:kubo/modules/calendar/screens/calendar.screen.dart';
+import 'package:kubo/modules/menu_history/screens/menu_history.screen.dart';
 import 'package:kubo/modules/home/screens/home.screen.dart';
 import 'package:kubo/modules/meal_plan/screens/assign_meal_time.screen.dart';
 import 'package:kubo/modules/meal_plan/screens/select_ingredients.screen.dart';
@@ -48,7 +48,7 @@ class Kubo extends StatelessWidget {
           WelcomeScreen.id: (context) => const WelcomeScreen(),
           HomeScreen.id: (context) => const HomeScreen(),
           CameraScreen.id: (context) => const CameraScreen(),
-          CalendarScreen.id: (context) => const CalendarScreen(),
+          MenuHistoryScreen.id: (context) => const MenuHistoryScreen(),
           CapturedScreen.id: (context) => const CapturedScreen(),
           MenuScreen.id: (context) => const MenuScreen(),
           AgendaScreen.id: (context) => const AgendaScreen(),
