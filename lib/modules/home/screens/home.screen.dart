@@ -47,7 +47,7 @@ class HomeScreen extends StatelessWidget {
           children: const [
             SchedulesButton(),
             SizedBox(
-              height: 10.0,
+              height: 5.0,
             ),
             WeeklyEventCard(
               icon: Icons.trending_up,
@@ -56,14 +56,14 @@ class HomeScreen extends StatelessWidget {
               caption: 'Enjoy your weekend',
             ),
             SizedBox(
-              height: 16.0,
+              height: 10.0,
             ),
             EventPlan(
               title: 'Today',
               date: 'December 28, 2021',
             ),
             SizedBox(
-              height: 16.0,
+              height: 10.0,
             ),
             EventPlan(
               title: 'Tomorrow',
