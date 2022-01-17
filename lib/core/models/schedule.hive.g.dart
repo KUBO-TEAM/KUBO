@@ -17,25 +17,28 @@ class ScheduleHiveAdapter extends TypeAdapter<ScheduleHive> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ScheduleHive(
-      recipeName: fields[0] as String,
-      scheduledDay: fields[1] as String,
-      startingTime: fields[2] as String,
-      endingTime: fields[3] as String,
+      recipeId: fields[0] as String,
+      recipeName: fields[1] as String,
+      startTime: fields[2] as DateTime,
+      endTime: fields[3] as DateTime,
+      color: fields[4] as Color,
     );
   }
 
   @override
   void write(BinaryWriter writer, ScheduleHive obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.recipeName)
+      ..write(obj.recipeId)
       ..writeByte(1)
-      ..write(obj.scheduledDay)
+      ..write(obj.recipeName)
       ..writeByte(2)
-      ..write(obj.startingTime)
+      ..write(obj.startTime)
       ..writeByte(3)
-      ..write(obj.endingTime);
+      ..write(obj.endTime)
+      ..writeByte(4)
+      ..write(obj.color);
   }
 
   @override
