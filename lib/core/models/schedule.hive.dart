@@ -1,24 +1,31 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
+
 part 'schedule.hive.g.dart';
 
 @HiveType(typeId: 0)
 class ScheduleHive extends HiveObject {
   @HiveField(0)
-  String recipeName;
+  String recipeId;
 
   @HiveField(1)
-  String scheduledDay;
+  String recipeName;
 
   @HiveField(2)
-  String startingTime;
+  DateTime startTime;
 
   @HiveField(3)
-  String endingTime;
+  DateTime endTime;
+
+  @HiveField(4)
+  Color color;
 
   ScheduleHive({
+    required this.recipeId,
     required this.recipeName,
-    required this.scheduledDay,
-    required this.startingTime,
-    required this.endingTime,
+    required this.startTime,
+    required this.endTime,
+    required this.color,
   });
 }

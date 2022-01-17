@@ -16,13 +16,11 @@ class ImageClipper extends StatelessWidget {
         child: child,
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * .4,
-        color: Color(0xffF0DEC3),
+        color: const Color(0xffF0DEC3),
       ),
     );
   }
 }
-
-
 
 class _Clipper extends CustomClipper<Path> {
   @override
