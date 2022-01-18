@@ -3,48 +3,16 @@ import 'package:hive/hive.dart';
 import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/constants/sizes.constants.dart';
 import 'package:kubo/constants/string.constants.dart';
-import 'package:kubo/core/models/schedule.hive.dart';
+import 'package:kubo/modules/meal_plan/screens/create_meal_plan.screen.dart';
 import 'package:kubo/modules/meal_plan/screens/select_ingredients.screen.dart';
+import 'package:kubo/modules/menu/models/menu.notifier.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
-class MenuScreen extends StatefulWidget {
+class MenuScreen extends StatelessWidget {
   static const String id = 'menu_screen';
   const MenuScreen({Key? key}) : super(key: key);
-
-  @override
-  State<MenuScreen> createState() => _MenuScreenState();
-}
-
-class _MenuScreenState extends State<MenuScreen> {
-  List<Appointment> appointments = [];
-  Box<dynamic>? scheduleBox;
-
-  Future<void> _fetchSchedules() async {
-    scheduleBox = await Hive.openBox(kScheduleBox);
-
-    if (scheduleBox!.isEmpty == false) {
-      for (var element in scheduleBox!.values) {
-        appointments.add(
-          Appointment(
-            startTime: element.startTime,
-            endTime: element.endTime,
-            subject: element.recipeName,
-            color: element.color,
-          ),
-        );
-      }
-
-      setState(() {});
-    }
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _fetchSchedules();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,35 +62,43 @@ class _MenuScreenState extends State<MenuScreen> {
         ),
       ),
       body: SafeArea(
-        child: SfCalendar(
-          todayHighlightColor: Colors.green,
-          dataSource: MealTimeDataSource(appointments),
-          headerStyle: const CalendarHeaderStyle(
-            backgroundColor: kBrownPrimary,
-            textStyle: TextStyle(
-              color: Colors.white,
-              fontFamily: 'Lora',
-              fontSize: 24,
-            ),
-          ),
-          viewHeaderStyle: const ViewHeaderStyle(
-            backgroundColor: kBrownPrimary,
-            dateTextStyle: TextStyle(
-              color: Colors.white,
-              fontFamily: 'Arvo',
-            ),
-            dayTextStyle: TextStyle(
-              color: Colors.white,
-              fontFamily: 'Arvo',
-            ),
-          ),
-          view: CalendarView.week,
-          weekNumberStyle: const WeekNumberStyle(
+        child: Consumer<MenuNotifier>(builder: (context, menuNotifier, child) {
+          return SfCalendar(
+            todayHighlightColor: Colors.green,
+            dataSource: MealTimeDataSource(menuNotifier.appointments),
+            headerStyle: const CalendarHeaderStyle(
+              backgroundColor: kBrownPrimary,
               textStyle: TextStyle(
-            fontFamily: 'Arvo',
-          )),
-          firstDayOfWeek: 1,
-        ),
+                color: Colors.white,
+                fontFamily: 'Lora',
+                fontSize: 24,
+              ),
+            ),
+            viewHeaderStyle: const ViewHeaderStyle(
+              backgroundColor: kBrownPrimary,
+              dateTextStyle: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Arvo',
+              ),
+              dayTextStyle: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Arvo',
+              ),
+            ),
+            view: CalendarView.week,
+            weekNumberStyle: const WeekNumberStyle(
+                textStyle: TextStyle(
+              fontFamily: 'Arvo',
+            )),
+            firstDayOfWeek: 1,
+            onTap: (CalendarTapDetails details) {
+              dynamic appointment = details.appointments;
+              DateTime date = details.date!;
+              CalendarElement element = details.targetElement;
+              Navigator.pushNamed(context, SelectIngredientsScreen.id);
+            },
+          );
+        }),
       ),
     );
   }

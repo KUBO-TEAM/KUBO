@@ -4,6 +4,8 @@ import 'package:kubo/constants/string.constants.dart';
 import 'package:kubo/core/walk_through/welcome_screen.dart';
 import 'package:kubo/modules/home/screens/home.screen.dart';
 import 'package:hive/hive.dart';
+import 'package:kubo/modules/menu/models/menu.notifier.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String id = 'splash_screen';
@@ -28,6 +30,9 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
     _loading();
+    Future.microtask(
+      () => Provider.of<MenuNotifier>(context, listen: false).fetchSchedule(),
+    );
   }
 
   @override
@@ -37,7 +42,6 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   _loading() async {
-
     var box = await Hive.openBox(kUIBox);
     await Future.delayed(const Duration(milliseconds: 4000), () {});
     bool? isWelcomeScreenSeen = box.get('is_welcome_screen_seen');
@@ -65,9 +69,7 @@ class _SplashScreenState extends State<SplashScreen>
             height: kScreenHeight * .4,
           ),
         ),
-
         height: kScreenHeight,
-
       ),
     );
   }

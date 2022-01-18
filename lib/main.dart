@@ -6,7 +6,6 @@ import 'package:kubo/core/models/schedule.hive.dart';
 import 'package:kubo/core/walk_through/splash_screen.dart';
 import 'package:kubo/core/walk_through/welcome_screen.dart';
 import 'package:kubo/modules/agenda/models/agenda.model.dart';
-import 'package:kubo/modules/camera/models/camera.model.dart';
 import 'package:kubo/modules/camera/screens/camera.screen.dart';
 import 'package:kubo/modules/camera/screens/captured.screen.dart';
 import 'package:kubo/modules/menu_history/screens/menu_history.screen.dart';
@@ -20,9 +19,13 @@ import 'package:kubo/modules/recipe/screen/recipe.screen.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
+import 'modules/menu/models/menu.notifier.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   Directory directory = await path_provider.getApplicationDocumentsDirectory();
+
   Hive
     ..init(directory.path)
     ..registerAdapter(ColorAdapter())
@@ -39,11 +42,9 @@ class Kubo extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => CameraModel(),
-        ),
-        ChangeNotifierProvider(
           create: (_) => AgendaList(),
-        )
+        ),
+        ChangeNotifierProvider(create: (_) => MenuNotifier()),
       ],
       child: MaterialApp(
         initialRoute: SplashScreen.id,
