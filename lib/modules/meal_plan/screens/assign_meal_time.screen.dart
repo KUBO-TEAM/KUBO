@@ -9,6 +9,8 @@ import 'package:kubo/constants/string.constants.dart';
 import 'package:kubo/constants/text_styles.constants.dart';
 import 'package:kubo/core/models/schedule.hive.dart';
 import 'package:kubo/modules/meal_plan/models/recipe.dart';
+import 'package:kubo/modules/menu/models/menu.notifier.dart';
+import 'package:kubo/modules/menu/screens/menu.screen.dart';
 import 'package:kubo/widgets/buttons/square.button.dart';
 import 'package:kubo/widgets/clippers/recipe.clipper.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
@@ -16,6 +18,8 @@ import 'package:kubo/widgets/selectors/color.selector.dart';
 import 'package:kubo/widgets/selectors/day.selector.dart';
 import 'package:kubo/widgets/selectors/time.selector.dart';
 import 'package:flutter_beautiful_popup/main.dart';
+import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class AssignMealTimeScreenArguments {
   AssignMealTimeScreenArguments({
@@ -259,23 +263,27 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
                 final indexTodayWeekDay = kDayList.indexOf(todayWeekday);
                 final scheduleDay = today.day + (day - indexTodayWeekDay);
 
+                final startTime = DateTime(
+                  today.year,
+                  today.month,
+                  scheduleDay,
+                  start.hour,
+                  start.minute,
+                );
+
+                final endTime = DateTime(
+                  today.year,
+                  today.month,
+                  scheduleDay,
+                  end.hour,
+                  end.minute,
+                );
+
                 ScheduleHive newSchedule = ScheduleHive(
                   recipeId: recipe.name,
                   recipeName: recipe.name,
-                  startTime: DateTime(
-                    today.year,
-                    today.month,
-                    scheduleDay,
-                    start.hour,
-                    start.minute,
-                  ),
-                  endTime: DateTime(
-                    today.year,
-                    today.month,
-                    scheduleDay,
-                    end.hour,
-                    end.minute,
-                  ),
+                  startTime: startTime,
+                  endTime: endTime,
                   color: colorPicked,
                 );
 
@@ -284,6 +292,21 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
                 setState(() {
                   schedule = newSchedule;
                 });
+
+                Provider.of<MenuNotifier>(context, listen: false)
+                    .addAppointment(
+                  Appointment(
+                    startTime: startTime,
+                    endTime: endTime,
+                    subject: recipe.name,
+                    color: colorPicked,
+                  ),
+                );
+
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(kSuccessfullySaveSnackBar);
+
+                Navigator.popAndPushNamed(context, MenuScreen.id);
               } else {
                 final today = DateTime.now();
 
@@ -310,12 +333,12 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
                 schedule!.save();
 
                 setState(() {});
+
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(kSuccessfullySaveSnackBar);
+
+                Navigator.popAndPushNamed(context, MenuScreen.id);
               }
-
-              Navigator.of(context).pop();
-
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(kSuccessfullySaveSnackBar);
             },
           ),
         ],
