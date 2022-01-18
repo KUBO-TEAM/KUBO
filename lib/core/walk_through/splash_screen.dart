@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/constants/string.constants.dart';
 import 'package:kubo/core/walk_through/welcome_screen.dart';
 import 'package:kubo/modules/home/screens/home.screen.dart';
@@ -15,16 +14,8 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller = AnimationController(
-    duration: const Duration(milliseconds: 2300),
-    vsync: this,
-  )..repeat(reverse: true);
-  late final Animation<double> _animation = CurvedAnimation(
-    parent: _controller,
-    curve: Curves.easeIn,
-  );
+class _SplashScreenState extends State<SplashScreen> {
+  bool _visible = true;
 
   @override
   void initState() {
@@ -35,18 +26,16 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
   _loading() async {
-    var box = await Hive.openBox(kUIBox);
-    await Future.delayed(const Duration(milliseconds: 4000), () {});
-    bool? isWelcomeScreenSeen = box.get('is_welcome_screen_seen');
+    await Future.delayed(const Duration(milliseconds: 2000), () {});
+    setState(() {
+      _visible = !_visible;
+    });
+    await Future.delayed(const Duration(milliseconds: 2500), () {});
 
-    // box.deleteAll(box.keys);
+    var box = await Hive.openBox(kUIBox);
+
+    bool? isWelcomeScreenSeen = box.get('is_welcome_screen_seen');
 
     if (isWelcomeScreenSeen == null || isWelcomeScreenSeen == false) {
       Navigator.popAndPushNamed(context, WelcomeScreen.id);
@@ -62,8 +51,9 @@ class _SplashScreenState extends State<SplashScreen>
       backgroundColor: Colors.white,
       body: Container(
         alignment: Alignment.center,
-        child: FadeTransition(
-          opacity: _animation,
+        child: AnimatedOpacity(
+          opacity: _visible ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 2500),
           child: Image.asset(
             "assets/images/logo.png",
             height: kScreenHeight * .4,
