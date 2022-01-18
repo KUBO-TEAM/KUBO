@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/constants/sizes.constants.dart';
 import 'package:kubo/constants/string.constants.dart';
+import 'package:kubo/modules/meal_plan/screens/assign_meal_time.screen.dart';
 import 'package:kubo/modules/meal_plan/screens/create_meal_plan.screen.dart';
 import 'package:kubo/modules/meal_plan/screens/select_ingredients.screen.dart';
 import 'package:kubo/modules/menu/models/menu.notifier.dart';
@@ -95,7 +96,12 @@ class MenuScreen extends StatelessWidget {
               dynamic appointment = details.appointments;
               DateTime date = details.date!;
               CalendarElement element = details.targetElement;
-              Navigator.pushNamed(context, SelectIngredientsScreen.id);
+              if(appointment != null){
+                // Navigator.pushNamed(context, AssignMealTimeScreen.id);
+              }
+              else if(element == CalendarElement.calendarCell){
+                Navigator.pushNamed(context, SelectIngredientsScreen.id);
+              }
             },
           );
         }),
