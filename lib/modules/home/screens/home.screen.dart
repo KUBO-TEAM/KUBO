@@ -101,19 +101,7 @@ class SchedulesButton extends StatelessWidget {
           },
         ),
         const SizedBox(
-          width: 16.0,
-        ),
-        RoundedButton(
-          elevation: 0,
-          title: const Text(
-            'Agenda',
-          ),
-          onPressed: () {
-            Navigator.pushNamed(context, AgendaScreen.id);
-          },
-        ),
-        const SizedBox(
-          width: 16.0,
+          width: 8.0,
         ),
         RoundedButton(
           elevation: 0,
@@ -122,6 +110,18 @@ class SchedulesButton extends StatelessWidget {
           ),
           onPressed: () {
             Navigator.pushNamed(context, MenuHistoryScreen.id);
+          },
+        ),
+        const SizedBox(
+          width: 8.0,
+        ),
+        RoundedButton(
+          elevation: 0,
+          title: const Text(
+            'Agenda',
+          ),
+          onPressed: () {
+            Navigator.pushNamed(context, AgendaScreen.id);
           },
         ),
       ],
