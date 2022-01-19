@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/constants/sizes.constants.dart';
-import 'package:kubo/constants/string.constants.dart';
-import 'package:kubo/modules/meal_plan/screens/assign_meal_time.screen.dart';
-import 'package:kubo/modules/meal_plan/screens/create_meal_plan.screen.dart';
 import 'package:kubo/modules/meal_plan/screens/select_ingredients.screen.dart';
 import 'package:kubo/modules/menu/models/menu.notifier.dart';
 import 'package:provider/provider.dart';
@@ -94,7 +90,7 @@ class MenuScreen extends StatelessWidget {
             firstDayOfWeek: 1,
             onTap: (CalendarTapDetails details) {
               dynamic appointment = details.appointments;
-              DateTime date = details.date!;
+              // DateTime date = details.date!;
               CalendarElement element = details.targetElement;
               if(appointment != null){
                 // Navigator.pushNamed(context, AssignMealTimeScreen.id);

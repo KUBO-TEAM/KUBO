@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class Reminders {
   Reminders({required this.title,required this.subtitle});

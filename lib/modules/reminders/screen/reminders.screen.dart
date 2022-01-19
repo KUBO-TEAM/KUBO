@@ -8,6 +8,6 @@ class ReminderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ReminderState();
+    return const ReminderState();
   }
 }
