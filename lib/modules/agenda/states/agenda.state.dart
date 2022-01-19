@@ -116,7 +116,7 @@ class CustomAppBar extends StatelessWidget {
                 const Spacer(),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

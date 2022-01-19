@@ -8,6 +8,7 @@ import 'package:kubo/modules/menu_history/screens/menu_history.screen.dart';
 import 'package:kubo/modules/camera/screens/camera.screen.dart';
 import 'package:kubo/modules/menu/screens/menu.screen.dart';
 import 'package:kubo/modules/recipe/screen/recipe.screen.dart';
+import 'package:kubo/modules/reminders/screen/reminders.screen.dart';
 import 'package:kubo/widgets/buttons/rounded.button.dart';
 import 'package:kubo/widgets/cards/schedule.card.dart';
 import 'package:kubo/widgets/cards/weekly_event.card.dart';
@@ -163,12 +164,12 @@ class FloatingMenuButton extends StatelessWidget {
             label: 'Recipes',
             onTap: () => Navigator.pushNamed(context, RecipeScreen.id)),
         SpeedDialChild(
-          child: const Icon(
-            Icons.notifications,
-            color: kBrownPrimary,
-          ),
-          label: 'Reminder',
-        ),
+            child: const Icon(
+              Icons.notifications,
+              color: kBrownPrimary,
+            ),
+            label: 'Reminder',
+            onTap: () => Navigator.pushNamed(context, ReminderScreen.id)),
       ],
     );
   }
