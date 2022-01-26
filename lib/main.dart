@@ -16,6 +16,7 @@ import 'package:kubo/modules/meal_plan/screens/create_meal_plan.screen.dart';
 import 'package:kubo/modules/menu/screens/menu.screen.dart';
 import 'package:kubo/modules/agenda/screens/agenda.screen.dart';
 import 'package:kubo/modules/recipe/screen/recipe.screen.dart';
+import 'package:kubo/modules/recipe/screen/recipeSteps.screen.dart';
 import 'package:kubo/modules/reminders/screen/reminders.screen.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
@@ -64,6 +65,7 @@ class Kubo extends StatelessWidget {
           AssignMealTimeScreen.id: (context) => const AssignMealTimeScreen(),
           RecipeScreen.id: (context) => const RecipeScreen(),
           ReminderScreen.id: (context) => const ReminderScreen(),
+          RecipeSteps.id:(context) => const RecipeSteps(),
         },
       ),
     );
