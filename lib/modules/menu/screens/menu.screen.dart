@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/constants/sizes.constants.dart';
 import 'package:kubo/modules/meal_plan/screens/select_ingredients.screen.dart';
-import 'package:kubo/modules/menu/models/menu.notifier.dart';
-import 'package:provider/provider.dart';
+import 'package:kubo/modules/menu/bloc/menu_cubit.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class MenuScreen extends StatelessWidget {
   static const String id = 'menu_screen';
@@ -59,10 +59,10 @@ class MenuScreen extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: Consumer<MenuNotifier>(builder: (context, menuNotifier, child) {
+        child: BlocBuilder<MenuCubit, MenuState>(builder: (context, state) {
           return SfCalendar(
             todayHighlightColor: Colors.green,
-            dataSource: MealTimeDataSource(menuNotifier.appointments),
+            dataSource: MealTimeDataSource(state.appointments),
             headerStyle: const CalendarHeaderStyle(
               backgroundColor: kBrownPrimary,
               textStyle: TextStyle(
@@ -92,10 +92,9 @@ class MenuScreen extends StatelessWidget {
               dynamic appointment = details.appointments;
               // DateTime date = details.date!;
               CalendarElement element = details.targetElement;
-              if(appointment != null){
+              if (appointment != null) {
                 // Navigator.pushNamed(context, AssignMealTimeScreen.id);
-              }
-              else if(element == CalendarElement.calendarCell){
+              } else if (element == CalendarElement.calendarCell) {
                 Navigator.pushNamed(context, SelectIngredientsScreen.id);
               }
             },
