@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:kubo/constants/string.constants.dart';
 import 'package:kubo/core/walk_through/welcome_screen.dart';
 import 'package:kubo/modules/home/screens/home.screen.dart';
-import 'package:hive/hive.dart';
-import 'package:kubo/modules/menu/models/menu.notifier.dart';
-import 'package:provider/provider.dart';
+import 'package:kubo/modules/menu/bloc/menu_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String id = 'splash_screen';
@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     _loading();
     Future.microtask(
-      () => Provider.of<MenuNotifier>(context, listen: false).fetchSchedule(),
+      () => BlocProvider.of<MenuCubit>(context).fetchSchedule(),
     );
   }
 

@@ -1,4 +1,7 @@
+import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_beautiful_popup/main.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:kubo/constants/colors.constants.dart';
@@ -9,16 +12,13 @@ import 'package:kubo/constants/string.constants.dart';
 import 'package:kubo/constants/text_styles.constants.dart';
 import 'package:kubo/core/models/schedule.hive.dart';
 import 'package:kubo/modules/meal_plan/models/recipe.dart';
-import 'package:kubo/modules/menu/models/menu.notifier.dart';
+import 'package:kubo/modules/menu/bloc/menu_cubit.dart';
 import 'package:kubo/modules/menu/screens/menu.screen.dart';
 import 'package:kubo/widgets/buttons/square.button.dart';
 import 'package:kubo/widgets/clippers/recipe.clipper.dart';
-import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:kubo/widgets/selectors/color.selector.dart';
 import 'package:kubo/widgets/selectors/day.selector.dart';
 import 'package:kubo/widgets/selectors/time.selector.dart';
-import 'package:flutter_beautiful_popup/main.dart';
-import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class AssignMealTimeScreenArguments {
@@ -32,7 +32,12 @@ class AssignMealTimeScreenArguments {
 class AssignMealTimeScreen extends StatefulWidget {
   static const String id = 'assign_meal_time_screen';
 
-  const AssignMealTimeScreen({Key? key}) : super(key: key);
+  const AssignMealTimeScreen({
+    Key? key,
+    required this.arguments,
+  }) : super(key: key);
+
+  final AssignMealTimeScreenArguments arguments;
 
   @override
   State<AssignMealTimeScreen> createState() => _AssignMealTimeScreenState();
@@ -49,23 +54,20 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
   Future<void> initializeBox() async {
     scheduleBox = await Hive.openBox(kScheduleBox);
     if (scheduleBox!.isEmpty == false) {
-      final args = ModalRoute.of(context)!.settings.arguments
-          as AssignMealTimeScreenArguments;
-
-      final Recipe recipe = args.recipe;
+      final Recipe recipe = widget.arguments.recipe;
 
       // scheduleBox!.deleteAll(scheduleBox!.keys);
 
-      setState(() {
-        schedule = scheduleBox!.get(recipe.id);
-
-        if (schedule != null) {
-          day =
-              kDayList.indexOf(DateFormat('EEEE').format(schedule!.startTime));
-          start = _dateTimeToTimeOfDay(schedule!.startTime);
-          end = _dateTimeToTimeOfDay(schedule!.endTime);
-        }
-      });
+      // setState(() {
+      //   schedule = scheduleBox!.get(recipe.id);
+      //
+      //   if (schedule != null) {
+      //     day =
+      //         kDayList.indexOf(DateFormat('EEEE').format(schedule!.startTime));
+      //     start = _dateTimeToTimeOfDay(schedule!.startTime);
+      //     end = _dateTimeToTimeOfDay(schedule!.endTime);
+      //   }
+      // });
     }
   }
 
@@ -77,10 +79,7 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments
-        as AssignMealTimeScreenArguments;
-
-    final Recipe recipe = args.recipe;
+    final Recipe recipe = widget.arguments.recipe;
 
     Size size = MediaQuery.of(context).size;
 
@@ -293,8 +292,7 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
                   schedule = newSchedule;
                 });
 
-                Provider.of<MenuNotifier>(context, listen: false)
-                    .addAppointment(
+                BlocProvider.of<MenuCubit>(context).addAppointment(
                   Appointment(
                     startTime: startTime,
                     endTime: endTime,

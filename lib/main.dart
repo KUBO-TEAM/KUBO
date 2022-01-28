@@ -1,27 +1,18 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:kubo/config/router.dart';
 import 'package:kubo/core/adapters/color.adapter.dart';
 import 'package:kubo/core/models/schedule.hive.dart';
 import 'package:kubo/core/walk_through/splash_screen.dart';
-import 'package:kubo/core/walk_through/welcome_screen.dart';
-import 'package:kubo/modules/agenda/models/agenda.model.dart';
-import 'package:kubo/modules/camera/screens/camera.screen.dart';
-import 'package:kubo/modules/camera/screens/captured.screen.dart';
-import 'package:kubo/modules/menu_history/screens/menu_history.screen.dart';
-import 'package:kubo/modules/home/screens/home.screen.dart';
-import 'package:kubo/modules/meal_plan/screens/assign_meal_time.screen.dart';
-import 'package:kubo/modules/meal_plan/screens/select_ingredients.screen.dart';
-import 'package:kubo/modules/meal_plan/screens/create_meal_plan.screen.dart';
-import 'package:kubo/modules/menu/screens/menu.screen.dart';
-import 'package:kubo/modules/agenda/screens/agenda.screen.dart';
-import 'package:kubo/modules/recipe/screen/recipe.screen.dart';
-import 'package:kubo/modules/recipe/screen/recipeSteps.screen.dart';
-import 'package:kubo/modules/reminders/screen/reminders.screen.dart';
-import 'package:provider/provider.dart';
+import 'package:kubo/modules/agenda/bloc/agenda_cubit.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
-import 'modules/menu/models/menu.notifier.dart';
+import 'modules/menu/bloc/menu_cubit.dart';
+
+// import 'modules/menu/models/menu.notifierflutter_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,40 +24,31 @@ Future<void> main() async {
     ..registerAdapter(ColorAdapter())
     ..registerAdapter(ScheduleHiveAdapter());
 
-  runApp(const Kubo());
+  runApp(Kubo(
+    appRouter: AppRouter(),
+  ));
 }
 
 class Kubo extends StatelessWidget {
-  const Kubo({Key? key}) : super(key: key);
+  const Kubo({
+    Key? key,
+    required this.appRouter,
+  }) : super(key: key);
+
+  final AppRouter appRouter;
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => AgendaList(),
+        BlocProvider(
+          create: (_) => AgendaCubit(),
         ),
-        ChangeNotifierProvider(create: (_) => MenuNotifier()),
+        BlocProvider(create: (_) => MenuCubit()),
       ],
       child: MaterialApp(
         initialRoute: SplashScreen.id,
-        routes: {
-          SplashScreen.id: (context) => const SplashScreen(),
-          WelcomeScreen.id: (context) => const WelcomeScreen(),
-          HomeScreen.id: (context) => const HomeScreen(),
-          CameraScreen.id: (context) => const CameraScreen(),
-          MenuHistoryScreen.id: (context) => const MenuHistoryScreen(),
-          CapturedScreen.id: (context) => const CapturedScreen(),
-          MenuScreen.id: (context) => const MenuScreen(),
-          AgendaScreen.id: (context) => const AgendaScreen(),
-          SelectIngredientsScreen.id: (context) =>
-              const SelectIngredientsScreen(),
-          CreateMealPlanScreen.id: (context) => const CreateMealPlanScreen(),
-          AssignMealTimeScreen.id: (context) => const AssignMealTimeScreen(),
-          RecipeScreen.id: (context) => const RecipeScreen(),
-          ReminderScreen.id: (context) => const ReminderScreen(),
-          RecipeSteps.id:(context) => const RecipeSteps(),
-        },
+        onGenerateRoute: appRouter.onGenerateRoute,
       ),
     );
   }
