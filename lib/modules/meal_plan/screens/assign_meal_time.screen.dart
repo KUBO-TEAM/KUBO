@@ -268,7 +268,8 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(kSuccessfullySaveSnackBar);
 
-                Navigator.popAndPushNamed(context, MenuScreen.id);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, MenuScreen.id, (route) => route.isFirst);
               } else {
                 BlocProvider.of<MenuCubit>(context).updateAppointment(
                   schedule: schedule!,
@@ -282,7 +283,8 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(kSuccessfullySaveSnackBar);
 
-                Navigator.popAndPushNamed(context, MenuScreen.id);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, MenuScreen.id, (route) => route.isFirst);
               }
             },
           ),
