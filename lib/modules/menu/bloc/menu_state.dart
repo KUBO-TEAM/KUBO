@@ -1,7 +1,12 @@
 part of 'menu_cubit.dart';
 
-class MenuState {
+@immutable
+abstract class MenuState {}
+
+class MenuInitial extends MenuState {}
+
+class MenuLoaded extends MenuState {
   final List<Appointment> appointments;
 
-  MenuState({required this.appointments});
+  MenuLoaded({required this.appointments});
 }

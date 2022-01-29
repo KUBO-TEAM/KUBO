@@ -60,9 +60,15 @@ class MenuScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: BlocBuilder<MenuCubit, MenuState>(builder: (context, state) {
+          if ((state is MenuLoaded) == false) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final appointments = (state as MenuLoaded).appointments;
+
           return SfCalendar(
             todayHighlightColor: Colors.green,
-            dataSource: MealTimeDataSource(state.appointments),
+            dataSource: MealTimeDataSource(appointments),
             headerStyle: const CalendarHeaderStyle(
               backgroundColor: kBrownPrimary,
               textStyle: TextStyle(
