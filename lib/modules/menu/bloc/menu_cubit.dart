@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kubo/core/models/schedule.hive.dart';
 import 'package:kubo/modules/meal_plan/models/recipe.dart';
 import 'package:kubo/modules/menu/bloc/menu_repository.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:kubo/modules/menu/models/schedule.model.dart';
 
 part 'menu_state.dart';
 
@@ -12,23 +12,29 @@ class MenuCubit extends Cubit<MenuState> {
 
   MenuCubit({required this.menuRepository}) : super(MenuInitial());
 
-  void fetchAppointments() {
-    menuRepository.fetchAppointments().then((scheduleBox) {
-      final List<Appointment> _appointments = [];
+  void fetchSchedules() {
+    menuRepository.fetchSchedules().then((scheduleBox) {
+      final List<Schedule> schedules = [];
+
+      if (scheduleBox == null) {
+        emit(MenuLoaded(schedules: schedules));
+        return;
+      }
 
       if (scheduleBox.isEmpty == false) {
         for (var element in scheduleBox.values) {
-          _appointments.add(
-            Appointment(
-              startTime: element.startTime,
-              endTime: element.endTime,
-              subject: element.recipeName,
-              color: element.color,
+          schedules.add(
+            Schedule(
+              recipeId: element.recipeId,
+              recipeName: element.recipeName,
+              start: element.startTime,
+              end: element.endTime,
+              backgroundColor: element.color,
             ),
           );
         }
 
-        emit(MenuLoaded(appointments: _appointments));
+        emit(MenuLoaded(schedules: schedules));
       }
     });
   }
@@ -43,9 +49,9 @@ class MenuCubit extends Cubit<MenuState> {
     final currentState = state;
 
     if (currentState is MenuLoaded) {
-      List<Appointment> appointments = currentState.appointments;
+      List<Schedule> schedules = currentState.schedules;
 
-      Appointment newAppointment = menuRepository.addAndReturnAppointment(
+      Schedule newSchedule = menuRepository.addAndReturnSchedule(
         recipe: recipe,
         start: start,
         end: end,
@@ -53,9 +59,9 @@ class MenuCubit extends Cubit<MenuState> {
         colorPicked: colorPicked,
       );
 
-      appointments.add(newAppointment);
+      schedules.add(newSchedule);
 
-      emit(MenuLoaded(appointments: appointments));
+      emit(MenuLoaded(schedules: schedules));
     }
   }
 
@@ -67,7 +73,7 @@ class MenuCubit extends Cubit<MenuState> {
     required int day,
     required Color colorPicked,
   }) {
-    menuRepository.updateAndReturnAppointment(
+    menuRepository.updateAndReturnSchedule(
       schedule: schedule,
       recipe: recipe,
       start: start,
@@ -77,6 +83,6 @@ class MenuCubit extends Cubit<MenuState> {
     );
 
     // Temporary
-    fetchAppointments();
+    fetchSchedules();
   }
 }

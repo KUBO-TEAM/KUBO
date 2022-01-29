@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     _loading();
     Future.microtask(
-      () => BlocProvider.of<MenuCubit>(context).fetchAppointments(),
+      () => BlocProvider.of<MenuCubit>(context).fetchSchedules(),
     );
   }
 

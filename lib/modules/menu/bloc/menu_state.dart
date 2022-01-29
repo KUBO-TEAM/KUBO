@@ -6,7 +6,7 @@ abstract class MenuState {}
 class MenuInitial extends MenuState {}
 
 class MenuLoaded extends MenuState {
-  final List<Appointment> appointments;
+  final List<Schedule> schedules;
 
-  MenuLoaded({required this.appointments});
+  MenuLoaded({required this.schedules});
 }

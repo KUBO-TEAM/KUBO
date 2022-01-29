@@ -5,12 +5,12 @@ import 'package:kubo/constants/list.costants.dart';
 import 'package:kubo/constants/string.constants.dart';
 import 'package:kubo/core/models/schedule.hive.dart';
 import 'package:kubo/modules/meal_plan/models/recipe.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:kubo/modules/menu/models/schedule.model.dart';
 
-class AppointmentService {
+class ScheduleService {
   dynamic scheduleBox;
 
-  Future<dynamic> fetchAppointments() async {
+  Future<dynamic> fetchSchedules() async {
     scheduleBox = await Hive.openBox(kScheduleBox);
 
     if (scheduleBox.isEmpty == false) {
@@ -20,7 +20,7 @@ class AppointmentService {
     return null;
   }
 
-  void updateAndReturnAppointment({
+  void updateAndReturnSchedule({
     required ScheduleHive schedule,
     required Recipe recipe,
     required TimeOfDay start,
@@ -55,7 +55,7 @@ class AppointmentService {
     schedule.save();
   }
 
-  Appointment addAndReturnAppointment({
+  Schedule addAndReturnSchedule({
     required Recipe recipe,
     required TimeOfDay start,
     required TimeOfDay end,
@@ -94,11 +94,12 @@ class AppointmentService {
 
     scheduleBox!.put(recipe.id, newSchedule);
 
-    return Appointment(
-      startTime: startTime,
-      endTime: endTime,
-      subject: recipe.name,
-      color: colorPicked,
+    return Schedule(
+      recipeId: recipe.id,
+      recipeName: recipe.name,
+      start: startTime,
+      end: endTime,
+      backgroundColor: colorPicked,
     );
   }
 }

@@ -11,7 +11,7 @@ import 'package:kubo/modules/agenda/bloc/agenda_cubit.dart';
 import 'package:kubo/modules/menu/bloc/menu_repository.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
-import 'core/services/appointment_service.dart';
+import 'core/services/schedule_service.dart';
 import 'modules/menu/bloc/menu_cubit.dart';
 
 Future<void> main() async {
@@ -24,21 +24,23 @@ Future<void> main() async {
     ..registerAdapter(ColorAdapter())
     ..registerAdapter(ScheduleHiveAdapter());
 
-  runApp(Kubo(
-    appRouter: AppRouter(),
-    appointmentService: AppointmentService(),
-  ));
+  runApp(
+    Kubo(
+      appRouter: AppRouter(),
+      scheduleService: ScheduleService(),
+    ),
+  );
 }
 
 class Kubo extends StatelessWidget {
   const Kubo({
     Key? key,
     required this.appRouter,
-    required this.appointmentService,
+    required this.scheduleService,
   }) : super(key: key);
 
   final AppRouter appRouter;
-  final AppointmentService appointmentService;
+  final ScheduleService scheduleService;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class Kubo extends StatelessWidget {
         BlocProvider(
           create: (_) => MenuCubit(
             menuRepository: MenuRepository(
-              appointmentService: appointmentService,
+              scheduleService: scheduleService,
             ),
           ),
         ),
