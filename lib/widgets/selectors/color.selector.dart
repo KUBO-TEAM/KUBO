@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/constants/text_styles.constants.dart';
 import 'package:kubo/widgets/cards/picker.card.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class ColorSelector extends StatefulWidget {
   const ColorSelector({
     Key? key,
     required this.onColorPicked,
+    this.currentColor = kGreenPrimary,
   }) : super(key: key);
 
   final Function(Color?) onColorPicked;
+  final Color currentColor;
 
   @override
   State<ColorSelector> createState() => _ColorSelectorState();
@@ -18,7 +20,6 @@ class ColorSelector extends StatefulWidget {
 
 class _ColorSelectorState extends State<ColorSelector> {
   Color pickerColor = kGreenPrimary;
-  Color currentColor = kGreenPrimary;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,6 @@ class _ColorSelectorState extends State<ColorSelector> {
               ElevatedButton(
                 child: const Text('Got it'),
                 onPressed: () {
-                  setState(() => currentColor = pickerColor);
                   Navigator.of(context).pop();
                 },
               ),
@@ -58,7 +58,9 @@ class _ColorSelectorState extends State<ColorSelector> {
             Container(
               height: 50.0,
               width: 16.0,
-              color: currentColor,
+              color: pickerColor != kGreenPrimary
+                  ? pickerColor
+                  : widget.currentColor,
             ),
             Expanded(
               child: Center(
@@ -79,7 +81,9 @@ class _ColorSelectorState extends State<ColorSelector> {
             Container(
               height: 50.0,
               width: 16.0,
-              color: currentColor,
+              color: pickerColor != kGreenPrimary
+                  ? pickerColor
+                  : widget.currentColor,
             ),
           ],
         ),

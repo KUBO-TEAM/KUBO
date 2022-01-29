@@ -19,7 +19,6 @@ import 'package:kubo/widgets/clippers/recipe.clipper.dart';
 import 'package:kubo/widgets/selectors/color.selector.dart';
 import 'package:kubo/widgets/selectors/day.selector.dart';
 import 'package:kubo/widgets/selectors/time.selector.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class AssignMealTimeScreenArguments {
   AssignMealTimeScreenArguments({
@@ -58,16 +57,17 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
 
       // scheduleBox!.deleteAll(scheduleBox!.keys);
 
-      // setState(() {
-      //   schedule = scheduleBox!.get(recipe.id);
-      //
-      //   if (schedule != null) {
-      //     day =
-      //         kDayList.indexOf(DateFormat('EEEE').format(schedule!.startTime));
-      //     start = _dateTimeToTimeOfDay(schedule!.startTime);
-      //     end = _dateTimeToTimeOfDay(schedule!.endTime);
-      //   }
-      // });
+      setState(() {
+        schedule = scheduleBox!.get(recipe.id);
+
+        if (schedule != null) {
+          day =
+              kDayList.indexOf(DateFormat('EEEE').format(schedule!.startTime));
+          start = _dateTimeToTimeOfDay(schedule!.startTime);
+          end = _dateTimeToTimeOfDay(schedule!.endTime);
+          colorPicked = schedule!.color;
+        }
+      });
     }
   }
 
@@ -182,6 +182,7 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
                       },
                     ),
                     ColorSelector(
+                      currentColor: colorPicked,
                       onColorPicked: (Color? selectedColor) {
                         colorPicked = selectedColor!;
                       },
@@ -250,55 +251,18 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
       popup.show(
         title: 'Wait, Are you sure?',
         content:
-            'You want to save ${recipe.name} to your ${start.format(context)} to ${end.format(context)} meal on $day ?',
+            'You want to save ${recipe.name} to your ${start.format(context)} to ${end.format(context)} meal on ${kDayList[day]} ?',
         actions: [
           popup.button(
             label: 'Yes',
             onPressed: () {
               if (schedule == null) {
-                final today = DateTime.now();
-
-                final todayWeekday = DateFormat('EEEE').format(today);
-                final indexTodayWeekDay = kDayList.indexOf(todayWeekday);
-                final scheduleDay = today.day + (day - indexTodayWeekDay);
-
-                final startTime = DateTime(
-                  today.year,
-                  today.month,
-                  scheduleDay,
-                  start.hour,
-                  start.minute,
-                );
-
-                final endTime = DateTime(
-                  today.year,
-                  today.month,
-                  scheduleDay,
-                  end.hour,
-                  end.minute,
-                );
-
-                ScheduleHive newSchedule = ScheduleHive(
-                  recipeId: recipe.name,
-                  recipeName: recipe.name,
-                  startTime: startTime,
-                  endTime: endTime,
-                  color: colorPicked,
-                );
-
-                scheduleBox!.put(recipe.id, newSchedule);
-
-                setState(() {
-                  schedule = newSchedule;
-                });
-
                 BlocProvider.of<MenuCubit>(context).addAppointment(
-                  Appointment(
-                    startTime: startTime,
-                    endTime: endTime,
-                    subject: recipe.name,
-                    color: colorPicked,
-                  ),
+                  recipe: recipe,
+                  start: start,
+                  end: end,
+                  day: day,
+                  colorPicked: colorPicked,
                 );
 
                 ScaffoldMessenger.of(context)
@@ -306,31 +270,14 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
 
                 Navigator.popAndPushNamed(context, MenuScreen.id);
               } else {
-                final today = DateTime.now();
-
-                final todayWeekday = DateFormat('EEEE').format(today);
-                final indexTodayWeekDay = kDayList.indexOf(todayWeekday);
-                final scheduleDay = today.day + (day - indexTodayWeekDay);
-
-                schedule!.startTime = DateTime(
-                  today.year,
-                  today.month,
-                  scheduleDay,
-                  start.hour,
-                  start.minute,
+                BlocProvider.of<MenuCubit>(context).updateAppointment(
+                  schedule: schedule!,
+                  recipe: recipe,
+                  start: start,
+                  end: end,
+                  day: day,
+                  colorPicked: colorPicked,
                 );
-
-                schedule!.endTime = DateTime(
-                  today.year,
-                  today.month,
-                  scheduleDay,
-                  end.hour,
-                  end.minute,
-                );
-
-                schedule!.save();
-
-                setState(() {});
 
                 ScaffoldMessenger.of(context)
                     .showSnackBar(kSuccessfullySaveSnackBar);

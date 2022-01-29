@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:kubo/core/models/schedule.hive.dart';
+import 'package:kubo/modules/meal_plan/models/recipe.dart';
 import 'package:kubo/modules/menu/bloc/menu_repository.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -31,14 +33,50 @@ class MenuCubit extends Cubit<MenuState> {
     });
   }
 
-  void addAppointment(Appointment appointment) {
+  void addAppointment({
+    required Recipe recipe,
+    required TimeOfDay start,
+    required TimeOfDay end,
+    required int day,
+    required Color colorPicked,
+  }) {
     final currentState = state;
 
     if (currentState is MenuLoaded) {
       List<Appointment> appointments = currentState.appointments;
 
-      appointments.add(appointment);
+      Appointment newAppointment = menuRepository.addAndReturnAppointment(
+        recipe: recipe,
+        start: start,
+        end: end,
+        day: day,
+        colorPicked: colorPicked,
+      );
+
+      appointments.add(newAppointment);
+
       emit(MenuLoaded(appointments: appointments));
     }
+  }
+
+  void updateAppointment({
+    required ScheduleHive schedule,
+    required Recipe recipe,
+    required TimeOfDay start,
+    required TimeOfDay end,
+    required int day,
+    required Color colorPicked,
+  }) {
+    menuRepository.updateAndReturnAppointment(
+      schedule: schedule,
+      recipe: recipe,
+      start: start,
+      end: end,
+      day: day,
+      colorPicked: colorPicked,
+    );
+
+    // Temporary
+    fetchAppointments();
   }
 }
