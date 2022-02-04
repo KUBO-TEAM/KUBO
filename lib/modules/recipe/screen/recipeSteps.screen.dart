@@ -9,7 +9,12 @@ import 'package:kubo/widgets/clippers/image.clipper.dart';
 
 class RecipeSteps extends StatefulWidget {
   static const String id = 'recipe_steps_screen';
-  const RecipeSteps({Key? key}) : super(key: key);
+  const RecipeSteps({
+    Key? key,
+    required this.recipe,
+  }) : super(key: key);
+
+  final Recipe recipe;
 
   @override
   _RecipeStepsState createState() => _RecipeStepsState();
@@ -33,17 +38,15 @@ class _RecipeStepsState extends State<RecipeSteps>
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as Recipe;
-
     return SafeArea(
       child: Scaffold(
         body: Stack(
           children: <Widget>[
             Hero(
-              tag: "recipe-img-${args.imageUrl}",
+              tag: "recipe-img-${widget.recipe.imageUrl}",
               child: ImageClipper(
                 child: Image.network(
-                  args.imageUrl,
+                  widget.recipe.imageUrl,
                   fit: BoxFit.cover,
                   color: Colors.black38,
                   colorBlendMode: BlendMode.darken,
@@ -68,7 +71,7 @@ class _RecipeStepsState extends State<RecipeSteps>
                     ),
                     Expanded(
                       child: Text(
-                        args.name,
+                        widget.recipe.name,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 22,
@@ -93,7 +96,7 @@ class _RecipeStepsState extends State<RecipeSteps>
                     child: Container(
                       height: 50,
                       decoration: BoxDecoration(
-                        borderRadius:BorderRadius.circular(25),
+                          borderRadius: BorderRadius.circular(25),
                           border: Border.all(
                             color: Colors.white54,
                             width: 1,
@@ -140,7 +143,15 @@ class _RecipeStepsState extends State<RecipeSteps>
                     children: <Widget>[
                       Text("Ingredients"),
                       Text("Steps"),
-                      Container(child: const Center(child: Icon(Icons.thumb_down,color: Colors.grey,size: 150,),),)
+                      Container(
+                        child: const Center(
+                          child: Icon(
+                            Icons.thumb_down,
+                            color: Colors.grey,
+                            size: 150,
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
