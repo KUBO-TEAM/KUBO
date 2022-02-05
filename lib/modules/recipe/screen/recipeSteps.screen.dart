@@ -110,9 +110,10 @@ class _RecipeStepsState extends State<RecipeSteps>
                         child: TabBar(
                           controller: _controller,
                           labelColor: kBrownPrimary,
-                          labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                          labelStyle:
+                              const TextStyle(fontWeight: FontWeight.bold),
                           unselectedLabelStyle:
-                              TextStyle(fontWeight: FontWeight.normal),
+                              const TextStyle(fontWeight: FontWeight.normal),
                           unselectedLabelColor: Colors.white70,
                           indicator: BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
@@ -140,16 +141,14 @@ class _RecipeStepsState extends State<RecipeSteps>
                       const EdgeInsets.only(left: 10, right: 25, top: 40.0),
                   child: TabBarView(
                     controller: _controller,
-                    children: <Widget>[
+                    children: const [
                       Text("Ingredients"),
                       Text("Steps"),
-                      Container(
-                        child: const Center(
-                          child: Icon(
-                            Icons.thumb_down,
-                            color: Colors.grey,
-                            size: 150,
-                          ),
+                      Center(
+                        child: Icon(
+                          Icons.thumb_down,
+                          color: Colors.grey,
+                          size: 150,
                         ),
                       )
                     ],
