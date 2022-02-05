@@ -61,8 +61,9 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
         schedule = scheduleBox!.get(recipe.id);
 
         if (schedule != null) {
-          day =
-              kDayList.indexOf(DateFormat('EEEE').format(schedule!.startTime));
+          day = kDayList.indexOf(
+            DateFormat('EEEE').format(schedule!.startTime),
+          );
           start = _dateTimeToTimeOfDay(schedule!.startTime);
           end = _dateTimeToTimeOfDay(schedule!.endTime);
           colorPicked = schedule!.color;
@@ -248,6 +249,7 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
         context: context,
         template: TemplateTerm,
       );
+
       popup.show(
         title: 'Wait, Are you sure?',
         content:
