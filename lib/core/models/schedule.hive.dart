@@ -12,17 +12,25 @@ class ScheduleHive extends HiveObject {
   String recipeName;
 
   @HiveField(2)
-  DateTime startTime;
+  String recipeDescription;
 
   @HiveField(3)
-  DateTime endTime;
+  String recipeImageUrl;
 
   @HiveField(4)
+  DateTime startTime;
+
+  @HiveField(5)
+  DateTime endTime;
+
+  @HiveField(6)
   Color color;
 
   ScheduleHive({
     required this.recipeId,
     required this.recipeName,
+    required this.recipeDescription,
+    required this.recipeImageUrl,
     required this.startTime,
     required this.endTime,
     required this.color,

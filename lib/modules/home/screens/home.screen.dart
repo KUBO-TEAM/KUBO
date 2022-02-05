@@ -8,7 +8,6 @@ import 'package:kubo/modules/camera/screens/camera.screen.dart';
 import 'package:kubo/modules/menu/screens/menu.screen.dart';
 import 'package:kubo/modules/menu_history/screens/menu_history.screen.dart';
 import 'package:kubo/modules/recipe/screen/recipe.screen.dart';
-import 'package:kubo/modules/recipe/screen/recipeSteps.screen.dart';
 import 'package:kubo/modules/reminders/screen/reminders.screen.dart';
 import 'package:kubo/widgets/buttons/rounded.button.dart';
 import 'package:kubo/widgets/cards/schedule.card.dart';

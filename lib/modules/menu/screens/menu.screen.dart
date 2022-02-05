@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/constants/sizes.constants.dart';
+import 'package:kubo/modules/meal_plan/models/recipe.dart';
 import 'package:kubo/modules/meal_plan/screens/assign_meal_time.screen.dart';
 import 'package:kubo/modules/meal_plan/screens/select_ingredients.screen.dart';
 import 'package:kubo/modules/menu/bloc/menu_cubit.dart';
@@ -97,11 +98,22 @@ class MenuScreen extends StatelessWidget {
             )),
             firstDayOfWeek: 1,
             onTap: (CalendarTapDetails details) {
-              dynamic appointment = details.appointments;
+              dynamic schedule = details.appointments;
               // DateTime date = details.date!;
               CalendarElement element = details.targetElement;
-              if (appointment != null) {
-                Navigator.pushNamed(context, AssignMealTimeScreen.id);
+              if (schedule != null) {
+                Navigator.pushNamed(
+                  context,
+                  AssignMealTimeScreen.id,
+                  arguments: AssignMealTimeScreenArguments(
+                    recipe: Recipe(
+                      id: schedule.first.recipeId,
+                      name: schedule.first.recipeName,
+                      description: schedule.first.recipeDescription,
+                      imageUrl: schedule.first.recipeImageUrl,
+                    ),
+                  ),
+                );
               } else if (element == CalendarElement.calendarCell) {
                 Navigator.pushNamed(context, SelectIngredientsScreen.id);
               }
@@ -111,24 +123,6 @@ class MenuScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-List<Appointment> getAppointments() {
-  List<Appointment> meetings = <Appointment>[];
-
-  final DateTime today = DateTime.now();
-  final DateTime startTime =
-      DateTime(today.year, today.month, today.day, 9, 0, 0);
-  final DateTime endTime = startTime.add(const Duration(hours: 2));
-
-  meetings.add(Appointment(
-    startTime: startTime,
-    endTime: endTime,
-    subject: 'Conference',
-    color: Colors.blue,
-  ));
-
-  return meetings;
 }
 
 class ScheduleDataSource extends CalendarDataSource {
