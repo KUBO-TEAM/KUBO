@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/constants/colors.constants.dart';
-import 'package:kubo/modules/agenda/models/agenda.model.dart';
-
+import 'package:kubo/modules/agenda/bloc/agenda_cubit.dart';
 import 'package:kubo/modules/agenda/states/agenda.state.dart';
-import 'package:provider/provider.dart';
 
 class AgendaScreen extends StatelessWidget {
   const AgendaScreen({Key? key}) : super(key: key);
@@ -97,7 +96,7 @@ class _AddAgendaScreenState extends State<AddAgendaScreen> {
                 splashColor: Colors.green.shade600,
                 tooltip: "Send Message",
                 onPressed: () {
-                  Provider.of<AgendaList>(context, listen: false)
+                  BlocProvider.of<AgendaCubit>(context, listen: false)
                       .addTask(agendaTitle);
                   Navigator.pop(context);
                 }),

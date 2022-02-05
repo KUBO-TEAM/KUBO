@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/constants/colors.constants.dart';
-import 'package:kubo/modules/agenda/models/agenda.model.dart';
+import 'package:kubo/modules/agenda/bloc/agenda_cubit.dart';
 import 'package:kubo/widgets/buttons/icon.button.dart';
 import 'package:kubo/widgets/clippers/appbar.clipper.dart';
-import 'package:provider/provider.dart';
 
 class AgendaState extends StatefulWidget {
   const AgendaState({Key? key}) : super(key: key);
@@ -16,8 +16,8 @@ class AgendaState extends StatefulWidget {
 class _AgendaStateState extends State<AgendaState> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<AgendaList>(
-      builder: (context, agendaList, child) => Column(
+    return BlocBuilder<AgendaCubit, AgendaCubitState>(
+      builder: (context, state) => Column(
         children: <Widget>[
           const CustomAppBar(
             title: "Agenda",
@@ -27,9 +27,9 @@ class _AgendaStateState extends State<AgendaState> {
           ),
           Expanded(
             child: ListView.builder(
-                itemCount: agendaList.agendaCount,
+                itemCount: state.agendas.length,
                 itemBuilder: (context, index) {
-                  var agenda = agendaList.agendas[index];
+                  var agenda = state.agendas[index];
                   return Card(
                     child: Row(children: <Widget>[
                       Expanded(
@@ -58,9 +58,8 @@ class _AgendaStateState extends State<AgendaState> {
                       ),
                       IconButton(
                           splashColor: kBrownPrimary,
-                          onPressed: () =>
-                              Provider.of<AgendaList>(context, listen: false)
-                                  .deleteTask(agenda),
+                          onPressed: () => BlocProvider.of<AgendaCubit>(context)
+                              .removeTask(agenda),
                           icon: const Icon(
                             Icons.delete,
                             color: kBrownPrimary,
@@ -116,7 +115,7 @@ class CustomAppBar extends StatelessWidget {
                 const Spacer(),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

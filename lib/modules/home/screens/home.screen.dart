@@ -4,10 +4,12 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/constants/sizes.constants.dart';
 import 'package:kubo/modules/agenda/screens/agenda.screen.dart';
-import 'package:kubo/modules/menu_history/screens/menu_history.screen.dart';
 import 'package:kubo/modules/camera/screens/camera.screen.dart';
 import 'package:kubo/modules/menu/screens/menu.screen.dart';
+import 'package:kubo/modules/menu_history/screens/menu_history.screen.dart';
 import 'package:kubo/modules/recipe/screen/recipe.screen.dart';
+import 'package:kubo/modules/recipe/screen/recipeSteps.screen.dart';
+import 'package:kubo/modules/reminders/screen/reminders.screen.dart';
 import 'package:kubo/widgets/buttons/rounded.button.dart';
 import 'package:kubo/widgets/cards/schedule.card.dart';
 import 'package:kubo/widgets/cards/weekly_event.card.dart';
@@ -101,19 +103,7 @@ class SchedulesButton extends StatelessWidget {
           },
         ),
         const SizedBox(
-          width: 16.0,
-        ),
-        RoundedButton(
-          elevation: 0,
-          title: const Text(
-            'Agenda',
-          ),
-          onPressed: () {
-            Navigator.pushNamed(context, AgendaScreen.id);
-          },
-        ),
-        const SizedBox(
-          width: 16.0,
+          width: 8.0,
         ),
         RoundedButton(
           elevation: 0,
@@ -122,6 +112,18 @@ class SchedulesButton extends StatelessWidget {
           ),
           onPressed: () {
             Navigator.pushNamed(context, MenuHistoryScreen.id);
+          },
+        ),
+        const SizedBox(
+          width: 8.0,
+        ),
+        RoundedButton(
+          elevation: 0,
+          title: const Text(
+            'Agenda',
+          ),
+          onPressed: () {
+            Navigator.pushNamed(context, AgendaScreen.id);
           },
         ),
       ],
@@ -163,12 +165,12 @@ class FloatingMenuButton extends StatelessWidget {
             label: 'Recipes',
             onTap: () => Navigator.pushNamed(context, RecipeScreen.id)),
         SpeedDialChild(
-          child: const Icon(
-            Icons.notifications,
-            color: kBrownPrimary,
-          ),
-          label: 'Reminder',
-        ),
+            child: const Icon(
+              Icons.notifications,
+              color: kBrownPrimary,
+            ),
+            label: 'Reminder',
+            onTap: () => Navigator.pushNamed(context, ReminderScreen.id)),
       ],
     );
   }

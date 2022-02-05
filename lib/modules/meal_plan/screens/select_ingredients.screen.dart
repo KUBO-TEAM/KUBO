@@ -100,7 +100,7 @@ class _IngredientsListState extends State<IngredientsList> {
               title: Text(
                 ingredient.id,
                 style: kPreSubTitleTextStyle,
-              ), //TODO: Temporary ingredients id...
+              ),
             );
           },
           body: Column(

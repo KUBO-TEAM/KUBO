@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/constants/sizes.constants.dart';
-import 'package:kubo/constants/string.constants.dart';
-import 'package:kubo/modules/meal_plan/screens/create_meal_plan.screen.dart';
+import 'package:kubo/modules/meal_plan/screens/assign_meal_time.screen.dart';
 import 'package:kubo/modules/meal_plan/screens/select_ingredients.screen.dart';
-import 'package:kubo/modules/menu/models/menu.notifier.dart';
-import 'package:provider/provider.dart';
+import 'package:kubo/modules/menu/bloc/menu_cubit.dart';
+import 'package:kubo/modules/menu/models/schedule.model.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class MenuScreen extends StatelessWidget {
   static const String id = 'menu_screen';
@@ -62,10 +61,16 @@ class MenuScreen extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: Consumer<MenuNotifier>(builder: (context, menuNotifier, child) {
+        child: BlocBuilder<MenuCubit, MenuState>(builder: (context, state) {
+          if ((state is MenuLoaded) == false) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final schedules = (state as MenuLoaded).schedules;
+
           return SfCalendar(
             todayHighlightColor: Colors.green,
-            dataSource: MealTimeDataSource(menuNotifier.appointments),
+            dataSource: ScheduleDataSource(schedules),
             headerStyle: const CalendarHeaderStyle(
               backgroundColor: kBrownPrimary,
               textStyle: TextStyle(
@@ -93,9 +98,13 @@ class MenuScreen extends StatelessWidget {
             firstDayOfWeek: 1,
             onTap: (CalendarTapDetails details) {
               dynamic appointment = details.appointments;
-              DateTime date = details.date!;
+              // DateTime date = details.date!;
               CalendarElement element = details.targetElement;
-              Navigator.pushNamed(context, SelectIngredientsScreen.id);
+              if (appointment != null) {
+                Navigator.pushNamed(context, AssignMealTimeScreen.id);
+              } else if (element == CalendarElement.calendarCell) {
+                Navigator.pushNamed(context, SelectIngredientsScreen.id);
+              }
             },
           );
         }),
@@ -122,8 +131,33 @@ List<Appointment> getAppointments() {
   return meetings;
 }
 
-class MealTimeDataSource extends CalendarDataSource {
-  MealTimeDataSource(List<Appointment>? source) {
+class ScheduleDataSource extends CalendarDataSource {
+  ScheduleDataSource(List<Schedule>? source) {
     appointments = source;
+  }
+
+  @override
+  DateTime getStartTime(int index) {
+    return appointments![index].start;
+  }
+
+  @override
+  DateTime getEndTime(int index) {
+    return appointments![index].end;
+  }
+
+  @override
+  bool isAllDay(int index) {
+    return appointments![index].isAllDay;
+  }
+
+  @override
+  String getSubject(int index) {
+    return appointments![index].recipeName;
+  }
+
+  @override
+  Color getColor(int index) {
+    return appointments![index].backgroundColor;
   }
 }

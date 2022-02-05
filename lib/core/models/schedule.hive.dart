@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 part 'schedule.hive.g.dart';
 

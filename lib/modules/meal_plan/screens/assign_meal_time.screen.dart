@@ -1,4 +1,7 @@
+import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_beautiful_popup/main.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:kubo/constants/colors.constants.dart';
@@ -9,17 +12,13 @@ import 'package:kubo/constants/string.constants.dart';
 import 'package:kubo/constants/text_styles.constants.dart';
 import 'package:kubo/core/models/schedule.hive.dart';
 import 'package:kubo/modules/meal_plan/models/recipe.dart';
-import 'package:kubo/modules/menu/models/menu.notifier.dart';
+import 'package:kubo/modules/menu/bloc/menu_cubit.dart';
 import 'package:kubo/modules/menu/screens/menu.screen.dart';
 import 'package:kubo/widgets/buttons/square.button.dart';
 import 'package:kubo/widgets/clippers/recipe.clipper.dart';
-import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:kubo/widgets/selectors/color.selector.dart';
 import 'package:kubo/widgets/selectors/day.selector.dart';
 import 'package:kubo/widgets/selectors/time.selector.dart';
-import 'package:flutter_beautiful_popup/main.dart';
-import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class AssignMealTimeScreenArguments {
   AssignMealTimeScreenArguments({
@@ -32,7 +31,12 @@ class AssignMealTimeScreenArguments {
 class AssignMealTimeScreen extends StatefulWidget {
   static const String id = 'assign_meal_time_screen';
 
-  const AssignMealTimeScreen({Key? key}) : super(key: key);
+  const AssignMealTimeScreen({
+    Key? key,
+    required this.arguments,
+  }) : super(key: key);
+
+  final AssignMealTimeScreenArguments arguments;
 
   @override
   State<AssignMealTimeScreen> createState() => _AssignMealTimeScreenState();
@@ -49,10 +53,7 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
   Future<void> initializeBox() async {
     scheduleBox = await Hive.openBox(kScheduleBox);
     if (scheduleBox!.isEmpty == false) {
-      final args = ModalRoute.of(context)!.settings.arguments
-          as AssignMealTimeScreenArguments;
-
-      final Recipe recipe = args.recipe;
+      final Recipe recipe = widget.arguments.recipe;
 
       // scheduleBox!.deleteAll(scheduleBox!.keys);
 
@@ -64,6 +65,7 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
               kDayList.indexOf(DateFormat('EEEE').format(schedule!.startTime));
           start = _dateTimeToTimeOfDay(schedule!.startTime);
           end = _dateTimeToTimeOfDay(schedule!.endTime);
+          colorPicked = schedule!.color;
         }
       });
     }
@@ -77,10 +79,7 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments
-        as AssignMealTimeScreenArguments;
-
-    final Recipe recipe = args.recipe;
+    final Recipe recipe = widget.arguments.recipe;
 
     Size size = MediaQuery.of(context).size;
 
@@ -183,6 +182,7 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
                       },
                     ),
                     ColorSelector(
+                      currentColor: colorPicked,
                       onColorPicked: (Color? selectedColor) {
                         colorPicked = selectedColor!;
                       },
@@ -251,93 +251,40 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
       popup.show(
         title: 'Wait, Are you sure?',
         content:
-            'You want to save ${recipe.name} to your ${start.format(context)} to ${end.format(context)} meal on $day ?',
+            'You want to save ${recipe.name} to your ${start.format(context)} to ${end.format(context)} meal on ${kDayList[day]} ?',
         actions: [
           popup.button(
             label: 'Yes',
             onPressed: () {
               if (schedule == null) {
-                final today = DateTime.now();
-
-                final todayWeekday = DateFormat('EEEE').format(today);
-                final indexTodayWeekDay = kDayList.indexOf(todayWeekday);
-                final scheduleDay = today.day + (day - indexTodayWeekDay);
-
-                final startTime = DateTime(
-                  today.year,
-                  today.month,
-                  scheduleDay,
-                  start.hour,
-                  start.minute,
-                );
-
-                final endTime = DateTime(
-                  today.year,
-                  today.month,
-                  scheduleDay,
-                  end.hour,
-                  end.minute,
-                );
-
-                ScheduleHive newSchedule = ScheduleHive(
-                  recipeId: recipe.name,
-                  recipeName: recipe.name,
-                  startTime: startTime,
-                  endTime: endTime,
-                  color: colorPicked,
-                );
-
-                scheduleBox!.put(recipe.id, newSchedule);
-
-                setState(() {
-                  schedule = newSchedule;
-                });
-
-                Provider.of<MenuNotifier>(context, listen: false)
-                    .addAppointment(
-                  Appointment(
-                    startTime: startTime,
-                    endTime: endTime,
-                    subject: recipe.name,
-                    color: colorPicked,
-                  ),
+                BlocProvider.of<MenuCubit>(context).addAppointment(
+                  recipe: recipe,
+                  start: start,
+                  end: end,
+                  day: day,
+                  colorPicked: colorPicked,
                 );
 
                 ScaffoldMessenger.of(context)
                     .showSnackBar(kSuccessfullySaveSnackBar);
 
-                Navigator.popAndPushNamed(context, MenuScreen.id);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, MenuScreen.id, (route) => route.isFirst);
               } else {
-                final today = DateTime.now();
-
-                final todayWeekday = DateFormat('EEEE').format(today);
-                final indexTodayWeekDay = kDayList.indexOf(todayWeekday);
-                final scheduleDay = today.day + (day - indexTodayWeekDay);
-
-                schedule!.startTime = DateTime(
-                  today.year,
-                  today.month,
-                  scheduleDay,
-                  start.hour,
-                  start.minute,
+                BlocProvider.of<MenuCubit>(context).updateAppointment(
+                  schedule: schedule!,
+                  recipe: recipe,
+                  start: start,
+                  end: end,
+                  day: day,
+                  colorPicked: colorPicked,
                 );
-
-                schedule!.endTime = DateTime(
-                  today.year,
-                  today.month,
-                  scheduleDay,
-                  end.hour,
-                  end.minute,
-                );
-
-                schedule!.save();
-
-                setState(() {});
 
                 ScaffoldMessenger.of(context)
                     .showSnackBar(kSuccessfullySaveSnackBar);
 
-                Navigator.popAndPushNamed(context, MenuScreen.id);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, MenuScreen.id, (route) => route.isFirst);
               }
             },
           ),

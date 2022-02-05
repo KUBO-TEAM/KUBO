@@ -1,5 +1,4 @@
 class Ingredients {
-  //TODO: Ingredients model should have date...
   Ingredients({
     required this.id,
     // required this.date,
