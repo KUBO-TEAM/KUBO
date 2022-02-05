@@ -87,6 +87,8 @@ class ScheduleService {
     ScheduleHive newSchedule = ScheduleHive(
       recipeId: recipe.name,
       recipeName: recipe.name,
+      recipeDescription: recipe.description,
+      recipeImageUrl: recipe.imageUrl,
       startTime: startTime,
       endTime: endTime,
       color: colorPicked,
@@ -97,6 +99,8 @@ class ScheduleService {
     return Schedule(
       recipeId: recipe.id,
       recipeName: recipe.name,
+      recipeDescription: recipe.description,
+      recipeImageUrl: recipe.imageUrl,
       start: startTime,
       end: endTime,
       backgroundColor: colorPicked,
