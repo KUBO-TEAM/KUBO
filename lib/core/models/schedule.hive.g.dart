@@ -19,25 +19,31 @@ class ScheduleHiveAdapter extends TypeAdapter<ScheduleHive> {
     return ScheduleHive(
       recipeId: fields[0] as String,
       recipeName: fields[1] as String,
-      startTime: fields[2] as DateTime,
-      endTime: fields[3] as DateTime,
-      color: fields[4] as Color,
+      recipeDescription: fields[2] as String,
+      recipeImageUrl: fields[3] as String,
+      startTime: fields[4] as DateTime,
+      endTime: fields[5] as DateTime,
+      color: fields[6] as Color,
     );
   }
 
   @override
   void write(BinaryWriter writer, ScheduleHive obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.recipeId)
       ..writeByte(1)
       ..write(obj.recipeName)
       ..writeByte(2)
-      ..write(obj.startTime)
+      ..write(obj.recipeDescription)
       ..writeByte(3)
-      ..write(obj.endTime)
+      ..write(obj.recipeImageUrl)
       ..writeByte(4)
+      ..write(obj.startTime)
+      ..writeByte(5)
+      ..write(obj.endTime)
+      ..writeByte(6)
       ..write(obj.color);
   }
 
