@@ -1,7 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kubo/widgets/buttons/icon.button.dart';
-import 'dart:io';
 import 'package:tflite/tflite.dart';
 
 class CapturedScreenArguments {
@@ -12,8 +13,9 @@ class CapturedScreenArguments {
 
 class CapturedScreen extends StatefulWidget {
   static const String id = 'captured_screen';
-  const CapturedScreen({Key? key}) : super(key: key);
+  const CapturedScreen({Key? key, required this.arguments}) : super(key: key);
 
+  final CapturedScreenArguments arguments;
   @override
   State<CapturedScreen> createState() => _CapturedScreenState();
 }
@@ -40,10 +42,7 @@ class _CapturedScreenState extends State<CapturedScreen> {
         labels: "assets/models/yolov2_tiny.txt",
       );
 
-      final args =
-          ModalRoute.of(context)!.settings.arguments as CapturedScreenArguments;
-
-      File image = File(args.imagePath);
+      File image = File(widget.arguments.imagePath);
 
       FileImage(image)
           .resolve(const ImageConfiguration())
@@ -150,10 +149,8 @@ class _CapturedScreenState extends State<CapturedScreen> {
             //     ),
             // ),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10.0,
-                vertical: 5
-              ),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -168,10 +165,13 @@ class _CapturedScreenState extends State<CapturedScreen> {
                     },
                   ),
                   TextButton(
-                    onPressed: () =>Navigator.pop(context),
+                    onPressed: () => Navigator.pop(context),
                     child: const Text(
                       "Next",
-                      style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16, color: Colors.white),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.white),
                     ),
                   )
                 ],

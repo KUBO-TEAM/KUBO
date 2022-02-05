@@ -40,8 +40,10 @@ class AppRouter {
           builder: (_) => const MenuHistoryScreen(),
         );
       case CapturedScreen.id:
+        final arguments = routeSettings.arguments as CapturedScreenArguments;
+
         return MaterialPageRoute(
-          builder: (_) => const CapturedScreen(),
+          builder: (_) => CapturedScreen(arguments: arguments),
         );
       case MenuScreen.id:
         return MaterialPageRoute(
