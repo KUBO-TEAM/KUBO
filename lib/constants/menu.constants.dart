@@ -24,7 +24,7 @@ final List<String> foods = ['Ginisang Ampalaya '];
 final _kEventSource = {
   for (var item in List.generate(50, (index) => index))
     DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5): List.generate(
-        item % 4 + 1, (index) => Event('Ginisang Ampalaya', Colors.red))
+        item % 4 + 1, (index) => const Event('Ginisang Ampalaya', Colors.red))
 }..addAll({
     kToday: [
       const Event('Chopsuey with Chicken and Broccoli', Colors.red),
