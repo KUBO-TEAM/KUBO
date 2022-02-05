@@ -27,6 +27,8 @@ class MenuCubit extends Cubit<MenuState> {
             Schedule(
               recipeId: element.recipeId,
               recipeName: element.recipeName,
+              recipeDescription: element.recipeDescription,
+              recipeImageUrl: element.recipeImageUrl,
               start: element.startTime,
               end: element.endTime,
               backgroundColor: element.color,
