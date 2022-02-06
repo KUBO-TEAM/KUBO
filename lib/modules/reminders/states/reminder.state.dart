@@ -13,12 +13,18 @@ class ReminderState extends StatefulWidget {
 
 class _ReminderStateState extends State<ReminderState> {
   List<Reminders> reminders = [
-    Reminders(title: "Reminder Title", subtitle: "Some Caption Here Like This."),
-    Reminders(title: "Reminder Title", subtitle: "Some Caption Here Like This."),
-    Reminders(title: "Reminder Title", subtitle: "Some Caption Here Like This."),
-    Reminders(title: "Reminder Title", subtitle: "Some Caption Here Like This."),
-    Reminders(title: "Reminder Title", subtitle: "Some Caption Here Like This."),
-    Reminders(title: "Reminder Title", subtitle: "Some Caption Here Like This."),
+    const Reminders(
+        title: "Reminder Title", subtitle: "Some Caption Here Like This."),
+    const Reminders(
+        title: "Reminder Title", subtitle: "Some Caption Here Like This."),
+    const Reminders(
+        title: "Reminder Title", subtitle: "Some Caption Here Like This."),
+    const Reminders(
+        title: "Reminder Title", subtitle: "Some Caption Here Like This."),
+    const Reminders(
+        title: "Reminder Title", subtitle: "Some Caption Here Like This."),
+    const Reminders(
+        title: "Reminder Title", subtitle: "Some Caption Here Like This."),
   ];
 
   @override
@@ -99,7 +105,7 @@ class _ReminderStateState extends State<ReminderState> {
                                             child: Text(
                                           (index + 1).toString(),
                                           style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.bold,
                                             fontSize: 20,
                                           ),
                                         )),
@@ -135,4 +141,3 @@ class _ReminderStateState extends State<ReminderState> {
         ));
   }
 }
-
