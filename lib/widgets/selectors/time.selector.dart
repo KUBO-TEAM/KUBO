@@ -3,7 +3,7 @@ import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/constants/text_styles.constants.dart';
 import 'package:kubo/widgets/cards/picker.card.dart';
 
-class TimeSelector extends StatefulWidget {
+class TimeSelector extends StatelessWidget {
   const TimeSelector({
     Key? key,
     required this.title,
@@ -15,24 +15,10 @@ class TimeSelector extends StatefulWidget {
   final Function(TimeOfDay?) onTimePicked;
   final TimeOfDay? initialTime;
 
-  @override
-  State<TimeSelector> createState() => _TimeSelectorState();
-}
-
-class _TimeSelectorState extends State<TimeSelector> {
-  TimeOfDay? selectedTime;
-
-  Text _timeStatus() {
-    if (selectedTime != null) {
+  Text _timeStatus(BuildContext context) {
+    if (initialTime != null) {
       return Text(
-        selectedTime!.format(context),
-        style: kCaptionTextStyle.copyWith(
-          color: kDefaultGrey,
-        ),
-      );
-    } else if (widget.initialTime != null) {
-      return Text(
-        widget.initialTime!.format(context),
+        initialTime!.format(context),
         style: kCaptionTextStyle.copyWith(
           color: kDefaultGrey,
         ),
@@ -51,28 +37,20 @@ class _TimeSelectorState extends State<TimeSelector> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        if (widget.initialTime != null) {
+        if (initialTime != null) {
           TimeOfDay? timeSelected = await showTimePicker(
-            initialTime: widget.initialTime!,
+            initialTime: initialTime!,
             context: context,
           );
 
-          widget.onTimePicked(timeSelected);
-
-          setState(() {
-            selectedTime = timeSelected;
-          });
+          onTimePicked(timeSelected);
         } else {
           TimeOfDay? timeSelected = await showTimePicker(
             initialTime: TimeOfDay.now(),
             context: context,
           );
 
-          widget.onTimePicked(timeSelected);
-
-          setState(() {
-            selectedTime = timeSelected;
-          });
+          onTimePicked(timeSelected);
         }
       },
       child: PickerCard(
@@ -93,7 +71,7 @@ class _TimeSelectorState extends State<TimeSelector> {
                 horizontal: 8.0,
               ),
               child: Text(
-                widget.title,
+                title,
                 style: kCaptionTextStyle.copyWith(
                   fontWeight: FontWeight.w900,
                 ),
@@ -103,7 +81,7 @@ class _TimeSelectorState extends State<TimeSelector> {
               padding: const EdgeInsets.symmetric(
                 vertical: 16.0,
               ),
-              child: _timeStatus(),
+              child: _timeStatus(context),
             )
           ],
         ),
