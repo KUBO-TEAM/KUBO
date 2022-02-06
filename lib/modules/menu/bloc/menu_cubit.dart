@@ -41,7 +41,7 @@ class MenuCubit extends Cubit<MenuState> {
     });
   }
 
-  void addAppointment({
+  void addSchedule({
     required Recipe recipe,
     required TimeOfDay start,
     required TimeOfDay end,
@@ -67,7 +67,7 @@ class MenuCubit extends Cubit<MenuState> {
     }
   }
 
-  void updateAppointment({
+  void updateSchedule({
     required ScheduleHive schedule,
     required Recipe recipe,
     required TimeOfDay start,
