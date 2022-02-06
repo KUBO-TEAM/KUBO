@@ -6,7 +6,7 @@ class Ingredients {
     this.isExpanded = false,
   });
 
-  String id;
+  final String id;
   List<String> ingredients;
   // DateTime date;
   bool isExpanded;

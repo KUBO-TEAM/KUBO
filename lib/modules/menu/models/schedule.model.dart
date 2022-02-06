@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Schedule {
-  Schedule({
+  const Schedule({
     required this.recipeId,
     required this.recipeName,
     required this.recipeDescription,
@@ -12,13 +12,13 @@ class Schedule {
     this.isAllDay = false,
   });
 
-  String recipeId;
-  String recipeName;
-  String recipeDescription;
-  String recipeImageUrl;
+  final String recipeId;
+  final String recipeName;
+  final String recipeDescription;
+  final String recipeImageUrl;
 
-  DateTime start;
-  DateTime end;
-  Color backgroundColor;
-  bool isAllDay;
+  final DateTime start;
+  final DateTime end;
+  final Color backgroundColor;
+  final bool isAllDay;
 }

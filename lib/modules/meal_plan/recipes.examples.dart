@@ -1,7 +1,7 @@
 import 'models/recipe.dart';
 
 final List<Recipe> recommendedRecipes = [
-  Recipe(
+  const Recipe(
     id: '0',
     name: 'Pinakbet Tagalog',
     description:
@@ -9,7 +9,7 @@ final List<Recipe> recommendedRecipes = [
     imageUrl:
         'https://www.foxyfolksy.com/wp-content/uploads/2016/09/pinakbet-640.jpg',
   ),
-  Recipe(
+  const Recipe(
     id: '1',
     name: 'Sinigang na Baboy Ribs',
     description:
@@ -17,7 +17,7 @@ final List<Recipe> recommendedRecipes = [
     imageUrl:
         'https://panlasangpinoy.com/wp-content/uploads/2021/12/Porknigang-Recipe.jpg',
   ),
-  Recipe(
+  const Recipe(
     id: '2',
     name: 'Ginisang Ampalaya',
     description:
@@ -28,7 +28,7 @@ final List<Recipe> recommendedRecipes = [
 ];
 
 final List<Recipe> popularRecipes = [
-  Recipe(
+  const Recipe(
     id: '3',
     name: 'Vegetable Okoy',
     description:
@@ -36,7 +36,7 @@ final List<Recipe> popularRecipes = [
     imageUrl:
         'https://panlasangpinoy.com/wp-content/uploads/2021/12/Crispy-Vegetable-Okoy-Recipe.jpg',
   ),
-  Recipe(
+  const Recipe(
     id: '4',
     name: 'Ginisang Sigarilyas Recipe',
     description:
@@ -44,7 +44,7 @@ final List<Recipe> popularRecipes = [
     imageUrl:
         'https://panlasangpinoy.com/wp-content/uploads/2021/12/Porknigang-Recipe.jpg',
   ),
-  Recipe(
+  const Recipe(
     id: '5',
     name: 'Chopsuey with Chicken and Broccoli',
     description:
@@ -52,7 +52,7 @@ final List<Recipe> popularRecipes = [
     imageUrl:
         'https://panlasangpinoy.com/wp-content/uploads/2021/08/How-to-Cook-Chopsuey-683x1024.jpg',
   ),
-  Recipe(
+  const Recipe(
     id: '6',
     name: 'Laswa Recipe',
     description:
@@ -60,7 +60,7 @@ final List<Recipe> popularRecipes = [
     imageUrl:
         'https://panlasangpinoy.com/wp-content/uploads/2021/08/Laswa-Recipe-683x1024.jpg',
   ),
-  Recipe(
+  const Recipe(
     id: '7',
     name: 'Binagoongan Bagnet with Talong',
     description:
@@ -68,7 +68,7 @@ final List<Recipe> popularRecipes = [
     imageUrl:
         'https://panlasangpinoy.com/wp-content/uploads/2021/07/Binagoongan-Bagnet-with-Talong-Recipe.jpg',
   ),
-  Recipe(
+  const Recipe(
     id: '8',
     name: 'Ginisang Munggo',
     description:
@@ -76,7 +76,7 @@ final List<Recipe> popularRecipes = [
     imageUrl:
         'https://panlasangpinoy.com/wp-content/uploads/2021/07/Ginisang-Munggo-704x1024.jpg',
   ),
-  Recipe(
+  const Recipe(
     id: '9',
     name: 'Easy Utan Bisaya',
     description:

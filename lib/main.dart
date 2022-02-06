@@ -12,6 +12,7 @@ import 'package:kubo/modules/menu/bloc/menu_repository.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 import 'core/services/schedule_service.dart';
+import 'modules/meal_plan/bloc/meal_plan_cubit.dart';
 import 'modules/menu/bloc/menu_cubit.dart';
 
 Future<void> main() async {
@@ -47,6 +48,9 @@ class Kubo extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => AgendaCubit()),
+        BlocProvider(
+          create: (_) => MealPlanCubit(),
+        ),
         BlocProvider(
           create: (_) => MenuCubit(
             menuRepository: MenuRepository(

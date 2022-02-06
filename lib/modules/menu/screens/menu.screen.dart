@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:kubo/constants/colors.constants.dart';
 import 'package:kubo/constants/sizes.constants.dart';
+import 'package:kubo/modules/meal_plan/bloc/meal_plan_cubit.dart';
 import 'package:kubo/modules/meal_plan/models/recipe.dart';
 import 'package:kubo/modules/meal_plan/screens/assign_meal_time.screen.dart';
 import 'package:kubo/modules/meal_plan/screens/select_ingredients.screen.dart';
@@ -13,6 +14,30 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 class MenuScreen extends StatelessWidget {
   static const String id = 'menu_screen';
   const MenuScreen({Key? key}) : super(key: key);
+
+  void _navigateToScheduledMeal(BuildContext context, dynamic schedule) {
+    Navigator.pushNamed(
+      context,
+      AssignMealTimeScreen.id,
+      arguments: AssignMealTimeScreenArguments(
+        recipe: Recipe(
+          id: schedule.first.recipeId,
+          name: schedule.first.recipeName,
+          description: schedule.first.recipeDescription,
+          imageUrl: schedule.first.recipeImageUrl,
+        ),
+      ),
+    );
+  }
+
+  void _selectIngredientsScreenWithStartingDate(
+      BuildContext context, DateTime startingDate) {
+    BlocProvider.of<MealPlanCubit>(context).setCellDate(startingDate);
+
+    Navigator.pushNamed(context, SelectIngredientsScreen.id).then(
+      (_) => BlocProvider.of<MealPlanCubit>(context).removeCellDate(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +97,12 @@ class MenuScreen extends StatelessWidget {
           return SfCalendar(
             todayHighlightColor: Colors.green,
             dataSource: ScheduleDataSource(schedules),
+            timeSlotViewSettings: const TimeSlotViewSettings(
+              timeIntervalHeight: 70,
+            ),
             headerStyle: const CalendarHeaderStyle(
               backgroundColor: kBrownPrimary,
+              textAlign: TextAlign.center,
               textStyle: TextStyle(
                 color: Colors.white,
                 fontFamily: 'Lora',
@@ -93,29 +122,19 @@ class MenuScreen extends StatelessWidget {
             ),
             view: CalendarView.week,
             weekNumberStyle: const WeekNumberStyle(
-                textStyle: TextStyle(
-              fontFamily: 'Arvo',
-            )),
+              textStyle: TextStyle(
+                fontFamily: 'Arvo',
+              ),
+            ),
             firstDayOfWeek: 1,
             onTap: (CalendarTapDetails details) {
               dynamic schedule = details.appointments;
-              // DateTime date = details.date!;
+              DateTime startingDate = details.date!;
               CalendarElement element = details.targetElement;
               if (schedule != null) {
-                Navigator.pushNamed(
-                  context,
-                  AssignMealTimeScreen.id,
-                  arguments: AssignMealTimeScreenArguments(
-                    recipe: Recipe(
-                      id: schedule.first.recipeId,
-                      name: schedule.first.recipeName,
-                      description: schedule.first.recipeDescription,
-                      imageUrl: schedule.first.recipeImageUrl,
-                    ),
-                  ),
-                );
+                _navigateToScheduledMeal(context, schedule);
               } else if (element == CalendarElement.calendarCell) {
-                Navigator.pushNamed(context, SelectIngredientsScreen.id);
+                _selectIngredientsScreenWithStartingDate(context, startingDate);
               }
             },
           );
