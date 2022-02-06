@@ -1,13 +1,13 @@
 class Recipe {
-  Recipe({
+  const Recipe({
     required this.id,
     required this.name,
     required this.description,
     required this.imageUrl,
   });
 
-  String id;
-  String name;
-  String description;
-  String imageUrl;
+  final String id;
+  final String name;
+  final String description;
+  final String imageUrl;
 }
