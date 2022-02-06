@@ -85,7 +85,7 @@ class ScheduleService {
     );
 
     ScheduleHive newSchedule = ScheduleHive(
-      recipeId: recipe.name,
+      recipeId: recipe.id,
       recipeName: recipe.name,
       recipeDescription: recipe.description,
       recipeImageUrl: recipe.imageUrl,
