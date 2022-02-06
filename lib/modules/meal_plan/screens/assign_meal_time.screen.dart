@@ -11,6 +11,7 @@ import 'package:kubo/constants/snackbar.constants.dart';
 import 'package:kubo/constants/string.constants.dart';
 import 'package:kubo/constants/text_styles.constants.dart';
 import 'package:kubo/core/models/schedule.hive.dart';
+import 'package:kubo/modules/meal_plan/bloc/meal_plan_cubit.dart';
 import 'package:kubo/modules/meal_plan/models/recipe.dart';
 import 'package:kubo/modules/menu/bloc/menu_cubit.dart';
 import 'package:kubo/modules/menu/screens/menu.screen.dart';
@@ -43,7 +44,7 @@ class AssignMealTimeScreen extends StatefulWidget {
 }
 
 class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
-  int? day = 1;
+  int day = 0;
   TimeOfDay? start;
   TimeOfDay? end;
   Box<dynamic>? scheduleBox;
@@ -81,7 +82,6 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
   @override
   Widget build(BuildContext context) {
     final Recipe recipe = widget.arguments.recipe;
-
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -140,63 +140,86 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
                 height: size.height / 2 + 50,
                 width: size.width - 10,
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Pick a schedule',
-                      style: kTitleTextStyle,
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    DaySelector(
-                      list: kDayList,
-                      initialDay: _directSelectInitialDay(schedule?.startTime),
-                      leadingIcon: Icons.calendar_today,
-                      onSelected: (int? daySelected) {
-                        if (daySelected != null) {
-                          setState(() => day = daySelected);
-                        }
-                      },
-                    ),
-                    TimeSelector(
-                      title: 'Start',
-                      initialTime: start,
-                      onTimePicked: (TimeOfDay? startTimePicked) {
-                        if (startTimePicked != null) {
-                          setState(() {
-                            start = startTimePicked;
-                          });
-                        }
-                      },
-                    ),
-                    TimeSelector(
-                      title: 'End',
-                      initialTime: end,
-                      onTimePicked: (TimeOfDay? endTimePicked) {
-                        if (endTimePicked != null) {
-                          setState(() {
-                            end = endTimePicked;
-                          });
-                        }
-                      },
-                    ),
-                    ColorSelector(
-                      currentColor: colorPicked,
-                      onColorPicked: (Color? selectedColor) {
-                        colorPicked = selectedColor!;
-                      },
-                    ),
-                    SquareButton(
-                      onPressed: () => onSave(
-                        recipe: recipe,
-                        start: start,
-                        end: end,
-                        day: day,
-                      ),
-                    )
-                  ],
+                child: BlocBuilder<MealPlanCubit, MealPlanState>(
+                  builder: (context, state) {
+                    if (state is CellDateSetSuccess) {
+                      TimeOfDay? startingDate = start;
+                      TimeOfDay? endingDate = end;
+
+                      startingDate = _dateTimeToTimeOfDay(state.startingDate);
+                      start = startingDate;
+
+                      endingDate = _dateTimeToTimeOfDay(
+                        state.startingDate!.add(const Duration(hours: 1)),
+                      );
+                      end = endingDate;
+
+                      day = kDayList.indexOf(
+                        DateFormat('EEEE').format(state.startingDate!),
+                      );
+
+                      BlocProvider.of<MealPlanCubit>(context).removeCellDate();
+                    }
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Pick a schedule',
+                          style: kTitleTextStyle,
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        DaySelector(
+                          list: kDayList,
+                          initialDay: day,
+                          leadingIcon: Icons.calendar_today,
+                          onSelected: (int? daySelected) {
+                            if (daySelected != null) {
+                              day = daySelected;
+                            }
+                          },
+                        ),
+                        TimeSelector(
+                          title: 'Start',
+                          initialTime: start,
+                          onTimePicked: (TimeOfDay? startTimePicked) {
+                            if (startTimePicked != null) {
+                              setState(() {
+                                start = startTimePicked;
+                              });
+                            }
+                          },
+                        ),
+                        TimeSelector(
+                          title: 'End',
+                          initialTime: end,
+                          onTimePicked: (TimeOfDay? endTimePicked) {
+                            if (endTimePicked != null) {
+                              setState(() {
+                                end = endTimePicked;
+                              });
+                            }
+                          },
+                        ),
+                        ColorSelector(
+                          currentColor: colorPicked,
+                          onColorPicked: (Color? selectedColor) {
+                            colorPicked = selectedColor!;
+                          },
+                        ),
+                        SquareButton(
+                          onPressed: () => onSave(
+                            recipe: recipe,
+                            start: start,
+                            end: end,
+                            day: day,
+                          ),
+                        )
+                      ],
+                    );
+                  },
                 ),
               ),
             ),
@@ -259,7 +282,7 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
             label: 'Yes',
             onPressed: () {
               if (schedule == null) {
-                BlocProvider.of<MenuCubit>(context).addAppointment(
+                BlocProvider.of<MenuCubit>(context).addSchedule(
                   recipe: recipe,
                   start: start,
                   end: end,
@@ -273,7 +296,7 @@ class _AssignMealTimeScreenState extends State<AssignMealTimeScreen> {
                 Navigator.pushNamedAndRemoveUntil(
                     context, MenuScreen.id, (route) => route.isFirst);
               } else {
-                BlocProvider.of<MenuCubit>(context).updateAppointment(
+                BlocProvider.of<MenuCubit>(context).updateSchedule(
                   schedule: schedule!,
                   recipe: recipe,
                   start: start,
