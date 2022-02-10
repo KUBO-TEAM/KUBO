@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/core/models/schedule.hive.dart';
-import 'package:kubo/core/services/schedule_service.dart';
 import 'package:kubo/modules/meal_plan/models/recipe.dart';
 import 'package:kubo/modules/menu/models/schedule.model.dart';
+import 'package:kubo/utils/hive/objects/schedule.hive.dart';
+import 'package:kubo/utils/services/local_storage_service.dart';
 
 class MenuRepository {
-  final ScheduleService scheduleService;
+  final LocalStorageService localStorageService;
 
-  MenuRepository({required this.scheduleService});
+  MenuRepository({required this.localStorageService});
 
   Future<dynamic> fetchSchedules() async {
-    final appointments = await scheduleService.fetchSchedules();
-    return appointments;
+    final schedules = await localStorageService.fetchSchedules();
+    return schedules;
   }
 
   Schedule addAndReturnSchedule({
@@ -21,7 +21,7 @@ class MenuRepository {
     required int day,
     required Color colorPicked,
   }) {
-    return scheduleService.addAndReturnSchedule(
+    return localStorageService.addAndReturnSchedule(
       recipe: recipe,
       start: start,
       end: end,
@@ -38,7 +38,7 @@ class MenuRepository {
     required int day,
     required Color colorPicked,
   }) {
-    scheduleService.updateAndReturnSchedule(
+    localStorageService.updateAndReturnSchedule(
       schedule: schedule,
       recipe: recipe,
       start: start,

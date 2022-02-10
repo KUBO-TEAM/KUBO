@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:kubo/modules/agenda/models/agenda.model.dart';
 
-part '../bloc/agenda_state.dart';
+part 'agenda_state.dart';
 
 class AgendaCubit extends Cubit<AgendaCubitState> {
   AgendaCubit() : super(AgendaCubitState(agendas: []));

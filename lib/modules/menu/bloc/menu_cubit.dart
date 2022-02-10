@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:kubo/core/models/schedule.hive.dart';
 import 'package:kubo/modules/meal_plan/models/recipe.dart';
-import 'package:kubo/modules/menu/bloc/menu_repository.dart';
 import 'package:kubo/modules/menu/models/schedule.model.dart';
+import 'package:kubo/modules/menu/repositories/menu_repository.dart';
+import 'package:kubo/utils/hive/objects/schedule.hive.dart';
 
 part 'menu_state.dart';
 

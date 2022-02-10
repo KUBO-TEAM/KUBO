@@ -3,11 +3,11 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:kubo/constants/list.costants.dart';
 import 'package:kubo/constants/string.constants.dart';
-import 'package:kubo/core/models/schedule.hive.dart';
 import 'package:kubo/modules/meal_plan/models/recipe.dart';
 import 'package:kubo/modules/menu/models/schedule.model.dart';
+import 'package:kubo/utils/hive/objects/schedule.hive.dart';
 
-class ScheduleService {
+class LocalStorageService {
   dynamic scheduleBox;
 
   Future<dynamic> fetchSchedules() async {

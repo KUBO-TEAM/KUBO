@@ -19,18 +19,23 @@ final kEvents = LinkedHashMap<DateTime, List<Event>>(
   hashCode: getHashCode,
 )..addAll(_kEventSource);
 
-final List<String> foods = ['Ginisang Ampalaya '];
-
 final _kEventSource = {
   for (var item in List.generate(50, (index) => index))
     DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5): List.generate(
-        item % 4 + 1, (index) => const Event('Ginisang Ampalaya', Colors.red))
-}..addAll({
-    kToday: [
-      const Event('Chopsuey with Chicken and Broccoli', Colors.red),
-      const Event('Binagoongan Bagnet with Talong', Colors.green),
-    ],
-  });
+      item % 4 + 1,
+      (index) => const Event(
+        'Ginisang Ampalaya',
+        Colors.red,
+      ),
+    ),
+}..addAll(
+    {
+      kToday: [
+        const Event('Chopsuey with Chicken and Broccoli', Colors.red),
+        const Event('Binagoongan Bagnet with Talong', Colors.green),
+      ],
+    },
+  );
 
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
