@@ -4,14 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:kubo/config/router.dart';
-import 'package:kubo/core/adapters/color.adapter.dart';
-import 'package:kubo/core/models/schedule.hive.dart';
 import 'package:kubo/core/walk_through/splash_screen.dart';
 import 'package:kubo/modules/agenda/bloc/agenda_cubit.dart';
-import 'package:kubo/modules/menu/bloc/menu_repository.dart';
+import 'package:kubo/modules/menu/repositories/menu_repository.dart';
+import 'package:kubo/modules/menu_history/bloc/menu_history_cubit.dart';
+import 'package:kubo/modules/menu_history/repositories/menu_history_repositories.dart';
+import 'package:kubo/utils/hive/adapters/color.adapter.dart';
+import 'package:kubo/utils/hive/objects/schedule.hive.dart';
+import 'package:kubo/utils/services/local_storage_service.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
-import 'core/services/schedule_service.dart';
 import 'modules/meal_plan/bloc/meal_plan_cubit.dart';
 import 'modules/menu/bloc/menu_cubit.dart';
 
@@ -28,7 +30,7 @@ Future<void> main() async {
   runApp(
     Kubo(
       appRouter: AppRouter(),
-      scheduleService: ScheduleService(),
+      localStorageService: LocalStorageService(),
     ),
   );
 }
@@ -37,11 +39,11 @@ class Kubo extends StatelessWidget {
   const Kubo({
     Key? key,
     required this.appRouter,
-    required this.scheduleService,
+    required this.localStorageService,
   }) : super(key: key);
 
   final AppRouter appRouter;
-  final ScheduleService scheduleService;
+  final LocalStorageService localStorageService;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,14 @@ class Kubo extends StatelessWidget {
         BlocProvider(
           create: (_) => MenuCubit(
             menuRepository: MenuRepository(
-              scheduleService: scheduleService,
+              localStorageService: localStorageService,
+            ),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => MenuHistoryCubit(
+            menuHistoryRepositories: MenuHistoryRepositories(
+              localStorageService: localStorageService,
             ),
           ),
         ),

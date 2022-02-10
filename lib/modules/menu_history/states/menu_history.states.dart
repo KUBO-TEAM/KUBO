@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/constants/colors.constants.dart';
-import 'package:kubo/constants/text_styles.constants.dart';
 import 'package:kubo/constants/menu.constants.dart';
+import 'package:kubo/constants/text_styles.constants.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class MenuHistory extends StatefulWidget {
@@ -14,11 +14,11 @@ class MenuHistory extends StatefulWidget {
 class _MenuHistoryState extends State<MenuHistory> {
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  DateTime? _rangeStart;
-  DateTime? _rangeEnd;
+  // RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
+  // DateTime? _rangeStart;
+  // DateTime? _rangeEnd;
 
   @override
   void initState() {
@@ -39,23 +39,23 @@ class _MenuHistoryState extends State<MenuHistory> {
     return kEvents[day] ?? [];
   }
 
-  List<Event> _getEventsForRange(DateTime start, DateTime end) {
-    // Implementation example
-    final days = daysInRange(start, end);
-
-    return [
-      for (final d in days) ..._getEventsForDay(d),
-    ];
-  }
+  // List<Event> _getEventsForRange(DateTime start, DateTime end) {
+  //   // Implementation example
+  //   final days = daysInRange(start, end);
+  //
+  //   return [
+  //     for (final d in days) ..._getEventsForDay(d),
+  //   ];
+  // }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
-        _rangeStart = null; // Important to clean those
-        _rangeEnd = null;
-        _rangeSelectionMode = RangeSelectionMode.toggledOff;
+        // _rangeStart = null; // Important to clean those
+        // _rangeEnd = null;
+        // _rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
 
       _selectedEvents.value = _getEventsForDay(selectedDay);
@@ -66,14 +66,14 @@ class _MenuHistoryState extends State<MenuHistory> {
     setState(() {
       _selectedDay = null;
       _focusedDay = focusedDay;
-      _rangeStart = start;
-      _rangeEnd = end;
-      _rangeSelectionMode = RangeSelectionMode.toggledOn;
+      // _rangeStart = start;
+      // _rangeEnd = end;
+      // _rangeSelectionMode = RangeSelectionMode.toggledOn;
     });
 
     // `start` or `end` could be null
     if (start != null && end != null) {
-      _selectedEvents.value = _getEventsForRange(start, end);
+      // _selectedEvents.value = _getEventsForRange(start, end);
     } else if (start != null) {
       _selectedEvents.value = _getEventsForDay(start);
     } else if (end != null) {
@@ -100,10 +100,10 @@ class _MenuHistoryState extends State<MenuHistory> {
             lastDay: kLastDay,
             focusedDay: _focusedDay,
             selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            rangeStartDay: _rangeStart,
-            rangeEndDay: _rangeEnd,
+            // rangeStartDay: _rangeStart,
+            // rangeEndDay: _rangeEnd,
             calendarFormat: _calendarFormat,
-            rangeSelectionMode: _rangeSelectionMode,
+            // rangeSelectionMode: _rangeSelectionMode,
             eventLoader: _getEventsForDay,
             startingDayOfWeek: StartingDayOfWeek.monday,
             daysOfWeekStyle: const DaysOfWeekStyle(
