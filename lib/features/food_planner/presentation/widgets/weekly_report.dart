@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/constants/colors_constants.dart';
 import 'package:kubo/constants/text_styles_constants.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/icon_title.dart';
 
 const _title = 'Weekly report';
 const _subTitle = 'You have no upcoming events';
 const _caption = 'Enjoy your weekend';
-
-const _icon = Icon(
-  Icons.trending_up,
-  size: 16.0,
-  color: Colors.white,
-);
+const _icon = Icons.trending_up;
 
 const _cardRadius = RoundedRectangleBorder(
   borderRadius: BorderRadius.only(
@@ -39,7 +35,10 @@ class WeeklyReport extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
-            _TopBar(),
+            IconTitle(
+              icon: _icon,
+              title: _title,
+            ),
             SizedBox(
               height: 10.0,
             ),
@@ -57,36 +56,6 @@ class WeeklyReport extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _TopBar extends StatelessWidget {
-  const _TopBar({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: const [
-        CircleAvatar(
-          radius: 15,
-          backgroundColor: kGreenPrimary,
-          child: _icon,
-        ),
-        SizedBox(
-          width: 10.0,
-        ),
-        Text(
-          _title,
-          style: TextStyle(
-            fontSize: 16.0,
-            color: kGreenPrimary,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ],
     );
   }
 }
