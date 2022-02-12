@@ -1,55 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors_constants.dart';
-import 'package:kubo/constants/sizes_constants.dart';
-import 'package:kubo/constants/text_styles_constants.dart';
+import 'package:kubo/core/constants/text_styles_constants.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/selected_ingredient_body.dart';
 import 'package:kubo/modules/meal_plan/models/ingredients.dart';
-import 'package:kubo/modules/meal_plan/screens/create_meal_plan.screen.dart';
 
-class SelectIngredientsPage extends StatelessWidget {
+class SelectIngredientsPage extends StatefulWidget {
   static const String id = 'select_ingredients_page';
 
   const SelectIngredientsPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: kAppBarPrefferedSize,
-        child: AppBar(
-          backgroundColor: Colors.white,
-          titleSpacing: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: kBlackPrimary),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          elevation: 0,
-          title: const Text(
-            'Ingredients List',
-            style: TextStyle(
-              color: kBlackPrimary,
-              fontFamily: 'Pushster',
-              fontSize: 30.0,
-            ),
-          ),
-        ),
-      ),
-      body: const SafeArea(
-        child: IngredientsList(),
-      ),
-    );
-  }
+  State<SelectIngredientsPage> createState() => _SelectIngredientsPageState();
 }
 
-class IngredientsList extends StatefulWidget {
-  const IngredientsList({Key? key}) : super(key: key);
-
-  @override
-  State<IngredientsList> createState() => _IngredientsListState();
-}
-
-class _IngredientsListState extends State<IngredientsList> {
+class _SelectIngredientsPageState extends State<SelectIngredientsPage> {
   final List<Ingredients> _data = [
     Ingredients(
       id: 'Recent Ingredients',
@@ -75,85 +40,40 @@ class _IngredientsListState extends State<IngredientsList> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        child: _buildPanel(),
-      ),
-    );
-  }
-
-  Widget _buildPanel() {
-    return ExpansionPanelList(
-      expansionCallback: (int index, bool isExpanded) {
-        setState(() {
-          _data[index].isExpanded = !isExpanded;
-        });
-      },
-      children: _data.map<ExpansionPanel>((Ingredients ingredient) {
-        return ExpansionPanel(
-          headerBuilder: (BuildContext context, bool isExpanded) {
-            return ListTile(
-              leading: Icon(
-                Icons.shopping_basket,
-                color: Colors.amber.shade700,
-              ),
-              title: Text(
-                ingredient.id,
-                style: kPreSubTitleTextStyle,
-              ),
-            );
-          },
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Column(
-                children: List.generate(
-                  ingredient.ingredients.length,
-                  (int index) {
-                    return ListTile(
-                      leading: const Icon(
-                        Icons.grade,
-                        color: kGreenPrimary,
-                      ),
-                      title: Text(
-                        ingredient.ingredients[index],
-                        style: kPreSubTitleTextStyle.copyWith(
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const Divider(
-                thickness: 1,
-              ),
-              InkWell(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    top: 8.0,
-                    bottom: 16.0,
-                    left: 8.0,
-                    right: 8.0,
-                  ),
-                  child: Center(
-                    child: Text(
-                      'CREATE MEAL PLAN',
-                      style: kCaptionTextStyle.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: const KuboAppBar('Ingredients List'),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: ExpansionPanelList(
+            expansionCallback: (int index, bool isExpanded) {
+              setState(() {
+                _data[index].isExpanded = !isExpanded;
+              });
+            },
+            children: _data.map<ExpansionPanel>((Ingredients ingredient) {
+              return ExpansionPanel(
+                headerBuilder: (BuildContext context, bool isExpanded) {
+                  return ListTile(
+                    leading: Icon(
+                      Icons.shopping_basket,
+                      color: Colors.amber.shade700,
                     ),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pushNamed(context, CreateMealPlanScreen.id);
+                    title: Text(
+                      ingredient.id,
+                      style: kPreSubTitleTextStyle,
+                    ),
+                  );
                 },
-              ),
-            ],
+                body: SelectIngredientBody(
+                  ingredient: ingredient,
+                ),
+                isExpanded: ingredient.isExpanded,
+              );
+            }).toList(),
           ),
-          isExpanded: ingredient.isExpanded,
-        );
-      }).toList(),
+        ),
+      ),
     );
   }
 }

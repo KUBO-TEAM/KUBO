@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/daily_plan.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/event_plan.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/floating_menu_button.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bar.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/floating_buttons.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/planner_buttons.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/weekly_report.dart';
 
@@ -14,8 +14,8 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffeeeeee),
-      floatingActionButton: const FloatingMenuButton(),
-      appBar: const KuboAppBar('Overview'),
+      floatingActionButton: const FloatingHomeButton(),
+      appBar: const KuboHomeAppBar('Overview'),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.only(
