@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors.constants.dart';
+import 'package:kubo/constants/colors_constants.dart';
 import 'package:kubo/modules/meal_plan/models/recipe.dart';
 import 'package:kubo/widgets/buttons/icon.button.dart';
 import 'package:kubo/widgets/clippers/image.clipper.dart';

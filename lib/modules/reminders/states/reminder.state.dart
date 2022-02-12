@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors.constants.dart';
+import 'package:kubo/constants/colors_constants.dart';
 import 'package:kubo/modules/reminders/models/reminders.model.dart';
 import 'package:kubo/widgets/buttons/icon.button.dart';
 import 'package:kubo/widgets/clippers/list.clipper.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors.constants.dart';
-import 'package:kubo/constants/sizes.constants.dart';
+import 'package:kubo/constants/colors_constants.dart';
+import 'package:kubo/constants/sizes_constants.dart';
 import 'package:kubo/modules/menu_history/states/menu_history.states.dart';
 
 class MenuHistoryScreen extends StatelessWidget {

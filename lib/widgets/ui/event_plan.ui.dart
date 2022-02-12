@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/text_styles.constants.dart';
+import 'package:kubo/constants/text_styles_constants.dart';
 import 'package:kubo/widgets/cards/event.card.dart';
 
 class EventPlan extends StatelessWidget {

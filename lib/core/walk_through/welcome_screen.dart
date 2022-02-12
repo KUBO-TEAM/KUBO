@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors.constants.dart';
-import 'package:kubo/constants/string.constants.dart';
+import 'package:kubo/constants/colors_constants.dart';
+import 'package:kubo/constants/string_constants.dart';
 import 'package:kubo/modules/home/screens/home.screen.dart';
 import 'package:kubo/widgets/buttons/rounded.button.dart';
 import 'package:kubo/widgets/clippers/welcome.clipper.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:kubo/constants/list.costants.dart';
-import 'package:kubo/constants/string.constants.dart';
+import 'package:kubo/constants/list_costants.dart';
+import 'package:kubo/constants/string_constants.dart';
 import 'package:kubo/modules/meal_plan/models/recipe.dart';
 import 'package:kubo/modules/menu/models/schedule.model.dart';
 import 'package:kubo/utils/hive/objects/schedule.hive.dart';

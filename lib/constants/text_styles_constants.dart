@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'colors.constants.dart';
+import 'colors_constants.dart';
 
 const kTitleTextStyle = TextStyle(
   color: kBlackPrimary,

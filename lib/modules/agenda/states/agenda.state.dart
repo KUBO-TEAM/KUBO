@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kubo/constants/colors.constants.dart';
+import 'package:kubo/constants/colors_constants.dart';
 import 'package:kubo/modules/agenda/bloc/agenda_cubit.dart';
 import 'package:kubo/widgets/buttons/icon.button.dart';
 import 'package:kubo/widgets/clippers/appbar.clipper.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/decoration.constants.dart';
+import 'package:kubo/constants/decoration_constants.dart';
 
 class PickerCard extends StatelessWidget {
   const PickerCard({

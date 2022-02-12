@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors.constants.dart';
-import 'package:kubo/constants/text_styles.constants.dart';
+import 'package:kubo/constants/colors_constants.dart';
+import 'package:kubo/constants/text_styles_constants.dart';
 
 class ScheduleCard extends StatelessWidget {
   const ScheduleCard({

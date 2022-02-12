@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors.constants.dart';
+import 'package:kubo/constants/colors_constants.dart';
 import 'package:kubo/modules/camera/states/camera.state.dart';
 
 class CameraScreen extends StatelessWidget {

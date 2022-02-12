@@ -1,7 +1,7 @@
 import 'package:direct_select_flutter/direct_select_item.dart';
 import 'package:direct_select_flutter/direct_select_list.dart';
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors.constants.dart';
+import 'package:kubo/constants/colors_constants.dart';
 import 'package:kubo/widgets/cards/picker.card.dart';
 
 class DaySelector extends StatefulWidget {

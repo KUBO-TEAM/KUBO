@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:kubo/constants/colors.constants.dart';
-import 'package:kubo/constants/sizes.constants.dart';
+import 'package:kubo/constants/colors_constants.dart';
+import 'package:kubo/constants/sizes_constants.dart';
 import 'package:kubo/modules/meal_plan/bloc/meal_plan_cubit.dart';
 import 'package:kubo/modules/meal_plan/models/recipe.dart';
 import 'package:kubo/modules/meal_plan/screens/assign_meal_time.screen.dart';

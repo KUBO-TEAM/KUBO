@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors.constants.dart';
-import 'package:kubo/constants/sizes.constants.dart';
-import 'package:kubo/constants/text_styles.constants.dart';
+import 'package:kubo/constants/colors_constants.dart';
+import 'package:kubo/constants/sizes_constants.dart';
+import 'package:kubo/constants/text_styles_constants.dart';
 import 'package:kubo/modules/meal_plan/models/recipe.dart';
 import 'package:kubo/modules/meal_plan/screens/assign_meal_time.screen.dart';
 import 'package:kubo/modules/meal_plan/recipes.examples.dart';

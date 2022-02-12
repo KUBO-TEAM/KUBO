@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors.constants.dart';
-import 'package:kubo/constants/text_styles.constants.dart';
+import 'package:kubo/constants/colors_constants.dart';
+import 'package:kubo/constants/text_styles_constants.dart';
 import 'package:kubo/modules/meal_plan/recipes.examples.dart';
 import 'package:kubo/modules/recipe/screen/recipeSteps.screen.dart';
 import 'package:kubo/widgets/text_fields/search.field.dart';

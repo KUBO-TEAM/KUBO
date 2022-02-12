@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:kubo/constants/colors.constants.dart';
-import 'package:kubo/constants/sizes.constants.dart';
+import 'package:kubo/constants/colors_constants.dart';
+import 'package:kubo/constants/sizes_constants.dart';
 import 'package:kubo/modules/agenda/screens/agenda.screen.dart';
 import 'package:kubo/modules/camera/screens/camera.screen.dart';
 import 'package:kubo/modules/menu/screens/menu.screen.dart';
