@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:kubo/core/constants/string_constants.dart';
+import 'package:kubo/core/hive/objects/schedule.hive.dart';
+import 'package:kubo/core/temp/recipe.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/assign_meal_time_form.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_clipper.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/screen_dark_effect.dart';
-import 'package:kubo/modules/meal_plan/models/recipe.dart';
-import 'package:kubo/utils/hive/objects/schedule.hive.dart';
 
 class AssignMealTimePageArguments {
   AssignMealTimePageArguments({

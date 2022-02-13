@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/appbar_clipper.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/icon_button.dart';
 
 const _appBarSize = Size.fromHeight(45.0);
 
@@ -95,4 +97,51 @@ class KuboTransparentAppBar extends StatelessWidget
   @override
   // TODO: implement preferredSize
   Size get preferredSize => _appBarSize;
+}
+
+class KuboClippedAppBar extends StatelessWidget {
+  const KuboClippedAppBar(this.title, {Key? key}) : super(key: key);
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 60,
+      child: Stack(
+        children: <Widget>[
+          const AppbarClipper(color: kGreenPrimary),
+          Padding(
+            padding: const EdgeInsets.only(left: 10, top: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CostumeIconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    color: kGreenPrimary,
+                    size: 24.0,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                const Spacer(),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontFamily: 'Arvo Bold',
+                  ),
+                ),
+                const Spacer(),
+                const Spacer(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

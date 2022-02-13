@@ -1,11 +1,9 @@
 import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors_constants.dart';
-import 'package:kubo/modules/meal_plan/models/recipe.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/core/temp/recipe.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/image_clipper.dart';
 import 'package:kubo/widgets/buttons/icon.button.dart';
-import 'package:kubo/widgets/clippers/image.clipper.dart';
 
 class RecipeStepsPage extends StatefulWidget {
   static const String id = 'recipe_steps_page';

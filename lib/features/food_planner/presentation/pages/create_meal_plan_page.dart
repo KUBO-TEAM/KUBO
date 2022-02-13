@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors_constants.dart';
-import 'package:kubo/constants/sizes_constants.dart';
-import 'package:kubo/constants/text_styles_constants.dart';
-import 'package:kubo/modules/meal_plan/models/recipe.dart';
-import 'package:kubo/modules/meal_plan/screens/assign_meal_time.screen.dart';
-import 'package:kubo/modules/meal_plan/recipes.examples.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/core/constants/text_styles_constants.dart';
+import 'package:kubo/features/food_planner/presentation/pages/assign_meal_time_page.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/popular_card.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/recommended_card.dart';
+import 'package:kubo/core/temp/recipe.dart';
+import 'package:kubo/core/temp/recipes.examples.dart';
 
 class CreateMealPlanPage extends StatelessWidget {
   static const String id = 'create_meal_plan_page';
@@ -15,26 +17,7 @@ class CreateMealPlanPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: kAppBarPrefferedSize,
-        child: AppBar(
-          backgroundColor: Colors.white,
-          titleSpacing: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: kBlackPrimary),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          elevation: 0,
-          title: const Text(
-            'Create Meal Plan',
-            style: TextStyle(
-              color: kBlackPrimary,
-              fontFamily: 'Pushster',
-              fontSize: 30.0,
-            ),
-          ),
-        ),
-      ),
+      appBar: const KuboAppBar('Create Meal Plan'),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -57,15 +40,8 @@ class CreateMealPlanPage extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext context, int index) {
                     return RecommendedCard(
-                      onPressed: (Recipe recipe) {
-                        Navigator.pushNamed(
-                          context,
-                          AssignMealTimeScreen.id,
-                          arguments: AssignMealTimeScreenArguments(
-                            recipe: recipe,
-                          ),
-                        );
-                      },
+                      onPressed: (Recipe recipe) =>
+                          _navigateToAssignMealTimePage(recipe, context),
                       recipe: recommendedRecipes[index],
                     );
                   },
@@ -84,15 +60,8 @@ class CreateMealPlanPage extends StatelessWidget {
                 children: List.generate(
                   popularRecipes.length,
                   (index) => PopularCard(
-                    onPressed: (Recipe recipe) {
-                      Navigator.pushNamed(
-                        context,
-                        AssignMealTimeScreen.id,
-                        arguments: AssignMealTimeScreenArguments(
-                          recipe: recipe,
-                        ),
-                      );
-                    },
+                    onPressed: (Recipe recipe) =>
+                        _navigateToAssignMealTimePage(recipe, context),
                     recipe: popularRecipes[index],
                   ),
                 ),
@@ -103,121 +72,13 @@ class CreateMealPlanPage extends StatelessWidget {
       ),
     );
   }
-}
 
-class PopularCard extends StatelessWidget {
-  const PopularCard({
-    Key? key,
-    required this.recipe,
-    required this.onPressed,
-  }) : super(key: key);
-
-  final Recipe recipe;
-  final Function(Recipe) onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        onPressed(recipe);
-      },
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Card(
-              semanticContainer: true,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(13.0)),
-              ),
-              child: Image.network(
-                recipe.imageUrl,
-                fit: BoxFit.cover,
-                height: 80.0,
-                width: 75.0,
-              ),
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    recipe.name,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    style: kSubTitleTextStyle.copyWith(
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  Text(
-                    recipe.description,
-                    style: kCaptionTextStyle,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class RecommendedCard extends StatelessWidget {
-  const RecommendedCard({
-    Key? key,
-    required this.recipe,
-    required this.onPressed,
-  }) : super(key: key);
-
-  final Recipe recipe;
-  final Function(Recipe) onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        onPressed(recipe);
-      },
-      child: Padding(
-        padding: const EdgeInsets.only(right: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Card(
-              semanticContainer: true,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(13.0)),
-              ),
-              child: Image.network(
-                recipe.imageUrl,
-                fit: BoxFit.cover,
-                height: 150.0,
-                width: 180.0,
-              ),
-            ),
-            SizedBox(
-              width: 180.0,
-              child: Text(
-                recipe.name,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                style: kCaptionTextStyle.copyWith(
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-            ),
-          ],
-        ),
+  void _navigateToAssignMealTimePage(Recipe recipe, BuildContext context) {
+    Navigator.pushNamed(
+      context,
+      AssignMealTimePage.id,
+      arguments: AssignMealTimePageArguments(
+        recipe: recipe,
       ),
     );
   }

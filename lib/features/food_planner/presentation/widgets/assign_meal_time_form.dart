@@ -6,11 +6,11 @@ import 'package:kubo/constants/colors_constants.dart';
 import 'package:kubo/constants/list_costants.dart';
 import 'package:kubo/constants/snackbar_constants.dart';
 import 'package:kubo/constants/text_styles_constants.dart';
-import 'package:kubo/modules/meal_plan/bloc/meal_plan_cubit.dart';
-import 'package:kubo/modules/meal_plan/models/recipe.dart';
-import 'package:kubo/modules/menu/bloc/menu_cubit.dart';
-import 'package:kubo/modules/menu/screens/menu.screen.dart';
-import 'package:kubo/utils/hive/objects/schedule.hive.dart';
+import 'package:kubo/core/hive/objects/schedule.hive.dart';
+import 'package:kubo/core/temp/recipe.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/meal_plan_cubit.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_cubit.dart';
+import 'package:kubo/features/food_planner/presentation/pages/menu_page.dart';
 import 'package:kubo/widgets/buttons/square.button.dart';
 import 'package:kubo/widgets/selectors/color.selector.dart';
 import 'package:kubo/widgets/selectors/day.selector.dart';
@@ -165,7 +165,7 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
                     .showSnackBar(kSuccessfullySaveSnackBar);
 
                 Navigator.pushNamedAndRemoveUntil(
-                    context, MenuScreen.id, (route) => route.isFirst);
+                    context, MenuPage.id, (route) => route.isFirst);
               } else {
                 BlocProvider.of<MenuCubit>(context).updateSchedule(
                   schedule: widget.schedule!,
@@ -180,7 +180,7 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
                     .showSnackBar(kSuccessfullySaveSnackBar);
 
                 Navigator.pushNamedAndRemoveUntil(
-                    context, MenuScreen.id, (route) => route.isFirst);
+                    context, MenuPage.id, (route) => route.isFirst);
               }
             },
           ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/text_styles_constants.dart';
+import 'package:kubo/core/temp/ingredients.dart';
 import 'package:kubo/features/food_planner/presentation/pages/create_meal_plan_page.dart';
-import 'package:kubo/modules/meal_plan/models/ingredients.dart';
 
 class SelectIngredientBody extends StatelessWidget {
   const SelectIngredientBody({

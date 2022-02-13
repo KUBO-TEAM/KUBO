@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/core/temp/recipe.dart';
+import 'package:kubo/core/temp/schedule.model.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/meal_plan_cubit.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_cubit.dart';
 import 'package:kubo/features/food_planner/presentation/pages/assign_meal_time_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/select_ingredients_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/floating_buttons.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
-import 'package:kubo/modules/meal_plan/bloc/meal_plan_cubit.dart';
-import 'package:kubo/modules/meal_plan/models/recipe.dart';
-import 'package:kubo/modules/meal_plan/screens/select_ingredients.screen.dart';
-import 'package:kubo/modules/menu/bloc/menu_cubit.dart';
-import 'package:kubo/modules/menu/models/schedule.model.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 const _calendarHeaderStyle = CalendarHeaderStyle(

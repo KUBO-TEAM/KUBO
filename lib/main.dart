@@ -3,19 +3,20 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
-import 'package:kubo/config/router.dart';
-import 'package:kubo/core/walk_through/splash_screen.dart';
-import 'package:kubo/modules/agenda/bloc/agenda_cubit.dart';
-import 'package:kubo/modules/menu/repositories/menu_repository.dart';
-import 'package:kubo/modules/menu_history/bloc/menu_history_cubit.dart';
-import 'package:kubo/modules/menu_history/repositories/menu_history_repositories.dart';
-import 'package:kubo/utils/hive/adapters/color.adapter.dart';
-import 'package:kubo/utils/hive/objects/schedule.hive.dart';
-import 'package:kubo/utils/services/local_storage_service.dart';
+import 'package:injectable/injectable.dart';
+import 'package:kubo/core/hive/adapters/color.adapter.dart';
+import 'package:kubo/core/hive/objects/schedule.hive.dart';
+import 'package:kubo/core/temp/local_storage_service.dart';
+import 'package:kubo/core/temp/menu_history_repositories.dart';
+import 'package:kubo/core/temp/menu_repository.dart';
+import 'package:kubo/core/walk_through/splash_page.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/agenda/agenda_cubit.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/meal_plan_cubit.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_cubit.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/menu_history/menu_history_cubit.dart';
+import 'package:kubo/injection.dart';
+import 'package:kubo/router.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
-
-import 'modules/meal_plan/bloc/meal_plan_cubit.dart';
-import 'modules/menu/bloc/menu_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,20 +28,19 @@ Future<void> main() async {
     ..registerAdapter(ColorAdapter())
     ..registerAdapter(ScheduleHiveAdapter());
 
+  configureDependencies();
+
   runApp(
-    Kubo(
-      appRouter: AppRouter(),
-      localStorageService: LocalStorageService(),
-    ),
+    getIt<Kubo>(),
   );
 }
 
+@lazySingleton
 class Kubo extends StatelessWidget {
   const Kubo({
-    Key? key,
     required this.appRouter,
     required this.localStorageService,
-  }) : super(key: key);
+  }) : super(key: null);
 
   final AppRouter appRouter;
   final LocalStorageService localStorageService;
@@ -69,7 +69,7 @@ class Kubo extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        initialRoute: SplashScreen.id,
+        initialRoute: SplashPage.id,
         onGenerateRoute: appRouter.onGenerateRoute,
       ),
     );

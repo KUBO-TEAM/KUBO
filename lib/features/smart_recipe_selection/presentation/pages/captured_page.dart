@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kubo/widgets/buttons/icon.button.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/icon_button.dart';
 import 'package:tflite/tflite.dart';
 
 class CapturedPageArguments {

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/text_styles_constants.dart';
+import 'package:kubo/core/temp/ingredients.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/selected_ingredient_body.dart';
-import 'package:kubo/modules/meal_plan/models/ingredients.dart';
 
 class SelectIngredientsPage extends StatefulWidget {
   static const String id = 'select_ingredients_page';
