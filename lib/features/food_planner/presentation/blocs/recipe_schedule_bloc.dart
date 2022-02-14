@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import 'package:kubo/core/error/failures.dart';
 import 'package:kubo/core/error/error_messages.dart';
 import 'package:kubo/core/helpers/date_converter.dart';
@@ -10,6 +11,7 @@ import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedul
 part 'recipe_schedule_event.dart';
 part 'recipe_schedule_state.dart';
 
+@injectable
 class RecipeScheduleBloc
     extends Bloc<RecipeScheduleEvent, RecipeScheduleState> {
   final CreateRecipeSchedule createRecipeSchedule;

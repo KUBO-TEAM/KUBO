@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 import 'package:kubo/core/constants/list_costants.dart';
 import 'package:kubo/core/error/failures.dart';
@@ -16,6 +17,7 @@ class StartAndEndTimeOfDay extends Equatable {
   List<Object?> get props => [start, end];
 }
 
+@lazySingleton
 class DateConverter {
   Either<Failure, StartAndEndTimeOfDay> convertStartAndEndTimeOfDay({
     required int day,

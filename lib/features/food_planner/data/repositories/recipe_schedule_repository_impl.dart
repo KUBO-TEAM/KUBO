@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:kubo/core/error/exceptions.dart';
 import 'package:kubo/features/food_planner/data/datasources/recipe_schedule_local_data_source.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
@@ -7,6 +8,7 @@ import 'dart:ui';
 
 import 'package:kubo/features/food_planner/domain/repositories/recipe_schedule_repository.dart';
 
+@lazySingleton
 class RecipeScheduleRepositoryImpl implements RecipeScheduleRepository {
   final RecipeScheduleLocalDataSource localDataSource;
 
