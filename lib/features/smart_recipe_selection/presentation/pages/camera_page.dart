@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors_constants.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/captured_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/camera_circle_button.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/camera_clipper.dart';

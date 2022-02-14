@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors_constants.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
 
 class CameraClipper extends StatelessWidget {
   const CameraClipper({Key? key}) : super(key: key);

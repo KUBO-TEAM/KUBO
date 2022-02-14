@@ -2,8 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/temp/recipe.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/icon_button.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/image_clipper.dart';
-import 'package:kubo/widgets/buttons/icon.button.dart';
 
 class RecipeStepsPage extends StatefulWidget {
   static const String id = 'recipe_steps_page';

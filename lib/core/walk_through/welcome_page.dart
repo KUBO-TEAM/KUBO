@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors_constants.dart';
-import 'package:kubo/constants/string_constants.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/core/constants/string_constants.dart';
 import 'package:kubo/core/widgets/welcome.clipper.dart';
 import 'package:kubo/features/food_planner/presentation/pages/home_page.dart';
-import 'package:kubo/widgets/buttons/rounded.button.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:hive/hive.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
 
 class WelcomePage extends StatefulWidget {
   static const String id = 'welcome_Page';

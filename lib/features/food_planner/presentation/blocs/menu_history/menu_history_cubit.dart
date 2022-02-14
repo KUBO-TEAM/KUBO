@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
-import 'package:kubo/constants/menu_constants.dart';
+import 'package:kubo/core/constants/menu_constants.dart';
 import 'package:kubo/core/temp/menu_history_repositories.dart';
 import 'package:kubo/core/temp/schedule.model.dart';
 import 'package:meta/meta.dart';

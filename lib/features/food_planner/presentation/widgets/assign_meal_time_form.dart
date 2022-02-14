@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:kubo/constants/colors_constants.dart';
-import 'package:kubo/constants/list_costants.dart';
-import 'package:kubo/constants/snackbar_constants.dart';
-import 'package:kubo/constants/text_styles_constants.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/core/constants/list_costants.dart';
+import 'package:kubo/core/constants/snackbar_constants.dart';
+import 'package:kubo/core/constants/text_styles_constants.dart';
 import 'package:kubo/core/hive/objects/schedule.hive.dart';
 import 'package:kubo/core/temp/recipe.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/meal_plan_cubit.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_cubit.dart';
 import 'package:kubo/features/food_planner/presentation/pages/menu_page.dart';
-import 'package:kubo/widgets/buttons/square.button.dart';
-import 'package:kubo/widgets/selectors/color.selector.dart';
-import 'package:kubo/widgets/selectors/day.selector.dart';
-import 'package:kubo/widgets/selectors/time.selector.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/color_selector.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/day_selector.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/square_button.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/time_selector.dart';
 
 class AssignMealTimeForm extends StatefulWidget {
   const AssignMealTimeForm({

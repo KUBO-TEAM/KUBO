@@ -7,6 +7,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../../test_constants.dart';
 import 'create_recipe_schedule_test.mocks.dart';
 
 @GenerateMocks([RecipeScheduleRepository])
@@ -18,17 +19,6 @@ void main() {
     mockRecipeScheduleRepository = MockRecipeScheduleRepository();
     createRecipeSchedule = CreateRecipeSchedule(mockRecipeScheduleRepository);
   });
-
-  final tRecipeSchedule = RecipeSchedule(
-    id: '123',
-    name: 'name',
-    description: 'description',
-    imageUrl: 'imageUrl',
-    start: DateTime.now(),
-    end: DateTime.now().add(const Duration(hours: 1)),
-    color: Colors.red,
-    isAllDay: false,
-  );
 
   test(
       'should create RecipeSchedule, then return the created schedule from the repository.',
@@ -44,15 +34,6 @@ void main() {
       isAllDay: anyNamed('isAllDay'),
     )).thenAnswer((_) async => Right(tRecipeSchedule));
 
-    const tId = '123';
-    const tName = 'name';
-    const tDescription = 'description';
-    const tImageUrl = 'imageUrl';
-    final tStart = DateTime.now();
-    final tEnd = DateTime.now().add(const Duration(hours: 1));
-    final tColor = Colors.white;
-    const tAllDay = false;
-
     final result = await createRecipeSchedule(
       Params(
         id: tId,
@@ -66,7 +47,6 @@ void main() {
       ),
     );
 
-    expect(result, Right(tRecipeSchedule));
     verify(
       mockRecipeScheduleRepository.createRecipeSchedule(
         id: tId,
@@ -79,5 +59,7 @@ void main() {
         isAllDay: tAllDay,
       ),
     );
+
+    expect(result, Right(tRecipeSchedule));
   });
 }

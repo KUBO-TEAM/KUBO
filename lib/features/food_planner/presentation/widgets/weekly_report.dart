@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors_constants.dart';
-import 'package:kubo/constants/text_styles_constants.dart';
+import 'package:kubo/core/constants/text_styles_constants.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/icon_title.dart';
 
 const _title = 'Weekly report';

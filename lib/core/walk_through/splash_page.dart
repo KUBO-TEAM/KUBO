@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
-import 'package:kubo/constants/string_constants.dart';
+import 'package:kubo/core/constants/string_constants.dart';
 import 'package:kubo/core/walk_through/welcome_page.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_cubit.dart';
 import 'package:kubo/features/food_planner/presentation/pages/home_page.dart';

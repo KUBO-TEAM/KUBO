@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors_constants.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/menu_constants.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/menu_history_event_list.dart';

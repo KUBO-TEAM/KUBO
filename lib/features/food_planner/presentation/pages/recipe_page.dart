@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/constants/colors_constants.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/temp/recipes.examples.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_list_tile.dart';
-import 'package:kubo/widgets/text_fields/search.field.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/search_field.dart';
 
 class RecipePage extends StatelessWidget {
   static const String id = 'recipe_page';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kubo/constants/colors_constants.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/agenda/agenda_cubit.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/agenda_card_tile.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/agenda_modal_form.dart';
