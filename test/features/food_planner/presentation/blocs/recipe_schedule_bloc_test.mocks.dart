@@ -5,7 +5,9 @@
 import 'dart:async' as _i5;
 
 import 'package:dartz/dartz.dart' as _i3;
+import 'package:flutter/material.dart' as _i9;
 import 'package:kubo/core/error/failures.dart' as _i6;
+import 'package:kubo/core/helpers/date_converter.dart' as _i8;
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart'
     as _i7;
 import 'package:kubo/features/food_planner/domain/repositories/recipe_schedule_repository.dart'
@@ -51,4 +53,28 @@ class MockCreateRecipeSchedule extends _i1.Mock
                   Future<_i3.Either<_i6.Failure, _i7.RecipeSchedule>>.value(
                       _FakeEither_1<_i6.Failure, _i7.RecipeSchedule>()))
           as _i5.Future<_i3.Either<_i6.Failure, _i7.RecipeSchedule>>);
+}
+
+/// A class which mocks [DateConverter].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDateConverter extends _i1.Mock implements _i8.DateConverter {
+  MockDateConverter() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Either<_i6.Failure, _i8.StartAndEndTimeOfDay> convertStartAndEndTimeOfDay(
+          {int? day,
+          _i9.TimeOfDay? startTimeOfDay,
+          _i9.TimeOfDay? endTimeOfDay}) =>
+      (super.noSuchMethod(
+              Invocation.method(#convertStartAndEndTimeOfDay, [], {
+                #day: day,
+                #startTimeOfDay: startTimeOfDay,
+                #endTimeOfDay: endTimeOfDay
+              }),
+              returnValue:
+                  _FakeEither_1<_i6.Failure, _i8.StartAndEndTimeOfDay>())
+          as _i3.Either<_i6.Failure, _i8.StartAndEndTimeOfDay>);
 }

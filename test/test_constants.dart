@@ -1,13 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/features/food_planner/data/models/recipe_schedule_model.dart';
-import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 
 const tId = '123';
 const tName = 'name';
 const tDescription = 'description';
 const tImageUrl = 'imageUrl';
-final tStart = DateTime.now();
-final tEnd = DateTime.now().add(const Duration(hours: 1));
+const tDay = 1;
+
+final dateTimeNow = DateTime.now();
+const tStartTimeOfDay = TimeOfDay(hour: 12, minute: 0);
+const tEndTimeOfDay = TimeOfDay(hour: 13, minute: 0);
+
+final tStart = DateTime(
+  dateTimeNow.year,
+  dateTimeNow.month,
+  dateTimeNow.day,
+  12,
+  0,
+);
+
+final tEnd = DateTime(
+  dateTimeNow.year,
+  dateTimeNow.month,
+  dateTimeNow.day,
+  13,
+  0,
+);
 final tColor = Colors.white;
 const tAllDay = false;
 

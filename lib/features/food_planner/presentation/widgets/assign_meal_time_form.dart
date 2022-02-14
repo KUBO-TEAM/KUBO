@@ -10,6 +10,7 @@ import 'package:kubo/core/hive/objects/schedule.hive.dart';
 import 'package:kubo/core/temp/recipe.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/meal_plan_cubit.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_cubit.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/menu_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/color_selector.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/day_selector.dart';
@@ -136,8 +137,32 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
     );
   }
 
-  Future<void> onSave(
-      {Recipe? recipe, TimeOfDay? start, TimeOfDay? end, int? day}) async {
+  void save() {
+    final recipe = widget.recipe;
+
+    if (start != null && end != null) {
+      BlocProvider.of<RecipeScheduleBloc>(context).add(
+        CreateRecipeScheduleForMenu(
+          id: recipe.id,
+          name: recipe.name,
+          day: day,
+          description: recipe.description,
+          imageUrl: recipe.imageUrl,
+          start: start!,
+          end: end!,
+          color: colorPicked,
+          isAllDay: false,
+        ),
+      );
+    }
+  }
+
+  Future<void> onSave({
+    Recipe? recipe,
+    TimeOfDay? start,
+    TimeOfDay? end,
+    int? day,
+  }) async {
     if (recipe != null && start != null && end != null && day != null) {
       final popup = BeautifulPopup(
         context: context,

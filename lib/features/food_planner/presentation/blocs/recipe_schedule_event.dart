@@ -12,8 +12,8 @@ class CreateRecipeScheduleForMenu extends RecipeScheduleEvent {
   final String name;
   final String description;
   final String imageUrl;
-  final DateTime start;
-  final DateTime end;
+  final TimeOfDay start;
+  final TimeOfDay end;
   final int day;
   final Color color;
   final bool isAllDay;
