@@ -32,7 +32,6 @@ class KuboAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => _appBarSize;
 }
 
@@ -63,7 +62,6 @@ class KuboHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => _appBarSize;
 }
 
@@ -95,7 +93,6 @@ class KuboTransparentAppBar extends StatelessWidget
   }
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => _appBarSize;
 }
 

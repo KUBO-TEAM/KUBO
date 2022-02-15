@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/core/temp/recipe.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/meal_plan_cubit.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/assign_meal_plan_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule/recipe_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/assign_meal_time_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/select_ingredients_page.dart';
@@ -55,15 +55,16 @@ class MenuPage extends StatelessWidget {
       body: SafeArea(
         child: BlocBuilder<RecipeScheduleBloc, RecipeScheduleState>(
             builder: (context, state) {
-          if ((state is Loading) == false) {
-            return const Center(child: CircularProgressIndicator());
-          }
+          // if ((state is RecipeScheduleInProgress) == false) {
+          //   return const Center(child: CircularProgressIndicator());
+          // }
 
-          final recipeSchedules = (state as Loaded).recipeSchedules;
+          // final recipeSchedules =
+          //     (state as RecipeScheduleSuccess).recipeSchedules;
 
           return SfCalendar(
             todayHighlightColor: Colors.green,
-            dataSource: ScheduleDataSource(recipeSchedules),
+            dataSource: ScheduleDataSource([]),
             timeSlotViewSettings: _calendarTimeSlotViewSettings,
             headerStyle: _calendarHeaderStyle,
             viewHeaderStyle: _calendarViewHeaderStyle,
@@ -115,10 +116,13 @@ class MenuPage extends StatelessWidget {
     BuildContext context,
     DateTime startingDate,
   ) {
-    BlocProvider.of<MealPlanCubit>(context).setCellDate(startingDate);
+    BlocProvider.of<AssignMealPlanBloc>(context)
+        .add(AssignMealPlanCellPressed(startingDate: startingDate));
 
     Navigator.pushNamed(context, SelectIngredientsPage.id).then(
-      (_) => BlocProvider.of<MealPlanCubit>(context).removeCellDate(),
+      (_) => BlocProvider.of<AssignMealPlanBloc>(context).add(
+        AssignMealPlanStartingDateRemoved(),
+      ),
     );
   }
 }

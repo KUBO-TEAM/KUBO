@@ -45,7 +45,6 @@ class RecipeScheduleRepositoryImpl implements RecipeScheduleRepository {
 
   @override
   Future<Either<Failure, List<RecipeSchedule>>> getAllRecipeSchedule() {
-    // TODO: implement getAllRecipeSchedule
     throw UnimplementedError();
   }
 }

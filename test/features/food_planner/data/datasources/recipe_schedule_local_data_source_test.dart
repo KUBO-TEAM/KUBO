@@ -3,7 +3,6 @@ import 'package:hive/hive.dart';
 import 'package:kubo/core/hive/objects/recipe_schedule_hive.dart';
 import 'package:kubo/features/food_planner/data/datasources/recipe_schedule_local_data_source.dart';
 import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
 
 import '../../../../test_constants.dart';
 import 'recipe_schedule_local_data_source_test.mocks.dart';

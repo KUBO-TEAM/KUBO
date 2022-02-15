@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/temp/agenda.model.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/agenda/agenda_cubit.dart';
 
 class AgendaCardTile extends StatelessWidget {
   const AgendaCardTile({
@@ -42,8 +40,9 @@ class AgendaCardTile extends StatelessWidget {
         ),
         IconButton(
             splashColor: kBrownPrimary,
-            onPressed: () =>
-                BlocProvider.of<AgendaCubit>(context).removeTask(agenda),
+            onPressed: () {
+              // BlocProvider.of<AgendaCubit>(context).removeTask(agenda),
+            },
             icon: const Icon(
               Icons.delete,
               color: kBrownPrimary,

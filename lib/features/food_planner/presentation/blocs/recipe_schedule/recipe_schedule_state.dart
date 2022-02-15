@@ -7,18 +7,18 @@ abstract class RecipeScheduleState extends Equatable {
   List<Object> get props => [];
 }
 
-class Empty extends RecipeScheduleState {}
+class RecipeScheduleInitial extends RecipeScheduleState {}
 
-class Loading extends RecipeScheduleState {}
+class RecipeScheduleInProgress extends RecipeScheduleState {}
 
-class Loaded extends RecipeScheduleState {
+class RecipeScheduleSuccess extends RecipeScheduleState {
   final List<RecipeSchedule> recipeSchedules;
 
-  const Loaded({required this.recipeSchedules});
+  const RecipeScheduleSuccess({required this.recipeSchedules});
 }
 
-class Error extends RecipeScheduleState {
+class RecipeScheduleFailure extends RecipeScheduleState {
   final String message;
 
-  const Error(this.message);
+  const RecipeScheduleFailure(this.message);
 }

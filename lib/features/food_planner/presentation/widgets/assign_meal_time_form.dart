@@ -7,8 +7,8 @@ import 'package:kubo/core/constants/list_costants.dart';
 import 'package:kubo/core/constants/snackbar_constants.dart';
 import 'package:kubo/core/constants/text_styles_constants.dart';
 import 'package:kubo/core/hive/objects/recipe_schedule_hive.dart';
-import 'package:kubo/core/temp/recipe.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/meal_plan_cubit.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/assign_meal_plan_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule/recipe_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/menu_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/color_selector.dart';
@@ -59,7 +59,7 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
   Widget build(BuildContext context) {
     return BlocListener<RecipeScheduleBloc, RecipeScheduleState>(
       listener: (context, state) {
-        if (state is Loaded) {
+        if (state is RecipeScheduleSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(kSuccessfullySaveSnackBar);
 
           Navigator.pushNamedAndRemoveUntil(
@@ -71,25 +71,28 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
           ScaffoldMessenger.of(context).showSnackBar(kFailedSaveSnackBar);
         }
       },
-      child: BlocBuilder<MealPlanCubit, MealPlanState>(
+      child: BlocBuilder<AssignMealPlanBloc, AssignMealPlanState>(
         builder: (context, state) {
-          if (state is CellDateSetSuccess) {
+          if (state is AssignMealPlanSuccess) {
             TimeOfDay? startingDate = start;
             TimeOfDay? endingDate = end;
 
             startingDate = _dateTimeToTimeOfDay(state.startingDate);
+
             start = startingDate;
 
             endingDate = _dateTimeToTimeOfDay(
-              state.startingDate!.add(const Duration(hours: 1)),
+              state.startingDate.add(const Duration(hours: 1)),
             );
             end = endingDate;
 
             day = kDayList.indexOf(
-              DateFormat('EEEE').format(state.startingDate!),
+              DateFormat('EEEE').format(state.startingDate),
             );
 
-            BlocProvider.of<MealPlanCubit>(context).removeCellDate();
+            BlocProvider.of<AssignMealPlanBloc>(context).add(
+              AssignMealPlanStartingDateRemoved(),
+            );
           }
 
           return Column(

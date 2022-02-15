@@ -5,7 +5,7 @@ import 'package:kubo/features/food_planner/presentation/pages/assign_meal_time_p
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/popular_card.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recommended_card.dart';
-import 'package:kubo/core/temp/recipe.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/core/temp/recipes.examples.dart';
 
 class CreateMealPlanPage extends StatelessWidget {

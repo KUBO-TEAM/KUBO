@@ -1,4 +1,4 @@
-import 'package:kubo/core/temp/recipe.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 
 final List<Recipe> recommendedRecipes = [
   const Recipe(

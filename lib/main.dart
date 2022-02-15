@@ -7,8 +7,7 @@ import 'package:injectable/injectable.dart';
 import 'package:kubo/core/hive/adapters/color.adapter.dart';
 import 'package:kubo/core/hive/objects/recipe_schedule_hive.dart';
 import 'package:kubo/core/walk_through/splash_page.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/agenda/agenda_cubit.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/meal_plan_cubit.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/assign_meal_plan_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule/recipe_schedule_bloc.dart';
 import 'package:kubo/injection.dart';
 import 'package:kubo/router.dart';
@@ -44,10 +43,7 @@ class Kubo extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => getIt<RecipeScheduleBloc>()),
-        BlocProvider(create: (_) => AgendaCubit()),
-        BlocProvider(
-          create: (_) => MealPlanCubit(),
-        ),
+        BlocProvider(create: (_) => AssignMealPlanBloc()),
       ],
       child: MaterialApp(
         initialRoute: SplashPage.id,

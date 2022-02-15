@@ -8,7 +8,7 @@ import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule/re
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../../../test_constants.dart';
+import '../../../../../test_constants.dart';
 import 'recipe_schedule_bloc_test.mocks.dart';
 
 @GenerateMocks([CreateRecipeSchedule, DateConverter])
@@ -26,8 +26,8 @@ void main() {
     );
   });
 
-  test('initial state of the bloc should be empty', () async {
-    expect(bloc.state, equals(Empty()));
+  test('initial state of the bloc should be RecipeScheduleInitial', () async {
+    expect(bloc.state, equals(RecipeScheduleInitial()));
   });
 
   group('createRecipeSchedule', () {
@@ -51,7 +51,7 @@ void main() {
         ),
       );
 
-      bloc.add(CreateRecipeScheduleForMenu(
+      bloc.add(const CreateRecipeScheduleForMenu(
         id: tId,
         name: tName,
         description: tDescription,
@@ -89,7 +89,8 @@ void main() {
       );
     });
 
-    test('should emit [Loading, Loaded] when data is gotten successfully',
+    test(
+        'should emit [RecipeScheduleInProgress, RecipeScheduleSuccess] when data is gotten successfully',
         () async {
       when(mockCreateRecipeSchedule(any))
           .thenAnswer((_) async => Right(tRecipeSchedule));
@@ -110,15 +111,15 @@ void main() {
       );
 
       final expected = [
-        Loading(),
-        Loaded(
+        RecipeScheduleInProgress(),
+        RecipeScheduleSuccess(
           recipeSchedules: [tRecipeSchedule],
         ),
       ];
 
       expectLater(bloc.stream, emitsInOrder(expected));
 
-      bloc.add(CreateRecipeScheduleForMenu(
+      bloc.add(const CreateRecipeScheduleForMenu(
         id: tId,
         name: tName,
         description: tDescription,
@@ -131,7 +132,9 @@ void main() {
       ));
     });
 
-    test('should emit [Loading, Error] when data is getting fails', () async {
+    test(
+        'should emit [RecipeScheduleInProgress, RecipeScheduleFailure] when data is getting fails',
+        () async {
       when(mockCreateRecipeSchedule(any))
           .thenAnswer((_) async => Left(CacheFailure()));
 
@@ -151,14 +154,14 @@ void main() {
       );
 
       final expected = [
-        Loading(),
-        const Error(CACHE_FAILURE_MESSAGE),
+        RecipeScheduleInProgress(),
+        const RecipeScheduleFailure(CACHE_FAILURE_MESSAGE),
       ];
 
       expectLater(bloc.stream, emitsInOrder(expected));
 
       bloc.add(
-        CreateRecipeScheduleForMenu(
+        const CreateRecipeScheduleForMenu(
           id: tId,
           name: tName,
           description: tDescription,
@@ -172,7 +175,9 @@ void main() {
       );
     });
 
-    test('should emit [Loading, Error] when date time conversion fail', () {
+    test(
+        'should emit [RecipeScheduleInProgress, RecipeScheduleFailure] when date time conversion fail',
+        () {
       when(mockDateConverter.convertStartAndEndTimeOfDay(
         day: anyNamed('day'),
         startTimeOfDay: anyNamed('startTimeOfDay'),
@@ -184,14 +189,14 @@ void main() {
       );
 
       final expected = [
-        Loading(),
-        const Error(DATE_CONVERTER_FAILURE_MESSAGE),
+        RecipeScheduleInProgress(),
+        const RecipeScheduleFailure(DATE_CONVERTER_FAILURE_MESSAGE),
       ];
 
       expectLater(bloc.stream, emitsInOrder(expected));
 
       bloc.add(
-        CreateRecipeScheduleForMenu(
+        const CreateRecipeScheduleForMenu(
           id: tId,
           name: tName,
           description: tDescription,

@@ -14,7 +14,6 @@ class Recipe extends Equatable {
   final String imageUrl;
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
         id,
         name,

@@ -10,10 +10,9 @@ class StartAndEndTimeOfDay extends Equatable {
   final DateTime start;
   final DateTime end;
 
-  StartAndEndTimeOfDay({required this.start, required this.end});
+  const StartAndEndTimeOfDay({required this.start, required this.end});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [start, end];
 }
 

@@ -19,11 +19,11 @@ class RecipeScheduleBloc
 
   RecipeScheduleBloc(
       {required this.createRecipeSchedule, required this.dateConverter})
-      : super(Empty()) {
+      : super(RecipeScheduleInitial()) {
     on<RecipeScheduleEvent>(
       (event, emit) async {
         if (event is CreateRecipeScheduleForMenu) {
-          emit(Loading());
+          emit(RecipeScheduleInProgress());
 
           final convertDates = dateConverter.convertStartAndEndTimeOfDay(
             day: event.day,
@@ -33,7 +33,7 @@ class RecipeScheduleBloc
 
           await convertDates.fold((failure) {
             emit(
-              Error(
+              RecipeScheduleFailure(
                 _mapFailureToMessage(failure),
               ),
             );
@@ -51,9 +51,9 @@ class RecipeScheduleBloc
             );
 
             await failureOrRecipeSchedule.fold((failure) async {
-              emit(Error(_mapFailureToMessage(failure)));
+              emit(RecipeScheduleFailure(_mapFailureToMessage(failure)));
             }, (recipeSchedule) async {
-              emit(Loaded(recipeSchedules: [recipeSchedule]));
+              emit(RecipeScheduleSuccess(recipeSchedules: [recipeSchedule]));
             });
           });
         }

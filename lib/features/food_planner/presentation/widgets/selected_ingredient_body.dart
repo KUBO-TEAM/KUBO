@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/text_styles_constants.dart';
-import 'package:kubo/core/temp/ingredients.dart';
+import 'package:kubo/features/food_planner/domain/entities/ingredients_box.dart';
 import 'package:kubo/features/food_planner/presentation/pages/create_meal_plan_page.dart';
 
 class SelectIngredientBody extends StatelessWidget {
   const SelectIngredientBody({
     Key? key,
-    required this.ingredient,
+    required this.ingredientsBox,
   }) : super(key: key);
 
-  final Ingredients ingredient;
+  final IngredientsBox ingredientsBox;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class SelectIngredientBody extends StatelessWidget {
       children: [
         Column(
           children: List.generate(
-            ingredient.ingredients.length,
+            ingredientsBox.ingredients.length,
             (int index) {
               return ListTile(
                 leading: const Icon(
@@ -27,7 +27,7 @@ class SelectIngredientBody extends StatelessWidget {
                   color: kGreenPrimary,
                 ),
                 title: Text(
-                  ingredient.ingredients[index],
+                  ingredientsBox.ingredients[index],
                   style: kPreSubTitleTextStyle.copyWith(
                     fontWeight: FontWeight.normal,
                   ),

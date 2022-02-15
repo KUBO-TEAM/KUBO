@@ -1,7 +1,8 @@
 import 'package:kubo/features/food_planner/domain/entities/ingredients_box.dart';
 
+// ignore: must_be_immutable
 class IngredientsBoxModel extends IngredientsBox {
-  const IngredientsBoxModel({
+  IngredientsBoxModel({
     required String id,
     required List<String> ingredients,
     required bool isExpanded,

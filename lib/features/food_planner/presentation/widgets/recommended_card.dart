@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/text_styles_constants.dart';
-import 'package:kubo/core/temp/recipe.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 
 class RecommendedCard extends StatelessWidget {
   const RecommendedCard({

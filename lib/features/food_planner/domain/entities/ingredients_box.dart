@@ -1,21 +1,17 @@
 import 'package:equatable/equatable.dart';
 
+// ignore: must_be_immutable
 class IngredientsBox extends Equatable {
-  const IngredientsBox({
+  IngredientsBox({
     required this.id,
     required this.ingredients,
-    required this.isExpanded,
+    this.isExpanded = false,
   });
 
   final String id;
   final List<String> ingredients;
-  final bool isExpanded;
+  bool isExpanded;
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [
-        id,
-        ingredients,
-        isExpanded,
-      ];
+  List<Object?> get props => [id, ingredients];
 }

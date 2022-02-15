@@ -1,8 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:kubo/core/hive/objects/recipe_schedule_hive.dart';
-import 'package:mockito/mockito.dart';
-
 import '../../../test_constants.dart';
 
 void main() {

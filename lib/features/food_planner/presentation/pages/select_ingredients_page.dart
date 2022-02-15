@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/text_styles_constants.dart';
-import 'package:kubo/core/temp/ingredients.dart';
+import 'package:kubo/features/food_planner/domain/entities/ingredients_box.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/selected_ingredient_body.dart';
 
@@ -15,26 +14,29 @@ class SelectIngredientsPage extends StatefulWidget {
 }
 
 class _SelectIngredientsPageState extends State<SelectIngredientsPage> {
-  final List<Ingredients> _data = [
-    Ingredients(
+  final List<IngredientsBox> _data = [
+    IngredientsBox(
       id: 'Recent Ingredients',
-      ingredients: [
+      ingredients: const [
         'Repolyo',
         'Kangkong',
         'Sitaw',
       ],
+      isExpanded: false,
     ),
-    Ingredients(
+    IngredientsBox(
       id: 'January 3, 2022',
-      ingredients: [
+      ingredients: const [
         'Talong',
       ],
+      isExpanded: false,
     ),
-    Ingredients(
+    IngredientsBox(
       id: 'January 2, 2022',
-      ingredients: [
+      ingredients: const [
         'Carrots',
       ],
+      isExpanded: false,
     ),
   ];
 
@@ -51,7 +53,8 @@ class _SelectIngredientsPageState extends State<SelectIngredientsPage> {
                 _data[index].isExpanded = !isExpanded;
               });
             },
-            children: _data.map<ExpansionPanel>((Ingredients ingredient) {
+            children:
+                _data.map<ExpansionPanel>((IngredientsBox ingredientsBox) {
               return ExpansionPanel(
                 headerBuilder: (BuildContext context, bool isExpanded) {
                   return ListTile(
@@ -60,15 +63,15 @@ class _SelectIngredientsPageState extends State<SelectIngredientsPage> {
                       color: Colors.amber.shade700,
                     ),
                     title: Text(
-                      ingredient.id,
+                      ingredientsBox.id,
                       style: kPreSubTitleTextStyle,
                     ),
                   );
                 },
                 body: SelectIngredientBody(
-                  ingredient: ingredient,
+                  ingredientsBox: ingredientsBox,
                 ),
-                isExpanded: ingredient.isExpanded,
+                isExpanded: ingredientsBox.isExpanded,
               );
             }).toList(),
           ),

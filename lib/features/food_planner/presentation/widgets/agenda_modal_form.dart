@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/agenda/agenda_cubit.dart';
 
 class AgendaModalForm extends StatefulWidget {
   const AgendaModalForm({Key? key}) : super(key: key);
@@ -49,8 +47,8 @@ class _AgendaModalFormState extends State<AgendaModalForm> {
                 splashColor: Colors.green.shade600,
                 tooltip: "Send Message",
                 onPressed: () {
-                  BlocProvider.of<AgendaCubit>(context, listen: false)
-                      .addTask(agendaTitle);
+                  // BlocProvider.of<AgendaCubit>(context, listen: false)
+                  //     .addTask(agendaTitle);
                   Navigator.pop(context);
                 }),
             fillColor: kBackgroundGrey,

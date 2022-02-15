@@ -27,7 +27,7 @@ final tEnd = DateTime(
   13,
   0,
 );
-final tColor = Colors.white;
+const tColor = Colors.white;
 const tAllDay = false;
 
 final tRecipeScheduleModel = RecipeScheduleModel(
