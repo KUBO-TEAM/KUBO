@@ -6,11 +6,10 @@ import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/list_costants.dart';
 import 'package:kubo/core/constants/snackbar_constants.dart';
 import 'package:kubo/core/constants/text_styles_constants.dart';
-import 'package:kubo/core/hive/objects/schedule.hive.dart';
+import 'package:kubo/core/hive/objects/recipe_schedule_hive.dart';
 import 'package:kubo/core/temp/recipe.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/meal_plan_cubit.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_cubit.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule/recipe_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/menu_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/color_selector.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/day_selector.dart';
@@ -24,7 +23,7 @@ class AssignMealTimeForm extends StatefulWidget {
     required this.recipe,
   }) : super(key: key);
 
-  final ScheduleHive? schedule;
+  final RecipeScheduleHive? schedule;
   final Recipe recipe;
 
   @override
@@ -47,10 +46,10 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
     setState(() {
       if (widget.schedule != null) {
         day = kDayList.indexOf(
-          DateFormat('EEEE').format(widget.schedule!.startTime),
+          DateFormat('EEEE').format(widget.schedule!.start),
         );
-        start = _dateTimeToTimeOfDay(widget.schedule!.startTime);
-        end = _dateTimeToTimeOfDay(widget.schedule!.endTime);
+        start = _dateTimeToTimeOfDay(widget.schedule!.start);
+        end = _dateTimeToTimeOfDay(widget.schedule!.end);
         colorPicked = widget.schedule!.color;
       }
     });
@@ -58,82 +57,96 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MealPlanCubit, MealPlanState>(
-      builder: (context, state) {
-        if (state is CellDateSetSuccess) {
-          TimeOfDay? startingDate = start;
-          TimeOfDay? endingDate = end;
+    return BlocListener<RecipeScheduleBloc, RecipeScheduleState>(
+      listener: (context, state) {
+        if (state is Loaded) {
+          ScaffoldMessenger.of(context).showSnackBar(kSuccessfullySaveSnackBar);
 
-          startingDate = _dateTimeToTimeOfDay(state.startingDate);
-          start = startingDate;
-
-          endingDate = _dateTimeToTimeOfDay(
-            state.startingDate!.add(const Duration(hours: 1)),
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            MenuPage.id,
+            (route) => route.isFirst,
           );
-          end = endingDate;
-
-          day = kDayList.indexOf(
-            DateFormat('EEEE').format(state.startingDate!),
-          );
-
-          BlocProvider.of<MealPlanCubit>(context).removeCellDate();
+        } else if (state is Error) {
+          ScaffoldMessenger.of(context).showSnackBar(kFailedSaveSnackBar);
         }
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Pick a schedule',
-              style: kTitleTextStyle,
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            DaySelector(
-              list: kDayList,
-              initialDay: day,
-              leadingIcon: Icons.calendar_today,
-              onSelected: (int? daySelected) {
-                if (daySelected != null) {
-                  day = daySelected;
-                }
-              },
-            ),
-            TimeSelector(
-              title: 'Start',
-              initialTime: start,
-              onTimePicked: (TimeOfDay? startTimePicked) {
-                if (startTimePicked != null) {
-                  start = startTimePicked;
-                }
-              },
-            ),
-            TimeSelector(
-              title: 'End',
-              initialTime: end,
-              onTimePicked: (TimeOfDay? endTimePicked) {
-                if (endTimePicked != null) {
-                  end = endTimePicked;
-                }
-              },
-            ),
-            ColorSelector(
-              currentColor: colorPicked,
-              onColorPicked: (Color? selectedColor) {
-                colorPicked = selectedColor!;
-              },
-            ),
-            SquareButton(
-              onPressed: () => onSave(
-                recipe: widget.recipe,
-                start: start,
-                end: end,
-                day: day,
-              ),
-            )
-          ],
-        );
       },
+      child: BlocBuilder<MealPlanCubit, MealPlanState>(
+        builder: (context, state) {
+          if (state is CellDateSetSuccess) {
+            TimeOfDay? startingDate = start;
+            TimeOfDay? endingDate = end;
+
+            startingDate = _dateTimeToTimeOfDay(state.startingDate);
+            start = startingDate;
+
+            endingDate = _dateTimeToTimeOfDay(
+              state.startingDate!.add(const Duration(hours: 1)),
+            );
+            end = endingDate;
+
+            day = kDayList.indexOf(
+              DateFormat('EEEE').format(state.startingDate!),
+            );
+
+            BlocProvider.of<MealPlanCubit>(context).removeCellDate();
+          }
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Pick a schedule',
+                style: kTitleTextStyle,
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              DaySelector(
+                list: kDayList,
+                initialDay: day,
+                leadingIcon: Icons.calendar_today,
+                onSelected: (int? daySelected) {
+                  if (daySelected != null) {
+                    day = daySelected;
+                  }
+                },
+              ),
+              TimeSelector(
+                title: 'Start',
+                initialTime: start,
+                onTimePicked: (TimeOfDay? startTimePicked) {
+                  if (startTimePicked != null) {
+                    setState(() {
+                      start = startTimePicked;
+                    });
+                  }
+                },
+              ),
+              TimeSelector(
+                title: 'End',
+                initialTime: end,
+                onTimePicked: (TimeOfDay? endTimePicked) {
+                  if (endTimePicked != null) {
+                    setState(() {
+                      end = endTimePicked;
+                    });
+                  }
+                },
+              ),
+              ColorSelector(
+                currentColor: colorPicked,
+                onColorPicked: (Color? selectedColor) {
+                  colorPicked = selectedColor!;
+                },
+              ),
+              SquareButton(
+                onPressed: save,
+              )
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -141,79 +154,43 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
     final recipe = widget.recipe;
 
     if (start != null && end != null) {
-      BlocProvider.of<RecipeScheduleBloc>(context).add(
-        CreateRecipeScheduleForMenu(
-          id: recipe.id,
-          name: recipe.name,
-          day: day,
-          description: recipe.description,
-          imageUrl: recipe.imageUrl,
-          start: start!,
-          end: end!,
-          color: colorPicked,
-          isAllDay: false,
-        ),
-      );
+      _showConfirmationPopUp(() {
+        BlocProvider.of<RecipeScheduleBloc>(context).add(
+          CreateRecipeScheduleForMenu(
+            id: recipe.id,
+            name: recipe.name,
+            day: day,
+            description: recipe.description,
+            imageUrl: recipe.imageUrl,
+            start: start!,
+            end: end!,
+            color: colorPicked,
+            isAllDay: false,
+          ),
+        );
+      });
     }
   }
 
-  Future<void> onSave({
-    Recipe? recipe,
-    TimeOfDay? start,
-    TimeOfDay? end,
-    int? day,
-  }) async {
-    if (recipe != null && start != null && end != null && day != null) {
-      final popup = BeautifulPopup(
-        context: context,
-        template: TemplateTerm,
-      );
+  void _showConfirmationPopUp(VoidCallback yesOnPressed) {
+    final recipe = widget.recipe;
 
-      popup.show(
-        title: 'Wait, Are you sure?',
-        content:
-            'You want to save ${recipe.name} to your ${start.format(context)} to ${end.format(context)} meal on ${kDayList[day]} ?',
-        actions: [
-          popup.button(
-            label: 'Yes',
-            onPressed: () {
-              if (widget.schedule == null) {
-                BlocProvider.of<MenuCubit>(context).addSchedule(
-                  recipe: recipe,
-                  start: start,
-                  end: end,
-                  day: day,
-                  colorPicked: colorPicked,
-                );
+    final popup = BeautifulPopup(
+      context: context,
+      template: TemplateTerm,
+    );
 
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(kSuccessfullySaveSnackBar);
-
-                Navigator.pushNamedAndRemoveUntil(
-                    context, MenuPage.id, (route) => route.isFirst);
-              } else {
-                BlocProvider.of<MenuCubit>(context).updateSchedule(
-                  schedule: widget.schedule!,
-                  recipe: recipe,
-                  start: start,
-                  end: end,
-                  day: day,
-                  colorPicked: colorPicked,
-                );
-
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(kSuccessfullySaveSnackBar);
-
-                Navigator.pushNamedAndRemoveUntil(
-                    context, MenuPage.id, (route) => route.isFirst);
-              }
-            },
-          ),
-        ],
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(kFailedSaveSnackBar);
-    }
+    popup.show(
+      title: 'Wait, Are you sure?',
+      content:
+          'You want to save ${recipe.name} to your ${start!.format(context)} to ${end!.format(context)} meal on ${kDayList[day]} ?',
+      actions: [
+        popup.button(
+          label: 'Yes',
+          onPressed: yesOnPressed,
+        ),
+      ],
+    );
   }
 
   TimeOfDay? _dateTimeToTimeOfDay(DateTime? time) {

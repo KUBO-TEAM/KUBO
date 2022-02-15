@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:kubo/core/constants/string_constants.dart';
-import 'package:kubo/core/hive/objects/schedule.hive.dart';
+import 'package:kubo/core/hive/objects/recipe_schedule_hive.dart';
 import 'package:kubo/core/temp/recipe.dart';
+import 'package:kubo/features/food_planner/data/datasources/recipe_schedule_local_data_source.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/assign_meal_time_form.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_clipper.dart';
@@ -33,18 +34,15 @@ class AssignMealTimePage extends StatefulWidget {
 }
 
 class _AssignMealTimePageState extends State<AssignMealTimePage> {
-  Box<dynamic>? scheduleBox;
-  ScheduleHive? schedule;
+  RecipeScheduleHive? recipeScheduleHive;
 
   Future<void> initializeBox() async {
-    scheduleBox = await Hive.openBox(kScheduleBox);
-    if (scheduleBox!.isEmpty == false) {
-      final Recipe recipe = widget.arguments.recipe;
-      // scheduleBox!.deleteAll(scheduleBox!.keys);
+    Box<RecipeScheduleHive> box = await Hive.openBox(kRecipeScheduleBoxKey);
 
-      setState(() {
-        schedule = scheduleBox!.get(recipe.id);
-      });
+    if (box.isEmpty == false) {
+      final Recipe recipe = widget.arguments.recipe;
+
+      recipeScheduleHive = box.get(recipe.id);
     }
   }
 
@@ -82,7 +80,7 @@ class _AssignMealTimePageState extends State<AssignMealTimePage> {
                 width: size.width - 10,
                 padding: const EdgeInsets.all(16.0),
                 child: AssignMealTimeForm(
-                  schedule: schedule,
+                  schedule: recipeScheduleHive,
                   recipe: recipe,
                 ),
               ),
@@ -110,8 +108,8 @@ class _AssignMealTimePageState extends State<AssignMealTimePage> {
               child: SizedBox(
                 width: size.width - 40,
                 child: Text(
-                  schedule != null
-                      ? _scheduleFormatter(schedule)
+                  recipeScheduleHive != null
+                      ? _scheduleFormatter(recipeScheduleHive)
                       : 'No schedule',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
@@ -129,10 +127,10 @@ class _AssignMealTimePageState extends State<AssignMealTimePage> {
     );
   }
 
-  String _scheduleFormatter(ScheduleHive? scheduleHive) {
-    final todayWeekday = DateFormat('EEEE').format(scheduleHive!.startTime);
+  String _scheduleFormatter(RecipeScheduleHive? scheduleHive) {
+    final todayWeekday = DateFormat('EEEE').format(scheduleHive!.start);
 
-    return '$todayWeekday, ${_dateTimeToString(scheduleHive.startTime)} - ${_dateTimeToString(scheduleHive.endTime)}';
+    return '$todayWeekday, ${_dateTimeToString(scheduleHive.start)} - ${_dateTimeToString(scheduleHive.end)}';
   }
 
   String? _dateTimeToString(DateTime? time) {

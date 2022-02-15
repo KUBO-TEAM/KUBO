@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:injectable/injectable.dart';
-import 'package:kubo/core/constants/string_constants.dart';
-import 'package:kubo/core/hive/objects/schedule.hive.dart';
 
 part 'recipe_schedule_hive.g.dart';
 

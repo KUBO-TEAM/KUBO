@@ -4,7 +4,7 @@ import 'package:kubo/core/error/error_messages.dart';
 import 'package:kubo/core/error/failures.dart';
 import 'package:kubo/core/helpers/date_converter.dart';
 import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedule.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule/recipe_schedule_bloc.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -112,7 +112,7 @@ void main() {
       final expected = [
         Loading(),
         Loaded(
-          recipeSchedule: tRecipeSchedule,
+          recipeSchedules: [tRecipeSchedule],
         ),
       ];
 

@@ -12,9 +12,9 @@ class Empty extends RecipeScheduleState {}
 class Loading extends RecipeScheduleState {}
 
 class Loaded extends RecipeScheduleState {
-  final RecipeSchedule recipeSchedule;
+  final List<RecipeSchedule> recipeSchedules;
 
-  const Loaded({required this.recipeSchedule});
+  const Loaded({required this.recipeSchedules});
 }
 
 class Error extends RecipeScheduleState {

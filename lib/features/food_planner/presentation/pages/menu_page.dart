@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/temp/recipe.dart';
-import 'package:kubo/core/temp/schedule.model.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/meal_plan_cubit.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_cubit.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule/recipe_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/assign_meal_time_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/select_ingredients_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/floating_buttons.dart';
@@ -53,16 +53,17 @@ class MenuPage extends StatelessWidget {
       floatingActionButton: const FloatingMenuButton(),
       appBar: const KuboAppBar('Menu'),
       body: SafeArea(
-        child: BlocBuilder<MenuCubit, MenuState>(builder: (context, state) {
-          if ((state is MenuLoaded) == false) {
+        child: BlocBuilder<RecipeScheduleBloc, RecipeScheduleState>(
+            builder: (context, state) {
+          if ((state is Loading) == false) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final schedules = (state as MenuLoaded).schedules;
+          final recipeSchedules = (state as Loaded).recipeSchedules;
 
           return SfCalendar(
             todayHighlightColor: Colors.green,
-            dataSource: ScheduleDataSource(schedules),
+            dataSource: ScheduleDataSource(recipeSchedules),
             timeSlotViewSettings: _calendarTimeSlotViewSettings,
             headerStyle: _calendarHeaderStyle,
             viewHeaderStyle: _calendarViewHeaderStyle,
@@ -123,7 +124,7 @@ class MenuPage extends StatelessWidget {
 }
 
 class ScheduleDataSource extends CalendarDataSource {
-  ScheduleDataSource(List<Schedule>? source) {
+  ScheduleDataSource(List<RecipeSchedule>? source) {
     appointments = source;
   }
 

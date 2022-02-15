@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kubo/core/hive/objects/recipe_schedule_hive.dart';
 import 'package:kubo/features/food_planner/data/models/recipe_schedule_model.dart';
 
 const tId = '123';
@@ -38,6 +39,16 @@ final tRecipeScheduleModel = RecipeScheduleModel(
   end: tEnd,
   color: tColor,
   isAllDay: tAllDay,
+);
+
+final tRecipeScheduleHive = RecipeScheduleHive(
+  id: tId,
+  name: tName,
+  description: tDescription,
+  imageUrl: tImageUrl,
+  start: tStart,
+  end: tEnd,
+  color: tColor,
 );
 
 final tRecipeSchedule = tRecipeScheduleModel;

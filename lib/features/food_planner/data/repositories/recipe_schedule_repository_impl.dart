@@ -8,7 +8,7 @@ import 'dart:ui';
 
 import 'package:kubo/features/food_planner/domain/repositories/recipe_schedule_repository.dart';
 
-@lazySingleton
+@LazySingleton(as: RecipeScheduleRepository)
 class RecipeScheduleRepositoryImpl implements RecipeScheduleRepository {
   final RecipeScheduleLocalDataSource localDataSource;
 
