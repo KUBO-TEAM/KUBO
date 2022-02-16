@@ -6,7 +6,7 @@ import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.da
 import 'package:kubo/features/food_planner/presentation/widgets/popular_card.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recommended_card.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
-import 'package:kubo/core/temp/recipes.examples.dart';
+import 'package:kubo/core/examples/recipes.examples.dart';
 
 class CreateMealPlanPage extends StatelessWidget {
   static const String id = 'create_meal_plan_page';

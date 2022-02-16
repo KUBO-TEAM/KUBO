@@ -16,7 +16,7 @@ void main() {
   const endTimeOfDay = TimeOfDay(hour: 13, minute: 0);
   group('convertStartAndEndTimeOfDay', () {
     test('should return StartAndEndTimeOfDay if the conversion is successfull',
-        () {
+        () async {
       final result = dateConverter.convertStartAndEndTimeOfDay(
         day: tDay,
         startTimeOfDay: startTimeOfDay,

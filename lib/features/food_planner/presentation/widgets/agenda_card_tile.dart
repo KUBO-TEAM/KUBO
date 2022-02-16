@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/core/temp/agenda.model.dart';
 
 class AgendaCardTile extends StatelessWidget {
   const AgendaCardTile({
     Key? key,
-    required this.agenda,
+    // required this.agenda,
   }) : super(key: key);
 
-  final Agenda agenda;
+  // final Agenda agenda;
 
   @override
   Widget build(BuildContext context) {
@@ -18,21 +17,21 @@ class AgendaCardTile extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 2.0),
             child: ListTile(
-              title: Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Text(
-                  agenda.name,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.w700),
-                ),
-              ),
+              // title: Padding(
+              //   padding: const EdgeInsets.only(bottom: 8.0),
+              //   child: Text(
+              //     agenda.name,
+              //     style: const TextStyle(
+              //         fontSize: 20, fontWeight: FontWeight.w700),
+              //   ),
+              // ),
               subtitle: Row(
-                children: [
-                  const Icon(
+                children: const [
+                  Icon(
                     Icons.access_alarm_sharp,
                     size: 18,
                   ),
-                  Text(agenda.deadline),
+                  // Text(agenda.deadline),
                 ],
               ),
             ),

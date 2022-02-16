@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/core/temp/reminders.model.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/icon_button.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/list_clipper.dart';
 
@@ -13,20 +12,20 @@ class ReminderPage extends StatefulWidget {
 }
 
 class _ReminderPageState extends State<ReminderPage> {
-  List<Reminders> reminders = [
-    const Reminders(
-        title: "Reminder Title", subtitle: "Some Caption Here Like This."),
-    const Reminders(
-        title: "Reminder Title", subtitle: "Some Caption Here Like This."),
-    const Reminders(
-        title: "Reminder Title", subtitle: "Some Caption Here Like This."),
-    const Reminders(
-        title: "Reminder Title", subtitle: "Some Caption Here Like This."),
-    const Reminders(
-        title: "Reminder Title", subtitle: "Some Caption Here Like This."),
-    const Reminders(
-        title: "Reminder Title", subtitle: "Some Caption Here Like This."),
-  ];
+  // List<Reminders> reminders = [
+  //   const Reminders(
+  //       title: "Reminder Title", subtitle: "Some Caption Here Like This."),
+  //   const Reminders(
+  //       title: "Reminder Title", subtitle: "Some Caption Here Like This."),
+  //   const Reminders(
+  //       title: "Reminder Title", subtitle: "Some Caption Here Like This."),
+  //   const Reminders(
+  //       title: "Reminder Title", subtitle: "Some Caption Here Like This."),
+  //   const Reminders(
+  //       title: "Reminder Title", subtitle: "Some Caption Here Like This."),
+  //   const Reminders(
+  //       title: "Reminder Title", subtitle: "Some Caption Here Like This."),
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -75,66 +74,66 @@ class _ReminderPageState extends State<ReminderPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: reminders.length,
-                      itemBuilder: (context, index) {
-                        Reminders reminder = reminders[index];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0, vertical: 5.0),
-                          child: Card(
-                            color: const Color(0xffFFF6E8),
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Row(children: <Widget>[
-                              Expanded(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2.0),
-                                  child: ListTile(
-                                    leading: Container(
-                                      height: 50,
-                                      width: 50,
-                                      margin: const EdgeInsets.all(1.0),
-                                      decoration: const BoxDecoration(
-                                          color: Color(0xffFFE6C0),
-                                          shape: BoxShape.circle),
-                                      child: Center(
-                                          child: Text(
-                                        (index + 1).toString(),
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                        ),
-                                      )),
-                                    ),
-                                    title: Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 8.0),
-                                      child: Text(
-                                        reminder.title,
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      reminder.subtitle,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ]),
-                          ),
-                        );
-                      }),
-                ),
+                // Expanded(
+                //   child: ListView.builder(
+                //       itemCount: reminders.length,
+                //       itemBuilder: (context, index) {
+                //         Reminders reminder = reminders[index];
+                //         return Padding(
+                //           padding: const EdgeInsets.symmetric(
+                //               horizontal: 20.0, vertical: 5.0),
+                //           child: Card(
+                //             color: const Color(0xffFFF6E8),
+                //             elevation: 0,
+                //             shape: RoundedRectangleBorder(
+                //               borderRadius: BorderRadius.circular(15),
+                //             ),
+                //             child: Row(children: <Widget>[
+                //               Expanded(
+                //                 child: Padding(
+                //                   padding:
+                //                       const EdgeInsets.symmetric(vertical: 2.0),
+                //                   child: ListTile(
+                //                     leading: Container(
+                //                       height: 50,
+                //                       width: 50,
+                //                       margin: const EdgeInsets.all(1.0),
+                //                       decoration: const BoxDecoration(
+                //                           color: Color(0xffFFE6C0),
+                //                           shape: BoxShape.circle),
+                //                       child: Center(
+                //                           child: Text(
+                //                         (index + 1).toString(),
+                //                         style: const TextStyle(
+                //                           fontWeight: FontWeight.bold,
+                //                           fontSize: 20,
+                //                         ),
+                //                       )),
+                //                     ),
+                //                     title: Padding(
+                //                       padding:
+                //                           const EdgeInsets.only(bottom: 8.0),
+                //                       child: Text(
+                //                         reminder.title,
+                //                         style: const TextStyle(
+                //                             fontSize: 18,
+                //                             fontWeight: FontWeight.w700),
+                //                       ),
+                //                     ),
+                //                     subtitle: Text(
+                //                       reminder.subtitle,
+                //                       style: const TextStyle(
+                //                         fontSize: 14,
+                //                       ),
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ),
+                //             ]),
+                //           ),
+                //         );
+                //       }),
+                // ),
               ],
             )
           ],

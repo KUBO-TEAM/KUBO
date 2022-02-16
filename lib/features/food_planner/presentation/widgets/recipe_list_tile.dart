@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/text_styles_constants.dart';
-import 'package:kubo/core/temp/recipes.examples.dart';
+import 'package:kubo/core/examples/recipes.examples.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipe_steps_page.dart';
 
 class RecipeListTile extends StatelessWidget {
