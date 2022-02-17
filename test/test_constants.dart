@@ -1,8 +1,13 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kubo/core/constants/list_costants.dart';
+import 'package:kubo/core/constants/menu_constants.dart';
 import 'package:kubo/core/hive/objects/recipe_schedule_hive.dart';
 import 'package:kubo/features/food_planner/data/models/recipe_schedule_model.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 const tId = '123';
 const tName = 'name';
@@ -58,3 +63,13 @@ final tRecipeScheduleHive = RecipeScheduleHive(
 );
 
 final tRecipeSchedule = tRecipeScheduleModel;
+
+final _resources = {
+  DateTime.now(): [tRecipeSchedule]
+};
+
+final tRecipeScheduleLinkedHashmap =
+    LinkedHashMap<DateTime, List<RecipeSchedule>>(
+  equals: isSameDay,
+  hashCode: getHashCode,
+)..addAll(_resources);

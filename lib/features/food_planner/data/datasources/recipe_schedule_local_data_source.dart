@@ -27,7 +27,7 @@ abstract class RecipeScheduleLocalDataSource {
   ///
   /// Throws [NoLocalDataException] if no cached data is present.
   ///
-  Future<List<RecipeScheduleModel>> getAllRecipeSchedule();
+  Future<List<RecipeScheduleModel>> fetchRecipeScheduleList();
 }
 
 @module
@@ -80,7 +80,7 @@ class RecipeScheduleLocalDataSourceImpl
   }
 
   @override
-  Future<List<RecipeScheduleModel>> getAllRecipeSchedule() async {
+  Future<List<RecipeScheduleModel>> fetchRecipeScheduleList() async {
     final List<RecipeScheduleModel> schedules = [];
 
     for (var value in recipeScheduleBox.values) {

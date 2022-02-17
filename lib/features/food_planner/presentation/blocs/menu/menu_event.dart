@@ -1,13 +1,13 @@
-part of 'recipe_schedule_bloc.dart';
+part of 'menu_bloc.dart';
 
-abstract class RecipeScheduleEvent extends Equatable {
-  const RecipeScheduleEvent();
+abstract class MenuEvent extends Equatable {
+  const MenuEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class RecipeScheduleAdded extends RecipeScheduleEvent {
+class MenuAdded extends MenuEvent {
   final String id;
   final String name;
   final String description;
@@ -18,7 +18,7 @@ class RecipeScheduleAdded extends RecipeScheduleEvent {
   final Color color;
   final bool isAllDay;
 
-  const RecipeScheduleAdded({
+  const MenuAdded({
     required this.id,
     required this.name,
     required this.day,
@@ -31,4 +31,4 @@ class RecipeScheduleAdded extends RecipeScheduleEvent {
   });
 }
 
-class RecipeSchedulesFetched extends RecipeScheduleEvent {}
+class MenuFetched extends MenuEvent {}

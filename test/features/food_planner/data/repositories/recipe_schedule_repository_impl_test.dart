@@ -123,12 +123,12 @@ void main() {
     test(
         'should return list of data when the call local data source is called.',
         () async {
-      when(mockRecipeScheduleLocalDataSource.getAllRecipeSchedule())
+      when(mockRecipeScheduleLocalDataSource.fetchRecipeScheduleList())
           .thenAnswer((_) async => tListSchedule);
 
-      final result = await repository.getAllRecipeSchedule();
+      final result = await repository.fetchRecipeScheduleList();
 
-      verify(mockRecipeScheduleLocalDataSource.getAllRecipeSchedule());
+      verify(mockRecipeScheduleLocalDataSource.fetchRecipeScheduleList());
 
       expect(result, equals(Right(tListSchedule)));
     });

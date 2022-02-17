@@ -4,7 +4,7 @@ import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/assign_meal_plan_bloc.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule/recipe_schedule_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/assign_meal_time_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/select_ingredients_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/floating_buttons.dart';
@@ -53,14 +53,12 @@ class MenuPage extends StatelessWidget {
       floatingActionButton: const FloatingMenuButton(),
       appBar: const KuboAppBar('Menu'),
       body: SafeArea(
-        child: BlocBuilder<RecipeScheduleBloc, RecipeScheduleState>(
-            builder: (context, state) {
-          if (state is RecipeScheduleInProgress) {
+        child: BlocBuilder<MenuBloc, MenuState>(builder: (context, state) {
+          if (state is MenuInProgress) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final recipeSchedules =
-              (state as RecipeScheduleSuccess).recipeSchedules;
+          final recipeSchedules = (state as MenuSuccess).recipeSchedules;
 
           return SfCalendar(
             todayHighlightColor: Colors.green,

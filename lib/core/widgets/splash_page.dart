@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:kubo/core/constants/string_constants.dart';
 import 'package:kubo/core/widgets/welcome_page.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule/recipe_schedule_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/home_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -21,7 +21,7 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     _loading();
-    BlocProvider.of<RecipeScheduleBloc>(context).add(RecipeSchedulesFetched());
+    BlocProvider.of<MenuBloc>(context).add(MenuFetched());
   }
 
   _loading() async {

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/error/failures.dart';
@@ -15,5 +17,8 @@ abstract class RecipeScheduleRepository {
     required bool isAllDay,
   });
 
-  Future<Either<Failure, List<RecipeSchedule>>> getAllRecipeSchedule();
+  Future<Either<Failure, List<RecipeSchedule>>> fetchRecipeScheduleList();
+
+  Future<Either<Failure, LinkedHashMap<DateTime, List<RecipeSchedule>>>>
+      fetchRecipeScheduleLinkedHashmap();
 }

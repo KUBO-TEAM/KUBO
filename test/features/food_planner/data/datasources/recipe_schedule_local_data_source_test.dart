@@ -58,7 +58,7 @@ void main() {
           ),
         ]);
 
-        final result = await dataSource.getAllRecipeSchedule();
+        final result = await dataSource.fetchRecipeScheduleList();
 
         verify(mockRecipeScheduleBox.values);
         expect(result, equals([tRecipeScheduleModel]));

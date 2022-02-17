@@ -5,35 +5,35 @@ import 'package:kubo/core/error/failures.dart';
 import 'package:kubo/core/helpers/date_converter.dart';
 import 'package:kubo/core/usecases/usecase.dart';
 import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedule.dart';
-import 'package:kubo/features/food_planner/domain/usecases/get_all_recipe_schedule.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule/recipe_schedule_bloc.dart';
+import 'package:kubo/features/food_planner/domain/usecases/fetch_recipe_schedule_list.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../test_constants.dart';
-import 'recipe_schedule_bloc_test.mocks.dart';
+import 'menu_test.mocks.dart';
 
-@GenerateMocks([CreateRecipeSchedule, GetAllRecipeSchedule, DateConverter])
+@GenerateMocks([CreateRecipeSchedule, FetchRecipeScheduleList, DateConverter])
 void main() {
   late MockCreateRecipeSchedule mockCreateRecipeSchedule;
-  late MockGetAllRecipeSchedule mockGetAllRecipeSchedule;
+  late MockFetchRecipeScheduleList mockFetchRecipeScheduleList;
   late MockDateConverter mockDateConverter;
-  late RecipeScheduleBloc bloc;
+  late MenuBloc bloc;
 
   setUp(() {
     mockCreateRecipeSchedule = MockCreateRecipeSchedule();
-    mockGetAllRecipeSchedule = MockGetAllRecipeSchedule();
+    mockFetchRecipeScheduleList = MockFetchRecipeScheduleList();
 
     mockDateConverter = MockDateConverter();
-    bloc = RecipeScheduleBloc(
+    bloc = MenuBloc(
       createRecipeSchedule: mockCreateRecipeSchedule,
-      getAllRecipeSchedule: mockGetAllRecipeSchedule,
+      fetchRecipeScheduleList: mockFetchRecipeScheduleList,
       dateConverter: mockDateConverter,
     );
   });
 
   test('initial state of the bloc should be RecipeScheduleInitial', () async {
-    expect(bloc.state, equals(RecipeScheduleInitial()));
+    expect(bloc.state, equals(MenuInitial()));
   });
 
   group('createRecipeSchedule', () {
@@ -57,7 +57,7 @@ void main() {
         ),
       );
 
-      bloc.add(const RecipeScheduleAdded(
+      bloc.add(const MenuAdded(
         id: tId,
         name: tName,
         description: tDescription,
@@ -117,15 +117,15 @@ void main() {
       );
 
       final expected = [
-        RecipeScheduleInProgress(),
-        RecipeScheduleSuccess(
+        MenuInProgress(),
+        MenuSuccess(
           recipeSchedules: [tRecipeSchedule],
         ),
       ];
 
       expectLater(bloc.stream, emitsInOrder(expected));
 
-      bloc.add(const RecipeScheduleAdded(
+      bloc.add(const MenuAdded(
         id: tId,
         name: tName,
         description: tDescription,
@@ -160,14 +160,14 @@ void main() {
       );
 
       final expected = [
-        RecipeScheduleInProgress(),
-        const RecipeScheduleFailure(CACHE_FAILURE_MESSAGE),
+        MenuInProgress(),
+        const MenuFailure(CACHE_FAILURE_MESSAGE),
       ];
 
       expectLater(bloc.stream, emitsInOrder(expected));
 
       bloc.add(
-        const RecipeScheduleAdded(
+        const MenuAdded(
           id: tId,
           name: tName,
           description: tDescription,
@@ -195,14 +195,14 @@ void main() {
       );
 
       final expected = [
-        RecipeScheduleInProgress(),
-        const RecipeScheduleFailure(DATE_CONVERTER_FAILURE_MESSAGE),
+        MenuInProgress(),
+        const MenuFailure(DATE_CONVERTER_FAILURE_MESSAGE),
       ];
 
       expectLater(bloc.stream, emitsInOrder(expected));
 
       bloc.add(
-        const RecipeScheduleAdded(
+        const MenuAdded(
           id: tId,
           name: tName,
           description: tDescription,
@@ -221,18 +221,18 @@ void main() {
     test(
       'should get list of data from the get all recipe use case',
       () async {
-        when(mockGetAllRecipeSchedule(any)).thenAnswer(
+        when(mockFetchRecipeScheduleList(any)).thenAnswer(
           (_) async => Right([
             tRecipeSchedule,
           ]),
         );
 
-        bloc.add(RecipeSchedulesFetched());
+        bloc.add(MenuFetched());
 
-        await untilCalled(mockGetAllRecipeSchedule(any));
+        await untilCalled(mockFetchRecipeScheduleList(any));
 
         verify(
-          mockGetAllRecipeSchedule(NoParams()),
+          mockFetchRecipeScheduleList(NoParams()),
         );
       },
     );
@@ -240,38 +240,38 @@ void main() {
     test(
         'should emit [RecipeScheduleInProgress, RecipeScheduleSuccess] when list of data is gotten successful',
         () async {
-      when(mockGetAllRecipeSchedule(any)).thenAnswer(
+      when(mockFetchRecipeScheduleList(any)).thenAnswer(
         (_) async => Right([
           tRecipeSchedule,
         ]),
       );
 
       final expected = [
-        RecipeScheduleInProgress(),
-        RecipeScheduleSuccess(
+        MenuInProgress(),
+        MenuSuccess(
           recipeSchedules: [tRecipeSchedule],
         ),
       ];
 
       expectLater(bloc.stream, emitsInOrder(expected));
 
-      bloc.add(RecipeSchedulesFetched());
+      bloc.add(MenuFetched());
     });
 
     test(
         'should emit [RecipeScheduleInProgress, RecipeScheduleFailure] when list of data is gotten fails',
         () async {
-      when(mockGetAllRecipeSchedule(any))
+      when(mockFetchRecipeScheduleList(any))
           .thenAnswer((_) async => Left(CacheFailure()));
 
       final expected = [
-        RecipeScheduleInProgress(),
-        const RecipeScheduleFailure(CACHE_FAILURE_MESSAGE),
+        MenuInProgress(),
+        const MenuFailure(CACHE_FAILURE_MESSAGE),
       ];
 
       expectLater(bloc.stream, emitsInOrder(expected));
 
-      bloc.add(RecipeSchedulesFetched());
+      bloc.add(MenuFetched());
     });
   });
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule/recipe_schedule_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/agenda_modal_form.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 
@@ -20,7 +20,7 @@ class AgendaPage extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: BlocBuilder<RecipeScheduleBloc, RecipeScheduleState>(
+        child: BlocBuilder<MenuBloc, MenuState>(
           builder: (context, state) => Column(
             children: const [
               KuboClippedAppBar("Agenda"),
