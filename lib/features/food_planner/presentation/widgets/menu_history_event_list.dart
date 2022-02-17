@@ -1,0 +1,102 @@
+import 'package:flutter/material.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/core/constants/menu_constants.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/menu_history_event_tile.dart';
+
+class MenuHistoryEventsList extends StatelessWidget {
+  const MenuHistoryEventsList({
+    Key? key,
+    required ValueNotifier<List<Event>> selectedEvents,
+  })  : _selectedEvents = selectedEvents,
+        super(key: key);
+
+  final ValueNotifier<List<Event>> _selectedEvents;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Stack(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(left: 10),
+                      height: 28.0,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(40),
+                          bottomRight: Radius.circular(40),
+                        ),
+                        color: Colors.grey.shade400,
+                      ),
+                      padding: const EdgeInsets.only(left: 25, right: 15),
+                      child: const Center(
+                        child: Text(
+                          'Your event',
+                          style: TextStyle(
+                            fontFamily: 'Arvo',
+                            color: kBlackPrimary,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const CircleAvatar(
+                      backgroundColor: kGreenPrimary,
+                      radius: 14,
+                      child: Text(
+                        '2',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.insert_invitation,
+                      color: Colors.grey.shade700,
+                    ),
+                    Text(
+                      '1/24/22',
+                      style: TextStyle(color: Colors.grey.shade700),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 6.0),
+                child: ValueListenableBuilder<List<Event>>(
+                  valueListenable: _selectedEvents,
+                  builder: (context, value, _) {
+                    return ListView.builder(
+                      itemCount: value.length,
+                      itemBuilder: (context, index) {
+                        return SizedBox(
+                          height: 70,
+                          child: MenuHistoryListTile(
+                            event: value[index],
+                            isLast: index == value.length - 1,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
