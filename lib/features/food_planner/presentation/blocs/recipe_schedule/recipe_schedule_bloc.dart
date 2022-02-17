@@ -29,8 +29,11 @@ class RecipeScheduleBloc
     on<RecipeScheduleEvent>(
       (event, emit) async {
         if (event is RecipeScheduleAdded) {
-          List<RecipeSchedule> recipeSchedules =
-              (state as RecipeScheduleSuccess).recipeSchedules;
+          List<RecipeSchedule> recipeSchedules = [];
+
+          if (state is RecipeScheduleSuccess) {
+            (state as RecipeScheduleSuccess).recipeSchedules;
+          }
 
           emit(RecipeScheduleInProgress());
 
