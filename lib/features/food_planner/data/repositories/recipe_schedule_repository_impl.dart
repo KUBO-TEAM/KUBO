@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/error/exceptions.dart';
 import 'package:kubo/features/food_planner/data/datasources/recipe_schedule_local_data_source.dart';
@@ -44,13 +46,21 @@ class RecipeScheduleRepositoryImpl implements RecipeScheduleRepository {
   }
 
   @override
-  Future<Either<Failure, List<RecipeSchedule>>> getAllRecipeSchedule() async {
+  Future<Either<Failure, List<RecipeSchedule>>>
+      fetchRecipeScheduleList() async {
     try {
-      final schedules = await localDataSource.getAllRecipeSchedule();
+      final schedules = await localDataSource.fetchRecipeScheduleList();
 
       return Right(schedules);
     } on CacheException {
       return Left(CacheFailure());
     }
+  }
+
+  @override
+  Future<Either<Failure, LinkedHashMap<DateTime, List<RecipeSchedule>>>>
+      fetchRecipeScheduleLinkedHashmap() {
+    // TODO: implement fetchRecipeScheduleLinkedHashmap
+    throw UnimplementedError();
   }
 }

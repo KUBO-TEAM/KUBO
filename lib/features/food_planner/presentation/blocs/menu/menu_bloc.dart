@@ -8,31 +8,27 @@ import 'package:kubo/core/helpers/date_converter.dart';
 import 'package:kubo/core/usecases/usecase.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedule.dart';
-import 'package:kubo/features/food_planner/domain/usecases/get_all_recipe_schedule.dart';
+import 'package:kubo/features/food_planner/domain/usecases/fetch_recipe_schedule_list.dart';
 
-part 'recipe_schedule_event.dart';
-part 'recipe_schedule_state.dart';
+part 'menu_event.dart';
+part 'menu_state.dart';
 
 @injectable
-class RecipeScheduleBloc
-    extends Bloc<RecipeScheduleEvent, RecipeScheduleState> {
+class MenuBloc extends Bloc<MenuEvent, MenuState> {
   final CreateRecipeSchedule createRecipeSchedule;
-  final GetAllRecipeSchedule getAllRecipeSchedule;
+  final FetchRecipeScheduleList fetchRecipeScheduleList;
 
   final DateConverter dateConverter;
 
-  RecipeScheduleBloc({
+  MenuBloc({
     required this.createRecipeSchedule,
-    required this.getAllRecipeSchedule,
+    required this.fetchRecipeScheduleList,
     required this.dateConverter,
-  }) : super(RecipeScheduleInitial()) {
-    on<RecipeScheduleEvent>(
+  }) : super(MenuInitial()) {
+    on<MenuEvent>(
       (event, emit) async {
-        if (event is RecipeScheduleAdded) {
-          List<RecipeSchedule> recipeSchedules =
-              (state as RecipeScheduleSuccess).recipeSchedules;
-
-          emit(RecipeScheduleInProgress());
+        if (event is MenuAdded) {
+          emit(MenuInProgress());
 
           final convertDates = dateConverter.convertStartAndEndTimeOfDay(
             day: event.day,
@@ -42,7 +38,7 @@ class RecipeScheduleBloc
 
           await convertDates.fold((failure) {
             emit(
-              RecipeScheduleFailure(
+              MenuFailure(
                 _mapFailureToMessage(failure),
               ),
             );
@@ -60,21 +56,27 @@ class RecipeScheduleBloc
             );
 
             await failureOrRecipeSchedule.fold((failure) async {
-              emit(RecipeScheduleFailure(_mapFailureToMessage(failure)));
+              emit(MenuFailure(_mapFailureToMessage(failure)));
             }, (recipeSchedule) async {
+              List<RecipeSchedule> recipeSchedules = [];
+
+              if (state is MenuSuccess) {
+                (state as MenuSuccess).recipeSchedules;
+              }
+
               recipeSchedules.add(recipeSchedule);
-              emit(RecipeScheduleSuccess(recipeSchedules: recipeSchedules));
+              emit(MenuSuccess(recipeSchedules: recipeSchedules));
             });
           });
-        } else if (event is RecipeSchedulesFetched) {
-          emit(RecipeScheduleInProgress());
+        } else if (event is MenuFetched) {
+          emit(MenuInProgress());
           final failureOrListOfRecipeSchedules =
-              await getAllRecipeSchedule(NoParams());
+              await fetchRecipeScheduleList(NoParams());
 
-          await failureOrListOfRecipeSchedules.fold((failure) {
-            emit(RecipeScheduleFailure(_mapFailureToMessage(failure)));
+          failureOrListOfRecipeSchedules.fold((failure) {
+            emit(MenuFailure(_mapFailureToMessage(failure)));
           }, (listOfRecipeSchedules) {
-            emit(RecipeScheduleSuccess(recipeSchedules: listOfRecipeSchedules));
+            emit(MenuSuccess(recipeSchedules: listOfRecipeSchedules));
           });
         }
       },

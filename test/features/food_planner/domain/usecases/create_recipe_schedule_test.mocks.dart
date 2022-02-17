@@ -3,6 +3,7 @@
 // Do not manually edit this file.
 
 import 'dart:async' as _i4;
+import 'dart:collection' as _i8;
 import 'dart:ui' as _i7;
 
 import 'package:dartz/dartz.dart' as _i2;
@@ -61,10 +62,18 @@ class MockRecipeScheduleRepository extends _i1.Mock
           as _i4.Future<_i2.Either<_i5.Failure, _i6.RecipeSchedule>>);
   @override
   _i4.Future<_i2.Either<_i5.Failure, List<_i6.RecipeSchedule>>>
-      getAllRecipeSchedule() => (super.noSuchMethod(
-              Invocation.method(#getAllRecipeSchedule, []),
+      fetchRecipeScheduleList() => (super.noSuchMethod(
+              Invocation.method(#fetchRecipeScheduleList, []),
               returnValue: Future<
                       _i2.Either<_i5.Failure, List<_i6.RecipeSchedule>>>.value(
                   _FakeEither_0<_i5.Failure, List<_i6.RecipeSchedule>>()))
           as _i4.Future<_i2.Either<_i5.Failure, List<_i6.RecipeSchedule>>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, _i8.LinkedHashMap<DateTime, List<_i6.RecipeSchedule>>>>
+      fetchRecipeScheduleLinkedHashmap() => (super.noSuchMethod(
+              Invocation.method(#fetchRecipeScheduleLinkedHashmap, []),
+              returnValue: Future<_i2.Either<_i5.Failure, _i8.LinkedHashMap<DateTime, List<_i6.RecipeSchedule>>>>.value(
+                  _FakeEither_0<_i5.Failure,
+                      _i8.LinkedHashMap<DateTime, List<_i6.RecipeSchedule>>>()))
+          as _i4.Future<_i2.Either<_i5.Failure, _i8.LinkedHashMap<DateTime, List<_i6.RecipeSchedule>>>>);
 }
