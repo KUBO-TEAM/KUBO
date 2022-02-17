@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:kubo/core/walk_through/splash_page.dart';
-import 'package:kubo/core/walk_through/welcome_page.dart';
+import 'package:kubo/core/widgets/splash_page.dart';
+import 'package:kubo/core/widgets/welcome_page.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/presentation/pages/agenda_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/assign_meal_time_page.dart';

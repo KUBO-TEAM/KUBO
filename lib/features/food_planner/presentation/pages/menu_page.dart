@@ -55,16 +55,16 @@ class MenuPage extends StatelessWidget {
       body: SafeArea(
         child: BlocBuilder<RecipeScheduleBloc, RecipeScheduleState>(
             builder: (context, state) {
-          // if ((state is RecipeScheduleInProgress) == false) {
-          //   return const Center(child: CircularProgressIndicator());
-          // }
+          if (state is RecipeScheduleInProgress) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-          // final recipeSchedules =
-          //     (state as RecipeScheduleSuccess).recipeSchedules;
+          final recipeSchedules =
+              (state as RecipeScheduleSuccess).recipeSchedules;
 
           return SfCalendar(
             todayHighlightColor: Colors.green,
-            dataSource: ScheduleDataSource([]),
+            dataSource: ScheduleDataSource(recipeSchedules),
             timeSlotViewSettings: _calendarTimeSlotViewSettings,
             headerStyle: _calendarHeaderStyle,
             viewHeaderStyle: _calendarViewHeaderStyle,
@@ -90,40 +90,37 @@ class MenuPage extends StatelessWidget {
     if (schedule != null) {
       _navigateToScheduledMeal(context, schedule);
     } else if (element == CalendarElement.calendarCell) {
-      _selectIngredientsScreenWithStartingDate(context, startingDate);
+      _cellPressed(context, startingDate);
     }
   }
 
   void _navigateToScheduledMeal(
     BuildContext context,
-    dynamic schedule,
+    dynamic recipeSchedule,
   ) {
     Navigator.pushNamed(
       context,
       AssignMealTimePage.id,
       arguments: AssignMealTimePageArguments(
         recipe: Recipe(
-          id: schedule.first.recipeId,
-          name: schedule.first.recipeName,
-          description: schedule.first.recipeDescription,
-          imageUrl: schedule.first.recipeImageUrl,
+          id: recipeSchedule.first.id,
+          name: recipeSchedule.first.name,
+          description: recipeSchedule.first.description,
+          imageUrl: recipeSchedule.first.imageUrl,
         ),
       ),
     );
   }
 
-  void _selectIngredientsScreenWithStartingDate(
+  void _cellPressed(
     BuildContext context,
     DateTime startingDate,
   ) {
-    BlocProvider.of<AssignMealPlanBloc>(context)
-        .add(AssignMealPlanCellPressed(startingDate: startingDate));
-
-    Navigator.pushNamed(context, SelectIngredientsPage.id).then(
-      (_) => BlocProvider.of<AssignMealPlanBloc>(context).add(
-        AssignMealPlanStartingDateRemoved(),
-      ),
+    BlocProvider.of<AssignMealPlanBloc>(context).add(
+      AssignMealPlanCellPressed(startingDate: startingDate),
     );
+
+    Navigator.pushNamed(context, SelectIngredientsPage.id);
   }
 }
 
@@ -149,11 +146,11 @@ class ScheduleDataSource extends CalendarDataSource {
 
   @override
   String getSubject(int index) {
-    return appointments![index].recipeName;
+    return appointments![index].name;
   }
 
   @override
   Color getColor(int index) {
-    return appointments![index].backgroundColor;
+    return appointments![index].color;
   }
 }

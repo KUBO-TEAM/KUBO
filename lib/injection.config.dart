@@ -18,8 +18,10 @@ import 'features/food_planner/domain/repositories/recipe_schedule_repository.dar
     as _i9;
 import 'features/food_planner/domain/usecases/create_recipe_schedule.dart'
     as _i11;
-import 'features/food_planner/presentation/blocs/recipe_schedule/recipe_schedule_bloc.dart'
+import 'features/food_planner/domain/usecases/get_all_recipe_schedule.dart'
     as _i12;
+import 'features/food_planner/presentation/blocs/recipe_schedule/recipe_schedule_bloc.dart'
+    as _i13;
 import 'main.dart' as _i7;
 import 'router.dart' as _i3; // ignore_for_file: unnecessary_lambdas
 
@@ -43,8 +45,11 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
           localDataSource: get<_i8.RecipeScheduleLocalDataSource>()));
   gh.lazySingleton<_i11.CreateRecipeSchedule>(
       () => _i11.CreateRecipeSchedule(get<_i9.RecipeScheduleRepository>()));
-  gh.factory<_i12.RecipeScheduleBloc>(() => _i12.RecipeScheduleBloc(
+  gh.lazySingleton<_i12.GetAllRecipeSchedule>(
+      () => _i12.GetAllRecipeSchedule(get<_i9.RecipeScheduleRepository>()));
+  gh.factory<_i13.RecipeScheduleBloc>(() => _i13.RecipeScheduleBloc(
       createRecipeSchedule: get<_i11.CreateRecipeSchedule>(),
+      getAllRecipeSchedule: get<_i12.GetAllRecipeSchedule>(),
       dateConverter: get<_i6.DateConverter>()));
   return get;
 }

@@ -26,7 +26,7 @@ void main() {
     'createRecipeSchedule',
     () {
       test(
-        'should return a remote data when the call to remote data source is successfull ',
+        'should return a local data when the call to local data source is successfull ',
         () async {
           when(
             mockRecipeScheduleLocalDataSource.createRecipeSchedule(
@@ -72,7 +72,7 @@ void main() {
       );
 
       test(
-        'should return CacheFailure when the call to remote data source is unsuccessfull',
+        'should return CacheFailure when the call to local data source is unsuccessfull',
         () async {
           when(
             mockRecipeScheduleLocalDataSource.createRecipeSchedule(
@@ -116,4 +116,21 @@ void main() {
       );
     },
   );
+
+  final tListSchedule = [tRecipeScheduleModel];
+
+  group('getAllRecipes', () {
+    test(
+        'should return list of data when the call local data source is called.',
+        () async {
+      when(mockRecipeScheduleLocalDataSource.getAllRecipeSchedule())
+          .thenAnswer((_) async => tListSchedule);
+
+      final result = await repository.getAllRecipeSchedule();
+
+      verify(mockRecipeScheduleLocalDataSource.getAllRecipeSchedule());
+
+      expect(result, equals(Right(tListSchedule)));
+    });
+  });
 }

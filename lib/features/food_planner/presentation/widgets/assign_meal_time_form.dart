@@ -40,19 +40,7 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
   void initState() {
     super.initState();
     _updateFormFromLocal();
-  }
-
-  void _updateFormFromLocal() {
-    setState(() {
-      if (widget.schedule != null) {
-        day = kDayList.indexOf(
-          DateFormat('EEEE').format(widget.schedule!.start),
-        );
-        start = _dateTimeToTimeOfDay(widget.schedule!.start);
-        end = _dateTimeToTimeOfDay(widget.schedule!.end);
-        colorPicked = widget.schedule!.color;
-      }
-    });
+    _checkAssignMealPlanBloc();
   }
 
   @override
@@ -71,84 +59,58 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
           ScaffoldMessenger.of(context).showSnackBar(kFailedSaveSnackBar);
         }
       },
-      child: BlocBuilder<AssignMealPlanBloc, AssignMealPlanState>(
-        builder: (context, state) {
-          if (state is AssignMealPlanSuccess) {
-            TimeOfDay? startingDate = start;
-            TimeOfDay? endingDate = end;
-
-            startingDate = _dateTimeToTimeOfDay(state.startingDate);
-
-            start = startingDate;
-
-            endingDate = _dateTimeToTimeOfDay(
-              state.startingDate.add(const Duration(hours: 1)),
-            );
-            end = endingDate;
-
-            day = kDayList.indexOf(
-              DateFormat('EEEE').format(state.startingDate),
-            );
-
-            BlocProvider.of<AssignMealPlanBloc>(context).add(
-              AssignMealPlanStartingDateRemoved(),
-            );
-          }
-
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Pick a schedule',
-                style: kTitleTextStyle,
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              DaySelector(
-                list: kDayList,
-                initialDay: day,
-                leadingIcon: Icons.calendar_today,
-                onSelected: (int? daySelected) {
-                  if (daySelected != null) {
-                    day = daySelected;
-                  }
-                },
-              ),
-              TimeSelector(
-                title: 'Start',
-                initialTime: start,
-                onTimePicked: (TimeOfDay? startTimePicked) {
-                  if (startTimePicked != null) {
-                    setState(() {
-                      start = startTimePicked;
-                    });
-                  }
-                },
-              ),
-              TimeSelector(
-                title: 'End',
-                initialTime: end,
-                onTimePicked: (TimeOfDay? endTimePicked) {
-                  if (endTimePicked != null) {
-                    setState(() {
-                      end = endTimePicked;
-                    });
-                  }
-                },
-              ),
-              ColorSelector(
-                currentColor: colorPicked,
-                onColorPicked: (Color? selectedColor) {
-                  colorPicked = selectedColor!;
-                },
-              ),
-              SquareButton(
-                onPressed: save,
-              )
-            ],
-          );
-        },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Pick a schedule',
+            style: kTitleTextStyle,
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          DaySelector(
+            list: kDayList,
+            initialDay: day,
+            leadingIcon: Icons.calendar_today,
+            onSelected: (int? daySelected) {
+              if (daySelected != null) {
+                day = daySelected;
+              }
+            },
+          ),
+          TimeSelector(
+            title: 'Start',
+            initialTime: start,
+            onTimePicked: (TimeOfDay? startTimePicked) {
+              if (startTimePicked != null) {
+                setState(() {
+                  start = startTimePicked;
+                });
+              }
+            },
+          ),
+          TimeSelector(
+            title: 'End',
+            initialTime: end,
+            onTimePicked: (TimeOfDay? endTimePicked) {
+              if (endTimePicked != null) {
+                setState(() {
+                  end = endTimePicked;
+                });
+              }
+            },
+          ),
+          ColorSelector(
+            currentColor: colorPicked,
+            onColorPicked: (Color? selectedColor) {
+              colorPicked = selectedColor!;
+            },
+          ),
+          SquareButton(
+            onPressed: save,
+          )
+        ],
       ),
     );
   }
@@ -159,7 +121,7 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
     if (start != null && end != null) {
       _showConfirmationPopUp(() {
         BlocProvider.of<RecipeScheduleBloc>(context).add(
-          CreateRecipeScheduleForMenu(
+          RecipeScheduleAdded(
             id: recipe.id,
             name: recipe.name,
             day: day,
@@ -172,6 +134,40 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
           ),
         );
       });
+    }
+  }
+
+  void _updateFormFromLocal() {
+    setState(() {
+      if (widget.schedule != null) {
+        day = kDayList.indexOf(
+          DateFormat('EEEE').format(widget.schedule!.start),
+        );
+        start = _dateTimeToTimeOfDay(widget.schedule!.start);
+        end = _dateTimeToTimeOfDay(widget.schedule!.end);
+        colorPicked = widget.schedule!.color;
+      }
+    });
+  }
+
+  void _checkAssignMealPlanBloc() {
+    final state = BlocProvider.of<AssignMealPlanBloc>(context).state;
+    TimeOfDay? startingDate = start;
+    TimeOfDay? endingDate = end;
+
+    if (state is AssignMealPlanSuccess) {
+      startingDate = _dateTimeToTimeOfDay(state.startingDate);
+
+      start = startingDate;
+
+      endingDate = _dateTimeToTimeOfDay(
+        state.startingDate.add(const Duration(hours: 1)),
+      );
+      end = endingDate;
+
+      day = kDayList.indexOf(
+        DateFormat('EEEE').format(state.startingDate),
+      );
     }
   }
 

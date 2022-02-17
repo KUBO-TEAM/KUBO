@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/assign_meal_plan_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipe_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/reminders_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/select_ingredients_page.dart';
@@ -16,7 +18,6 @@ class FloatingHomeButton extends StatelessWidget {
     return SpeedDial(
       backgroundColor: kGreenPrimary,
       animatedIcon: AnimatedIcons.menu_close,
-      animationSpeed: 800,
       children: [
         SpeedDialChild(
             child: const Icon(
@@ -59,7 +60,6 @@ class FloatingMenuButton extends StatelessWidget {
     return SpeedDial(
       backgroundColor: kGreenPrimary,
       animatedIcon: AnimatedIcons.menu_close,
-      animationSpeed: 800,
       children: [
         SpeedDialChild(
           child: const Icon(
@@ -69,6 +69,8 @@ class FloatingMenuButton extends StatelessWidget {
           label: 'Create meal plan',
           onTap: () {
             Navigator.pushNamed(context, SelectIngredientsPage.id);
+            BlocProvider.of<AssignMealPlanBloc>(context)
+                .add(AssignMealPlanStartingDateRemoved());
           },
         ),
         SpeedDialChild(

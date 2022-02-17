@@ -6,7 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/hive/adapters/color.adapter.dart';
 import 'package:kubo/core/hive/objects/recipe_schedule_hive.dart';
-import 'package:kubo/core/walk_through/splash_page.dart';
+import 'package:kubo/core/widgets/splash_page.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/assign_meal_plan_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule/recipe_schedule_bloc.dart';
 import 'package:kubo/injection.dart';

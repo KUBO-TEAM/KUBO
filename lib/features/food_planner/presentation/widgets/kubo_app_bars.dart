@@ -44,15 +44,11 @@ class KuboHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: kBackgroundGrey,
-      titleSpacing: 0,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios, color: kBlackPrimary),
-        onPressed: () => Navigator.of(context).pop(),
-      ),
+      automaticallyImplyLeading: false,
       elevation: 0,
-      title: Text(
-        title,
-        style: const TextStyle(
+      title: const Text(
+        'Overview',
+        style: TextStyle(
           color: kBlackPrimary,
           fontFamily: 'Pushster',
           fontSize: 30.0,

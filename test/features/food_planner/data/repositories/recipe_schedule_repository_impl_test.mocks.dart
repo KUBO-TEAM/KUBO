@@ -58,9 +58,9 @@ class MockRecipeScheduleLocalDataSource extends _i1.Mock
                   _FakeRecipeScheduleModel_0()))
           as _i4.Future<_i2.RecipeScheduleModel>);
   @override
-  _i4.Future<_i2.RecipeScheduleModel> getAllRecipeSchedule() =>
+  _i4.Future<List<_i2.RecipeScheduleModel>> getAllRecipeSchedule() =>
       (super.noSuchMethod(Invocation.method(#getAllRecipeSchedule, []),
-              returnValue: Future<_i2.RecipeScheduleModel>.value(
-                  _FakeRecipeScheduleModel_0()))
-          as _i4.Future<_i2.RecipeScheduleModel>);
+              returnValue: Future<List<_i2.RecipeScheduleModel>>.value(
+                  <_i2.RecipeScheduleModel>[]))
+          as _i4.Future<List<_i2.RecipeScheduleModel>>);
 }

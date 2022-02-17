@@ -23,11 +23,11 @@ abstract class RecipeScheduleLocalDataSource {
     required bool isAllDay,
   });
 
-  /// Gets the cached [RecipeScheduleModel]
+  /// Gets the cached list of all [RecipeScheduleModel]
   ///
   /// Throws [NoLocalDataException] if no cached data is present.
   ///
-  Future<RecipeScheduleModel> getAllRecipeSchedule();
+  Future<List<RecipeScheduleModel>> getAllRecipeSchedule();
 }
 
 @module
@@ -80,7 +80,23 @@ class RecipeScheduleLocalDataSourceImpl
   }
 
   @override
-  Future<RecipeScheduleModel> getAllRecipeSchedule() async {
-    throw UnimplementedError();
+  Future<List<RecipeScheduleModel>> getAllRecipeSchedule() async {
+    final List<RecipeScheduleModel> schedules = [];
+
+    for (var value in recipeScheduleBox.values) {
+      var recipeSchedule = RecipeScheduleModel(
+        id: value.id,
+        name: value.name,
+        description: value.description,
+        imageUrl: value.imageUrl,
+        start: value.start,
+        end: value.end,
+        color: value.color,
+        isAllDay: false,
+      );
+      schedules.add(recipeSchedule);
+    }
+
+    return schedules;
   }
 }

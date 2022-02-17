@@ -5,8 +5,10 @@ import 'package:injectable/injectable.dart';
 import 'package:kubo/core/error/failures.dart';
 import 'package:kubo/core/error/error_messages.dart';
 import 'package:kubo/core/helpers/date_converter.dart';
+import 'package:kubo/core/usecases/usecase.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedule.dart';
+import 'package:kubo/features/food_planner/domain/usecases/get_all_recipe_schedule.dart';
 
 part 'recipe_schedule_event.dart';
 part 'recipe_schedule_state.dart';
@@ -15,14 +17,21 @@ part 'recipe_schedule_state.dart';
 class RecipeScheduleBloc
     extends Bloc<RecipeScheduleEvent, RecipeScheduleState> {
   final CreateRecipeSchedule createRecipeSchedule;
+  final GetAllRecipeSchedule getAllRecipeSchedule;
+
   final DateConverter dateConverter;
 
-  RecipeScheduleBloc(
-      {required this.createRecipeSchedule, required this.dateConverter})
-      : super(RecipeScheduleInitial()) {
+  RecipeScheduleBloc({
+    required this.createRecipeSchedule,
+    required this.getAllRecipeSchedule,
+    required this.dateConverter,
+  }) : super(RecipeScheduleInitial()) {
     on<RecipeScheduleEvent>(
       (event, emit) async {
-        if (event is CreateRecipeScheduleForMenu) {
+        if (event is RecipeScheduleAdded) {
+          List<RecipeSchedule> recipeSchedules =
+              (state as RecipeScheduleSuccess).recipeSchedules;
+
           emit(RecipeScheduleInProgress());
 
           final convertDates = dateConverter.convertStartAndEndTimeOfDay(
@@ -53,8 +62,19 @@ class RecipeScheduleBloc
             await failureOrRecipeSchedule.fold((failure) async {
               emit(RecipeScheduleFailure(_mapFailureToMessage(failure)));
             }, (recipeSchedule) async {
-              emit(RecipeScheduleSuccess(recipeSchedules: [recipeSchedule]));
+              recipeSchedules.add(recipeSchedule);
+              emit(RecipeScheduleSuccess(recipeSchedules: recipeSchedules));
             });
+          });
+        } else if (event is RecipeSchedulesFetched) {
+          emit(RecipeScheduleInProgress());
+          final failureOrListOfRecipeSchedules =
+              await getAllRecipeSchedule(NoParams());
+
+          await failureOrListOfRecipeSchedules.fold((failure) {
+            emit(RecipeScheduleFailure(_mapFailureToMessage(failure)));
+          }, (listOfRecipeSchedules) {
+            emit(RecipeScheduleSuccess(recipeSchedules: listOfRecipeSchedules));
           });
         }
       },

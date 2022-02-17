@@ -7,7 +7,7 @@ abstract class RecipeScheduleEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class CreateRecipeScheduleForMenu extends RecipeScheduleEvent {
+class RecipeScheduleAdded extends RecipeScheduleEvent {
   final String id;
   final String name;
   final String description;
@@ -18,7 +18,7 @@ class CreateRecipeScheduleForMenu extends RecipeScheduleEvent {
   final Color color;
   final bool isAllDay;
 
-  const CreateRecipeScheduleForMenu({
+  const RecipeScheduleAdded({
     required this.id,
     required this.name,
     required this.day,
@@ -30,3 +30,5 @@ class CreateRecipeScheduleForMenu extends RecipeScheduleEvent {
     required this.isAllDay,
   });
 }
+
+class RecipeSchedulesFetched extends RecipeScheduleEvent {}
