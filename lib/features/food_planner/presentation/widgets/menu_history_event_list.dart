@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/menu_constants.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/menu_history_event_tile.dart';
 
 class MenuHistoryEventsList extends StatelessWidget {
   const MenuHistoryEventsList({
     Key? key,
-    required ValueNotifier<List<Event>> selectedEvents,
+    required ValueNotifier<List<RecipeSchedule>> selectedEvents,
   })  : _selectedEvents = selectedEvents,
         super(key: key);
 
-  final ValueNotifier<List<Event>> _selectedEvents;
+  final ValueNotifier<List<RecipeSchedule>> _selectedEvents;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +76,7 @@ class MenuHistoryEventsList extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 6.0),
-                child: ValueListenableBuilder<List<Event>>(
+                child: ValueListenableBuilder<List<RecipeSchedule>>(
                   valueListenable: _selectedEvents,
                   builder: (context, value, _) {
                     return ListView.builder(
@@ -84,7 +85,7 @@ class MenuHistoryEventsList extends StatelessWidget {
                         return SizedBox(
                           height: 70,
                           child: MenuHistoryListTile(
-                            event: value[index],
+                            recipeSchedule: value[index],
                             isLast: index == value.length - 1,
                           ),
                         );

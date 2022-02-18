@@ -1,7 +1,10 @@
+import 'dart:collection';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:kubo/core/hive/objects/recipe_schedule_hive.dart';
 import 'package:kubo/features/food_planner/data/datasources/recipe_schedule_local_data_source.dart';
+import 'package:kubo/features/food_planner/data/models/recipe_schedule_model.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -42,9 +45,9 @@ void main() {
     });
   });
 
-  group('getAllRecipes', () {
+  group('fetchRecipeScheduleList', () {
     test(
-      'should return all the list of RecipeScheduleModel when data is fetched successfully',
+      'should return list of RecipeScheduleModel when data is fetched successfully',
       () async {
         when(mockRecipeScheduleBox.values).thenReturn([
           RecipeScheduleHive(
@@ -58,11 +61,39 @@ void main() {
           ),
         ]);
 
+        when(mockRecipeScheduleBox.isEmpty).thenReturn(false);
+
         final result = await dataSource.fetchRecipeScheduleList();
 
         verify(mockRecipeScheduleBox.values);
         expect(result, equals([tRecipeScheduleModel]));
       },
     );
+  });
+
+  group('fetchRecipeScheduleLinkedHashmap', () {
+    test('should return Recipe Schedule linked hashmap when data is fetched',
+        () async {
+      when(mockRecipeScheduleBox.values).thenReturn(
+        [
+          RecipeScheduleHive(
+            id: tId,
+            name: tName,
+            description: tDescription,
+            imageUrl: tImageUrl,
+            start: tStart,
+            end: tEnd,
+            color: tColor,
+          ),
+        ],
+      );
+
+      when(mockRecipeScheduleBox.isEmpty).thenReturn(false);
+
+      final result = await dataSource.fetchRecipeScheduleLinkedHashmap();
+
+      verify(mockRecipeScheduleBox.values);
+      expect(result, isA<LinkedHashMap<DateTime, List<RecipeScheduleModel>>>());
+    });
   });
 }

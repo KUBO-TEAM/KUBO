@@ -119,7 +119,7 @@ void main() {
 
   final tListSchedule = [tRecipeScheduleModel];
 
-  group('getAllRecipes', () {
+  group('fetchRecipeScheduleList', () {
     test(
         'should return list of data when the call local data source is called.',
         () async {
@@ -132,5 +132,34 @@ void main() {
 
       expect(result, equals(Right(tListSchedule)));
     });
+
+    test('should return CacheFailure fetch list RecipeSchedule fails',
+        () async {
+      when(mockRecipeScheduleLocalDataSource.fetchRecipeScheduleList())
+          .thenThrow(CacheException());
+
+      final result = await repository.fetchRecipeScheduleList();
+
+      verify(mockRecipeScheduleLocalDataSource.fetchRecipeScheduleList());
+      expect(result, equals(Left(CacheFailure())));
+    });
+  });
+
+  group('fetchRecipeScheduleLinkedHashmap', () {
+    test(
+      'should return linked hasmap when local data source is called',
+      () async {
+        when(mockRecipeScheduleLocalDataSource
+                .fetchRecipeScheduleLinkedHashmap())
+            .thenAnswer((_) async => tRecipeScheduleModelLinkedHashmap);
+
+        final result = await repository.fetchRecipeScheduleLinkedHashmap();
+
+        verify(mockRecipeScheduleLocalDataSource
+            .fetchRecipeScheduleLinkedHashmap());
+
+        expect(result, equals(Right(tRecipeScheduleModelLinkedHashmap)));
+      },
+    );
   });
 }

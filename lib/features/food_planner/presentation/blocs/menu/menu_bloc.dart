@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/error/failures.dart';
 import 'package:kubo/core/error/error_messages.dart';
@@ -9,6 +10,7 @@ import 'package:kubo/core/usecases/usecase.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/usecases/fetch_recipe_schedule_list.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/menu_history/menu_history_bloc.dart';
 
 part 'menu_event.dart';
 part 'menu_state.dart';
@@ -27,7 +29,15 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   }) : super(MenuInitial()) {
     on<MenuEvent>(
       (event, emit) async {
-        if (event is MenuAdded) {
+        if (event is MenuTimeTableCellPressed) {
+          List<RecipeSchedule> recipeSchedules = [];
+
+          final currentState = state;
+
+          if (currentState is MenuSuccess) {
+            recipeSchedules = currentState.recipeSchedules;
+          }
+
           emit(MenuInProgress());
 
           final convertDates = dateConverter.convertStartAndEndTimeOfDay(
@@ -39,7 +49,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           await convertDates.fold((failure) {
             emit(
               MenuFailure(
-                _mapFailureToMessage(failure),
+                mapFailureToMessage(failure),
               ),
             );
           }, (convertedDates) async {
@@ -56,43 +66,25 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             );
 
             await failureOrRecipeSchedule.fold((failure) async {
-              emit(MenuFailure(_mapFailureToMessage(failure)));
+              emit(MenuFailure(mapFailureToMessage(failure)));
             }, (recipeSchedule) async {
-              List<RecipeSchedule> recipeSchedules = [];
-
-              if (state is MenuSuccess) {
-                (state as MenuSuccess).recipeSchedules;
-              }
-
               recipeSchedules.add(recipeSchedule);
+
               emit(MenuSuccess(recipeSchedules: recipeSchedules));
             });
           });
-        } else if (event is MenuFetched) {
+        } else if (event is MenuRecipeScheduleListFetched) {
           emit(MenuInProgress());
           final failureOrListOfRecipeSchedules =
               await fetchRecipeScheduleList(NoParams());
 
           failureOrListOfRecipeSchedules.fold((failure) {
-            emit(MenuFailure(_mapFailureToMessage(failure)));
+            emit(MenuFailure(mapFailureToMessage(failure)));
           }, (listOfRecipeSchedules) {
             emit(MenuSuccess(recipeSchedules: listOfRecipeSchedules));
           });
         }
       },
     );
-  }
-
-  String _mapFailureToMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case ServerFailure:
-        return SERVER_FAILURE_MESSAGE;
-      case CacheFailure:
-        return CACHE_FAILURE_MESSAGE;
-      case DateConverterFailure:
-        return DATE_CONVERTER_FAILURE_MESSAGE;
-      default:
-        return UNEXPECTED_FAILURE_MESSAGE;
-    }
   }
 }

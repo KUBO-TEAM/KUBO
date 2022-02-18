@@ -73,3 +73,9 @@ final tRecipeScheduleLinkedHashmap =
   equals: isSameDay,
   hashCode: getHashCode,
 )..addAll(_resources);
+
+final tRecipeScheduleModelLinkedHashmap =
+    LinkedHashMap<DateTime, List<RecipeScheduleModel>>(
+  equals: isSameDay,
+  hashCode: getHashCode,
+)..addAll(_resources);

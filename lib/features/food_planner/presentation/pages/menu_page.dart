@@ -54,25 +54,25 @@ class MenuPage extends StatelessWidget {
       appBar: const KuboAppBar('Menu'),
       body: SafeArea(
         child: BlocBuilder<MenuBloc, MenuState>(builder: (context, state) {
-          if (state is MenuInProgress) {
-            return const Center(child: CircularProgressIndicator());
+          if (state is MenuSuccess) {
+            final recipeSchedules = state.recipeSchedules;
+
+            return SfCalendar(
+              todayHighlightColor: Colors.green,
+              dataSource: ScheduleDataSource(recipeSchedules),
+              timeSlotViewSettings: _calendarTimeSlotViewSettings,
+              headerStyle: _calendarHeaderStyle,
+              viewHeaderStyle: _calendarViewHeaderStyle,
+              view: CalendarView.week,
+              weekNumberStyle: _calendarWeekNumberStyle,
+              firstDayOfWeek: 1,
+              onTap: (CalendarTapDetails details) {
+                _calendarTapped(details, context);
+              },
+            );
           }
 
-          final recipeSchedules = (state as MenuSuccess).recipeSchedules;
-
-          return SfCalendar(
-            todayHighlightColor: Colors.green,
-            dataSource: ScheduleDataSource(recipeSchedules),
-            timeSlotViewSettings: _calendarTimeSlotViewSettings,
-            headerStyle: _calendarHeaderStyle,
-            viewHeaderStyle: _calendarViewHeaderStyle,
-            view: CalendarView.week,
-            weekNumberStyle: _calendarWeekNumberStyle,
-            firstDayOfWeek: 1,
-            onTap: (CalendarTapDetails details) {
-              _calendarTapped(details, context);
-            },
-          );
+          return const Center(child: CircularProgressIndicator());
         }),
       ),
     );

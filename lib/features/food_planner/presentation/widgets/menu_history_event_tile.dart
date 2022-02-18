@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/menu_constants.dart';
 import 'package:kubo/core/constants/text_styles_constants.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 
 class MenuHistoryListTile extends StatelessWidget {
   const MenuHistoryListTile({
     Key? key,
-    required this.event,
+    required this.recipeSchedule,
     this.isLast = false,
   }) : super(key: key);
 
-  final Event event;
+  final RecipeSchedule recipeSchedule;
   final bool isLast;
 
   @override
@@ -25,7 +26,7 @@ class MenuHistoryListTile extends StatelessWidget {
               ),
             ),
             CircleAvatar(
-              backgroundColor: event.color,
+              backgroundColor: recipeSchedule.color,
               radius: 5,
             ),
             if (!isLast)
@@ -53,7 +54,7 @@ class MenuHistoryListTile extends StatelessWidget {
               style: kCaptionTextStyle,
             ),
             Text(
-              event.title,
+              recipeSchedule.name,
               style: kPreSubTitleTextStyle,
             ),
           ],

@@ -1,7 +1,10 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/error/exceptions.dart';
+import 'package:kubo/core/helpers/menu_linked_hashmap.dart';
 import 'package:kubo/core/hive/objects/recipe_schedule_hive.dart';
 import 'package:kubo/features/food_planner/data/models/recipe_schedule_model.dart';
 
@@ -23,11 +26,18 @@ abstract class RecipeScheduleLocalDataSource {
     required bool isAllDay,
   });
 
-  /// Gets the cached list of all [RecipeScheduleModel]
+  /// Fetch the cached list  [RecipeScheduleModel]
   ///
-  /// Throws [NoLocalDataException] if no cached data is present.
+  /// Throws [CacheException] if no cached data is present.
   ///
   Future<List<RecipeScheduleModel>> fetchRecipeScheduleList();
+
+  /// Fetch the cached linked list of  [RecipeScheduleModel]
+  ///
+  /// Throws [CacheException] if no cached data is present
+  ///
+  Future<LinkedHashMap<DateTime, List<RecipeScheduleModel>>>
+      fetchRecipeScheduleLinkedHashmap();
 }
 
 @module
@@ -98,5 +108,53 @@ class RecipeScheduleLocalDataSourceImpl
     }
 
     return schedules;
+  }
+
+  @override
+  Future<LinkedHashMap<DateTime, List<RecipeScheduleModel>>>
+      fetchRecipeScheduleLinkedHashmap() async {
+    if (recipeScheduleBox.isEmpty) {
+      throw CacheException();
+    }
+
+    final scheduleLinkedHashMap =
+        LinkedHashMap<DateTime, List<RecipeScheduleModel>>(
+      equals: isSameDay,
+      hashCode: getHashCode,
+    );
+
+    final Map<DateTime, List<RecipeScheduleModel>> scheduleMap = {};
+
+    for (var value in recipeScheduleBox.values) {
+      var recipeSchedule = RecipeScheduleModel(
+        id: value.id,
+        name: value.name,
+        description: value.description,
+        imageUrl: value.imageUrl,
+        start: value.start,
+        end: value.end,
+        color: value.color,
+        isAllDay: false,
+      );
+
+      final key =
+          DateTime(value.start.year, value.start.month, value.start.day);
+
+      if (scheduleMap[key] == null) {
+        scheduleMap[key] = [recipeSchedule];
+      } else {
+        final scheduleMapList = scheduleMap[key];
+
+        if (scheduleMapList != null) {
+          scheduleMapList.add(recipeSchedule);
+
+          scheduleMap[key] = scheduleMapList;
+        }
+      }
+    }
+
+    scheduleLinkedHashMap.addAll(scheduleMap);
+
+    return scheduleLinkedHashMap;
   }
 }
