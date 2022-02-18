@@ -59,8 +59,14 @@ class RecipeScheduleRepositoryImpl implements RecipeScheduleRepository {
 
   @override
   Future<Either<Failure, LinkedHashMap<DateTime, List<RecipeSchedule>>>>
-      fetchRecipeScheduleLinkedHashmap() {
-    // TODO: implement fetchRecipeScheduleLinkedHashmap
-    throw UnimplementedError();
+      fetchRecipeScheduleLinkedHashmap() async {
+    try {
+      final schedules =
+          await localDataSource.fetchRecipeScheduleLinkedHashmap();
+
+      return Right(schedules);
+    } on CacheException {
+      return Left(CacheFailure());
+    }
   }
 }

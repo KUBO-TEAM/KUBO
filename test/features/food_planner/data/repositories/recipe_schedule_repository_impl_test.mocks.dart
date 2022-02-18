@@ -2,11 +2,12 @@
 // in kubo/test/features/food_planner/data/repositories/recipe_schedule_repository_impl_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i4;
-import 'dart:ui' as _i5;
+import 'dart:async' as _i5;
+import 'dart:collection' as _i3;
+import 'dart:ui' as _i6;
 
 import 'package:kubo/features/food_planner/data/datasources/recipe_schedule_local_data_source.dart'
-    as _i3;
+    as _i4;
 import 'package:kubo/features/food_planner/data/models/recipe_schedule_model.dart'
     as _i2;
 import 'package:mockito/mockito.dart' as _i1;
@@ -24,24 +25,27 @@ import 'package:mockito/mockito.dart' as _i1;
 class _FakeRecipeScheduleModel_0 extends _i1.Fake
     implements _i2.RecipeScheduleModel {}
 
+class _FakeLinkedHashMap_1<K, V> extends _i1.Fake
+    implements _i3.LinkedHashMap<K, V> {}
+
 /// A class which mocks [RecipeScheduleLocalDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockRecipeScheduleLocalDataSource extends _i1.Mock
-    implements _i3.RecipeScheduleLocalDataSource {
+    implements _i4.RecipeScheduleLocalDataSource {
   MockRecipeScheduleLocalDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<_i2.RecipeScheduleModel> createRecipeSchedule(
+  _i5.Future<_i2.RecipeScheduleModel> createRecipeSchedule(
           {String? id,
           String? name,
           String? description,
           String? imageUrl,
           DateTime? start,
           DateTime? end,
-          _i5.Color? color,
+          _i6.Color? color,
           bool? isAllDay}) =>
       (super.noSuchMethod(
               Invocation.method(#createRecipeSchedule, [], {
@@ -56,11 +60,20 @@ class MockRecipeScheduleLocalDataSource extends _i1.Mock
               }),
               returnValue: Future<_i2.RecipeScheduleModel>.value(
                   _FakeRecipeScheduleModel_0()))
-          as _i4.Future<_i2.RecipeScheduleModel>);
+          as _i5.Future<_i2.RecipeScheduleModel>);
   @override
-  _i4.Future<List<_i2.RecipeScheduleModel>> fetchRecipeScheduleList() =>
+  _i5.Future<List<_i2.RecipeScheduleModel>> fetchRecipeScheduleList() =>
       (super.noSuchMethod(Invocation.method(#fetchRecipeScheduleList, []),
               returnValue: Future<List<_i2.RecipeScheduleModel>>.value(
                   <_i2.RecipeScheduleModel>[]))
-          as _i4.Future<List<_i2.RecipeScheduleModel>>);
+          as _i5.Future<List<_i2.RecipeScheduleModel>>);
+  @override
+  _i5.Future<_i3.LinkedHashMap<DateTime, List<_i2.RecipeScheduleModel>>>
+      fetchRecipeScheduleLinkedHashmap() => (super.noSuchMethod(
+          Invocation.method(#fetchRecipeScheduleLinkedHashmap, []),
+          returnValue:
+              Future<_i3.LinkedHashMap<DateTime, List<_i2.RecipeScheduleModel>>>.value(
+                  _FakeLinkedHashMap_1<DateTime,
+                      List<_i2.RecipeScheduleModel>>())) as _i5
+          .Future<_i3.LinkedHashMap<DateTime, List<_i2.RecipeScheduleModel>>>);
 }

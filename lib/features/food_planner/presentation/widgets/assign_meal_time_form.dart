@@ -10,6 +10,7 @@ import 'package:kubo/core/hive/objects/recipe_schedule_hive.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/assign_meal_plan_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/menu_history/menu_history_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/menu_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/color_selector.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/day_selector.dart';
@@ -49,6 +50,10 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
       listener: (context, state) {
         if (state is MenuSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(kSuccessfullySaveSnackBar);
+
+          BlocProvider.of<MenuHistoryBloc>(context).add(
+            MenuHistoryRecipeScheduleFetched(),
+          );
 
           Navigator.pushNamedAndRemoveUntil(
             context,
@@ -121,7 +126,7 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
     if (start != null && end != null) {
       _showConfirmationPopUp(() {
         BlocProvider.of<MenuBloc>(context).add(
-          MenuAdded(
+          MenuTimeTableCellPressed(
             id: recipe.id,
             name: recipe.name,
             day: day,

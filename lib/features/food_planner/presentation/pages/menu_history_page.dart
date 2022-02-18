@@ -1,6 +1,12 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/menu_constants.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/menu_history/menu_history_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/menu_history_event_list.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -75,7 +81,7 @@ class MenuHistoryPage extends StatefulWidget {
 }
 
 class _MenuHistoryPageState extends State<MenuHistoryPage> {
-  late final ValueNotifier<List<Event>> _selectedEvents;
+  late final ValueNotifier<List<RecipeSchedule>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -83,9 +89,13 @@ class _MenuHistoryPageState extends State<MenuHistoryPage> {
   @override
   void initState() {
     super.initState();
-
     _selectedDay = _focusedDay;
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+    _selectedEvents = ValueNotifier(
+      _getListOfRecipeScheduleForDay(
+        day: _selectedDay!,
+        state: BlocProvider.of<MenuHistoryBloc>(context).state,
+      ),
+    );
   }
 
   @override
@@ -101,56 +111,91 @@ class _MenuHistoryPageState extends State<MenuHistoryPage> {
       body: SafeArea(
         child: Container(
           color: kBackgroundGrey,
-          child: Column(
-            children: [
-              MenuHistoryEventsList(selectedEvents: _selectedEvents),
-              const SizedBox(height: 8.0),
-              Container(
-                decoration: _calendarContainerRadius,
-                child: TableCalendar<Event>(
-                  firstDay: kFirstDay,
-                  lastDay: kLastDay,
-                  focusedDay: _focusedDay,
-                  selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                  calendarFormat: _calendarFormat,
-                  eventLoader: _getEventsForDay,
-                  startingDayOfWeek: StartingDayOfWeek.monday,
-                  daysOfWeekStyle: _calendarDaysOfWeekStyle,
-                  headerStyle: _calendarHeaderStyle,
-                  calendarStyle: _calendarStyle,
-                  onDaySelected: _onDaySelected,
-                  onFormatChanged: (format) {
-                    if (_calendarFormat != format) {
-                      setState(() {
-                        _calendarFormat = format;
-                      });
-                    }
-                  },
-                  onPageChanged: (focusedDay) {
-                    _focusedDay = focusedDay;
-                  },
-                ),
-              ),
-            ],
+          child: BlocBuilder<MenuHistoryBloc, MenuHistoryState>(
+            builder: (context, state) {
+              return Column(
+                children: [
+                  MenuHistoryEventsList(selectedEvents: _selectedEvents),
+                  const SizedBox(height: 8.0),
+                  Container(
+                    decoration: _calendarContainerRadius,
+                    child: TableCalendar<RecipeSchedule>(
+                      firstDay: kFirstDay,
+                      lastDay: kLastDay,
+                      focusedDay: _focusedDay,
+                      selectedDayPredicate: (day) =>
+                          isSameDay(_selectedDay, day),
+                      calendarFormat: _calendarFormat,
+                      eventLoader: (DateTime day) {
+                        return _getListOfRecipeScheduleForDay(
+                          day: day,
+                          state: state,
+                        );
+                      },
+                      startingDayOfWeek: StartingDayOfWeek.monday,
+                      daysOfWeekStyle: _calendarDaysOfWeekStyle,
+                      headerStyle: _calendarHeaderStyle,
+                      calendarStyle: _calendarStyle,
+                      onDaySelected:
+                          (DateTime selectedDay, DateTime focusedDay) {
+                        _onDaySelected(
+                          selectedDay: selectedDay,
+                          focusedDay: focusedDay,
+                          state: state,
+                        );
+                      },
+                      onFormatChanged: (format) {
+                        if (_calendarFormat != format) {
+                          setState(() {
+                            _calendarFormat = format;
+                          });
+                        }
+                      },
+                      onPageChanged: (focusedDay) {
+                        _focusedDay = focusedDay;
+                      },
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
     );
   }
 
-  List<Event> _getEventsForDay(DateTime day) {
-    // Implementation example
-    return kEvents[day] ?? [];
+  List<RecipeSchedule> _getListOfRecipeScheduleForDay({
+    required MenuHistoryState state,
+    required DateTime day,
+  }) {
+    if (state is MenuHistorySuccess) {
+      final result = state.recipeScheduleLinkedHashmap[day];
+      if (result != null) {
+        return result;
+      }
+    }
+
+    return [];
   }
 
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-      });
+  void _onDaySelected({
+    required DateTime selectedDay,
+    required DateTime focusedDay,
+    required MenuHistoryState state,
+  }) {
+    if (state is MenuHistorySuccess) {
+      if (!isSameDay(_selectedDay, selectedDay)) {
+        setState(() {
+          _selectedDay = selectedDay;
+          _focusedDay = focusedDay;
+        });
 
-      _selectedEvents.value = _getEventsForDay(selectedDay);
+        _selectedEvents.value = _getListOfRecipeScheduleForDay(
+          day: selectedDay,
+          state: state,
+        );
+      }
     }
   }
 }

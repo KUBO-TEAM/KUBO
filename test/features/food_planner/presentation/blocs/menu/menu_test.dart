@@ -57,7 +57,7 @@ void main() {
         ),
       );
 
-      bloc.add(const MenuAdded(
+      bloc.add(const MenuTimeTableCellPressed(
         id: tId,
         name: tName,
         description: tDescription,
@@ -96,7 +96,7 @@ void main() {
     });
 
     test(
-        'should emit [RecipeScheduleInProgress, RecipeScheduleSuccess] when data is gotten successfully',
+        'should emit [MenuInProgress, MenuSuccess] when data is gotten successfully',
         () async {
       when(mockCreateRecipeSchedule(any))
           .thenAnswer((_) async => Right(tRecipeSchedule));
@@ -125,7 +125,7 @@ void main() {
 
       expectLater(bloc.stream, emitsInOrder(expected));
 
-      bloc.add(const MenuAdded(
+      bloc.add(const MenuTimeTableCellPressed(
         id: tId,
         name: tName,
         description: tDescription,
@@ -138,8 +138,7 @@ void main() {
       ));
     });
 
-    test(
-        'should emit [RecipeScheduleInProgress, RecipeScheduleFailure] when data is getting fails',
+    test('should emit [MenuInProgress, MenuFailure] when data is getting fails',
         () async {
       when(mockCreateRecipeSchedule(any))
           .thenAnswer((_) async => Left(CacheFailure()));
@@ -167,7 +166,7 @@ void main() {
       expectLater(bloc.stream, emitsInOrder(expected));
 
       bloc.add(
-        const MenuAdded(
+        const MenuTimeTableCellPressed(
           id: tId,
           name: tName,
           description: tDescription,
@@ -182,7 +181,7 @@ void main() {
     });
 
     test(
-        'should emit [RecipeScheduleInProgress, RecipeScheduleFailure] when date time conversion fail',
+        'should emit [MenuInProgress, MenuFailure] when date time conversion fail',
         () {
       when(mockDateConverter.convertStartAndEndTimeOfDay(
         day: anyNamed('day'),
@@ -202,7 +201,7 @@ void main() {
       expectLater(bloc.stream, emitsInOrder(expected));
 
       bloc.add(
-        const MenuAdded(
+        const MenuTimeTableCellPressed(
           id: tId,
           name: tName,
           description: tDescription,
@@ -217,9 +216,9 @@ void main() {
     });
   });
 
-  group('getAllRecipes', () {
+  group('fetchRecipeScheduleList', () {
     test(
-      'should get list of data from the get all recipe use case',
+      'should get list of data from the fetch recipe use case',
       () async {
         when(mockFetchRecipeScheduleList(any)).thenAnswer(
           (_) async => Right([
@@ -227,7 +226,7 @@ void main() {
           ]),
         );
 
-        bloc.add(MenuFetched());
+        bloc.add(MenuRecipeScheduleListFetched());
 
         await untilCalled(mockFetchRecipeScheduleList(any));
 
@@ -238,7 +237,7 @@ void main() {
     );
 
     test(
-        'should emit [RecipeScheduleInProgress, RecipeScheduleSuccess] when list of data is gotten successful',
+        'should emit [MenuInProgress, MenuSuccess] when list of data is gotten successful',
         () async {
       when(mockFetchRecipeScheduleList(any)).thenAnswer(
         (_) async => Right([
@@ -255,11 +254,11 @@ void main() {
 
       expectLater(bloc.stream, emitsInOrder(expected));
 
-      bloc.add(MenuFetched());
+      bloc.add(MenuRecipeScheduleListFetched());
     });
 
     test(
-        'should emit [RecipeScheduleInProgress, RecipeScheduleFailure] when list of data is gotten fails',
+        'should emit [MenuInProgress, MenuFailure] when list of data is gotten fails',
         () async {
       when(mockFetchRecipeScheduleList(any))
           .thenAnswer((_) async => Left(CacheFailure()));
@@ -271,7 +270,7 @@ void main() {
 
       expectLater(bloc.stream, emitsInOrder(expected));
 
-      bloc.add(MenuFetched());
+      bloc.add(MenuRecipeScheduleListFetched());
     });
   });
 }
