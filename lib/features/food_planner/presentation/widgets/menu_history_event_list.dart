@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/core/constants/menu_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/menu_history_event_tile.dart';
 

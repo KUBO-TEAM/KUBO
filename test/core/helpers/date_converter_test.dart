@@ -27,7 +27,7 @@ void main() {
         result,
         equals(
           Right(
-            StartAndEndTimeOfDay(
+            StartAndEndDateTime(
               start: tStart,
               end: tEnd,
             ),

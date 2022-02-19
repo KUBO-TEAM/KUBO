@@ -6,11 +6,11 @@ import 'package:intl/intl.dart';
 import 'package:kubo/core/constants/list_costants.dart';
 import 'package:kubo/core/error/failures.dart';
 
-class StartAndEndTimeOfDay extends Equatable {
+class StartAndEndDateTime extends Equatable {
   final DateTime start;
   final DateTime end;
 
-  const StartAndEndTimeOfDay({required this.start, required this.end});
+  const StartAndEndDateTime({required this.start, required this.end});
 
   @override
   List<Object?> get props => [start, end];
@@ -18,7 +18,7 @@ class StartAndEndTimeOfDay extends Equatable {
 
 @lazySingleton
 class DateConverter {
-  Either<Failure, StartAndEndTimeOfDay> convertStartAndEndTimeOfDay({
+  Either<Failure, StartAndEndDateTime> convertStartAndEndTimeOfDay({
     required int day,
     required TimeOfDay startTimeOfDay,
     required TimeOfDay endTimeOfDay,
@@ -46,7 +46,7 @@ class DateConverter {
         endTimeOfDay.minute,
       );
 
-      return Right(StartAndEndTimeOfDay(start: start, end: end));
+      return Right(StartAndEndDateTime(start: start, end: end));
     } on Exception {
       return Left(DateConverterFailure());
     }

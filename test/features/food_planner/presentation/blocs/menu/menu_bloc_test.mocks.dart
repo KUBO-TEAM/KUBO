@@ -91,18 +91,17 @@ class MockDateConverter extends _i1.Mock implements _i10.DateConverter {
   }
 
   @override
-  _i3.Either<_i6.Failure, _i10.StartAndEndTimeOfDay>
-      convertStartAndEndTimeOfDay(
-              {int? day,
-              _i11.TimeOfDay? startTimeOfDay,
-              _i11.TimeOfDay? endTimeOfDay}) =>
-          (super.noSuchMethod(
-                  Invocation.method(#convertStartAndEndTimeOfDay, [], {
-                    #day: day,
-                    #startTimeOfDay: startTimeOfDay,
-                    #endTimeOfDay: endTimeOfDay
-                  }),
-                  returnValue:
-                      _FakeEither_1<_i6.Failure, _i10.StartAndEndTimeOfDay>())
-              as _i3.Either<_i6.Failure, _i10.StartAndEndTimeOfDay>);
+  _i3.Either<_i6.Failure, _i10.StartAndEndDateTime> convertStartAndEndTimeOfDay(
+          {int? day,
+          _i11.TimeOfDay? startTimeOfDay,
+          _i11.TimeOfDay? endTimeOfDay}) =>
+      (super.noSuchMethod(
+              Invocation.method(#convertStartAndEndTimeOfDay, [], {
+                #day: day,
+                #startTimeOfDay: startTimeOfDay,
+                #endTimeOfDay: endTimeOfDay
+              }),
+              returnValue:
+                  _FakeEither_1<_i6.Failure, _i10.StartAndEndDateTime>())
+          as _i3.Either<_i6.Failure, _i10.StartAndEndDateTime>);
 }

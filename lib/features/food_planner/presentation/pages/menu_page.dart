@@ -67,7 +67,11 @@ class MenuPage extends StatelessWidget {
               weekNumberStyle: _calendarWeekNumberStyle,
               firstDayOfWeek: 1,
               onTap: (CalendarTapDetails details) {
-                _calendarTapped(details, context);
+                _calendarTapped(
+                  details: details,
+                  context: context,
+                  recipeSchedules: recipeSchedules,
+                );
               },
             );
           }
@@ -78,10 +82,11 @@ class MenuPage extends StatelessWidget {
     );
   }
 
-  void _calendarTapped(
-    CalendarTapDetails details,
-    BuildContext context,
-  ) {
+  void _calendarTapped({
+    required CalendarTapDetails details,
+    required BuildContext context,
+    required List<RecipeSchedule> recipeSchedules,
+  }) {
     dynamic schedule = details.appointments;
     DateTime startingDate = details.date!;
     CalendarElement element = details.targetElement;

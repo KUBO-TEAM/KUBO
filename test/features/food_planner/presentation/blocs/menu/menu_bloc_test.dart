@@ -11,7 +11,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../test_constants.dart';
-import 'menu_test.mocks.dart';
+import 'menu_bloc_test.mocks.dart';
 
 @GenerateMocks([CreateRecipeSchedule, FetchRecipeScheduleList, DateConverter])
 void main() {
@@ -50,14 +50,14 @@ void main() {
         ),
       ).thenReturn(
         Right(
-          StartAndEndTimeOfDay(
+          StartAndEndDateTime(
             start: tStart,
             end: tEnd,
           ),
         ),
       );
 
-      bloc.add(const MenuTimeTableCellPressed(
+      bloc.add(const MenuTimeTableRecipeScheduleAdded(
         id: tId,
         name: tName,
         description: tDescription,
@@ -109,7 +109,7 @@ void main() {
         ),
       ).thenReturn(
         Right(
-          StartAndEndTimeOfDay(
+          StartAndEndDateTime(
             start: tStart,
             end: tEnd,
           ),
@@ -125,7 +125,7 @@ void main() {
 
       expectLater(bloc.stream, emitsInOrder(expected));
 
-      bloc.add(const MenuTimeTableCellPressed(
+      bloc.add(const MenuTimeTableRecipeScheduleAdded(
         id: tId,
         name: tName,
         description: tDescription,
@@ -151,7 +151,7 @@ void main() {
         ),
       ).thenReturn(
         Right(
-          StartAndEndTimeOfDay(
+          StartAndEndDateTime(
             start: tStart,
             end: tEnd,
           ),
@@ -166,7 +166,7 @@ void main() {
       expectLater(bloc.stream, emitsInOrder(expected));
 
       bloc.add(
-        const MenuTimeTableCellPressed(
+        const MenuTimeTableRecipeScheduleAdded(
           id: tId,
           name: tName,
           description: tDescription,
@@ -201,7 +201,7 @@ void main() {
       expectLater(bloc.stream, emitsInOrder(expected));
 
       bloc.add(
-        const MenuTimeTableCellPressed(
+        const MenuTimeTableRecipeScheduleAdded(
           id: tId,
           name: tName,
           description: tDescription,
@@ -271,6 +271,29 @@ void main() {
       expectLater(bloc.stream, emitsInOrder(expected));
 
       bloc.add(MenuRecipeScheduleListFetched());
+    });
+  });
+
+  group('updateRecipeScheduleList', () {
+    test(
+        'should pass the updated recipe schedule list and emit [MenuInProgress, MenuSuccess]',
+        () {
+      final expected = [
+        MenuInProgress(),
+        MenuSuccess(recipeSchedules: [tRecipeSchedule]),
+      ];
+
+      expectLater(bloc.stream, emitsInOrder(expected));
+
+      bloc.add(
+        MenuRecipeScheduleListUpdated(
+          updatedRecipeScheduleHive: tRecipeScheduleHive,
+        ),
+      );
+
+      verifyNoMoreInteractions(mockCreateRecipeSchedule);
+      verifyNoMoreInteractions(mockFetchRecipeScheduleList);
+      verifyNoMoreInteractions(mockDateConverter);
     });
   });
 }
