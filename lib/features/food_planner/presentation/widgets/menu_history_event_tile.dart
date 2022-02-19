@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kubo/core/constants/menu_constants.dart';
 import 'package:kubo/core/constants/text_styles_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
@@ -49,8 +50,9 @@ class MenuHistoryListTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              '7:00 - 8:00 am',
+            Text(
+              _formatDateTime(recipeSchedule.start, recipeSchedule.end),
+              // '7:00 - 8:00 am',
               style: kCaptionTextStyle,
             ),
             Text(
@@ -61,5 +63,13 @@ class MenuHistoryListTile extends StatelessWidget {
         )
       ],
     );
+  }
+
+  String _formatDateTime(DateTime start, DateTime end) {
+    final DateFormat formatter = DateFormat('jm');
+    final String startFormatted = formatter.format(start);
+    final String endFormatted = formatter.format(end);
+
+    return '$startFormatted - $endFormatted';
   }
 }

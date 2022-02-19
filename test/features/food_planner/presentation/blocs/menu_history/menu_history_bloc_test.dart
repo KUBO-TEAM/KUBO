@@ -9,7 +9,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../test_constants.dart';
-import 'menu_history_test.mocks.dart';
+import 'menu_history_bloc_test.mocks.dart';
 
 @GenerateMocks([FetchRecipeScheduleLinkedHashMap])
 void main() {

@@ -6,6 +6,7 @@ import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/list_costants.dart';
 import 'package:kubo/core/constants/snackbar_constants.dart';
 import 'package:kubo/core/constants/text_styles_constants.dart';
+import 'package:kubo/core/helpers/date_converter.dart';
 import 'package:kubo/core/hive/objects/recipe_schedule_hive.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/assign_meal_plan_bloc.dart';
@@ -40,8 +41,13 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
   @override
   void initState() {
     super.initState();
-    _updateFormFromLocal();
     _checkAssignMealPlanBloc();
+  }
+
+  @override
+  void didUpdateWidget(covariant AssignMealTimeForm oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _updateFormFromLocal();
   }
 
   @override
@@ -124,21 +130,27 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
     final recipe = widget.recipe;
 
     if (start != null && end != null) {
-      _showConfirmationPopUp(() {
-        BlocProvider.of<MenuBloc>(context).add(
-          MenuTimeTableCellPressed(
-            id: recipe.id,
-            name: recipe.name,
-            day: day,
-            description: recipe.description,
-            imageUrl: recipe.imageUrl,
-            start: start!,
-            end: end!,
-            color: colorPicked,
-            isAllDay: false,
-          ),
-        );
-      });
+      if (widget.schedule == null) {
+        _showConfirmationPopUp(() {
+          BlocProvider.of<MenuBloc>(context).add(
+            MenuTimeTableRecipeScheduleAdded(
+              id: recipe.id,
+              name: recipe.name,
+              day: day,
+              description: recipe.description,
+              imageUrl: recipe.imageUrl,
+              start: start!,
+              end: end!,
+              color: colorPicked,
+              isAllDay: false,
+            ),
+          );
+        });
+      } else {
+        _showConfirmationPopUp(() {
+          _updateRecipeSchedule();
+        });
+      }
     }
   }
 
@@ -157,6 +169,7 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
 
   void _checkAssignMealPlanBloc() {
     final state = BlocProvider.of<AssignMealPlanBloc>(context).state;
+
     TimeOfDay? startingDate = start;
     TimeOfDay? endingDate = end;
 
@@ -195,6 +208,35 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
         ),
       ],
     );
+  }
+
+  void _updateRecipeSchedule() {
+    final recipeSchedule = widget.schedule;
+
+    final dateConverter = DateConverter();
+
+    if (start != null) {
+      final converted = dateConverter.convertStartAndEndTimeOfDay(
+        day: day,
+        startTimeOfDay: start!,
+        endTimeOfDay: end!,
+      );
+
+      converted.fold((failure) => {}, (result) {
+        if (recipeSchedule != null) {
+          recipeSchedule.start = result.start;
+          recipeSchedule.end = result.end;
+          recipeSchedule.color = colorPicked;
+          recipeSchedule.save();
+
+          BlocProvider.of<MenuBloc>(context).add(
+            MenuRecipeScheduleListUpdated(
+              updatedRecipeScheduleHive: recipeSchedule,
+            ),
+          );
+        }
+      });
+    }
   }
 
   TimeOfDay? _dateTimeToTimeOfDay(DateTime? time) {

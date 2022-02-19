@@ -40,8 +40,9 @@ class _AssignMealTimePageState extends State<AssignMealTimePage> {
 
     if (box.isEmpty == false) {
       final Recipe recipe = widget.arguments.recipe;
-
-      recipeScheduleHive = box.get(recipe.id);
+      setState(() {
+        recipeScheduleHive = box.get(recipe.id);
+      });
     }
   }
 

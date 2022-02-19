@@ -7,7 +7,7 @@ abstract class MenuEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class MenuTimeTableCellPressed extends MenuEvent {
+class MenuTimeTableRecipeScheduleAdded extends MenuEvent {
   final String id;
   final String name;
   final String description;
@@ -18,7 +18,7 @@ class MenuTimeTableCellPressed extends MenuEvent {
   final Color color;
   final bool isAllDay;
 
-  const MenuTimeTableCellPressed({
+  const MenuTimeTableRecipeScheduleAdded({
     required this.id,
     required this.name,
     required this.day,
@@ -32,3 +32,11 @@ class MenuTimeTableCellPressed extends MenuEvent {
 }
 
 class MenuRecipeScheduleListFetched extends MenuEvent {}
+
+class MenuRecipeScheduleListUpdated extends MenuEvent {
+  final RecipeScheduleHive updatedRecipeScheduleHive;
+
+  const MenuRecipeScheduleListUpdated({
+    required this.updatedRecipeScheduleHive,
+  });
+}
