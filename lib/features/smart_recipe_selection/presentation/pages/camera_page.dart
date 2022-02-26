@@ -5,6 +5,7 @@ import 'package:kubo/features/smart_recipe_selection/presentation/pages/captured
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/camera_circle_button.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/camera_clipper.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/camera_top_buttons.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CameraPage extends StatefulWidget {
   static const String id = 'camera_page';
@@ -36,6 +37,16 @@ class _CameraPageState extends State<CameraPage> {
     super.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: kBrownPrimary,
+      body: SafeArea(
+        child: _loadingOrCamera(),
+      ),
+    );
+  }
+
   Widget _loadingOrCamera() {
     double kScreenWidth = MediaQuery.of(context).size.width;
 
@@ -53,10 +64,31 @@ class _CameraPageState extends State<CameraPage> {
             ),
           ),
           Positioned(
-            bottom: 20,
-            left: (kScreenWidth / 2) - 35,
-            child: CameraCircleButton(
-              onPressed: _onTakePictureButtonPressed,
+            bottom: 0,
+            child: Container(
+              width: kScreenWidth,
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: const CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.red,
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  CameraCircleButton(
+                    onPressed: _onTakePictureButtonPressed,
+                  ),
+                  const SizedBox(width: 20),
+                  const CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.red,
+                  ),
+                ],
+              ),
             ),
           ),
           const CameraClipper(),
@@ -72,25 +104,21 @@ class _CameraPageState extends State<CameraPage> {
                 height: 60,
                 width: 60,
                 decoration: BoxDecoration(
-                    // borderRadius: ,
-                    shape: BoxShape.rectangle,
-                    border: Border.all(color: Colors.yellow, width: 1)),
+                  shape: BoxShape.rectangle,
+                  border: Border.all(color: Colors.yellow, width: 1),
+                ),
               ),
             ),
         ],
       );
     }
-    return Container();
+
+    return const Center(child: CircularProgressIndicator());
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kBrownPrimary,
-      body: SafeArea(
-        child: _loadingOrCamera(),
-      ),
-    );
+  Future<void> _pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
   }
 
   Future<void> _getCameras() async {
