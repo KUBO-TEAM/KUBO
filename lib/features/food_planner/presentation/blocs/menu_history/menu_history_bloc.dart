@@ -28,7 +28,8 @@ class MenuHistoryBloc extends Bloc<MenuHistoryEvent, MenuHistoryState> {
           emit(MenuHistoryFailure(message: mapFailureToMessage(failure)));
         }, (recipeScheduleLinkedHashmap) {
           emit(MenuHistorySuccess(
-              recipeScheduleLinkedHashmap: recipeScheduleLinkedHashmap));
+            recipeScheduleLinkedHashmap: recipeScheduleLinkedHashmap,
+          ));
         });
       }
     });

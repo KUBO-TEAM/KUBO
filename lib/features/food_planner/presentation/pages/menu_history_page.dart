@@ -1,11 +1,8 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/menu_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu_history/menu_history_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/menu_history_event_list.dart';
@@ -115,7 +112,10 @@ class _MenuHistoryPageState extends State<MenuHistoryPage> {
             builder: (context, state) {
               return Column(
                 children: [
-                  MenuHistoryEventsList(selectedEvents: _selectedEvents),
+                  MenuHistoryEventsList(
+                    selectedEvents: _selectedEvents,
+                    selectedDay: _selectedDay,
+                  ),
                   const SizedBox(height: 8.0),
                   Container(
                     decoration: _calendarContainerRadius,
@@ -136,8 +136,10 @@ class _MenuHistoryPageState extends State<MenuHistoryPage> {
                       daysOfWeekStyle: _calendarDaysOfWeekStyle,
                       headerStyle: _calendarHeaderStyle,
                       calendarStyle: _calendarStyle,
-                      onDaySelected:
-                          (DateTime selectedDay, DateTime focusedDay) {
+                      onDaySelected: (
+                        DateTime selectedDay,
+                        DateTime focusedDay,
+                      ) {
                         _onDaySelected(
                           selectedDay: selectedDay,
                           focusedDay: focusedDay,
