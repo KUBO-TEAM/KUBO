@@ -278,10 +278,22 @@ void main() {
     test(
         'should pass the updated recipe schedule list and emit [MenuInProgress, MenuSuccess]',
         () {
+      when(mockFetchRecipeScheduleList(any)).thenAnswer(
+        (_) async => Right([
+          tRecipeSchedule,
+        ]),
+      );
+
       final expected = [
         MenuInProgress(),
         MenuSuccess(recipeSchedules: [tRecipeSchedule]),
       ];
+
+      expectLater(bloc.stream, emitsInOrder(expected));
+
+      bloc.add(
+        MenuRecipeScheduleListFetched(),
+      );
 
       expectLater(bloc.stream, emitsInOrder(expected));
 
