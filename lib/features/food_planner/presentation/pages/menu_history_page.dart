@@ -156,6 +156,19 @@ class _MenuHistoryPageState extends State<MenuHistoryPage> {
                       onPageChanged: (focusedDay) {
                         _focusedDay = focusedDay;
                       },
+                      calendarBuilders: CalendarBuilders(
+                        singleMarkerBuilder: (context, date, event) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: lightenColor(event.color, .2),
+                            ),
+                            width: 7.0,
+                            height: 7.0,
+                            margin: const EdgeInsets.symmetric(horizontal: 1.5),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],
@@ -199,5 +212,15 @@ class _MenuHistoryPageState extends State<MenuHistoryPage> {
         );
       }
     }
+  }
+
+  Color lightenColor(Color color, [double amount = .1]) {
+    assert(amount >= 0 && amount <= 1);
+
+    final hsl = HSLColor.fromColor(color);
+    final hslLight =
+        hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+
+    return hslLight.toColor();
   }
 }
