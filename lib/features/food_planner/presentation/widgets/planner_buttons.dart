@@ -4,7 +4,6 @@ import 'package:kubo/features/food_planner/presentation/pages/menu_history_page.
 import 'package:kubo/features/food_planner/presentation/pages/menu_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
 
-
 class PlannerButtons extends StatelessWidget {
   const PlannerButtons({
     Key? key,
@@ -20,9 +19,7 @@ class PlannerButtons extends StatelessWidget {
           title: const Text(
             'Menu',
           ),
-          onPressed: () =>
-            Navigator.pushNamed(context, MenuPage.id)
-          ,
+          onPressed: () => Navigator.pushNamed(context, MenuPage.id),
         ),
         const SizedBox(
           width: 8.0,
@@ -32,9 +29,7 @@ class PlannerButtons extends StatelessWidget {
           title: const Text(
             'Menu History',
           ),
-          onPressed: () =>
-            Navigator.pushNamed(context, MenuHistoryPage.id)
-          ,
+          onPressed: () => Navigator.pushNamed(context, MenuHistoryPage.id),
         ),
         const SizedBox(
           width: 8.0,
@@ -44,9 +39,7 @@ class PlannerButtons extends StatelessWidget {
           title: const Text(
             'Agenda',
           ),
-          onPressed: () =>
-            Navigator.pushNamed(context, AgendaPage.id),
-          
+          onPressed: () => Navigator.pushNamed(context, AgendaPage.id),
         ),
       ],
     );

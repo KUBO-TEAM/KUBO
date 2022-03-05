@@ -11,6 +11,7 @@ environment:
 dependencies:
   camera: ^0.9.4+12
   carousel_slider: ^4.0.0
+  cross_file: ^0.3.2
   cupertino_icons: ^1.0.2
   dartz: ^0.10.1
   direct_select_flutter: ^1.1.1
@@ -26,6 +27,7 @@ dependencies:
   hive_flutter: ^1.1.0
   hive_generator: ^1.1.2
   http: ^0.13.4
+  image_picker: ^0.8.4+10
   injectable: ^1.5.3
   intl: ^0.17.0
   path_provider: ^2.0.8
