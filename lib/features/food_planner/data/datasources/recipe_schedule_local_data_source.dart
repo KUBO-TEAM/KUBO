@@ -93,6 +93,9 @@ class RecipeScheduleLocalDataSourceImpl
   Future<List<RecipeScheduleModel>> fetchRecipeScheduleList() async {
     final List<RecipeScheduleModel> schedules = [];
 
+    // TODO: DANGER Don't forget to remove this in production!!!!
+    // recipeScheduleBox.deleteAll(recipeScheduleBox.keys);
+
     for (var value in recipeScheduleBox.values) {
       var recipeSchedule = RecipeScheduleModel(
         id: value.id,

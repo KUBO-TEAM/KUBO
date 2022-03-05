@@ -57,6 +57,7 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
         if (state is MenuSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(kSuccessfullySaveSnackBar);
 
+          //Fetched Menu History when new meal plan successfully added
           BlocProvider.of<MenuHistoryBloc>(context).add(
             MenuHistoryRecipeScheduleFetched(),
           );
@@ -155,16 +156,20 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
   }
 
   void _updateFormFromLocal() {
-    setState(() {
-      if (widget.schedule != null) {
-        day = kDayList.indexOf(
-          DateFormat('EEEE').format(widget.schedule!.start),
-        );
-        start = _dateTimeToTimeOfDay(widget.schedule!.start);
-        end = _dateTimeToTimeOfDay(widget.schedule!.end);
-        colorPicked = widget.schedule!.color;
-      }
-    });
+    final state = BlocProvider.of<AssignMealPlanBloc>(context).state;
+
+    if (state is! AssignMealPlanSuccess) {
+      setState(() {
+        if (widget.schedule != null) {
+          day = kDayList.indexOf(
+            DateFormat('EEEE').format(widget.schedule!.start),
+          );
+          start = _dateTimeToTimeOfDay(widget.schedule!.start);
+          end = _dateTimeToTimeOfDay(widget.schedule!.end);
+          colorPicked = widget.schedule!.color;
+        }
+      });
+    }
   }
 
   void _checkAssignMealPlanBloc() {
