@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
@@ -6,6 +8,7 @@ import 'package:kubo/features/smart_recipe_selection/presentation/widgets/camera
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/camera_clipper.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/camera_top_buttons.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 class CameraPage extends StatefulWidget {
   static const String id = 'camera_page';
@@ -25,10 +28,13 @@ class _CameraPageState extends State<CameraPage> {
   double y = 0.0;
   double x = 0.0;
 
+  File? latestCacheImage;
+
   @override
   void initState() {
     super.initState();
     _getCameras();
+    _getFirstCacheFile();
   }
 
   @override
@@ -73,8 +79,11 @@ class _CameraPageState extends State<CameraPage> {
                 children: [
                   GestureDetector(
                     onTap: _pickImage,
-                    child: const CircleAvatar(
+                    child: CircleAvatar(
                       radius: 30,
+                      backgroundImage: latestCacheImage != null
+                          ? FileImage(latestCacheImage!)
+                          : null,
                       backgroundColor: Colors.red,
                     ),
                   ),
@@ -83,10 +92,7 @@ class _CameraPageState extends State<CameraPage> {
                     onPressed: _onTakePictureButtonPressed,
                   ),
                   const SizedBox(width: 20),
-                  const CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.red,
-                  ),
+                  const SizedBox(width: 30),
                 ],
               ),
             ),
@@ -119,6 +125,22 @@ class _CameraPageState extends State<CameraPage> {
   Future<void> _pickImage() async {
     final ImagePicker _picker = ImagePicker();
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {}
+  }
+
+  Future<void> _getFirstCacheFile() async {
+    final tempDirectory = await getTemporaryDirectory();
+
+    final tempDirFiles = tempDirectory.listSync(
+      recursive: false,
+      followLinks: false,
+    );
+    // print(tempDirFiles[0].path);
+    if (tempDirFiles.isNotEmpty) {
+      setState(() {
+        latestCacheImage = File(tempDirFiles.last.path);
+      });
+    }
   }
 
   Future<void> _getCameras() async {
@@ -165,7 +187,7 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   void _onTakePictureButtonPressed() {
-    _takePicture().then((XFile? file) {
+    _takePicture().then((XFile? file) async {
       if (mounted) {
         if (file != null) {
           // final Directory dir = await getApplicationDocumentsDirectory();
@@ -173,7 +195,7 @@ class _CameraPageState extends State<CameraPage> {
           // final File newImage =
           //     await fileToCopy.copy('/storage/emulated/0/Download/image1.jpg');
 
-          Navigator.pushNamed(
+          await Navigator.pushNamed(
             context,
             CapturedPage.id,
             arguments: CapturedPageArguments(
@@ -181,7 +203,7 @@ class _CameraPageState extends State<CameraPage> {
             ),
           );
 
-          debugPrint('Picture saved to ${file.path}');
+          _getFirstCacheFile();
         }
       }
     });
