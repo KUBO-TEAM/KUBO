@@ -20,7 +20,7 @@ class RecipeScheduleHiveAdapter extends TypeAdapter<RecipeScheduleHive> {
       id: fields[0] as String,
       name: fields[1] as String,
       description: fields[2] as String,
-      imageUrl: fields[3] as String,
+      displayPhoto: fields[3] as String,
       start: fields[4] as DateTime,
       end: fields[5] as DateTime,
       color: fields[6] as Color,
@@ -38,7 +38,7 @@ class RecipeScheduleHiveAdapter extends TypeAdapter<RecipeScheduleHive> {
       ..writeByte(2)
       ..write(obj.description)
       ..writeByte(3)
-      ..write(obj.imageUrl)
+      ..write(obj.displayPhoto)
       ..writeByte(4)
       ..write(obj.start)
       ..writeByte(5)

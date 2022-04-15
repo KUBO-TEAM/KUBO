@@ -30,7 +30,7 @@ class RecommendedCard extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(13.0)),
               ),
               child: Image.network(
-                recipe.imageUrl,
+                recipe.displayPhoto,
                 fit: BoxFit.cover,
                 height: 150.0,
                 width: 180.0,

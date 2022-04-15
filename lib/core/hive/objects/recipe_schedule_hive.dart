@@ -15,7 +15,7 @@ class RecipeScheduleHive extends HiveObject {
   String description;
 
   @HiveField(3)
-  String imageUrl;
+  String displayPhoto;
 
   @HiveField(4)
   DateTime start;
@@ -30,7 +30,7 @@ class RecipeScheduleHive extends HiveObject {
     required this.id,
     required this.name,
     required this.description,
-    required this.imageUrl,
+    required this.displayPhoto,
     required this.start,
     required this.end,
     required this.color,

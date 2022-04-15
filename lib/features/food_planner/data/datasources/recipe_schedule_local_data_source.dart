@@ -19,7 +19,7 @@ abstract class RecipeScheduleLocalDataSource {
     required String id,
     required String name,
     required String description,
-    required String imageUrl,
+    required String displayPhoto,
     required DateTime start,
     required DateTime end,
     required Color color,
@@ -59,7 +59,7 @@ class RecipeScheduleLocalDataSourceImpl
     required String id,
     required String name,
     required String description,
-    required String imageUrl,
+    required String displayPhoto,
     required DateTime start,
     required DateTime end,
     required Color color,
@@ -69,7 +69,7 @@ class RecipeScheduleLocalDataSourceImpl
       id: id,
       name: name,
       description: description,
-      imageUrl: imageUrl,
+      displayPhoto: displayPhoto,
       start: start,
       end: end,
       color: color,
@@ -81,7 +81,7 @@ class RecipeScheduleLocalDataSourceImpl
       id: id,
       name: name,
       description: description,
-      imageUrl: imageUrl,
+      displayPhoto: displayPhoto,
       start: start,
       end: end,
       color: color,
@@ -93,15 +93,12 @@ class RecipeScheduleLocalDataSourceImpl
   Future<List<RecipeScheduleModel>> fetchRecipeScheduleList() async {
     final List<RecipeScheduleModel> schedules = [];
 
-    // TODO: DANGER Don't forget to remove this in production!!!!
-    // recipeScheduleBox.deleteAll(recipeScheduleBox.keys);
-
     for (var value in recipeScheduleBox.values) {
       var recipeSchedule = RecipeScheduleModel(
         id: value.id,
         name: value.name,
         description: value.description,
-        imageUrl: value.imageUrl,
+        displayPhoto: value.displayPhoto,
         start: value.start,
         end: value.end,
         color: value.color,
@@ -133,7 +130,7 @@ class RecipeScheduleLocalDataSourceImpl
         id: value.id,
         name: value.name,
         description: value.description,
-        imageUrl: value.imageUrl,
+        displayPhoto: value.displayPhoto,
         start: value.start,
         end: value.end,
         color: value.color,

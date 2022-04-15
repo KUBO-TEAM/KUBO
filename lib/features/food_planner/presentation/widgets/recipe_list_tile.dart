@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/core/constants/text_styles_constants.dart';
-import 'package:kubo/core/examples/recipes.examples.dart';
+import 'package:kubo/features/food_planner/data/models/recipe_model.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipe_steps_page.dart';
 
 class RecipeListTile extends StatelessWidget {
-  const RecipeListTile(
-    this.index, {
+  const RecipeListTile({
     Key? key,
+    required this.recipe,
   }) : super(key: key);
 
-  final int index;
+  final RecipeModel recipe;
 
   @override
   Widget build(BuildContext context) {
@@ -17,56 +16,61 @@ class RecipeListTile extends StatelessWidget {
       onTap: () => Navigator.pushNamed(
         context,
         RecipeStepsPage.id,
-        arguments: popularRecipes[index],
+        arguments: recipe,
       ),
-      child: Card(
-        elevation: 2,
-        margin: EdgeInsets.zero,
-        child: Container(
-          height: 120,
-          padding: const EdgeInsets.all(8),
-          color: Colors.white,
-          child: Row(
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Card(
+          elevation: 10,
+          margin: EdgeInsets.zero,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Card(
-                semanticContainer: true,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                ),
+              Expanded(
                 child: Hero(
-                  tag: "recipe-img-${popularRecipes[index].imageUrl}",
+                  tag: "recipe-img-${recipe.displayPhoto}",
                   child: Image.network(
-                    popularRecipes[index].imageUrl,
+                    recipe.displayPhoto,
                     fit: BoxFit.cover,
-                    height: 112.0,
-                    width: 112.0,
                   ),
                 ),
               ),
-              const SizedBox(width: 10.0),
-              Expanded(
+              Container(
+                padding: const EdgeInsets.all(8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      popularRecipes[index].name,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: kSubTitleTextStyle.copyWith(
-                        fontWeight: FontWeight.w900,
+                    SizedBox(
+                      width: 100,
+                      child: Text(
+                        recipe.name,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
+                    const SizedBox(
+                      height: 5,
+                    ),
                     Text(
-                      popularRecipes[index].description,
-                      style: kCaptionTextStyle,
-                      overflow: TextOverflow.ellipsis,
+                      recipe.description,
                       maxLines: 2,
+                      overflow: TextOverflow.fade,
+                      style: const TextStyle(
+                        fontSize: 11,
+                      ),
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

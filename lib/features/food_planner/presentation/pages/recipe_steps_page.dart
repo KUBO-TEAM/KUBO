@@ -41,10 +41,10 @@ class _RecipeStepsPageState extends State<RecipeStepsPage>
         body: Stack(
           children: <Widget>[
             Hero(
-              tag: "recipe-img-${widget.recipe.imageUrl}",
+              tag: "recipe-img-${widget.recipe.displayPhoto}",
               child: ImageClipper(
                 child: Image.network(
-                  widget.recipe.imageUrl,
+                  widget.recipe.displayPhoto,
                   fit: BoxFit.cover,
                   color: Colors.black38,
                   colorBlendMode: BlendMode.darken,

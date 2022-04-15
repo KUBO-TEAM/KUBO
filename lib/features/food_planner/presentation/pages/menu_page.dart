@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/assign_meal_plan_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
-import 'package:kubo/features/food_planner/presentation/pages/assign_meal_time_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/select_ingredients_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/floating_buttons.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
@@ -101,18 +99,18 @@ class MenuPage extends StatelessWidget {
     BuildContext context,
     dynamic recipeSchedule,
   ) {
-    Navigator.pushNamed(
-      context,
-      AssignMealTimePage.id,
-      arguments: AssignMealTimePageArguments(
-        recipe: Recipe(
-          id: recipeSchedule.first.id,
-          name: recipeSchedule.first.name,
-          description: recipeSchedule.first.description,
-          imageUrl: recipeSchedule.first.imageUrl,
-        ),
-      ),
-    );
+    // Navigator.pushNamed(
+    //   context,
+    //   AssignMealTimePage.id,
+    //   arguments: AssignMealTimePageArguments(
+    //     recipe: Recipe(
+    //       id: recipeSchedule.first.id,
+    //       name: recipeSchedule.first.name,
+    //       description: recipeSchedule.first.description,
+    //       displayPhoto: recipeSchedule.first.displayPhoto,
+    //     ),
+    //   ),
+    // );
   }
 
   void _cellPressed(

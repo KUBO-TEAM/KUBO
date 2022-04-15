@@ -31,7 +31,7 @@ class PopularCard extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(13.0)),
               ),
               child: Image.network(
-                recipe.imageUrl,
+                recipe.displayPhoto,
                 fit: BoxFit.cover,
                 height: 80.0,
                 width: 75.0,

@@ -10,7 +10,7 @@ abstract class RecipeScheduleRepository {
     required String id,
     required String name,
     required String description,
-    required String imageUrl,
+    required String displayPhoto,
     required DateTime start,
     required DateTime end,
     required Color color,

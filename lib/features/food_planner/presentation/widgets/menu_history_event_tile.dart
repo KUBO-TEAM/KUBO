@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kubo/core/constants/menu_constants.dart';
 import 'package:kubo/core/constants/text_styles_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 

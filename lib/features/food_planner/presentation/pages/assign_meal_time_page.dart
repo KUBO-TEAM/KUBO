@@ -67,7 +67,7 @@ class _AssignMealTimePageState extends State<AssignMealTimePage> {
             Positioned.fill(
               //
               child: Image.network(
-                recipe.imageUrl,
+                recipe.displayPhoto,
                 fit: BoxFit.cover,
               ),
             ),

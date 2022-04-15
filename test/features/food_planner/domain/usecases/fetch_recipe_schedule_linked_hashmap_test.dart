@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kubo/core/usecases/usecase.dart';
 import 'package:kubo/features/food_planner/domain/usecases/fetch_recipe_schedule_linked_hash_map.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../test_constants.dart';
