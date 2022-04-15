@@ -8,7 +8,7 @@ void main() {
     id: tId,
     name: tName,
     description: tDescription,
-    imageUrl: tImageUrl,
+    displayPhoto: tDisplayPhoto,
     start: tStart,
     end: tEnd,
     color: tColor,

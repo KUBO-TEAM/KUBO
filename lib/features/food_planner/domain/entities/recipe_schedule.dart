@@ -5,7 +5,7 @@ class RecipeSchedule extends Equatable {
   final String id;
   final String name;
   final String description;
-  final String imageUrl;
+  final String displayPhoto;
   final DateTime start;
   final DateTime end;
   final Color color;
@@ -15,7 +15,7 @@ class RecipeSchedule extends Equatable {
     required this.id,
     required this.name,
     required this.description,
-    required this.imageUrl,
+    required this.displayPhoto,
     required this.start,
     required this.end,
     required this.color,
@@ -27,7 +27,7 @@ class RecipeSchedule extends Equatable {
         id,
         name,
         description,
-        imageUrl,
+        displayPhoto,
         start,
         end,
         color,

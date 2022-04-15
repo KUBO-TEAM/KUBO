@@ -1,13 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/core/examples/recipes.examples.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_list_tile.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/search_field.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
 
-class RecipePage extends StatelessWidget {
+class RecipePage extends StatefulWidget {
   static const String id = 'recipe_page';
 
   const RecipePage({Key? key}) : super(key: key);
+
+  @override
+  State<RecipePage> createState() => _RecipePageState();
+}
+
+class _RecipePageState extends State<RecipePage> {
+  @override
+  void initState() {
+    super.initState();
+
+    BlocProvider.of<RecipeBloc>(context).add(
+      RecipeModelListFetched(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,23 +46,45 @@ class RecipePage extends StatelessWidget {
       ),
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SearchField(),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              width: 250,
+              child: SearchField(
+                onChanged: (String query) =>
+                    BlocProvider.of<RecipeBloc>(context).add(
+                  RecipeModelListFilter(query: query),
+                ),
+              ),
+            ),
             const SizedBox(
-              height: 12.0,
+              height: 10.0,
             ),
             Expanded(
               child: Container(
-                color: kBackgroundGrey,
-                child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(vertical: 13.0),
-                  itemCount: popularRecipes.length,
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const SizedBox(
-                    height: 13.0,
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    return RecipeListTile(index);
+                color: Colors.white,
+                child: BlocBuilder<RecipeBloc, RecipeState>(
+                  builder: (context, state) {
+                    if (state is RecipeSuccess) {
+                      final recipes = state.recipes;
+
+                      return GridView.builder(
+                        itemCount: recipes.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.6,
+                        ),
+                        itemBuilder: (BuildContext context, int index) {
+                          return RecipeListTile(
+                            recipe: recipes[index],
+                          );
+                        },
+                      );
+                    }
+
+                    return Container();
                   },
                 ),
               ),

@@ -12,7 +12,7 @@ import 'package:table_calendar/table_calendar.dart';
 const tId = '123';
 const tName = 'name';
 const tDescription = 'description';
-const tImageUrl = 'imageUrl';
+const tDisplayPhoto = 'displayPhoto';
 const tDay = 1;
 
 final today = DateTime.now();
@@ -45,7 +45,7 @@ final tRecipeScheduleModel = RecipeScheduleModel(
   id: tId,
   name: tName,
   description: tDescription,
-  imageUrl: tImageUrl,
+  displayPhoto: tDisplayPhoto,
   start: tStart,
   end: tEnd,
   color: tColor,
@@ -56,7 +56,7 @@ final tRecipeScheduleHive = RecipeScheduleHive(
   id: tId,
   name: tName,
   description: tDescription,
-  imageUrl: tImageUrl,
+  displayPhoto: tDisplayPhoto,
   start: tStart,
   end: tEnd,
   color: tColor,

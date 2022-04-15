@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/icon_button.dart';
-import 'package:tflite/tflite.dart';
 
 class CapturedPageArguments {
   final String imagePath;
@@ -35,12 +34,12 @@ class _CapturedPageState extends State<CapturedPage> {
   }
 
   Future loadModel() async {
-    Tflite.close();
+    // Tflite.close();
     try {
-      String? res = await Tflite.loadModel(
-        model: "assets/models/yolov2_tiny_test.tflite",
-        labels: "assets/models/yolov2_tiny.txt",
-      );
+      // String? res = await Tflite.loadModel(
+      //   model: "assets/models/yolov2_tiny_test.tflite",
+      //   labels: "assets/models/yolov2_tiny.txt",
+      // );
 
       File image = File(widget.arguments.imagePath);
 
@@ -55,7 +54,7 @@ class _CapturedPageState extends State<CapturedPage> {
 
       await yolov2Tiny(image);
 
-      debugPrint(res);
+      // debugPrint(res);
 
       setState(() {
         _image = image;
@@ -67,18 +66,18 @@ class _CapturedPageState extends State<CapturedPage> {
 
   Future yolov2Tiny(File? image) async {
     int startTime = DateTime.now().millisecondsSinceEpoch;
-    var recognitions = await Tflite.detectObjectOnImage(
-      path: image!.path,
-      model: "YOLO",
-      threshold: 0.3,
-      imageMean: 0.0,
-      imageStd: 255.0,
-      numResultsPerClass: 1,
-    );
+    // var recognitions = await Tflite.detectObjectOnImage(
+    //   path: image!.path,
+    //   model: "YOLO",
+    //   threshold: 0.3,
+    //   imageMean: 0.0,
+    //   imageStd: 255.0,
+    //   numResultsPerClass: 1,
+    // );
 
-    setState(() {
-      _recognitions = recognitions;
-    });
+    // setState(() {
+    //   _recognitions = recognitions;
+    // });
 
     int endTime = DateTime.now().millisecondsSinceEpoch;
     debugPrint("Inference took ${endTime - startTime}ms");

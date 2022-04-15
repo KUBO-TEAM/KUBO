@@ -139,7 +139,7 @@ class _AssignMealTimeFormState extends State<AssignMealTimeForm> {
               name: recipe.name,
               day: day,
               description: recipe.description,
-              imageUrl: recipe.imageUrl,
+              displayPhoto: recipe.displayPhoto,
               start: start!,
               end: end!,
               color: colorPicked,
