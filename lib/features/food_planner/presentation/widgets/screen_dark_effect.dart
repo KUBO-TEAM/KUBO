@@ -18,7 +18,7 @@ class ScreenDarkEffect extends StatelessWidget {
             Color(0xCC000000),
             Color(0x00000000),
             Color(0x00000000),
-            Color(0xCC000000),
+            Color.fromARGB(234, 0, 0, 0),
           ],
         ),
       ),

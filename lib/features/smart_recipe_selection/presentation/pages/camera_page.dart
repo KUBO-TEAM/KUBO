@@ -187,23 +187,16 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   void _onTakePictureButtonPressed() {
-    _takePicture().then((XFile? file) async {
+    _takePicture().then((XFile? file) {
       if (mounted) {
         if (file != null) {
-          // final Directory dir = await getApplicationDocumentsDirectory();
-          // final File fileToCopy = File(file.path);
-          // final File newImage =
-          //     await fileToCopy.copy('/storage/emulated/0/Download/image1.jpg');
-
-          await Navigator.pushNamed(
+          Navigator.pushReplacementNamed(
             context,
             CapturedPage.id,
             arguments: CapturedPageArguments(
               imagePath: file.path,
             ),
           );
-
-          _getFirstCacheFile();
         }
       }
     });

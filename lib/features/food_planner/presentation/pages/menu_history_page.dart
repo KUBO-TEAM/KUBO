@@ -107,7 +107,7 @@ class _MenuHistoryPageState extends State<MenuHistoryPage> {
       appBar: const KuboAppBar('Menu History'),
       body: SafeArea(
         child: Container(
-          color: kBackgroundGrey,
+          color: Colors.white,
           child: BlocBuilder<MenuHistoryBloc, MenuHistoryState>(
             builder: (context, state) {
               return Column(

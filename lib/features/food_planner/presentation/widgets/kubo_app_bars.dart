@@ -13,7 +13,7 @@ class KuboAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: kBackgroundGrey,
+      backgroundColor: Colors.white,
       titleSpacing: 0,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios, color: kBlackPrimary),

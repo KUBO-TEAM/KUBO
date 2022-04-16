@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/smart_recipe_list_page.dart';
 
 class CapturedPageArguments {
@@ -40,7 +40,7 @@ class _CapturedPageState extends State<CapturedPage> {
           top: MediaQuery.of(context).viewPadding.top,
           child: ElevatedButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, CameraPage.id);
             },
             child: const Icon(Icons.close, color: Colors.white),
             style: ElevatedButton.styleFrom(

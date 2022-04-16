@@ -4,7 +4,6 @@ import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_list_tile.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/search_field.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
-import 'package:skeletons/skeletons.dart';
 
 class RecipePage extends StatefulWidget {
   static const String id = 'recipe_page';
@@ -45,13 +44,13 @@ class _RecipePageState extends State<RecipePage> {
           ),
         ),
       ),
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              width: 250,
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: SearchField(
                 onChanged: (String query) =>
                     BlocProvider.of<RecipeBloc>(context).add(
@@ -63,43 +62,41 @@ class _RecipePageState extends State<RecipePage> {
               height: 10.0,
             ),
             Expanded(
-              child: Container(
-                color: Colors.white,
-                child: BlocBuilder<RecipeBloc, RecipeState>(
-                  builder: (context, state) {
-                    if (state is RecipeInProgress) {
-                      return GridView.builder(
-                        itemCount: 20,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.6,
-                        ),
-                        itemBuilder: (BuildContext context, int index) {
-                          return const RecipeListTileSkeleton();
-                        },
-                      );
-                    } else if (state is RecipeSuccess) {
-                      final recipes = state.recipes;
+              child: BlocBuilder<RecipeBloc, RecipeState>(
+                builder: (context, state) {
+                  if (state is RecipeInProgress) {
+                    return GridView.builder(
+                      itemCount: 20,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.6,
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return const RecipeListTileSkeleton();
+                      },
+                    );
+                  } else if (state is RecipeSuccess) {
+                    final recipes = state.recipes;
 
-                      return GridView.builder(
-                        itemCount: recipes.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.6,
-                        ),
-                        itemBuilder: (BuildContext context, int index) {
-                          return RecipeListTile(
-                            recipe: recipes[index],
-                          );
-                        },
-                      );
-                    }
+                    return GridView.builder(
+                      itemCount: recipes.length,
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.6,
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return RecipeListTile(
+                          recipe: recipes[index],
+                        );
+                      },
+                    );
+                  }
 
-                    return Container();
-                  },
-                ),
+                  return Container();
+                },
               ),
             )
           ],

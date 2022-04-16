@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/data/models/recipe_model.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipe_steps_page.dart';
 import 'package:skeletons/skeletons.dart';
@@ -20,9 +21,9 @@ class RecipeListTile extends StatelessWidget {
         arguments: recipe,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
         child: Card(
-          elevation: 10,
+          elevation: 7,
           margin: EdgeInsets.zero,
           clipBehavior: Clip.antiAliasWithSaveLayer,
           shape: const RoundedRectangleBorder(
@@ -37,6 +38,22 @@ class RecipeListTile extends StatelessWidget {
                   child: Image.network(
                     recipe.displayPhoto,
                     fit: BoxFit.cover,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3,
+                          valueColor: const AlwaysStoppedAnimation<Color>(
+                            kBrownPrimary,
+                          ),
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),

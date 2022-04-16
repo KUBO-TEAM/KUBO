@@ -49,7 +49,6 @@ flutter:
   assets:
     - assets/images/
     - assets/images/carousel/
-    - assets/models/
 
   fonts:
     - family: Lora
