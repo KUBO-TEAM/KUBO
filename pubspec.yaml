@@ -31,6 +31,7 @@ dependencies:
   injectable: ^1.5.3
   intl: ^0.17.0
   path_provider: ^2.0.8
+  skeletons: ^0.0.3
   syncfusion_flutter_calendar: ^19.4.40
   table_calendar: ^3.0.3
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/features/food_planner/data/models/recipe_model.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipe_steps_page.dart';
+import 'package:skeletons/skeletons.dart';
 
 class RecipeListTile extends StatelessWidget {
   const RecipeListTile({
@@ -75,6 +76,37 @@ class RecipeListTile extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class RecipeListTileSkeleton extends StatelessWidget {
+  const RecipeListTileSkeleton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: SkeletonItem(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Expanded(
+            child: SkeletonAvatar(),
+          ),
+          SkeletonParagraph(
+            style: SkeletonParagraphStyle(
+              lines: 3,
+              spacing: 6,
+              lineStyle: SkeletonLineStyle(
+                randomLength: true,
+                height: 10,
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
+        ],
+      )),
     );
   }
 }

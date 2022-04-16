@@ -4,6 +4,7 @@ import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_list_tile.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/search_field.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
+import 'package:skeletons/skeletons.dart';
 
 class RecipePage extends StatefulWidget {
   static const String id = 'recipe_page';
@@ -66,7 +67,19 @@ class _RecipePageState extends State<RecipePage> {
                 color: Colors.white,
                 child: BlocBuilder<RecipeBloc, RecipeState>(
                   builder: (context, state) {
-                    if (state is RecipeSuccess) {
+                    if (state is RecipeInProgress) {
+                      return GridView.builder(
+                        itemCount: 20,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.6,
+                        ),
+                        itemBuilder: (BuildContext context, int index) {
+                          return const RecipeListTileSkeleton();
+                        },
+                      );
+                    } else if (state is RecipeSuccess) {
                       final recipes = state.recipes;
 
                       return GridView.builder(

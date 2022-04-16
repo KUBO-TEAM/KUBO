@@ -15,6 +15,7 @@ import 'package:kubo/features/food_planner/presentation/pages/reminders_page.dar
 import 'package:kubo/features/food_planner/presentation/pages/select_ingredients_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/captured_page.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/pages/smart_recipe_list_page.dart';
 
 @lazySingleton
 class AppRouter {
@@ -29,23 +30,14 @@ class AppRouter {
           builder: (_) => const WelcomePage(),
         );
 
+      /** Food Planner Feature */
       case HomePage.id:
         return MaterialPageRoute(
           builder: (_) => const HomePage(),
         );
-      case CameraPage.id:
-        return MaterialPageRoute(
-          builder: (_) => const CameraPage(),
-        );
       case MenuHistoryPage.id:
         return MaterialPageRoute(
           builder: (_) => const MenuHistoryPage(),
-        );
-      case CapturedPage.id:
-        final arguments = routeSettings.arguments as CapturedPageArguments;
-
-        return MaterialPageRoute(
-          builder: (_) => CapturedPage(arguments: arguments),
         );
       case MenuPage.id:
         return MaterialPageRoute(
@@ -83,6 +75,23 @@ class AppRouter {
       case ReminderPage.id:
         return MaterialPageRoute(
           builder: (_) => const ReminderPage(),
+        );
+
+      /** Smart Recipe Selection Feature */
+      case CameraPage.id:
+        return MaterialPageRoute(
+          builder: (_) => const CameraPage(),
+        );
+
+      case CapturedPage.id:
+        final arguments = routeSettings.arguments as CapturedPageArguments;
+
+        return MaterialPageRoute(
+          builder: (_) => CapturedPage(arguments: arguments),
+        );
+      case SmartRecipeListPage.id:
+        return MaterialPageRoute(
+          builder: (_) => const SmartRecipeListPage(),
         );
     }
     return null;
