@@ -36,6 +36,7 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: kBrownPrimary,
@@ -48,31 +49,34 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
       ),
       body: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RoundedButton(
-                icon: const Icon(Icons.camera),
-                title: const Text(
-                  'Scan ingredients again',
-                  style: TextStyle(fontSize: 13),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RoundedButton(
+                  icon: const Icon(
+                    Icons.camera,
+                  ),
+                  title: const Text(
+                    'Scan again',
+                  ),
+                  onPressed: () =>
+                      Navigator.of(context).pushReplacementNamed(CameraPage.id),
                 ),
-                onPressed: () =>
-                    Navigator.of(context).pushReplacementNamed(CameraPage.id),
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              RoundedButton(
-                icon: const Icon(Icons.schedule),
-                title: const Text(
-                  'Generate schedule',
-                  style: TextStyle(fontSize: 13),
+                const SizedBox(
+                  width: 5,
                 ),
-                onPressed: () =>
-                    Navigator.of(context).pushNamed(SmartRecipeListPage.id),
-              ),
-            ],
+                RoundedButton(
+                  icon: const Icon(Icons.schedule),
+                  title: const Text(
+                    'Generate schedule',
+                  ),
+                  onPressed: () =>
+                      Navigator.of(context).pushNamed(SmartRecipeListPage.id),
+                ),
+              ],
+            ),
           ),
           const SizedBox(
             height: 16.0,

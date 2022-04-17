@@ -63,14 +63,15 @@ class SmartRecipeListSkeleton extends StatelessWidget {
     return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.only(
-          left: 10.0,
+          right: 10.0,
         ),
         width: 350,
         height: MediaQuery.of(context).size.height,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Expanded(
+            const SizedBox(
+              height: 350,
               child: Card(
                 elevation: 0,
                 clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -81,7 +82,6 @@ class SmartRecipeListSkeleton extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 2,
               child: Column(
                 children: [
                   SkeletonParagraph(

@@ -4,9 +4,6 @@ import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/assign_meal_plan_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
-import 'package:kubo/features/food_planner/presentation/pages/select_ingredients_page.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/floating_buttons.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 const _calendarHeaderStyle = CalendarHeaderStyle(
@@ -48,11 +45,6 @@ class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: const FloatingMenuButton(),
-      appBar: KuboAppBar(
-        'Menu',
-        onBackButtonPressed: () => Navigator.of(context).pop(),
-      ),
       body: SafeArea(
         child: BlocBuilder<MenuBloc, MenuState>(builder: (context, state) {
           if (state is MenuSuccess) {
@@ -124,7 +116,7 @@ class MenuPage extends StatelessWidget {
       AssignMealPlanCellPressed(startingDate: startingDate),
     );
 
-    Navigator.pushNamed(context, SelectIngredientsPage.id);
+    // TODO: Cell pressed
   }
 }
 

@@ -29,6 +29,7 @@ class _SmartRecipeListPageState extends State<SmartRecipeListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: KuboAppBar(
         'Smart Recipe List',
         onBackButtonPressed: () => Navigator.of(context).pop(),
@@ -37,37 +38,37 @@ class _SmartRecipeListPageState extends State<SmartRecipeListPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              height: 10.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RoundedButton(
-                  icon: const Icon(
-                    Icons.event,
-                    color: Colors.white,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RoundedButton(
+                    icon: const Icon(
+                      Icons.event,
+                      color: Colors.white,
+                    ),
+                    title: const Text('Check timetable'),
+                    onPressed: () {},
                   ),
-                  title: const Text('Check timetable'),
-                  onPressed: () {},
-                ),
-                const SizedBox(
-                  width: 8.0,
-                ),
-                RoundedButton(
-                  icon: const Icon(
-                    Icons.save,
-                    color: Colors.white,
+                  const SizedBox(
+                    width: 8.0,
                   ),
-                  title: const Text('Save schedule'),
-                  onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      HomePage.id,
-                      (route) => route.isFirst,
-                    );
-                  },
-                ),
-              ],
+                  RoundedButton(
+                    icon: const Icon(
+                      Icons.save,
+                      color: Colors.white,
+                    ),
+                    title: const Text('Save schedule'),
+                    onPressed: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        HomePage.id,
+                        (route) => route.isFirst,
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
             const SizedBox(
               height: 8.0,

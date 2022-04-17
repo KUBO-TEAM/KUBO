@@ -67,6 +67,7 @@ class _RecipePageState extends State<RecipePage> {
                   if (state is RecipeInProgress) {
                     return GridView.builder(
                       itemCount: 20,
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
