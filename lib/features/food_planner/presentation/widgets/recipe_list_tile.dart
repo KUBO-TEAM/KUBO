@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/data/models/recipe_model.dart';
@@ -35,22 +36,18 @@ class RecipeListTile extends StatelessWidget {
               Expanded(
                 child: Hero(
                   tag: "recipe-img-${recipe.displayPhoto}",
-                  child: Image.network(
-                    recipe.displayPhoto,
+                  child: CachedNetworkImage(
+                    imageUrl: recipe.displayPhoto,
                     fit: BoxFit.cover,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) return child;
+                    progressIndicatorBuilder: (context, url, downloadProgress) {
+                      // if (downloadProgress == null) return Container();
                       return Center(
                         child: CircularProgressIndicator(
                           strokeWidth: 3,
                           valueColor: const AlwaysStoppedAnimation<Color>(
                             kBrownPrimary,
                           ),
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
+                          value: downloadProgress.progress,
                         ),
                       );
                     },

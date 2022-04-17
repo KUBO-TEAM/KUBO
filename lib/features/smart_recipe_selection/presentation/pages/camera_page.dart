@@ -149,7 +149,10 @@ class _CameraPageState extends State<CameraPage> {
     cameras = await availableCameras();
 
     controller = CameraController(
-        cameras[0], hdrEnabled ? ResolutionPreset.max : ResolutionPreset.low);
+      cameras[0],
+      hdrEnabled ? ResolutionPreset.max : ResolutionPreset.low,
+      imageFormatGroup: ImageFormatGroup.yuv420,
+    );
     controller!.initialize().then((_) {
       if (!mounted) {
         return;

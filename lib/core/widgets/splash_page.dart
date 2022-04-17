@@ -29,11 +29,11 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   _loading() async {
-    await Future.delayed(const Duration(milliseconds: 2000), () {});
+    await Future.delayed(const Duration(milliseconds: 1000), () {});
     setState(() {
       _visible = !_visible;
     });
-    await Future.delayed(const Duration(milliseconds: 2500), () {});
+    await Future.delayed(const Duration(milliseconds: 1500), () {});
 
     var box = await Hive.openBox(kUIBox);
 

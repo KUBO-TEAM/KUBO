@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
@@ -10,6 +7,7 @@ import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/smart_recipe_list_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/scanned_pictures_list_tile.dart';
+import 'package:skeletons/skeletons.dart';
 
 class ScannedPicturesListPageArguments {
   final String imagePath;
@@ -39,9 +37,7 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print(selectedPictures);
-        },
+        onPressed: () {},
         backgroundColor: kBrownPrimary,
         child: const Icon(Icons.delete),
       ),
@@ -84,7 +80,23 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
           Expanded(
             child: BlocBuilder<ScannedPicturesBloc, ScannedPicturesState>(
               builder: (context, state) {
-                if (state is ScannedPicturesSuccess) {
+                if (state is ScannedPicturesInProgress) {
+                  return GridView.builder(
+                    itemCount: 30,
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      childAspectRatio: 1,
+                    ),
+                    itemBuilder: (BuildContext context, int index) {
+                      return const Padding(
+                        padding: EdgeInsets.all(2.0),
+                        child: SkeletonItem(child: SkeletonAvatar()),
+                      );
+                    },
+                  );
+                } else if (state is ScannedPicturesSuccess) {
                   final pictures = state.pictures;
 
                   return GridView.builder(
