@@ -44,7 +44,10 @@ class _SelectIngredientsPageState extends State<SelectIngredientsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const KuboAppBar('Ingredients List'),
+      appBar: KuboAppBar(
+        'Ingredients List',
+        onBackButtonPressed: () => Navigator.of(context).pop(),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: ExpansionPanelList(

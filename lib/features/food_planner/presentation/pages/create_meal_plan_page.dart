@@ -17,7 +17,10 @@ class CreateMealPlanPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const KuboAppBar('Create Meal Plan'),
+      appBar: KuboAppBar(
+        'Create Meal Plan',
+        onBackButtonPressed: () => Navigator.of(context).pop(),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

@@ -6,9 +6,14 @@ import 'package:kubo/features/food_planner/presentation/widgets/icon_button.dart
 const _appBarSize = Size.fromHeight(45.0);
 
 class KuboAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const KuboAppBar(this.title, {Key? key}) : super(key: key);
+  const KuboAppBar(
+    this.title, {
+    Key? key,
+    this.onBackButtonPressed,
+  }) : super(key: key);
 
   final String title;
+  final VoidCallback? onBackButtonPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,7 @@ class KuboAppBar extends StatelessWidget implements PreferredSizeWidget {
       titleSpacing: 0,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios, color: kBlackPrimary),
-        onPressed: () => Navigator.of(context).pop(),
+        onPressed: onBackButtonPressed,
       ),
       elevation: 0,
       title: Text(

@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_pictures/scanned_pictures_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
-import 'package:kubo/features/smart_recipe_selection/presentation/pages/smart_recipe_list_page.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/pages/scanned_pictures_list_page.dart';
 
 class CapturedPageArguments {
   final String imagePath;
@@ -54,20 +56,26 @@ class _CapturedPageState extends State<CapturedPage> {
           bottom: 16,
           width: MediaQuery.of(context).size.width,
           child: Center(
-            child: Directionality(
-              textDirection: TextDirection.rtl,
-              child: RoundedButton(
-                icon: const Icon(Icons.arrow_back),
-                title: const Text(
-                  'Check recipes',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                  ),
+            child: RoundedButton(
+              icon: const Icon(Icons.save),
+              title: const Text(
+                'Save as scanned ingredients',
+                style: TextStyle(
+                  fontSize: 16.0,
                 ),
-                onPressed: () {
-                  Navigator.pushNamed(context, SmartRecipeListPage.id);
-                },
               ),
+              onPressed: () {
+                BlocProvider.of<ScannedPicturesBloc>(context).add(
+                  ScannedPicturesSaved(imagePath: widget.arguments.imagePath),
+                );
+                Navigator.pushReplacementNamed(
+                  context,
+                  ScannedPicturesListPage.id,
+                  arguments: ScannedPicturesListPageArguments(
+                    imagePath: widget.arguments.imagePath,
+                  ),
+                );
+              },
             ),
           ),
         ),

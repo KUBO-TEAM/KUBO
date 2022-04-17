@@ -49,7 +49,10 @@ class MenuPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: const FloatingMenuButton(),
-      appBar: const KuboAppBar('Menu'),
+      appBar: KuboAppBar(
+        'Menu',
+        onBackButtonPressed: () => Navigator.of(context).pop(),
+      ),
       body: SafeArea(
         child: BlocBuilder<MenuBloc, MenuState>(builder: (context, state) {
           if (state is MenuSuccess) {

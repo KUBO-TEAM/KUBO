@@ -11,6 +11,7 @@ import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/assign
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu_history/menu_history_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_pictures/scanned_pictures_bloc.dart';
 import 'package:kubo/injection.dart';
 import 'package:kubo/router.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
@@ -48,6 +49,7 @@ class Kubo extends StatelessWidget {
         BlocProvider(create: (_) => getIt<MenuHistoryBloc>()),
         BlocProvider(create: (_) => getIt<RecipeBloc>()),
         BlocProvider(create: (_) => AssignMealPlanBloc()),
+        BlocProvider(create: (_) => ScannedPicturesBloc()),
       ],
       child: MaterialApp(
         initialRoute: SplashPage.id,

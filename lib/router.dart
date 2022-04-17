@@ -15,6 +15,7 @@ import 'package:kubo/features/food_planner/presentation/pages/reminders_page.dar
 import 'package:kubo/features/food_planner/presentation/pages/select_ingredients_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/captured_page.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/pages/scanned_pictures_list_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/smart_recipe_list_page.dart';
 
 @lazySingleton
@@ -89,6 +90,14 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => CapturedPage(arguments: arguments),
         );
+      case ScannedPicturesListPage.id:
+        final arguments =
+            routeSettings.arguments as ScannedPicturesListPageArguments;
+
+        return MaterialPageRoute(
+          builder: (_) => ScannedPicturesListPage(arguments: arguments),
+        );
+
       case SmartRecipeListPage.id:
         return MaterialPageRoute(
           builder: (_) => const SmartRecipeListPage(),

@@ -26,7 +26,10 @@ class _SmartRecipeListPageState extends State<SmartRecipeListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const KuboAppBar('Smart Recipe List'),
+      appBar: KuboAppBar(
+        'Smart Recipe List',
+        onBackButtonPressed: () => Navigator.of(context).pop(),
+      ),
       body: SafeArea(
         child: BlocBuilder<RecipeBloc, RecipeState>(
           builder: (context, state) {

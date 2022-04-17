@@ -104,7 +104,10 @@ class _MenuHistoryPageState extends State<MenuHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const KuboAppBar('Menu History'),
+      appBar: KuboAppBar(
+        'Menu History',
+        onBackButtonPressed: () => Navigator.of(context).pop(),
+      ),
       body: SafeArea(
         child: Container(
           color: Colors.white,

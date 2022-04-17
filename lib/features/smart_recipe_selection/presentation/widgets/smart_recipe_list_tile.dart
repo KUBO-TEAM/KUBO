@@ -23,7 +23,7 @@ class SmartRecipeListTile extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            height: 500,
+            height: 260,
             width: 350,
             child: Card(
               elevation: 3,
@@ -55,8 +55,8 @@ class SmartRecipeListTile extends StatelessWidget {
           ),
           Positioned(
             width: 300,
-            height: 165,
-            top: 400,
+            height: 140,
+            top: 200,
             left: 25,
             child: Card(
               elevation: 10,
@@ -79,7 +79,7 @@ class SmartRecipeListTile extends StatelessWidget {
                       softWrap: false,
                       style: const TextStyle(
                         color: Colors.black,
-                        fontSize: 23,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -94,7 +94,7 @@ class SmartRecipeListTile extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               color: Color.fromARGB(255, 110, 110, 110),
-                              fontSize: 16,
+                              fontSize: 14,
                             ),
                           ),
                         ),
@@ -106,7 +106,7 @@ class SmartRecipeListTile extends StatelessWidget {
                         Text(
                           '${recipe.cookTime} MIN',
                           style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -124,7 +124,7 @@ class SmartRecipeListTile extends StatelessWidget {
                         Text(
                           '${recipe.prepTime} MIN',
                           style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
