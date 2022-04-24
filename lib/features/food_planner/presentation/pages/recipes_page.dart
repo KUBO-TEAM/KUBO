@@ -5,16 +5,16 @@ import 'package:kubo/features/food_planner/presentation/widgets/recipe_list_tile
 import 'package:kubo/features/food_planner/presentation/widgets/search_field.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
 
-class RecipePage extends StatefulWidget {
+class RecipesPage extends StatefulWidget {
   static const String id = 'recipe_page';
 
-  const RecipePage({Key? key}) : super(key: key);
+  const RecipesPage({Key? key}) : super(key: key);
 
   @override
-  State<RecipePage> createState() => _RecipePageState();
+  State<RecipesPage> createState() => _RecipesPageState();
 }
 
-class _RecipePageState extends State<RecipePage> {
+class _RecipesPageState extends State<RecipesPage> {
   @override
   void initState() {
     super.initState();

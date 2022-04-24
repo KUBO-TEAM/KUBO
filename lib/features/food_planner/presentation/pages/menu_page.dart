@@ -4,6 +4,7 @@ import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/assign_meal_plan_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/recipe_selection_dialog.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 const _calendarHeaderStyle = CalendarHeaderStyle(
@@ -116,7 +117,18 @@ class MenuPage extends StatelessWidget {
       AssignMealPlanCellPressed(startingDate: startingDate),
     );
 
-    // TODO: Cell pressed
+    _showIngredientsPickerDialog(context);
+  }
+
+  Future<void> _showIngredientsPickerDialog(
+    BuildContext context,
+  ) async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const RecipeSelectionDialog();
+      },
+    );
   }
 }
 

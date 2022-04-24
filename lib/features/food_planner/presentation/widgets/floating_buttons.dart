@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/features/food_planner/presentation/pages/recipe_page.dart';
+import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/reminders_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
 
@@ -29,7 +29,7 @@ class FloatingHomeButton extends StatelessWidget {
               color: kBrownPrimary,
             ),
             label: 'Recipes',
-            onTap: () => Navigator.pushNamed(context, RecipePage.id)),
+            onTap: () => Navigator.pushNamed(context, RecipesPage.id)),
         SpeedDialChild(
             child: const Icon(
               Icons.notifications,

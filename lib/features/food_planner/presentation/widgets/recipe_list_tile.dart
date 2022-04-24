@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/data/models/recipe_model.dart';
-import 'package:kubo/features/food_planner/presentation/pages/recipe_steps_page.dart';
+import 'package:kubo/features/food_planner/presentation/pages/recipe_info_page.dart';
 import 'package:skeletons/skeletons.dart';
 
 class RecipeListTile extends StatelessWidget {
@@ -18,7 +18,7 @@ class RecipeListTile extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(
         context,
-        RecipeStepsPage.id,
+        RecipeInfoPage.id,
         arguments: recipe,
       ),
       child: Padding(

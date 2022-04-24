@@ -9,8 +9,8 @@ import 'package:kubo/features/food_planner/presentation/pages/create_meal_plan_p
 import 'package:kubo/features/food_planner/presentation/pages/home_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/menu_history_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/menu_page.dart';
-import 'package:kubo/features/food_planner/presentation/pages/recipe_page.dart';
-import 'package:kubo/features/food_planner/presentation/pages/recipe_steps_page.dart';
+import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
+import 'package:kubo/features/food_planner/presentation/pages/recipe_info_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/reminders_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/captured_page.dart';
@@ -59,14 +59,14 @@ class AppRouter {
             arguments: arguments,
           ),
         );
-      case RecipePage.id:
+      case RecipesPage.id:
         return MaterialPageRoute(
-          builder: (_) => const RecipePage(),
+          builder: (_) => const RecipesPage(),
         );
-      case RecipeStepsPage.id:
+      case RecipeInfoPage.id:
         final recipe = routeSettings.arguments as Recipe;
         return MaterialPageRoute(
-          builder: (_) => RecipeStepsPage(recipe: recipe),
+          builder: (_) => RecipeInfoPage(recipe: recipe),
         );
       case ReminderPage.id:
         return MaterialPageRoute(

@@ -7,9 +7,9 @@ import 'package:kubo/features/food_planner/presentation/widgets/icon_button.dart
 import 'package:kubo/features/food_planner/presentation/widgets/image_clipper.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/screen_dark_effect.dart';
 
-class RecipeStepsPage extends StatefulWidget {
+class RecipeInfoPage extends StatefulWidget {
   static const String id = 'recipe_steps_page';
-  const RecipeStepsPage({
+  const RecipeInfoPage({
     Key? key,
     required this.recipe,
   }) : super(key: key);
@@ -17,10 +17,10 @@ class RecipeStepsPage extends StatefulWidget {
   final Recipe recipe;
 
   @override
-  _RecipeStepsPageState createState() => _RecipeStepsPageState();
+  _RecipeInfoPageState createState() => _RecipeInfoPageState();
 }
 
-class _RecipeStepsPageState extends State<RecipeStepsPage>
+class _RecipeInfoPageState extends State<RecipeInfoPage>
     with TickerProviderStateMixin {
   late TabController _controller;
 
@@ -100,8 +100,8 @@ class _RecipeStepsPageState extends State<RecipeStepsPage>
                 ],
               ),
             ),
-            const SizedBox(
-              height: 80,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * .4 - 190,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -112,7 +112,7 @@ class _RecipeStepsPageState extends State<RecipeStepsPage>
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
                   child: Container(
-                    height: 50,
+                    height: 43,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25),
                         border: Border.all(
@@ -128,14 +128,19 @@ class _RecipeStepsPageState extends State<RecipeStepsPage>
                       child: TabBar(
                         controller: _controller,
                         labelColor: kBrownPrimary,
-                        labelStyle:
-                            const TextStyle(fontWeight: FontWeight.bold),
-                        unselectedLabelStyle:
-                            const TextStyle(fontWeight: FontWeight.normal),
+                        labelStyle: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                        unselectedLabelStyle: const TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14,
+                        ),
                         unselectedLabelColor: Colors.white70,
                         indicator: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            color: Colors.white),
+                          borderRadius: BorderRadius.circular(25),
+                          color: Colors.white,
+                        ),
                         tabs: const <Widget>[
                           Tab(
                             text: "Ingredients",
@@ -144,7 +149,7 @@ class _RecipeStepsPageState extends State<RecipeStepsPage>
                             text: "Steps",
                           ),
                           Tab(
-                            text: "TBD",
+                            text: "Schedule",
                           ),
                         ],
                       ),
@@ -155,7 +160,7 @@ class _RecipeStepsPageState extends State<RecipeStepsPage>
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(left: 10, right: 25, top: 40.0),
+                padding: const EdgeInsets.only(left: 26, right: 26, top: 40.0),
                 child: TabBarView(
                   controller: _controller,
                   children: const [

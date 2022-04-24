@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/hive/adapters/color.adapter.dart';
 import 'package:kubo/core/hive/objects/recipe_schedule_hive.dart';
 import 'package:kubo/core/widgets/splash_page.dart';
@@ -52,6 +53,19 @@ class Kubo extends StatelessWidget {
         BlocProvider(create: (_) => ScannedPicturesBloc()),
       ],
       child: MaterialApp(
+        theme: ThemeData.light().copyWith(
+          colorScheme: ThemeData.light().colorScheme.copyWith(
+                onPrimary: Colors.white, // Color for checkmark in datatable
+                primary:
+                    kBrownPrimary, // Color used for checkbox fill in datatable
+              ),
+          checkboxTheme: CheckboxThemeData(
+            side: MaterialStateBorderSide.resolveWith(
+                (_) => const BorderSide(width: 2, color: kBrownPrimary)),
+            fillColor: MaterialStateProperty.all(kBrownPrimary),
+            checkColor: MaterialStateProperty.all(Colors.white),
+          ),
+        ),
         initialRoute: SplashPage.id,
         onGenerateRoute: appRouter.onGenerateRoute,
       ),

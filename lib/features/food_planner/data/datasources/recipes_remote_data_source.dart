@@ -31,13 +31,13 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
       Uri.https(kKuboUrl, 'api/recipes'),
       headers: {'Content-Type': 'application/json'},
     );
-    var body = json.decode(response.body);
-
-    var data = body['data'];
-
-    List<RecipeModel> recipes = [];
-
     if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+
+      var data = body['data'];
+
+      List<RecipeModel> recipes = [];
+
       for (var value in data) {
         recipes.add(RecipeModel.fromJson(value));
       }
