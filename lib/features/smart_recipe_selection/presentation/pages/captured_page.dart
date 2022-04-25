@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/blocs/predict_image/predict_image_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_pictures/scanned_pictures_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/scanned_pictures_list_page.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class CapturedPageArguments {
   final String imagePath;
@@ -26,16 +28,49 @@ class CapturedPage extends StatefulWidget {
 
 class _CapturedPageState extends State<CapturedPage> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    BlocProvider.of<PredictImageBloc>(context).add(
+      PredictImagePredicted(imagePath: widget.arguments.imagePath),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(children: [
-        Image.file(
-          File(widget.arguments.imagePath),
-          fit: BoxFit.cover,
-          height: double.infinity,
-          width: double.infinity,
-          alignment: Alignment.center,
+        BlocBuilder<PredictImageBloc, PredictImageState>(
+          builder: (context, state) {
+            if (state is PredictImageInProgress) {
+              EasyLoading.show(
+                status: 'loading...',
+                maskType: EasyLoadingMaskType.black,
+              );
+            }
+
+            if (state is PredictImageSuccess) {
+              EasyLoading.dismiss();
+              final resultUrl = state.predictedImage;
+
+              return Image.network(
+                resultUrl.imageUrl,
+                fit: BoxFit.cover,
+                height: double.infinity,
+                width: double.infinity,
+                alignment: Alignment.center,
+              );
+            }
+            return Image.file(
+              File(widget.arguments.imagePath),
+              fit: BoxFit.cover,
+              height: double.infinity,
+              width: double.infinity,
+              alignment: Alignment.center,
+            );
+          },
         ),
         Positioned(
           right: 0,

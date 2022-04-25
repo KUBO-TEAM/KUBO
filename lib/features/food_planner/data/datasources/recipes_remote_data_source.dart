@@ -28,7 +28,7 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
   @override
   Future<List<RecipeModel>> fetchRecipes() async {
     final response = await client.get(
-      Uri.https(kKuboUrl, 'api/recipes'),
+      Uri.parse('$kKuboUrl/api/recipes'),
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 200) {
