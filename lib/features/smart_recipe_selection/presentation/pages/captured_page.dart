@@ -29,7 +29,6 @@ class CapturedPage extends StatefulWidget {
 class _CapturedPageState extends State<CapturedPage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     BlocProvider.of<PredictImageBloc>(context).add(

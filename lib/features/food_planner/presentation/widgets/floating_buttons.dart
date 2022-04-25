@@ -24,12 +24,17 @@ class FloatingHomeButton extends StatelessWidget {
             label: 'Add Ingredient',
             onTap: () => Navigator.pushNamed(context, CameraPage.id)),
         SpeedDialChild(
-            child: const Icon(
-              Icons.storefront,
-              color: kBrownPrimary,
-            ),
-            label: 'Recipes',
-            onTap: () => Navigator.pushNamed(context, RecipesPage.id)),
+          child: const Icon(
+            Icons.storefront,
+            color: kBrownPrimary,
+          ),
+          label: 'Recipes',
+          onTap: () => Navigator.pushNamed(
+            context,
+            RecipesPage.id,
+            arguments: RecipesPageArguments(),
+          ),
+        ),
         SpeedDialChild(
             child: const Icon(
               Icons.notifications,

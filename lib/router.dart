@@ -60,8 +60,12 @@ class AppRouter {
           ),
         );
       case RecipesPage.id:
+        final arguments = routeSettings.arguments as RecipesPageArguments;
+
         return MaterialPageRoute(
-          builder: (_) => const RecipesPage(),
+          builder: (_) => RecipesPage(
+            arguments: arguments,
+          ),
         );
       case RecipeInfoPage.id:
         final recipe = routeSettings.arguments as Recipe;

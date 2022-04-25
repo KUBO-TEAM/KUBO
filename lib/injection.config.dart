@@ -25,16 +25,18 @@ import 'features/food_planner/domain/repositories/recipe_schedule_repository.dar
     as _i10;
 import 'features/food_planner/domain/usecases/create_recipe_schedule.dart'
     as _i16;
+import 'features/food_planner/domain/usecases/fetch_filtered_recipes.dart'
+    as _i25;
 import 'features/food_planner/domain/usecases/fetch_recipe_schedule_linked_hash_map.dart'
     as _i17;
 import 'features/food_planner/domain/usecases/fetch_recipe_schedule_list.dart'
     as _i18;
-import 'features/food_planner/domain/usecases/fetch_recipes.dart' as _i25;
+import 'features/food_planner/domain/usecases/fetch_recipes.dart' as _i26;
 import 'features/food_planner/presentation/blocs/menu/menu_bloc.dart' as _i19;
 import 'features/food_planner/presentation/blocs/menu_history/menu_history_bloc.dart'
     as _i20;
 import 'features/food_planner/presentation/blocs/recipe/recipe_bloc.dart'
-    as _i26;
+    as _i27;
 import 'features/smart_recipe_selection/data/datasources/smart_recipe_selection_remote_data_source.dart'
     as _i13;
 import 'features/smart_recipe_selection/data/repositories/smart_recipe_selection_repository_impl.dart'
@@ -95,10 +97,13 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       () => _i22.PredictImageBloc(predictImage: get<_i21.PredictImage>()));
   gh.lazySingleton<_i23.RecipeRepository>(
       () => _i24.RecipeRepositoryImpl(get<_i12.RecipesRemoteDataSource>()));
-  gh.lazySingleton<_i25.FetchRecipes>(
-      () => _i25.FetchRecipes(get<_i23.RecipeRepository>()));
-  gh.factory<_i26.RecipeBloc>(
-      () => _i26.RecipeBloc(fetchRecipes: get<_i25.FetchRecipes>()));
+  gh.lazySingleton<_i25.FetchFilteredRecipes>(
+      () => _i25.FetchFilteredRecipes(get<_i23.RecipeRepository>()));
+  gh.lazySingleton<_i26.FetchRecipes>(
+      () => _i26.FetchRecipes(get<_i23.RecipeRepository>()));
+  gh.factory<_i27.RecipeBloc>(() => _i27.RecipeBloc(
+      fetchRecipes: get<_i26.FetchRecipes>(),
+      fetchFilteredRecipes: get<_i25.FetchFilteredRecipes>()));
   return get;
 }
 

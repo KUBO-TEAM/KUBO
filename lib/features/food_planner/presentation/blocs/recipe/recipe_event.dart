@@ -10,7 +10,8 @@ abstract class RecipeEvent extends Equatable {
 class RecipeModelListFetched extends RecipeEvent {}
 
 class RecipeModelListFilter extends RecipeEvent {
-  final String query;
+  final String? query;
+  final List<Ingredient>? ingredients;
 
-  const RecipeModelListFilter({required this.query});
+  const RecipeModelListFilter({this.query, this.ingredients});
 }

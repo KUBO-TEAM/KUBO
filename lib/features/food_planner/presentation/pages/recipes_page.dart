@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_list_tile.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/search_field.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
 
+class RecipesPageArguments {
+  final List<Ingredient>? ingredients;
+
+  RecipesPageArguments({this.ingredients});
+}
+
 class RecipesPage extends StatefulWidget {
   static const String id = 'recipe_page';
 
-  const RecipesPage({Key? key}) : super(key: key);
+  const RecipesPage({Key? key, required this.arguments}) : super(key: key);
+
+  final RecipesPageArguments arguments;
 
   @override
   State<RecipesPage> createState() => _RecipesPageState();
@@ -19,9 +28,17 @@ class _RecipesPageState extends State<RecipesPage> {
   void initState() {
     super.initState();
 
-    BlocProvider.of<RecipeBloc>(context).add(
-      RecipeModelListFetched(),
-    );
+    if (widget.arguments.ingredients != null) {
+      BlocProvider.of<RecipeBloc>(context).add(
+        RecipeModelListFilter(
+          ingredients: widget.arguments.ingredients,
+        ),
+      );
+    } else {
+      BlocProvider.of<RecipeBloc>(context).add(
+        RecipeModelListFetched(),
+      );
+    }
   }
 
   @override

@@ -10,5 +10,5 @@ abstract class PredictImageEvent extends Equatable {
 class PredictImagePredicted extends PredictImageEvent {
   final String imagePath;
 
-  PredictImagePredicted({required this.imagePath});
+  const PredictImagePredicted({required this.imagePath});
 }
