@@ -5,6 +5,7 @@ import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_list_tile.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/search_field.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
+import 'package:badges/badges.dart';
 
 class RecipesPageArguments {
   final List<Ingredient>? ingredients;
@@ -60,6 +61,28 @@ class _RecipesPageState extends State<RecipesPage> {
             fontSize: 30.0,
           ),
         ),
+        actions: <Widget>[
+          if (widget.arguments.ingredients != null)
+            IconButton(
+              icon: Badge(
+                badgeContent: Text(
+                  widget.arguments.ingredients!.length.toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                child: const Icon(
+                  Icons.restaurant,
+                  color: kBlackPrimary,
+                ),
+              ),
+              tooltip: 'Show Snackbar',
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('This is a snackbar')));
+              },
+            ),
+        ],
       ),
       backgroundColor: Colors.white,
       body: SafeArea(

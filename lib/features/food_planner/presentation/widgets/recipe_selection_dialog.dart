@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/examples/ingredients.examples.dart';
 import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
 
@@ -81,7 +79,7 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
                 ),
                 RoundedButton(
                   onPressed: () {
-                    Navigator.pushNamed(
+                    Navigator.pushReplacementNamed(
                       context,
                       RecipesPage.id,
                       arguments: RecipesPageArguments(
