@@ -1,13 +1,8 @@
 import 'dart:ui';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/icon_button.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/image_clipper.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/screen_dark_effect.dart';
-
-import '../widgets/kubo_app_bars.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/recipe_info_page_background.dart';
 
 class RecipeInfoPage extends StatefulWidget {
   static const String id = 'recipe_steps_page';
@@ -46,7 +41,7 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
         backgroundColor: Colors.transparent,
         titleSpacing: 0,
         leading: IconButton(
-          padding: EdgeInsets.only(left: 20),
+          padding: const EdgeInsets.only(left: 20),
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
@@ -61,130 +56,99 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: Stack(
-                children: <Widget>[
-                  Hero(
-                    tag: "recipe-img-${widget.recipe.displayPhoto}",
-                    child: ImageClipper(
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: CachedNetworkImage(
-                              imageUrl: widget.recipe.displayPhoto,
-                              fit: BoxFit.cover,
-                              progressIndicatorBuilder:
-                                  (context, url, downloadProgress) {
-                                // if (downloadProgress == null) return Container();
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 3,
-                                    valueColor:
-                                        const AlwaysStoppedAnimation<Color>(
-                                      kBrownPrimary,
-                                    ),
-                                    value: downloadProgress.progress,
-                                  ),
-                                );
-                              },
+        child: Container(
+          width: double.infinity,
+          constraints: const BoxConstraints(
+            minHeight: 270,
+          ),
+          child: Stack(
+            children: [
+              RecipeInfoPageBackground(recipe: widget.recipe),
+              Container(
+                // color: Colors.red,
+                width: double.infinity,
+                constraints: const BoxConstraints(
+                  minHeight: 270,
+                ),
+                padding: const EdgeInsets.only(
+                  left: 20.0,
+                  right: 20.0,
+                  top: 155,
+                ),
+                child: Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+                        child: Container(
+                          height: 43,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              border: Border.all(
+                                color: Colors.white54,
+                                width: 1,
+                              ),
+                              color: Colors.black.withOpacity(0.3)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6.0,
+                              vertical: 4,
                             ),
-                          ),
-                          const ScreenDarkEffect(),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Column(children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * .23,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(25),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-                          child: Container(
-                            height: 43,
-                            decoration: BoxDecoration(
+                            child: TabBar(
+                              controller: _controller,
+                              labelColor: kBrownPrimary,
+                              labelStyle: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                              ),
+                              unselectedLabelStyle: const TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 11,
+                              ),
+                              unselectedLabelColor: Colors.white70,
+                              indicator: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
-                                border: Border.all(
-                                  color: Colors.white54,
-                                  width: 1,
-                                ),
-                                color: Colors.black.withOpacity(0.3)),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 6.0,
-                                vertical: 4,
+                                color: Colors.white,
                               ),
-                              child: TabBar(
-                                controller: _controller,
-                                labelColor: kBrownPrimary,
-                                labelStyle: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
+                              tabs: const <Widget>[
+                                Tab(
+                                  text: "Ingredients",
                                 ),
-                                unselectedLabelStyle: const TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 14,
+                                Tab(
+                                  text: "Steps",
                                 ),
-                                unselectedLabelColor: Colors.white70,
-                                indicator: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  color: Colors.white,
+                                Tab(
+                                  text: "Schedule",
                                 ),
-                                tabs: const <Widget>[
-                                  Tab(
-                                    text: "Ingredients",
-                                  ),
-                                  Tab(
-                                    text: "Steps",
-                                  ),
-                                  Tab(
-                                    text: "Schedule",
-                                  ),
-                                ],
-                              ),
+                              ],
                             ),
                           ),
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 26, right: 26, top: 40.0),
-                        child: TabBarView(
-                          controller: _controller,
-                          children: const [
-                            Text("Ingredients"),
-                            Text("Steps"),
-                            Center(
-                              child: Icon(
-                                Icons.thumb_down,
-                                color: Colors.grey,
-                                size: 150,
-                              ),
-                            )
-                          ],
+                    TabBarView(
+                      controller: _controller,
+                      children: [
+                        Container(
+                          color: Colors.red,
+                          child: const Text('test'),
                         ),
-                      ),
+                        const Text("Steps"),
+                        const Center(
+                          child: Icon(
+                            Icons.thumb_down,
+                            color: Colors.grey,
+                            size: 150,
+                          ),
+                        )
+                      ],
                     )
-                  ]),
-                ],
-              ),
-            ),
-            Container(
-              height: 500.0,
-              color: Colors.white,
-            )
-          ],
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

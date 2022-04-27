@@ -15,7 +15,6 @@ class ImageClipper extends StatelessWidget {
       child: Container(
         child: child,
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * .4,
         color: const Color(0xffF0DEC3),
       ),
     );
