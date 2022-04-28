@@ -1,9 +1,13 @@
-import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/info_tab.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/procedure_tab.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_clipper.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/recipe_info_page_preview_info.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/recipe_info_tabbar.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/schedule_tab.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/screen_dark_effect.dart';
 
 class RecipeInfoPage extends StatefulWidget {
@@ -21,10 +25,11 @@ class RecipeInfoPage extends StatefulWidget {
 
 class _RecipeInfoPageState extends State<RecipeInfoPage>
     with TickerProviderStateMixin {
-  final List<String> recipeInfoTab = ['Ingredients', 'Steps', 'Schedule'];
+  final List<String> recipeInfoTab = ['Info', 'Procedure', 'Schedule'];
   late TabController _tabController;
   late ScrollController _scrollController;
   bool fixedScroll = false;
+  bool showAppBar = true;
   Color appBarColor = Colors.white;
 
   @override
@@ -33,7 +38,7 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     _tabController = TabController(length: 3, vsync: this);
-    _tabController.addListener(_smoothScrollToTop);
+    // _tabController.addListener(_smoothScrollToTop);
   }
 
   @override
@@ -44,57 +49,73 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
   }
 
   _scrollListener() {
-    if (_scrollController.offset >= 400 && appBarColor != Colors.black) {
+    /** Across infobar */
+    if (_scrollController.offset >= 40 &&
+        _scrollController.offset < 140 &&
+        showAppBar != false) {
       setState(() {
-        appBarColor = Colors.black;
+        showAppBar = false;
       });
-    } else if (_scrollController.offset < 400 && appBarColor != Colors.white) {
+    } else if (_scrollController.offset >= 280 &&
+        _scrollController.offset <= 330 &&
+        showAppBar != false) {
       setState(() {
-        appBarColor = Colors.white;
+        showAppBar = false;
+      });
+    } else if (_scrollController.offset > 140 &&
+        _scrollController.offset < 280 &&
+        showAppBar != true) {
+      setState(() {
+        showAppBar = true;
+      });
+    } else if (_scrollController.offset < 40 && showAppBar != true) {
+      setState(() {
+        showAppBar = true;
       });
     }
-    if (fixedScroll) {
-      _scrollController.jumpTo(0);
-    }
-  }
 
-  _smoothScrollToTop() {
-    _scrollController.animateTo(
-      0,
-      duration: const Duration(microseconds: 300),
-      curve: Curves.ease,
-    );
-
-    setState(() {
-      fixedScroll = _tabController.index == 2;
-    });
+    /** Inside main tab */
+    // if (_scrollController.offset >= 350 && appBarColor != Colors.black) {
+    //   setState(() {
+    //     appBarColor = Colors.black;
+    //   });
+    // } else if (_scrollController.offset < 350 && appBarColor != Colors.white) {
+    //   setState(() {
+    //     appBarColor = Colors.white;
+    //   });
+    // }
+    // if (fixedScroll) {
+    //   _scrollController.jumpTo(0);
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        titleSpacing: 0,
-        leading: IconButton(
-          padding: const EdgeInsets.only(left: 20),
-          icon: Icon(Icons.arrow_back_ios, color: appBarColor),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        elevation: 0,
-        title: Padding(
-          padding: const EdgeInsets.only(right: 10.0),
-          child: Text(
-            widget.recipe.name,
-            style: TextStyle(
-              color: appBarColor,
-              fontFamily: 'Pushster',
-              fontSize: 30.0,
-            ),
-          ),
-        ),
-      ),
+      appBar: showAppBar
+          ? AppBar(
+              backgroundColor: Colors.transparent,
+              titleSpacing: 0,
+              leading: IconButton(
+                padding: const EdgeInsets.only(left: 20),
+                icon: Icon(Icons.arrow_back_ios, color: appBarColor),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              elevation: 0,
+              title: Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: Text(
+                  widget.recipe.name,
+                  style: TextStyle(
+                    color: appBarColor,
+                    fontFamily: 'Pushster',
+                    fontSize: 30.0,
+                  ),
+                ),
+              ),
+            )
+          : null,
       body: Hero(
         tag: "recipe-img-${widget.recipe.displayPhoto}",
         child: Stack(
@@ -102,7 +123,6 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
             CachedNetworkImage(
               imageUrl: widget.recipe.displayPhoto,
               width: double.infinity,
-              height: double.infinity,
               fit: BoxFit.fill,
               alignment: Alignment.center,
               progressIndicatorBuilder: (context, url, downloadProgress) {
@@ -123,26 +143,30 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
               controller: _scrollController,
               headerSliverBuilder: (context, value) {
                 return [
-                  // SliverPersistentHeader(
-                  //   delegate: _SliverPersistentHeaderDelegate(),
-                  //   pinned: true,
-                  // ),
                   SliverToBoxAdapter(
                     child: SizedBox(
-                      height: 450,
+                      height: 400,
                       width: double.infinity,
                       child: Stack(
                         alignment: AlignmentDirectional.bottomEnd,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(
-                              left: 30.0,
-                              right: 20.0,
-                              bottom: 10.0,
+                              left: 20.0,
+                              right: 10.0,
+                              bottom: 15.0,
                             ),
-                            child: RecipeInfoTabBar(
-                              recipeInfoTab: recipeInfoTab,
-                              tabController: _tabController,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                RecipeInfoPagePreviewInfo(
+                                  recipe: widget.recipe,
+                                ),
+                                RecipeInfoTabBar(
+                                  recipeInfoTab: recipeInfoTab,
+                                  tabController: _tabController,
+                                ),
+                              ],
                             ),
                           ),
                           const RecipeClipper(),
@@ -152,174 +176,18 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
                   ),
                 ];
               },
-              body: Stack(
+              body: TabBarView(
+                controller: _tabController,
                 children: [
-                  TabBarView(
-                    controller: _tabController,
-                    children: [
-                      Container(
-                        color: Colors.white,
-                        width: MediaQuery.of(context).size.width,
-                        child: Container(
-                          height: 4000,
-                        ),
-                      ),
-                      Container(
-                        color: Colors.white,
-                      ),
-                      Container(
-                        color: Colors.white,
-                        child: const Center(
-                          child: Icon(
-                            Icons.thumb_down,
-                            color: Colors.grey,
-                            size: 150,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  InfoTab(recipe: widget.recipe),
+                  ProcedureTab(recipe: widget.recipe),
+                  ScheduleTab(recipe: widget.recipe),
                 ],
               ),
             ),
           ],
         ),
       ),
-      // body: SingleChildScrollView(
-      //   child: Container(
-      //     width: double.infinity,
-      //     constraints: const BoxConstraints(
-      //       minHeight: 270,
-      //     ),
-      //     child: Stack(
-      //       children: [
-      //         RecipeInfoPageBackground(recipe: widget.recipe),
-      //         TabBarBackup(controller: _controller)
-      //       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 }
-
-class RecipeInfoTabBar extends StatelessWidget {
-  const RecipeInfoTabBar({
-    Key? key,
-    required TabController tabController,
-    required this.recipeInfoTab,
-  })  : _tabController = tabController,
-        super(key: key);
-
-  final TabController _tabController;
-  final List<String> recipeInfoTab;
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(25),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-        child: Container(
-          height: 43,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              border: Border.all(
-                color: Colors.white54,
-                width: 1,
-              ),
-              color: Colors.black.withOpacity(0.3)),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 6.0,
-              vertical: 4,
-            ),
-            child: TabBar(
-              controller: _tabController,
-              labelColor: kBrownPrimary,
-              labelStyle: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 13,
-              ),
-              unselectedLabelStyle: const TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: 11,
-              ),
-              unselectedLabelColor: Colors.white70,
-              indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                color: Colors.white,
-              ),
-              tabs: recipeInfoTab.map((name) => Tab(text: name)).toList(),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class TabBarBackup extends StatelessWidget {
-  const TabBarBackup({
-    Key? key,
-    required TabController controller,
-  })  : _controller = controller,
-        super(key: key);
-
-  final TabController _controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      // color: Colors.red,
-      width: double.infinity,
-      height: 400,
-      constraints: const BoxConstraints(
-        minHeight: 270,
-      ),
-      padding: const EdgeInsets.only(
-        left: 20.0,
-        right: 20.0,
-        top: 155,
-      ),
-      child: Column(
-        children: [
-          TabBarView(
-            controller: _controller,
-            children: [
-              Container(
-                color: Colors.red,
-                child: const Text('test'),
-              ),
-              const Text("Steps"),
-              const Center(
-                child: Icon(
-                  Icons.thumb_down,
-                  color: Colors.grey,
-                  size: 150,
-                ),
-              )
-            ],
-          )
-        ],
-      ),
-    );
-  }
-}
-
-// class _SliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
-//   @override
-//   Widget build(
-//       BuildContext context, double shrinkOffset, bool overlapsContent) {
-//     return Container(
-//       child: Placeholder(),
-//     );
-//   }
-
-//   @override
-//   double get maxExtent => 300;
-//   @override
-//   double get minExtent => 100;
-//   @override
-//   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
-// }
