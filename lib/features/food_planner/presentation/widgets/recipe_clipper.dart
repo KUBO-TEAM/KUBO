@@ -19,7 +19,7 @@ class _Clipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     Path path = Path();
 
-    final double startingHeight = size.height / 2 - 50;
+    final double startingHeight = size.height;
 
     path.moveTo(0, startingHeight);
     path.lineTo(size.width, startingHeight);

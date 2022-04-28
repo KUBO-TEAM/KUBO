@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_clipper.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/recipe_info_page_background.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/screen_dark_effect.dart';
 
 class RecipeInfoPage extends StatefulWidget {
   static const String id = 'recipe_steps_page';
@@ -52,7 +50,7 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
   _smoothScrollToTop() {
     _scrollController.animateTo(
       0,
-      duration: Duration(microseconds: 300),
+      duration: const Duration(microseconds: 300),
       curve: Curves.ease,
     );
 
@@ -83,91 +81,94 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          // RecipeInfoPageBackground(recipe: widget.recipe),
-          CachedNetworkImage(
-            imageUrl: widget.recipe.displayPhoto,
-            width: double.infinity,
-            height: double.infinity,
-            fit: BoxFit.cover,
-            progressIndicatorBuilder: (context, url, downloadProgress) {
-              // if (downloadProgress == null) return Container();
-              return Center(
-                child: CircularProgressIndicator(
-                  strokeWidth: 3,
-                  valueColor: const AlwaysStoppedAnimation<Color>(
-                    kBrownPrimary,
-                  ),
-                  value: downloadProgress.progress,
-                ),
-              );
-            },
-          ),
-          NestedScrollView(
-            controller: _scrollController,
-            headerSliverBuilder: (context, value) {
-              return [
-                // SliverPersistentHeader(
-                //   delegate: _SliverPersistentHeaderDelegate(),
-                //   pinned: true,
-                // ),
-                SliverToBoxAdapter(
-                  child: Container(
-                    child: RecipeInfoTabBar(
-                      recipeInfoTab: recipeInfoTab,
-                      tabController: _tabController,
+      body: Hero(
+        tag: "recipe-img-${widget.recipe.displayPhoto}",
+        child: Stack(
+          children: [
+            // RecipeInfoPageBackground(recipe: widget.recipe),
+            CachedNetworkImage(
+              imageUrl: widget.recipe.displayPhoto,
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.cover,
+              progressIndicatorBuilder: (context, url, downloadProgress) {
+                // if (downloadProgress == null) return Container();
+                return Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                      kBrownPrimary,
                     ),
-                    color: Colors.transparent,
+                    value: downloadProgress.progress,
                   ),
-                ),
-              ];
-            },
-            body: Stack(
-              children: [
-                TabBarView(
-                  controller: _tabController,
-                  children: [
-                    SingleChildScrollView(
+                );
+              },
+            ),
+            NestedScrollView(
+              controller: _scrollController,
+              headerSliverBuilder: (context, value) {
+                return [
+                  // SliverPersistentHeader(
+                  //   delegate: _SliverPersistentHeaderDelegate(),
+                  //   pinned: true,
+                  // ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 300,
+                      width: double.infinity,
                       child: Stack(
+                        alignment: AlignmentDirectional.bottomEnd,
                         children: [
-                          SizedBox(
-                            child: RecipeClipper(),
-                            height: MediaQuery.of(context).size.height,
-                            width: MediaQuery.of(context).size.width,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                              top: MediaQuery.of(context).size.height * .50,
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 20.0,
+                              right: 20.0,
+                              bottom: 10.0,
                             ),
-                            color: Colors.white,
-                            width: MediaQuery.of(context).size.width,
-                            child: Container(
-                              height: 4000,
+                            child: RecipeInfoTabBar(
+                              recipeInfoTab: recipeInfoTab,
+                              tabController: _tabController,
                             ),
                           ),
+                          const RecipeClipper(),
                         ],
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * .50 - 50,
+                  ),
+                ];
+              },
+              body: Stack(
+                children: [
+                  TabBarView(
+                    controller: _tabController,
+                    children: [
+                      Container(
+                        color: Colors.white,
+                        width: MediaQuery.of(context).size.width,
+                        child: Container(
+                          height: 4000,
+                        ),
                       ),
-                      color: Colors.white,
-                    ),
-                    const Center(
-                      child: Icon(
-                        Icons.thumb_down,
-                        color: Colors.grey,
-                        size: 150,
+                      Container(
+                        color: Colors.white,
                       ),
-                    )
-                  ],
-                ),
-              ],
+                      Container(
+                        color: Colors.white,
+                        child: const Center(
+                          child: Icon(
+                            Icons.thumb_down,
+                            color: Colors.grey,
+                            size: 150,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       // body: SingleChildScrollView(
       //   child: Container(

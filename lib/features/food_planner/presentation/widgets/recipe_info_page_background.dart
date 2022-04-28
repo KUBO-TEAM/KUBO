@@ -2,9 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/image_clipper.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/recipe_clipper.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/screen_dark_effect.dart';
 
 class RecipeInfoPageBackground extends StatelessWidget {
   const RecipeInfoPageBackground({
