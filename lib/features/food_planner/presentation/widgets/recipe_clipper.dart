@@ -21,26 +21,22 @@ class _Clipper extends CustomClipper<Path> {
 
     final double startingHeight = size.height;
 
-    path.moveTo(0, startingHeight);
-    path.lineTo(size.width, startingHeight);
+    path.lineTo(0, size.height);
+    path.lineTo(10, size.height);
+    path.lineTo(10, 0);
 
-    // path.quadraticBezierTo(
-    //   size.width - 20,
-    //   startingHeight,
-    //   size.width - 10,
-    //   startingHeight + 50,
-    // );
+    path.moveTo(0, startingHeight);
 
     path.lineTo(size.width, size.height);
     path.lineTo(0, size.height);
 
-    path.moveTo(0, startingHeight - 50);
-    path.lineTo(0, startingHeight);
-    path.lineTo(50, startingHeight);
+    path.moveTo(10, startingHeight - 60);
+    path.lineTo(10, startingHeight);
+    path.lineTo(60, startingHeight);
     path.quadraticBezierTo(
-      0,
+      10,
       startingHeight,
-      0,
+      10,
       startingHeight - 50,
     );
 

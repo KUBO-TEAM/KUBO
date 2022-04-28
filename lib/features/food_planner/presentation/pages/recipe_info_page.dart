@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_clipper.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/screen_dark_effect.dart';
 
 class RecipeInfoPage extends StatefulWidget {
   static const String id = 'recipe_steps_page';
@@ -24,6 +25,7 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
   late TabController _tabController;
   late ScrollController _scrollController;
   bool fixedScroll = false;
+  Color appBarColor = Colors.white;
 
   @override
   void initState() {
@@ -42,6 +44,15 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
   }
 
   _scrollListener() {
+    if (_scrollController.offset >= 400 && appBarColor != Colors.black) {
+      setState(() {
+        appBarColor = Colors.black;
+      });
+    } else if (_scrollController.offset < 400 && appBarColor != Colors.white) {
+      setState(() {
+        appBarColor = Colors.white;
+      });
+    }
     if (fixedScroll) {
       _scrollController.jumpTo(0);
     }
@@ -68,16 +79,19 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
         titleSpacing: 0,
         leading: IconButton(
           padding: const EdgeInsets.only(left: 20),
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          icon: Icon(Icons.arrow_back_ios, color: appBarColor),
           onPressed: () => Navigator.of(context).pop(),
         ),
         elevation: 0,
-        title: Text(
-          widget.recipe.name,
-          style: const TextStyle(
-            color: Colors.white,
-            fontFamily: 'Pushster',
-            fontSize: 30.0,
+        title: Padding(
+          padding: const EdgeInsets.only(right: 10.0),
+          child: Text(
+            widget.recipe.name,
+            style: TextStyle(
+              color: appBarColor,
+              fontFamily: 'Pushster',
+              fontSize: 30.0,
+            ),
           ),
         ),
       ),
@@ -85,12 +99,12 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
         tag: "recipe-img-${widget.recipe.displayPhoto}",
         child: Stack(
           children: [
-            // RecipeInfoPageBackground(recipe: widget.recipe),
             CachedNetworkImage(
               imageUrl: widget.recipe.displayPhoto,
               width: double.infinity,
               height: double.infinity,
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
+              alignment: Alignment.center,
               progressIndicatorBuilder: (context, url, downloadProgress) {
                 // if (downloadProgress == null) return Container();
                 return Center(
@@ -104,6 +118,7 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
                 );
               },
             ),
+            const ScreenDarkEffect(),
             NestedScrollView(
               controller: _scrollController,
               headerSliverBuilder: (context, value) {
@@ -114,14 +129,14 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
                   // ),
                   SliverToBoxAdapter(
                     child: SizedBox(
-                      height: 300,
+                      height: 450,
                       width: double.infinity,
                       child: Stack(
                         alignment: AlignmentDirectional.bottomEnd,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(
-                              left: 20.0,
+                              left: 30.0,
                               right: 20.0,
                               bottom: 10.0,
                             ),
