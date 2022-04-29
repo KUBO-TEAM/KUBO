@@ -23,11 +23,13 @@ class RecipeInfoPagePreviewInfo extends StatelessWidget {
                 icon: Icons.outdoor_grill,
                 title: 'Cook Time',
                 data: recipe.cookTime.toString(),
+                color: Colors.white,
               ),
               RecipeInfoIconWithText(
                 icon: Icons.hourglass_top,
                 title: 'Prep Time',
                 data: recipe.prepTime.toString(),
+                color: Colors.white,
               ),
             ],
           ),
@@ -40,20 +42,14 @@ class RecipeInfoPagePreviewInfo extends StatelessWidget {
               RecipeInfoIconWithText(
                 icon: Icons.restaurant,
                 data: recipe.course,
+                color: Colors.white,
               ),
               RecipeInfoIconWithText(
                 icon: Icons.brunch_dining,
                 data: recipe.cuisine,
+                color: Colors.white,
               ),
             ],
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          const RecipeInfoIconWithText(
-            icon: Icons.group,
-            title: 'Servings',
-            data: '12',
           ),
         ],
       ),

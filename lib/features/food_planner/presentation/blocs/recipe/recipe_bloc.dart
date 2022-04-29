@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/usecases/usecase.dart';
 import 'package:kubo/features/food_planner/data/models/recipe_model.dart';
-import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
+import 'package:kubo/features/food_planner/domain/entities/category.dart';
 import 'package:kubo/features/food_planner/domain/usecases/fetch_filtered_recipes.dart';
 import 'package:kubo/features/food_planner/domain/usecases/fetch_recipes.dart';
 
@@ -30,27 +30,26 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
         });
       } else if (event is RecipeModelListFilter) {
         String? query = event.query;
-        List<Ingredient>? ingredients = event.ingredients;
-
-        emit(RecipeInProgress());
+        List<Category>? categories = event.categories;
 
         if (query != null && state is RecipeSuccess) {
           /**
            * Query existing list of arrays
            */
           final recipes = (state as RecipeSuccess).cached;
+
+          emit(RecipeInProgress());
+
           var filteredRecipes = recipes.where((recipe) {
             return recipe.name.toLowerCase().contains(query.toLowerCase());
           }).toList();
 
           emit(RecipeSuccess(recipes: filteredRecipes, cached: recipes));
-        } else if (ingredients != null && ingredients.isNotEmpty) {
-          /**
-           * Fetch and filter a new set of categories
-           */
+        } else if (categories != null && categories.isNotEmpty) {
+          emit(RecipeInProgress());
 
           final failOrListOfFilteredRecipes =
-              await fetchFilteredRecipes(ingredients);
+              await fetchFilteredRecipes(categories);
 
           failOrListOfFilteredRecipes.fold(
             (failure) {

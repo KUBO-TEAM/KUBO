@@ -7,11 +7,11 @@ import 'package:injectable/injectable.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/hive/adapters/color.adapter.dart';
 import 'package:kubo/core/hive/objects/recipe_schedule_hive.dart';
+import 'package:kubo/core/widgets/splash_page.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/assign_meal_plan_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu_history/menu_history_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
-import 'package:kubo/features/food_planner/presentation/pages/home_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/predict_image/predict_image_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_pictures/scanned_pictures_bloc.dart';
 import 'package:kubo/injection.dart';
@@ -69,7 +69,7 @@ class Kubo extends StatelessWidget {
             checkColor: MaterialStateProperty.all(Colors.white),
           ),
         ),
-        initialRoute: HomePage.id,
+        initialRoute: SplashPage.id,
         onGenerateRoute: appRouter.onGenerateRoute,
         builder: EasyLoading.init(),
       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/examples/ingredients.examples.dart';
-import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
+import 'package:kubo/features/food_planner/domain/entities/category.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
 
@@ -14,7 +14,7 @@ class RecipeSelectionDialog extends StatefulWidget {
 }
 
 class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
-  List<Ingredient> selectedIngredient = [];
+  List<Category> selectedCategory = [];
 
   @override
   Widget build(BuildContext context) {
@@ -44,21 +44,21 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
                     DataColumn(label: Text('Ingredient')),
                   ],
                   rows: [
-                    for (Ingredient ingredient in kIngredientsExample)
+                    for (Category category in kCategoriesExample)
                       DataRow(
-                        selected: isIngredientSelected(ingredient),
+                        selected: isCategorySelected(category),
                         cells: [
-                          DataCell(Text(ingredient.quantity.toString())),
-                          DataCell(Text(ingredient.name)),
+                          DataCell(Text(category.quantity.toString())),
+                          DataCell(Text(category.name)),
                         ],
                         onSelectChanged: (bool? value) {
                           if (value == true) {
                             setState(() {
-                              selectedIngredient.add(ingredient);
+                              selectedCategory.add(category);
                             });
                           } else {
                             setState(() {
-                              selectedIngredient.remove(ingredient);
+                              selectedCategory.remove(category);
                             });
                           }
                         },
@@ -83,7 +83,7 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
                       context,
                       RecipesPage.id,
                       arguments: RecipesPageArguments(
-                        ingredients: selectedIngredient,
+                        categories: selectedCategory,
                       ),
                     );
                   },
@@ -100,12 +100,12 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
     );
   }
 
-  bool isIngredientSelected(Ingredient ingredient) {
-    if (selectedIngredient.isNotEmpty) {
-      var foundIngredients =
-          selectedIngredient.where((element) => element == ingredient);
+  bool isCategorySelected(Category category) {
+    if (selectedCategory.isNotEmpty) {
+      var foundCategories =
+          selectedCategory.where((element) => element == category);
 
-      return foundIngredients.isNotEmpty ? true : false;
+      return foundCategories.isNotEmpty ? true : false;
     }
 
     return false;

@@ -4,10 +4,15 @@ class IngredientModel extends Ingredient {
   const IngredientModel({
     required String name,
     required int quantity,
-    required DateTime dateCreated,
   }) : super(
           name: name,
           quantity: quantity,
-          dateCreated: dateCreated,
         );
+
+  factory IngredientModel.fromJson(Map<String, dynamic> json) {
+    return IngredientModel(
+      name: json['ingredient'],
+      quantity: (json['quantity'] as num).toInt(),
+    );
+  }
 }

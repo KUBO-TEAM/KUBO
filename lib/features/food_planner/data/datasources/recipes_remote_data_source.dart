@@ -5,7 +5,7 @@ import 'package:kubo/core/constants/string_constants.dart';
 import 'package:kubo/core/error/exceptions.dart';
 import 'package:kubo/features/food_planner/data/models/recipe_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
+import 'package:kubo/features/food_planner/domain/entities/category.dart';
 
 abstract class RecipesRemoteDataSource {
   /// fetch [RecipeModel] in remote
@@ -13,7 +13,7 @@ abstract class RecipesRemoteDataSource {
   /// Throws [ServerException] if no remote data is present.
   ///
   Future<List<RecipeModel>> fetchRecipes();
-  Future<List<RecipeModel>> fetchFilteredRecipes(List<Ingredient> ingredients);
+  Future<List<RecipeModel>> fetchFilteredRecipes(List<Category> categories);
 }
 
 @module
@@ -52,19 +52,19 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
 
   @override
   Future<List<RecipeModel>> fetchFilteredRecipes(
-    List<Ingredient> ingredients,
+    List<Category> categories,
   ) async {
-    List<String> categories = [];
+    List<String> categoriesArray = [];
 
-    for (var value in ingredients) {
-      categories.add(value.name);
+    for (var value in categories) {
+      categoriesArray.add(value.name);
     }
 
     final response = await client.post(
       Uri.parse('$kKuboUrl/api/recipes/filter'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(
-        {"categories": categories},
+        {"categories": categoriesArray},
       ),
     );
     if (response.statusCode == 200) {

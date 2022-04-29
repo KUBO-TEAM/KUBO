@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/features/food_planner/data/models/ingredient_model.dart';
+import 'package:kubo/features/food_planner/data/models/category_model.dart';
 
 class KuboCheckBox extends StatefulWidget {
   const KuboCheckBox({
     Key? key,
-    required this.ingredient,
+    required this.category,
   }) : super(key: key);
 
-  final IngredientModel ingredient;
+  final CategoryModel category;
 
   @override
   State<KuboCheckBox> createState() => _KuboCheckBoxState();
@@ -40,7 +40,7 @@ class _KuboCheckBoxState extends State<KuboCheckBox> {
           ),
         ),
         Text(
-          '${widget.ingredient.quantity} ${widget.ingredient.name}',
+          '${widget.category.quantity} ${widget.category.name}',
           style: const TextStyle(
             fontSize: 16.0,
           ),

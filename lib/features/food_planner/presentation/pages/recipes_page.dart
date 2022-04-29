@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
+import 'package:kubo/features/food_planner/domain/entities/category.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_list_tile.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/search_field.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
 import 'package:badges/badges.dart';
 
 class RecipesPageArguments {
-  final List<Ingredient>? ingredients;
+  final List<Category>? categories;
 
-  RecipesPageArguments({this.ingredients});
+  RecipesPageArguments({this.categories});
 }
 
 class RecipesPage extends StatefulWidget {
@@ -29,10 +29,10 @@ class _RecipesPageState extends State<RecipesPage> {
   void initState() {
     super.initState();
 
-    if (widget.arguments.ingredients != null) {
+    if (widget.arguments.categories != null) {
       BlocProvider.of<RecipeBloc>(context).add(
         RecipeModelListFilter(
-          ingredients: widget.arguments.ingredients,
+          categories: widget.arguments.categories,
         ),
       );
     } else {
@@ -62,11 +62,11 @@ class _RecipesPageState extends State<RecipesPage> {
           ),
         ),
         actions: <Widget>[
-          if (widget.arguments.ingredients != null)
+          if (widget.arguments.categories != null)
             IconButton(
               icon: Badge(
                 badgeContent: Text(
-                  widget.arguments.ingredients!.length.toString(),
+                  widget.arguments.categories!.length.toString(),
                   style: const TextStyle(
                     color: Colors.white,
                   ),

@@ -4,7 +4,7 @@ import 'package:kubo/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:kubo/features/food_planner/data/datasources/recipes_remote_data_source.dart';
 import 'package:kubo/features/food_planner/data/models/recipe_model.dart';
-import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
+import 'package:kubo/features/food_planner/domain/entities/category.dart';
 import 'package:kubo/features/food_planner/domain/repositories/recipe_repository.dart';
 
 @LazySingleton(as: RecipeRepository)
@@ -26,10 +26,10 @@ class RecipeRepositoryImpl implements RecipeRepository {
 
   @override
   Future<Either<Failure, List<RecipeModel>>> fetchFilteredRecipes(
-      List<Ingredient> ingridients) async {
+      List<Category> categories) async {
     try {
       final recipes =
-          await recipesRemoteDataSource.fetchFilteredRecipes(ingridients);
+          await recipesRemoteDataSource.fetchFilteredRecipes(categories);
 
       return Right(recipes);
     } on ServerException {

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
@@ -116,76 +117,78 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
               ),
             )
           : null,
-      body: Hero(
-        tag: "recipe-img-${widget.recipe.displayPhoto}",
-        child: Stack(
-          children: [
-            CachedNetworkImage(
-              imageUrl: widget.recipe.displayPhoto,
-              width: double.infinity,
-              fit: BoxFit.fill,
-              alignment: Alignment.center,
-              progressIndicatorBuilder: (context, url, downloadProgress) {
-                // if (downloadProgress == null) return Container();
-                return Center(
-                  child: CircularProgressIndicator(
-                    strokeWidth: 3,
-                    valueColor: const AlwaysStoppedAnimation<Color>(
-                      kBrownPrimary,
+      body: DirectSelectContainer(
+        child: Hero(
+          tag: "recipe-img-${widget.recipe.displayPhoto}",
+          child: Stack(
+            children: [
+              CachedNetworkImage(
+                imageUrl: widget.recipe.displayPhoto,
+                width: double.infinity,
+                fit: BoxFit.fill,
+                alignment: Alignment.center,
+                progressIndicatorBuilder: (context, url, downloadProgress) {
+                  // if (downloadProgress == null) return Container();
+                  return Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                        kBrownPrimary,
+                      ),
+                      value: downloadProgress.progress,
                     ),
-                    value: downloadProgress.progress,
-                  ),
-                );
-              },
-            ),
-            const ScreenDarkEffect(),
-            NestedScrollView(
-              controller: _scrollController,
-              headerSliverBuilder: (context, value) {
-                return [
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 400,
-                      width: double.infinity,
-                      child: Stack(
-                        alignment: AlignmentDirectional.bottomEnd,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 20.0,
-                              right: 10.0,
-                              bottom: 15.0,
+                  );
+                },
+              ),
+              const ScreenDarkEffect(),
+              NestedScrollView(
+                controller: _scrollController,
+                headerSliverBuilder: (context, value) {
+                  return [
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 400,
+                        width: double.infinity,
+                        child: Stack(
+                          alignment: AlignmentDirectional.bottomEnd,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 20.0,
+                                right: 10.0,
+                                bottom: 15.0,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  RecipeInfoPagePreviewInfo(
+                                    recipe: widget.recipe,
+                                  ),
+                                  RecipeInfoTabBar(
+                                    recipeInfoTab: recipeInfoTab,
+                                    tabController: _tabController,
+                                  ),
+                                ],
+                              ),
                             ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                RecipeInfoPagePreviewInfo(
-                                  recipe: widget.recipe,
-                                ),
-                                RecipeInfoTabBar(
-                                  recipeInfoTab: recipeInfoTab,
-                                  tabController: _tabController,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const RecipeClipper(),
-                        ],
+                            const RecipeClipper(),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ];
-              },
-              body: TabBarView(
-                controller: _tabController,
-                children: [
-                  InfoTab(recipe: widget.recipe),
-                  ProcedureTab(recipe: widget.recipe),
-                  ScheduleTab(recipe: widget.recipe),
-                ],
+                  ];
+                },
+                body: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    InfoTab(recipe: widget.recipe),
+                    ProcedureTab(recipe: widget.recipe),
+                    ScheduleTab(recipe: widget.recipe),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -1,3 +1,5 @@
+import 'package:kubo/features/food_planner/data/models/ingredient_model.dart';
+import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 
 class RecipeModel extends Recipe {
@@ -13,7 +15,7 @@ class RecipeModel extends Recipe {
     required String reference,
     required String displayPhoto,
     required List<String> categories,
-    required List<Map<String, dynamic>> ingredients,
+    required List<Ingredient> ingredients,
     required List<String> instructions,
     required String createdAt,
   }) : super(
@@ -46,7 +48,9 @@ class RecipeModel extends Recipe {
       reference: json['reference'],
       displayPhoto: json['displayPhoto'],
       categories: List<String>.from(json['categories']),
-      ingredients: List<Map<String, dynamic>>.from(json['ingredients']),
+      ingredients: List<Ingredient>.from((json['ingredients'] as List).map(
+        (model) => IngredientModel.fromJson(model),
+      )),
       instructions: List<String>.from(json['instructions']),
       createdAt: json['createdAt'],
     );

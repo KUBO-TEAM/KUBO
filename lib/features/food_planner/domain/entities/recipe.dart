@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
 
 class Recipe extends Equatable {
   const Recipe({
@@ -33,7 +34,7 @@ class Recipe extends Equatable {
   final String displayPhoto;
 
   final List<String> categories;
-  final List<Map<String, dynamic>> ingredients;
+  final List<Ingredient> ingredients;
   final List<String> instructions;
 
   final String createdAt;

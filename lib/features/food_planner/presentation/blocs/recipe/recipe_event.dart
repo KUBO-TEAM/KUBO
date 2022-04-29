@@ -11,7 +11,7 @@ class RecipeModelListFetched extends RecipeEvent {}
 
 class RecipeModelListFilter extends RecipeEvent {
   final String? query;
-  final List<Ingredient>? ingredients;
+  final List<Category>? categories;
 
-  const RecipeModelListFilter({this.query, this.ingredients});
+  const RecipeModelListFilter({this.query, this.categories});
 }
