@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart.old';
 import 'package:kubo/features/food_planner/presentation/widgets/agenda_modal_form.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 
@@ -19,27 +19,28 @@ class AgendaPage extends StatelessWidget {
         onPressed: () => _showAgendaBottomModal(context),
       ),
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: BlocBuilder<MenuBloc, MenuState>(
-          builder: (context, state) => Column(
-            children: const [
-              KuboClippedAppBar("Agenda"),
-              SizedBox(
-                height: 20,
-              ),
-              // Expanded(
-              //   child: ListView.builder(
-              //     itemCount: state.agendas.length,
-              //     itemBuilder: (context, index) {
-              //       var agenda = state.agendas[index];
-              //       return AgendaCardTile(agenda: agenda);
-              //     },
-              //   ),
-              // ),
-            ],
-          ),
-        ),
-      ),
+      body: Container(),
+      // body: SafeArea(
+      //   child: BlocBuilder<MenuBloc, MenuState>(
+      //     builder: (context, state) => Column(
+      //       children: const [
+      //         KuboClippedAppBar("Agenda"),
+      //         SizedBox(
+      //           height: 20,
+      //         ),
+      // Expanded(
+      //   child: ListView.builder(
+      //     itemCount: state.agendas.length,
+      //     itemBuilder: (context, index) {
+      //       var agenda = state.agendas[index];
+      //       return AgendaCardTile(agenda: agenda);
+      //     },
+      //   ),
+      // ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
 

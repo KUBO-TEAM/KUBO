@@ -5,29 +5,29 @@ import 'package:kubo/features/food_planner/domain/usecases/fetch_recipe_schedule
 import 'package:mockito/mockito.dart';
 
 import '../../../../test_constants.dart';
-import 'create_recipe_schedule_test.mocks.dart';
+// import 'create_recipe_schedule_test.mocks.dart';
 
-void main() {
-  late MockRecipeScheduleRepository mockRecipeScheduleRepository;
-  late FetchRecipeScheduleLinkedHashMap fetchRecipeScheduleLinkedHashMap;
+// void main() {
+//   late MockRecipeScheduleRepository mockRecipeScheduleRepository;
+//   late FetchRecipeScheduleLinkedHashMap fetchRecipeScheduleLinkedHashMap;
 
-  setUp(() {
-    mockRecipeScheduleRepository = MockRecipeScheduleRepository();
-    fetchRecipeScheduleLinkedHashMap =
-        FetchRecipeScheduleLinkedHashMap(mockRecipeScheduleRepository);
-  });
+//   setUp(() {
+//     mockRecipeScheduleRepository = MockRecipeScheduleRepository();
+//     fetchRecipeScheduleLinkedHashMap =
+//         FetchRecipeScheduleLinkedHashMap(mockRecipeScheduleRepository);
+//   });
 
-  test(
-    'should fetch LinkedHashMap of RecipeSchedule from the repository ',
-    () async {
-      when(mockRecipeScheduleRepository.fetchRecipeScheduleLinkedHashmap())
-          .thenAnswer((_) async => Right(tRecipeScheduleLinkedHashmap));
+//   test(
+//     'should fetch LinkedHashMap of RecipeSchedule from the repository ',
+//     () async {
+//       when(mockRecipeScheduleRepository.fetchRecipeScheduleLinkedHashmap())
+//           .thenAnswer((_) async => Right(tRecipeScheduleLinkedHashmap));
 
-      final result = await fetchRecipeScheduleLinkedHashMap(NoParams());
+//       final result = await fetchRecipeScheduleLinkedHashMap(NoParams());
 
-      verify(mockRecipeScheduleRepository.fetchRecipeScheduleLinkedHashmap());
+//       verify(mockRecipeScheduleRepository.fetchRecipeScheduleLinkedHashmap());
 
-      expect(result, equals(Right(tRecipeScheduleLinkedHashmap)));
-    },
-  );
-}
+//       expect(result, equals(Right(tRecipeScheduleLinkedHashmap)));
+//     },
+//   );
+// }

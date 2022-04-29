@@ -6,10 +6,10 @@ import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/hive/adapters/color.adapter.dart';
-import 'package:kubo/core/hive/objects/recipe_schedule_hive.dart';
 import 'package:kubo/core/widgets/splash_page.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/assign_meal_plan_bloc.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart.old';
 import 'package:kubo/features/food_planner/presentation/blocs/menu_history/menu_history_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/predict_image/predict_image_bloc.dart';
@@ -27,7 +27,7 @@ Future<void> main() async {
   Hive
     ..init(directory.path)
     ..registerAdapter(ColorAdapter())
-    ..registerAdapter(RecipeScheduleHiveAdapter());
+    ..registerAdapter(RecipeScheduleAdapter());
 
   await configureDependencies();
 

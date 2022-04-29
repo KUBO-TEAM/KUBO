@@ -4,8 +4,6 @@ import 'package:kubo/core/widgets/splash_page.dart';
 import 'package:kubo/core/widgets/welcome_page.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/presentation/pages/agenda_page.dart';
-import 'package:kubo/features/food_planner/presentation/pages/assign_meal_time_page.dart';
-import 'package:kubo/features/food_planner/presentation/pages/create_meal_plan_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/home_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/menu_history_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/menu_page.dart';
@@ -46,18 +44,6 @@ class AppRouter {
       case AgendaPage.id:
         return MaterialPageRoute(
           builder: (_) => const AgendaPage(),
-        );
-      case CreateMealPlanPage.id:
-        return MaterialPageRoute(
-          builder: (_) => const CreateMealPlanPage(),
-        );
-      case AssignMealTimePage.id:
-        final arguments =
-            routeSettings.arguments as AssignMealTimePageArguments;
-        return MaterialPageRoute(
-          builder: (_) => AssignMealTimePage(
-            arguments: arguments,
-          ),
         );
       case RecipesPage.id:
         final arguments = routeSettings.arguments as RecipesPageArguments;

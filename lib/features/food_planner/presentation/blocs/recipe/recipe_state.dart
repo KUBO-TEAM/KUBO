@@ -12,8 +12,8 @@ class RecipeInitial extends RecipeState {}
 class RecipeInProgress extends RecipeState {}
 
 class RecipeSuccess extends RecipeState {
-  final List<RecipeModel> recipes;
-  final List<RecipeModel> cached;
+  final List<Recipe> recipes;
+  final List<Recipe> cached;
 
   const RecipeSuccess({required this.recipes, required this.cached});
 }

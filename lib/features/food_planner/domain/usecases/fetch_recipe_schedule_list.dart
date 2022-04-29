@@ -14,6 +14,6 @@ class FetchRecipeScheduleList
 
   @override
   Future<Either<Failure, List<RecipeSchedule>>> call(NoParams params) async {
-    return await repository.fetchRecipeScheduleList();
+    return await repository.fetchRecipeSchedules();
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/assign_meal_plan_bloc.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart.old';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_selection_dialog.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -46,33 +46,34 @@ class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: BlocBuilder<MenuBloc, MenuState>(builder: (context, state) {
-          if (state is MenuSuccess) {
-            final recipeSchedules = state.recipeSchedules;
+      body: Container(),
+      // body: SafeArea(
+      //   child: BlocBuilder<MenuBloc, MenuState>(builder: (context, state) {
+      //     if (state is MenuSuccess) {
+      //       final recipeSchedules = state.recipeSchedules;
 
-            return SfCalendar(
-              todayHighlightColor: Colors.green,
-              dataSource: ScheduleDataSource(recipeSchedules),
-              timeSlotViewSettings: _calendarTimeSlotViewSettings,
-              headerStyle: _calendarHeaderStyle,
-              viewHeaderStyle: _calendarViewHeaderStyle,
-              view: CalendarView.week,
-              weekNumberStyle: _calendarWeekNumberStyle,
-              firstDayOfWeek: 1,
-              onTap: (CalendarTapDetails details) {
-                _calendarTapped(
-                  details: details,
-                  context: context,
-                  recipeSchedules: recipeSchedules,
-                );
-              },
-            );
-          }
+      //       return SfCalendar(
+      //         todayHighlightColor: Colors.green,
+      //         dataSource: ScheduleDataSource(recipeSchedules),
+      //         timeSlotViewSettings: _calendarTimeSlotViewSettings,
+      //         headerStyle: _calendarHeaderStyle,
+      //         viewHeaderStyle: _calendarViewHeaderStyle,
+      //         view: CalendarView.week,
+      //         weekNumberStyle: _calendarWeekNumberStyle,
+      //         firstDayOfWeek: 1,
+      //         onTap: (CalendarTapDetails details) {
+      //           _calendarTapped(
+      //             details: details,
+      //             context: context,
+      //             recipeSchedules: recipeSchedules,
+      //           );
+      //         },
+      //       );
+      //     }
 
-          return const Center(child: CircularProgressIndicator());
-        }),
-      ),
+      //     return const Center(child: CircularProgressIndicator());
+      //   }),
+      // ),
     );
   }
 

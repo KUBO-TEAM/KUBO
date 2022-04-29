@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kubo/core/constants/list_costants.dart';
 import 'package:kubo/core/constants/menu_constants.dart';
-import 'package:kubo/core/hive/objects/recipe_schedule_hive.dart';
 import 'package:kubo/features/food_planner/data/models/recipe_schedule_model.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -42,24 +41,11 @@ const tColor = Colors.white;
 const tAllDay = false;
 
 final tRecipeScheduleModel = RecipeScheduleModel(
-  id: tId,
-  name: tName,
-  description: tDescription,
-  displayPhoto: tDisplayPhoto,
+  recipeId: tId,
   start: tStart,
   end: tEnd,
   color: tColor,
   isAllDay: tAllDay,
-);
-
-final tRecipeScheduleHive = RecipeScheduleHive(
-  id: tId,
-  name: tName,
-  description: tDescription,
-  displayPhoto: tDisplayPhoto,
-  start: tStart,
-  end: tEnd,
-  color: tColor,
 );
 
 final tRecipeSchedule = tRecipeScheduleModel;

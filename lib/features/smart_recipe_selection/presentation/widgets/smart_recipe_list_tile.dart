@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/list_costants.dart';
-import 'package:kubo/features/food_planner/data/models/recipe_model.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/color_selector.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/day_selector.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/time_selector.dart';
@@ -13,7 +13,7 @@ class SmartRecipeListTile extends StatelessWidget {
     required this.recipe,
   }) : super(key: key);
 
-  final RecipeModel recipe;
+  final Recipe recipe;
 
   @override
   Widget build(BuildContext context) {
