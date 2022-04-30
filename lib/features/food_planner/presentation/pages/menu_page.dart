@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/assign_meal_plan_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_selection_dialog.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -39,38 +39,57 @@ const _calendarTimeSlotViewSettings = TimeSlotViewSettings(
   timeIntervalHeight: 70,
 );
 
-class MenuPage extends StatelessWidget {
+class MenuPage extends StatefulWidget {
   static const String id = 'menu_page';
   const MenuPage({Key? key}) : super(key: key);
+
+  @override
+  State<MenuPage> createState() => _MenuPageState();
+}
+
+class _MenuPageState extends State<MenuPage> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<MenuBloc>(context).add(
+      MenuRecipeScheduleFetched(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: BlocBuilder<MenuBloc, MenuState>(builder: (context, state) {
-          if (state is MenuSuccess) {
-            final recipeSchedules = state.recipeSchedules;
+          List<RecipeSchedule> recipeSchedules = [];
 
-            return SfCalendar(
-              todayHighlightColor: Colors.green,
-              dataSource: ScheduleDataSource(recipeSchedules),
-              timeSlotViewSettings: _calendarTimeSlotViewSettings,
-              headerStyle: _calendarHeaderStyle,
-              viewHeaderStyle: _calendarViewHeaderStyle,
-              view: CalendarView.week,
-              weekNumberStyle: _calendarWeekNumberStyle,
-              firstDayOfWeek: 1,
-              onTap: (CalendarTapDetails details) {
-                _calendarTapped(
-                  details: details,
-                  context: context,
-                  recipeSchedules: recipeSchedules,
-                );
-              },
+          if (state is MenuRecipeScheduleFetchInProgress) {
+            EasyLoading.show(
+              status: 'loading...',
+              maskType: EasyLoadingMaskType.black,
             );
           }
+          if (state is MenuRecipeScheduleFetchSuccess) {
+            recipeSchedules = state.recipeSchedules;
+          }
 
-          return const Center(child: CircularProgressIndicator());
+          return SfCalendar(
+            todayHighlightColor: Colors.green,
+            dataSource: ScheduleDataSource(recipeSchedules),
+            timeSlotViewSettings: _calendarTimeSlotViewSettings,
+            headerStyle: _calendarHeaderStyle,
+            viewHeaderStyle: _calendarViewHeaderStyle,
+            view: CalendarView.week,
+            weekNumberStyle: _calendarWeekNumberStyle,
+            firstDayOfWeek: 1,
+            onTap: (CalendarTapDetails details) {
+              _calendarTapped(
+                details: details,
+                context: context,
+                recipeSchedules: recipeSchedules,
+              );
+            },
+          );
         }),
       ),
     );
@@ -113,10 +132,6 @@ class MenuPage extends StatelessWidget {
     BuildContext context,
     DateTime startingDate,
   ) {
-    BlocProvider.of<AssignMealPlanBloc>(context).add(
-      AssignMealPlanCellPressed(startingDate: startingDate),
-    );
-
     _showIngredientsPickerDialog(context);
   }
 
@@ -154,7 +169,7 @@ class ScheduleDataSource extends CalendarDataSource {
 
   @override
   String getSubject(int index) {
-    return appointments![index].name;
+    return 'test';
   }
 
   @override

@@ -9,15 +9,13 @@ class DaySelector extends StatefulWidget {
     Key? key,
     required this.list,
     required this.leadingIcon,
-    required this.onSelected,
-    this.initialDay,
+    required this.onSelectedDay,
     this.customLeadingWidget,
   }) : super(key: key);
 
   final List<String> list;
   final IconData leadingIcon;
-  final Function(int?) onSelected;
-  final int? initialDay;
+  final Function(int?) onSelectedDay;
   final Widget? customLeadingWidget;
 
   @override
@@ -46,16 +44,10 @@ class _DaySelectorState extends State<DaySelector> {
     );
   }
 
-  int? _getInitialItemIndex() {
-    if (initialIndex == 0) {
-      if (widget.initialDay != null) {
-        return widget.initialDay;
-      } else {
-        return initialIndex;
-      }
-    }
-
-    return initialIndex;
+  @override
+  void initState() {
+    super.initState();
+    widget.onSelectedDay(initialIndex);
   }
 
   @override
@@ -77,11 +69,11 @@ class _DaySelectorState extends State<DaySelector> {
               padding: const EdgeInsets.only(left: 10),
               child: DirectSelectList<String>(
                 values: widget.list,
-                defaultItemIndex: _getInitialItemIndex()!,
+                defaultItemIndex: initialIndex,
                 itemBuilder: (String value) => _getDropDownMenuItem(value),
                 focusedItemDecoration: _getDslDecoration(),
                 onItemSelectedListener: (item, index, context) {
-                  widget.onSelected(index);
+                  widget.onSelectedDay(index);
 
                   setState(() {
                     initialIndex = index;

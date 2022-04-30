@@ -10,33 +10,35 @@ import 'package:http/http.dart' as _i6;
 import 'package:injectable/injectable.dart' as _i2;
 
 import 'core/helpers/date_converter.dart' as _i7;
-import 'core/hive/objects/recipe_schedule_hive.dart' as _i5;
 import 'features/food_planner/data/datasources/recipe_schedule_local_data_source.dart'
     as _i9;
 import 'features/food_planner/data/datasources/recipes_remote_data_source.dart'
     as _i12;
 import 'features/food_planner/data/repositories/recipe_repository_impl.dart'
-    as _i24;
+    as _i25;
 import 'features/food_planner/data/repositories/recipe_schedule_repository_impl.dart'
     as _i11;
+import 'features/food_planner/domain/entities/recipe_schedule.dart' as _i5;
 import 'features/food_planner/domain/repositories/recipe_repository.dart'
-    as _i23;
+    as _i24;
 import 'features/food_planner/domain/repositories/recipe_schedule_repository.dart'
     as _i10;
 import 'features/food_planner/domain/usecases/create_recipe_schedule.dart'
     as _i16;
 import 'features/food_planner/domain/usecases/fetch_filtered_recipes.dart'
-    as _i25;
+    as _i26;
 import 'features/food_planner/domain/usecases/fetch_recipe_schedule_linked_hash_map.dart'
     as _i17;
-import 'features/food_planner/domain/usecases/fetch_recipe_schedule_list.dart'
+import 'features/food_planner/domain/usecases/fetch_recipe_schedules.dart'
     as _i18;
-import 'features/food_planner/domain/usecases/fetch_recipes.dart' as _i26;
+import 'features/food_planner/domain/usecases/fetch_recipes.dart' as _i27;
 import 'features/food_planner/presentation/blocs/menu/menu_bloc.dart' as _i19;
 import 'features/food_planner/presentation/blocs/menu_history/menu_history_bloc.dart'
     as _i20;
 import 'features/food_planner/presentation/blocs/recipe/recipe_bloc.dart'
-    as _i27;
+    as _i28;
+import 'features/food_planner/presentation/blocs/recipe_info/recipe_info_bloc.dart'
+    as _i23;
 import 'features/smart_recipe_selection/data/datasources/smart_recipe_selection_remote_data_source.dart'
     as _i13;
 import 'features/smart_recipe_selection/data/repositories/smart_recipe_selection_repository_impl.dart'
@@ -58,7 +60,7 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   final recipeScheduleBox = _$RecipeScheduleBox();
   final remoteModule = _$RemoteModule();
   gh.lazySingleton<_i3.AppRouter>(() => _i3.AppRouter());
-  await gh.factoryAsync<_i4.Box<_i5.RecipeScheduleHive>>(
+  await gh.factoryAsync<_i4.Box<_i5.RecipeSchedule>>(
       () => recipeScheduleBox.recipeSchedule,
       preResolve: true);
   gh.factory<_i6.Client>(() => remoteModule.prefs);
@@ -66,10 +68,10 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i8.Kubo>(() => _i8.Kubo(appRouter: get<_i3.AppRouter>()));
   gh.lazySingleton<_i9.RecipeScheduleLocalDataSource>(() =>
       _i9.RecipeScheduleLocalDataSourceImpl(
-          recipeScheduleBox: get<_i4.Box<_i5.RecipeScheduleHive>>()));
+          recipeScheduleBox: get<_i4.Box<_i5.RecipeSchedule>>()));
   gh.lazySingleton<_i10.RecipeScheduleRepository>(() =>
       _i11.RecipeScheduleRepositoryImpl(
-          localDataSource: get<_i9.RecipeScheduleLocalDataSource>()));
+          recipeLocalDataSource: get<_i9.RecipeScheduleLocalDataSource>()));
   gh.lazySingleton<_i12.RecipesRemoteDataSource>(
       () => _i12.RecipesRemoteDataSourceImpl(client: get<_i6.Client>()));
   gh.lazySingleton<_i13.SmartRecipeSelectionRemoteDataSource>(
@@ -82,12 +84,10 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i17.FetchRecipeScheduleLinkedHashMap>(() =>
       _i17.FetchRecipeScheduleLinkedHashMap(
           get<_i10.RecipeScheduleRepository>()));
-  gh.lazySingleton<_i18.FetchRecipeScheduleList>(
-      () => _i18.FetchRecipeScheduleList(get<_i10.RecipeScheduleRepository>()));
-  gh.factory<_i19.MenuBloc>(() => _i19.MenuBloc(
-      createRecipeSchedule: get<_i16.CreateRecipeSchedule>(),
-      fetchRecipeScheduleList: get<_i18.FetchRecipeScheduleList>(),
-      dateConverter: get<_i7.DateConverter>()));
+  gh.lazySingleton<_i18.FetchRecipeSchedules>(
+      () => _i18.FetchRecipeSchedules(get<_i10.RecipeScheduleRepository>()));
+  gh.factory<_i19.MenuBloc>(() =>
+      _i19.MenuBloc(fetchRecipeSchedules: get<_i18.FetchRecipeSchedules>()));
   gh.factory<_i20.MenuHistoryBloc>(() => _i20.MenuHistoryBloc(
       fetchRecipeScheduleLinkedHashMap:
           get<_i17.FetchRecipeScheduleLinkedHashMap>()));
@@ -95,18 +95,21 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       () => _i21.PredictImage(get<_i14.SmartRecipeSelectionRepository>()));
   gh.factory<_i22.PredictImageBloc>(
       () => _i22.PredictImageBloc(predictImage: get<_i21.PredictImage>()));
-  gh.lazySingleton<_i23.RecipeRepository>(
-      () => _i24.RecipeRepositoryImpl(get<_i12.RecipesRemoteDataSource>()));
-  gh.lazySingleton<_i25.FetchFilteredRecipes>(
-      () => _i25.FetchFilteredRecipes(get<_i23.RecipeRepository>()));
-  gh.lazySingleton<_i26.FetchRecipes>(
-      () => _i26.FetchRecipes(get<_i23.RecipeRepository>()));
-  gh.factory<_i27.RecipeBloc>(() => _i27.RecipeBloc(
-      fetchRecipes: get<_i26.FetchRecipes>(),
-      fetchFilteredRecipes: get<_i25.FetchFilteredRecipes>()));
+  gh.factory<_i23.RecipeInfoBloc>(() => _i23.RecipeInfoBloc(
+      createRecipeSchedule: get<_i16.CreateRecipeSchedule>(),
+      dateConverter: get<_i7.DateConverter>()));
+  gh.lazySingleton<_i24.RecipeRepository>(
+      () => _i25.RecipeRepositoryImpl(get<_i12.RecipesRemoteDataSource>()));
+  gh.lazySingleton<_i26.FetchFilteredRecipes>(
+      () => _i26.FetchFilteredRecipes(get<_i24.RecipeRepository>()));
+  gh.lazySingleton<_i27.FetchRecipes>(
+      () => _i27.FetchRecipes(get<_i24.RecipeRepository>()));
+  gh.factory<_i28.RecipeBloc>(() => _i28.RecipeBloc(
+      fetchRecipes: get<_i27.FetchRecipes>(),
+      fetchFilteredRecipes: get<_i26.FetchFilteredRecipes>()));
   return get;
 }
 
-class _$RecipeScheduleBox extends _i9.RecipeScheduleBox {}
+class _$RecipeScheduleBox extends _i5.RecipeScheduleBox {}
 
 class _$RemoteModule extends _i12.RemoteModule {}

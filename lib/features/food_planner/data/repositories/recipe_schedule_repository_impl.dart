@@ -6,52 +6,37 @@ import 'package:kubo/features/food_planner/data/datasources/recipe_schedule_loca
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
-import 'dart:ui';
 
 import 'package:kubo/features/food_planner/domain/repositories/recipe_schedule_repository.dart';
 
 @LazySingleton(as: RecipeScheduleRepository)
 class RecipeScheduleRepositoryImpl implements RecipeScheduleRepository {
-  final RecipeScheduleLocalDataSource localDataSource;
+  final RecipeScheduleLocalDataSource recipeLocalDataSource;
 
-  RecipeScheduleRepositoryImpl({required this.localDataSource});
+  RecipeScheduleRepositoryImpl({required this.recipeLocalDataSource});
 
   @override
-  Future<Either<Failure, RecipeSchedule>> createRecipeSchedule({
-    required String id,
-    required String name,
-    required String description,
-    required String displayPhoto,
-    required DateTime start,
-    required DateTime end,
-    required Color color,
-    required bool isAllDay,
-  }) async {
+  Future<Either<Failure, String>> createRecipeSchedule(
+    recipeSchedule,
+  ) async {
     try {
-      final newRecipeSchedule = await localDataSource.createRecipeSchedule(
-        id: id,
-        name: name,
-        description: description,
-        displayPhoto: displayPhoto,
-        start: start,
-        end: end,
-        color: color,
-        isAllDay: isAllDay,
+      final message = await recipeLocalDataSource.createRecipeSchedule(
+        recipeSchedule,
       );
 
-      return Right(newRecipeSchedule);
+      return Right(message);
     } on CacheException {
       return Left(CacheFailure());
     }
   }
 
   @override
-  Future<Either<Failure, List<RecipeSchedule>>>
-      fetchRecipeScheduleList() async {
+  Future<Either<Failure, List<RecipeSchedule>>> fetchRecipeSchedules() async {
     try {
-      final schedules = await localDataSource.fetchRecipeScheduleList();
+      final recipeSchedules =
+          await recipeLocalDataSource.fetchRecipeSchedules();
 
-      return Right(schedules);
+      return Right(recipeSchedules);
     } on CacheException {
       return Left(CacheFailure());
     }
@@ -62,7 +47,7 @@ class RecipeScheduleRepositoryImpl implements RecipeScheduleRepository {
       fetchRecipeScheduleLinkedHashmap() async {
     try {
       final schedules =
-          await localDataSource.fetchRecipeScheduleLinkedHashmap();
+          await recipeLocalDataSource.fetchRecipeScheduleLinkedHashmap();
 
       return Right(schedules);
     } on CacheException {

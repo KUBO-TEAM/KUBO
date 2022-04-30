@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/features/food_planner/data/models/recipe_model.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipe_info_page.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -11,7 +11,7 @@ class RecipeListTile extends StatelessWidget {
     required this.recipe,
   }) : super(key: key);
 
-  final RecipeModel recipe;
+  final Recipe recipe;
 
   @override
   Widget build(BuildContext context) {

@@ -9,16 +9,16 @@ abstract class MenuState extends Equatable {
 
 class MenuInitial extends MenuState {}
 
-class MenuInProgress extends MenuState {}
+class MenuRecipeScheduleFetchInProgress extends MenuState {}
 
-class MenuSuccess extends MenuState {
+class MenuRecipeScheduleFetchSuccess extends MenuState {
   final List<RecipeSchedule> recipeSchedules;
 
-  const MenuSuccess({required this.recipeSchedules});
+  const MenuRecipeScheduleFetchSuccess({required this.recipeSchedules});
 }
 
-class MenuFailure extends MenuState {
+class MenuRecipeScheduleFetchFailure extends MenuState {
   final String message;
 
-  const MenuFailure(this.message);
+  const MenuRecipeScheduleFetchFailure({required this.message});
 }

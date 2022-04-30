@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/usecases/usecase.dart';
-import 'package:kubo/features/food_planner/data/models/recipe_model.dart';
 import 'package:kubo/features/food_planner/domain/entities/category.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/usecases/fetch_filtered_recipes.dart';
 import 'package:kubo/features/food_planner/domain/usecases/fetch_recipes.dart';
 
@@ -22,7 +22,9 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     on<RecipeEvent>((event, emit) async {
       if (event is RecipeModelListFetched) {
         emit(RecipeInProgress());
+
         final failOrListOfRecipes = await fetchRecipes(NoParams());
+
         failOrListOfRecipes.fold((failure) {
           emit(RecipeFailure());
         }, (listOfRecipes) {
@@ -45,22 +47,33 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
           }).toList();
 
           emit(RecipeSuccess(recipes: filteredRecipes, cached: recipes));
-        } else if (categories != null && categories.isNotEmpty) {
+        } else if (categories != null) {
           emit(RecipeInProgress());
 
-          final failOrListOfFilteredRecipes =
-              await fetchFilteredRecipes(categories);
+          if (categories.isEmpty) {
+            final failOrListOfRecipes = await fetchRecipes(NoParams());
 
-          failOrListOfFilteredRecipes.fold(
-            (failure) {
+            failOrListOfRecipes.fold((failure) {
               emit(RecipeFailure());
-            },
-            (listOfRecipes) {
+            }, (listOfRecipes) {
               emit(
-                RecipeSuccess(recipes: listOfRecipes, cached: listOfRecipes),
-              );
-            },
-          );
+                  RecipeSuccess(recipes: listOfRecipes, cached: listOfRecipes));
+            });
+          } else {
+            final failOrListOfFilteredRecipes =
+                await fetchFilteredRecipes(categories);
+
+            failOrListOfFilteredRecipes.fold(
+              (failure) {
+                emit(RecipeFailure());
+              },
+              (listOfRecipes) {
+                emit(
+                  RecipeSuccess(recipes: listOfRecipes, cached: listOfRecipes),
+                );
+              },
+            );
+          }
         }
       }
     });

@@ -6,9 +6,30 @@ import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.da
 import 'package:kubo/features/food_planner/presentation/widgets/planner_buttons.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/weekly_report.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static const String id = 'home_page';
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    // BlocProvider.of<RecipeInfoBloc>(context).add(
+    //   RecipeInfoRecipeScheduleCreated(
+    //     createRecipeParams: CreateRecipeParams(
+    //       recipeId: 'test',
+    //       start: DateTime.now(),
+    //       end: DateTime.now(),
+    //       color: Colors.red,
+    //       isAllDay: true,
+    //     ),
+    //   ),
+    // );
+  }
 
   @override
   Widget build(BuildContext context) {

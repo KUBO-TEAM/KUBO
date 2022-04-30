@@ -6,14 +6,13 @@ import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart'
 import 'package:kubo/features/food_planner/domain/repositories/recipe_schedule_repository.dart';
 
 @lazySingleton
-class FetchRecipeScheduleList
-    implements UseCase<List<RecipeSchedule>, NoParams> {
+class FetchRecipeSchedules implements UseCase<List<RecipeSchedule>, NoParams> {
   final RecipeScheduleRepository repository;
 
-  FetchRecipeScheduleList(this.repository);
+  FetchRecipeSchedules(this.repository);
 
   @override
   Future<Either<Failure, List<RecipeSchedule>>> call(NoParams params) async {
-    return await repository.fetchRecipeScheduleList();
+    return await repository.fetchRecipeSchedules();
   }
 }

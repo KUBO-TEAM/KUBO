@@ -4,57 +4,40 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/error/failures.dart';
 import 'package:kubo/core/usecases/usecase.dart';
-import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/repositories/recipe_schedule_repository.dart';
 
 @lazySingleton
-class CreateRecipeSchedule implements UseCase<RecipeSchedule, Params> {
+class CreateRecipeSchedule implements UseCase<String, CreateRecipeParams> {
   final RecipeScheduleRepository repository;
 
   CreateRecipeSchedule(this.repository);
 
   @override
-  Future<Either<Failure, RecipeSchedule>> call(Params params) async {
-    return await repository.createRecipeSchedule(
-      id: params.id,
-      name: params.name,
-      description: params.description,
-      displayPhoto: params.displayPhoto,
-      start: params.start,
-      end: params.end,
-      color: params.color,
-      isAllDay: params.isAllDay,
-    );
+  Future<Either<Failure, String>> call(
+    CreateRecipeParams params,
+  ) async {
+    return await repository.createRecipeSchedule(params);
   }
 }
 
-class Params extends Equatable {
-  final String id;
-  final String name;
-  final String description;
-  final String displayPhoto;
+class CreateRecipeParams extends Equatable {
+  final String recipeId;
   final DateTime start;
   final DateTime end;
   final Color color;
   final bool isAllDay;
 
-  const Params({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.displayPhoto,
+  const CreateRecipeParams({
+    required this.recipeId,
     required this.start,
     required this.end,
     required this.color,
-    this.isAllDay = false,
+    required this.isAllDay,
   });
 
   @override
   List<Object?> get props => [
-        id,
-        name,
-        description,
-        displayPhoto,
+        recipeId,
         start,
         end,
         color,

@@ -8,11 +8,9 @@ class ColorSelector extends StatefulWidget {
   const ColorSelector({
     Key? key,
     required this.onColorPicked,
-    this.currentColor = kGreenPrimary,
   }) : super(key: key);
 
   final Function(Color?) onColorPicked;
-  final Color currentColor;
 
   @override
   State<ColorSelector> createState() => _ColorSelectorState();
@@ -20,6 +18,12 @@ class ColorSelector extends StatefulWidget {
 
 class _ColorSelectorState extends State<ColorSelector> {
   Color pickerColor = kGreenPrimary;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.onColorPicked(pickerColor);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +62,7 @@ class _ColorSelectorState extends State<ColorSelector> {
             Container(
               height: 50.0,
               width: 16.0,
-              color: pickerColor != kGreenPrimary
-                  ? pickerColor
-                  : widget.currentColor,
+              color: pickerColor,
             ),
             Expanded(
               child: Center(
@@ -81,9 +83,7 @@ class _ColorSelectorState extends State<ColorSelector> {
             Container(
               height: 50.0,
               width: 16.0,
-              color: pickerColor != kGreenPrimary
-                  ? pickerColor
-                  : widget.currentColor,
+              color: pickerColor,
             ),
           ],
         ),

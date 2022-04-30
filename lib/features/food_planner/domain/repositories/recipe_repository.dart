@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:kubo/core/error/failures.dart';
-import 'package:kubo/features/food_planner/data/models/recipe_model.dart';
 import 'package:kubo/features/food_planner/domain/entities/category.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 
 abstract class RecipeRepository {
-  Future<Either<Failure, List<RecipeModel>>> fetchRecipes();
-  Future<Either<Failure, List<RecipeModel>>> fetchFilteredRecipes(
+  Future<Either<Failure, List<Recipe>>> fetchRecipes();
+  Future<Either<Failure, List<Recipe>>> fetchFilteredRecipes(
     List<Category> category,
   );
 }
