@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/usecases/usecase.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
+import 'package:kubo/features/food_planner/domain/usecases/fetch_recipe.dart';
 import 'package:kubo/features/food_planner/domain/usecases/fetch_recipe_schedules.dart';
 
 part 'menu_event.dart';
@@ -11,23 +12,46 @@ part 'menu_state.dart';
 @injectable
 class MenuBloc extends Bloc<MenuEvent, MenuState> {
   final FetchRecipeSchedules fetchRecipeSchedules;
+  final FetchRecipe fetchRecipe;
 
   MenuBloc({
     required this.fetchRecipeSchedules,
+    required this.fetchRecipe,
   }) : super(MenuInitial()) {
     on<MenuEvent>((event, emit) async {
       if (event is MenuRecipeScheduleFetched) {
-        emit(MenuRecipeScheduleFetchInProgress());
+        emit(const MenuRecipeScheduleFetchInProgress());
 
         final failureOrRecipeFetched = await fetchRecipeSchedules(NoParams());
 
-        failureOrRecipeFetched.fold((failure) {
+        await failureOrRecipeFetched.fold((failure) {
           emit(
             const MenuRecipeScheduleFetchFailure(
               message: 'Recipe fetched fails',
             ),
           );
-        }, (recipeSchedules) {
+        }, (recipeSchedules) async {
+          emit(
+            MenuRecipeScheduleFetchSuccess(recipeSchedules: recipeSchedules),
+          );
+
+          emit(
+            MenuRecipeScheduleFetchInProgress(recipeSchedules: recipeSchedules),
+          );
+
+          for (RecipeSchedule recipeSchedule in recipeSchedules) {
+            final failureOrRecipe = await fetchRecipe(recipeSchedule.recipeId);
+
+            await failureOrRecipe.fold(
+              (l) {},
+              (recipe) async {
+                if (recipe.name != recipeSchedule.recipeName) {
+                  recipeSchedule.recipeName = recipe.name;
+                  await recipeSchedule.save();
+                }
+              },
+            );
+          }
           emit(
             MenuRecipeScheduleFetchSuccess(recipeSchedules: recipeSchedules),
           );

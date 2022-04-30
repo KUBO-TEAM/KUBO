@@ -4,7 +4,6 @@ import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/error/exceptions.dart';
 import 'package:kubo/core/helpers/menu_linked_hashmap.dart';
-import 'package:kubo/features/food_planner/data/models/recipe_schedule_model.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedule.dart';
 
@@ -19,17 +18,17 @@ abstract class RecipeScheduleLocalDataSource {
     CreateRecipeParams params,
   );
 
-  /// Fetch the cached list  [RecipeScheduleModel]
+  /// Fetch the cached list  [RecipeSchedule]
   ///
   /// Throws [CacheException] if no cached data is present.
   ///
-  Future<List<RecipeScheduleModel>> fetchRecipeSchedules();
+  Future<List<RecipeSchedule>> fetchRecipeSchedules();
 
-  /// Fetch the cached linked list of  [RecipeScheduleModel]
+  /// Fetch the cached linked list of  [RecipeSchedule]
   ///
   /// Throws [CacheException] if no cached data is present
   ///
-  Future<LinkedHashMap<DateTime, List<RecipeScheduleModel>>>
+  Future<LinkedHashMap<DateTime, List<RecipeSchedule>>>
       fetchRecipeScheduleLinkedHashmap();
 }
 
@@ -44,7 +43,7 @@ class RecipeScheduleLocalDataSourceImpl
   Future<String> createRecipeSchedule(
     CreateRecipeParams params,
   ) async {
-    final recipeScheduleModel = RecipeScheduleModel(
+    final recipeScheduleModel = RecipeSchedule(
       recipeId: params.recipeId,
       recipeName: params.recipeName,
       start: params.start,
@@ -59,29 +58,19 @@ class RecipeScheduleLocalDataSourceImpl
   }
 
   @override
-  Future<List<RecipeScheduleModel>> fetchRecipeSchedules() async {
-    final List<RecipeScheduleModel> recipeSchedules = [];
-
-    for (var recipeSchedule in recipeScheduleBox.values) {
-      recipeSchedules.add(
-        RecipeScheduleModel.fromHiveObject(recipeSchedule),
-      );
-    }
-
+  Future<List<RecipeSchedule>> fetchRecipeSchedules() async {
     // recipeScheduleBox.deleteAll(recipeScheduleBox.keys);
-
-    return recipeSchedules;
+    return recipeScheduleBox.values.toList();
   }
 
   @override
-  Future<LinkedHashMap<DateTime, List<RecipeScheduleModel>>>
+  Future<LinkedHashMap<DateTime, List<RecipeSchedule>>>
       fetchRecipeScheduleLinkedHashmap() async {
     if (recipeScheduleBox.isEmpty) {
       throw CacheException();
     }
 
-    final scheduleLinkedHashMap =
-        LinkedHashMap<DateTime, List<RecipeScheduleModel>>(
+    final scheduleLinkedHashMap = LinkedHashMap<DateTime, List<RecipeSchedule>>(
       equals: isSameDay,
       hashCode: getHashCode,
     );

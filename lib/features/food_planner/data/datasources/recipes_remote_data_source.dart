@@ -14,6 +14,7 @@ abstract class RecipesRemoteDataSource {
   ///
   Future<List<RecipeModel>> fetchRecipes();
   Future<List<RecipeModel>> fetchFilteredRecipes(List<Category> categories);
+  Future<RecipeModel> fetchRecipe(String recipeId);
 }
 
 @module
@@ -79,6 +80,25 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
       }
 
       return recipes;
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<RecipeModel> fetchRecipe(String recipeId) async {
+    final response = await client.get(
+      Uri.parse('$kKuboUrl/api/recipes/$recipeId'),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+
+      var data = body['data'];
+
+      RecipeModel recipe = RecipeModel.fromJson(data);
+
+      return recipe;
     } else {
       throw ServerException();
     }

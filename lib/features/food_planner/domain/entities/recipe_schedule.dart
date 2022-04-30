@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hive/hive.dart';
@@ -15,26 +14,26 @@ abstract class RecipeScheduleBox {
 }
 
 @HiveType(typeId: 0)
-class RecipeSchedule extends Equatable {
+class RecipeSchedule extends HiveObject {
   @HiveField(0)
   final String recipeId;
 
   @HiveField(1)
-  final String recipeName;
+  String recipeName;
 
   @HiveField(2)
-  final DateTime start;
+  DateTime start;
 
   @HiveField(3)
-  final DateTime end;
+  DateTime end;
 
   @HiveField(4)
-  final Color color;
+  Color color;
 
   @HiveField(5)
-  final bool isAllDay;
+  bool isAllDay;
 
-  const RecipeSchedule({
+  RecipeSchedule({
     required this.recipeId,
     required this.recipeName,
     required this.start,
@@ -42,13 +41,4 @@ class RecipeSchedule extends Equatable {
     required this.color,
     required this.isAllDay,
   });
-
-  @override
-  List<Object?> get props => [
-        recipeId,
-        start,
-        end,
-        color,
-        isAllDay,
-      ];
 }

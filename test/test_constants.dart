@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kubo/core/constants/list_costants.dart';
 import 'package:kubo/core/constants/menu_constants.dart';
-import 'package:kubo/features/food_planner/data/models/recipe_schedule_model.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -40,8 +39,9 @@ final tEnd = DateTime(
 const tColor = Colors.white;
 const tAllDay = false;
 
-final tRecipeScheduleModel = RecipeScheduleModel(
+final tRecipeScheduleModel = RecipeSchedule(
   recipeId: tId,
+  recipeName: tName,
   start: tStart,
   end: tEnd,
   color: tColor,
@@ -61,7 +61,7 @@ final tRecipeScheduleLinkedHashmap =
 )..addAll(_resources);
 
 final tRecipeScheduleModelLinkedHashmap =
-    LinkedHashMap<DateTime, List<RecipeScheduleModel>>(
+    LinkedHashMap<DateTime, List<RecipeSchedule>>(
   equals: isSameDay,
   hashCode: getHashCode,
 )..addAll(_resources);

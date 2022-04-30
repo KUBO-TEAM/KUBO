@@ -9,7 +9,11 @@ abstract class MenuState extends Equatable {
 
 class MenuInitial extends MenuState {}
 
-class MenuRecipeScheduleFetchInProgress extends MenuState {}
+class MenuRecipeScheduleFetchInProgress extends MenuState {
+  final List<RecipeSchedule>? recipeSchedules;
+
+  const MenuRecipeScheduleFetchInProgress({this.recipeSchedules});
+}
 
 class MenuRecipeScheduleFetchSuccess extends MenuState {
   final List<RecipeSchedule> recipeSchedules;

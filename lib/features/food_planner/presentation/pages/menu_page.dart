@@ -64,13 +64,20 @@ class _MenuPageState extends State<MenuPage> {
           List<RecipeSchedule> recipeSchedules = [];
 
           if (state is MenuRecipeScheduleFetchInProgress) {
+            final recipeScheuleCache = state.recipeSchedules;
+
+            if (recipeScheuleCache != null) {
+              recipeSchedules = recipeScheuleCache;
+            }
+
             EasyLoading.show(
-              status: 'loading...',
+              status: 'Checking for updates...',
               maskType: EasyLoadingMaskType.black,
             );
           }
           if (state is MenuRecipeScheduleFetchSuccess) {
             recipeSchedules = state.recipeSchedules;
+            EasyLoading.dismiss();
           }
 
           return SfCalendar(

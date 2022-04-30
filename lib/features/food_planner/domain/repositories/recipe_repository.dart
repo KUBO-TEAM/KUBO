@@ -8,4 +8,6 @@ abstract class RecipeRepository {
   Future<Either<Failure, List<Recipe>>> fetchFilteredRecipes(
     List<Category> category,
   );
+
+  Future<Either<Failure, Recipe>> fetchRecipe(String recipeId);
 }
