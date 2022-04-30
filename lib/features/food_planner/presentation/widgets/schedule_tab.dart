@@ -27,6 +27,7 @@ class _ScheduleTabState extends State<ScheduleTab> {
     BlocProvider.of<RecipeInfoBloc>(context).add(
       RecipeInfoRecipeScheduleCreated(
         recipeId: widget.recipe.id,
+        recipeName: widget.recipe.name,
         day: selecetdDay,
         start: selectedStartTime,
         end: selectedEndTime,

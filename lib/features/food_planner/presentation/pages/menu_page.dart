@@ -169,7 +169,7 @@ class ScheduleDataSource extends CalendarDataSource {
 
   @override
   String getSubject(int index) {
-    return 'test';
+    return appointments![index].recipeName;
   }
 
   @override

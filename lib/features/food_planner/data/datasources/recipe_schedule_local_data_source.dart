@@ -46,6 +46,7 @@ class RecipeScheduleLocalDataSourceImpl
   ) async {
     final recipeScheduleModel = RecipeScheduleModel(
       recipeId: params.recipeId,
+      recipeName: params.recipeName,
       start: params.start,
       end: params.end,
       color: params.color,
