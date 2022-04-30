@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/helpers/date_converter.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedule.dart';
 
 part 'recipe_info_event.dart';
@@ -21,19 +22,17 @@ class RecipeInfoBloc extends Bloc<RecipeInfoEvent, RecipeInfoState> {
       if (event is RecipeInfoRecipeScheduleCreated) {
         emit(RecipeInfoCreateRecipeScheduleInProgress());
 
-        final recipeId = event.recipeId;
-        final recipeName = event.recipeName;
+        final recipe = event.recipe;
         final start = event.start;
         final end = event.end;
         final color = event.color;
         final day = event.day;
 
-        if (recipeId != null &&
+        if (recipe != null &&
             day != null &&
             start != null &&
             end != null &&
-            color != null &&
-            recipeName != null) {
+            color != null) {
           final convertDates = dateConverter.convertStartAndEndTimeOfDay(
             day: day,
             startTimeOfDay: start,
@@ -46,8 +45,7 @@ class RecipeInfoBloc extends Bloc<RecipeInfoEvent, RecipeInfoState> {
             ));
           }, (convertedDates) async {
             final createRecipeParams = CreateRecipeParams(
-              recipeId: recipeId,
-              recipeName: recipeName,
+              recipe: recipe,
               start: convertedDates.start,
               end: convertedDates.end,
               color: color,

@@ -40,13 +40,13 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           );
 
           for (RecipeSchedule recipeSchedule in recipeSchedules) {
-            final failureOrRecipe = await fetchRecipe(recipeSchedule.recipeId);
+            final failureOrRecipe = await fetchRecipe(recipeSchedule.recipe.id);
 
             await failureOrRecipe.fold(
               (l) {},
               (recipe) async {
-                if (recipe.name != recipeSchedule.recipeName) {
-                  recipeSchedule.recipeName = recipe.name;
+                if (recipe != recipeSchedule.recipe) {
+                  recipeSchedule.recipe = recipe;
                   await recipeSchedule.save();
                 }
               },

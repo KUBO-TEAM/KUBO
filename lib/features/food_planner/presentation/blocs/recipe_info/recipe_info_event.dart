@@ -8,16 +8,14 @@ abstract class RecipeInfoEvent extends Equatable {
 }
 
 class RecipeInfoRecipeScheduleCreated extends RecipeInfoEvent {
-  final String? recipeId;
-  final String? recipeName;
+  final Recipe? recipe;
   final int? day;
   final TimeOfDay? start;
   final TimeOfDay? end;
   final Color? color;
 
   const RecipeInfoRecipeScheduleCreated({
-    required this.recipeId,
-    required this.recipeName,
+    required this.recipe,
     required this.day,
     required this.start,
     required this.end,

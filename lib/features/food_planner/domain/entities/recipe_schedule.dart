@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/features/food_planner/data/datasources/recipe_schedule_local_data_source.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 
 part 'recipe_schedule.g.dart';
 
@@ -16,29 +17,29 @@ abstract class RecipeScheduleBox {
 @HiveType(typeId: 0)
 class RecipeSchedule extends HiveObject {
   @HiveField(0)
-  final String recipeId;
+  Recipe recipe;
 
   @HiveField(1)
-  String recipeName;
-
-  @HiveField(2)
   DateTime start;
 
-  @HiveField(3)
+  @HiveField(2)
   DateTime end;
 
-  @HiveField(4)
+  @HiveField(3)
   Color color;
 
-  @HiveField(5)
+  @HiveField(4)
   bool isAllDay;
 
+  @HiveField(5)
+  final DateTime createdAt;
+
   RecipeSchedule({
-    required this.recipeId,
-    required this.recipeName,
+    required this.recipe,
     required this.start,
     required this.end,
     required this.color,
     required this.isAllDay,
+    required this.createdAt,
   });
 }

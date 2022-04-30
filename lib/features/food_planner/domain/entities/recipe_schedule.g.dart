@@ -17,12 +17,12 @@ class RecipeScheduleAdapter extends TypeAdapter<RecipeSchedule> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return RecipeSchedule(
-      recipeId: fields[0] as String,
-      recipeName: fields[1] as String,
-      start: fields[2] as DateTime,
-      end: fields[3] as DateTime,
-      color: fields[4] as Color,
-      isAllDay: fields[5] as bool,
+      recipe: fields[0] as Recipe,
+      start: fields[1] as DateTime,
+      end: fields[2] as DateTime,
+      color: fields[3] as Color,
+      isAllDay: fields[4] as bool,
+      createdAt: fields[5] as DateTime,
     );
   }
 
@@ -31,17 +31,17 @@ class RecipeScheduleAdapter extends TypeAdapter<RecipeSchedule> {
     writer
       ..writeByte(6)
       ..writeByte(0)
-      ..write(obj.recipeId)
+      ..write(obj.recipe)
       ..writeByte(1)
-      ..write(obj.recipeName)
-      ..writeByte(2)
       ..write(obj.start)
-      ..writeByte(3)
+      ..writeByte(2)
       ..write(obj.end)
-      ..writeByte(4)
+      ..writeByte(3)
       ..write(obj.color)
+      ..writeByte(4)
+      ..write(obj.isAllDay)
       ..writeByte(5)
-      ..write(obj.isAllDay);
+      ..write(obj.createdAt);
   }
 
   @override

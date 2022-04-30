@@ -7,6 +7,8 @@ import 'package:injectable/injectable.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/hive/adapters/color.adapter.dart';
 import 'package:kubo/core/widgets/splash_page.dart';
+import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu_history/menu_history_bloc.dart';
@@ -27,6 +29,8 @@ Future<void> main() async {
   Hive
     ..init(directory.path)
     ..registerAdapter(ColorAdapter())
+    ..registerAdapter(IngredientAdapter())
+    ..registerAdapter(RecipeAdapter())
     ..registerAdapter(RecipeScheduleAdapter());
 
   await configureDependencies();

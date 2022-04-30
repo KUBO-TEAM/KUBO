@@ -50,7 +50,7 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
 
   _scrollListener() {
     /** Across infobar */
-    if (_scrollController.offset >= 40 &&
+    if (_scrollController.offset >= 10 &&
         _scrollController.offset < 140 &&
         showAppBar != false) {
       setState(() {
@@ -68,7 +68,7 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
       setState(() {
         showAppBar = true;
       });
-    } else if (_scrollController.offset < 40 && showAppBar != true) {
+    } else if (_scrollController.offset < 10 && showAppBar != true) {
       setState(() {
         showAppBar = true;
       });

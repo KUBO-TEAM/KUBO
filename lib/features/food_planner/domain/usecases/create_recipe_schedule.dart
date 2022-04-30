@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/error/failures.dart';
 import 'package:kubo/core/usecases/usecase.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/repositories/recipe_schedule_repository.dart';
 
 @lazySingleton
@@ -21,16 +22,14 @@ class CreateRecipeSchedule implements UseCase<String, CreateRecipeParams> {
 }
 
 class CreateRecipeParams extends Equatable {
-  final String recipeId;
-  final String recipeName;
+  final Recipe recipe;
   final DateTime start;
   final DateTime end;
   final Color color;
   final bool isAllDay;
 
   const CreateRecipeParams({
-    required this.recipeId,
-    required this.recipeName,
+    required this.recipe,
     required this.start,
     required this.end,
     required this.color,
@@ -39,8 +38,7 @@ class CreateRecipeParams extends Equatable {
 
   @override
   List<Object?> get props => [
-        recipeId,
-        recipeName,
+        recipe,
         start,
         end,
         color,

@@ -44,12 +44,12 @@ class RecipeScheduleLocalDataSourceImpl
     CreateRecipeParams params,
   ) async {
     final recipeScheduleModel = RecipeSchedule(
-      recipeId: params.recipeId,
-      recipeName: params.recipeName,
+      recipe: params.recipe,
       start: params.start,
       end: params.end,
       color: params.color,
       isAllDay: params.isAllDay,
+      createdAt: DateTime.now(),
     );
 
     recipeScheduleBox.add(recipeScheduleModel);
