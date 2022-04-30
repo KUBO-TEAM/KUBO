@@ -18,26 +18,29 @@ class RecipeScheduleAdapter extends TypeAdapter<RecipeSchedule> {
     };
     return RecipeSchedule(
       recipeId: fields[0] as String,
-      start: fields[1] as DateTime,
-      end: fields[2] as DateTime,
-      color: fields[3] as Color,
-      isAllDay: fields[4] as bool,
+      recipeName: fields[1] as String,
+      start: fields[2] as DateTime,
+      end: fields[3] as DateTime,
+      color: fields[4] as Color,
+      isAllDay: fields[5] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, RecipeSchedule obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.recipeId)
       ..writeByte(1)
-      ..write(obj.start)
+      ..write(obj.recipeName)
       ..writeByte(2)
-      ..write(obj.end)
+      ..write(obj.start)
       ..writeByte(3)
-      ..write(obj.color)
+      ..write(obj.end)
       ..writeByte(4)
+      ..write(obj.color)
+      ..writeByte(5)
       ..write(obj.isAllDay);
   }
 

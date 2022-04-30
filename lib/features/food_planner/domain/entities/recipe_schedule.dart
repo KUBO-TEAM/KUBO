@@ -20,19 +20,23 @@ class RecipeSchedule extends Equatable {
   final String recipeId;
 
   @HiveField(1)
-  final DateTime start;
+  final String recipeName;
 
   @HiveField(2)
-  final DateTime end;
+  final DateTime start;
 
   @HiveField(3)
-  final Color color;
+  final DateTime end;
 
   @HiveField(4)
+  final Color color;
+
+  @HiveField(5)
   final bool isAllDay;
 
   const RecipeSchedule({
     required this.recipeId,
+    required this.recipeName,
     required this.start,
     required this.end,
     required this.color,

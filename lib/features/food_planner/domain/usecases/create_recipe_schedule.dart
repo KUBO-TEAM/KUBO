@@ -22,6 +22,7 @@ class CreateRecipeSchedule implements UseCase<String, CreateRecipeParams> {
 
 class CreateRecipeParams extends Equatable {
   final String recipeId;
+  final String recipeName;
   final DateTime start;
   final DateTime end;
   final Color color;
@@ -29,6 +30,7 @@ class CreateRecipeParams extends Equatable {
 
   const CreateRecipeParams({
     required this.recipeId,
+    required this.recipeName,
     required this.start,
     required this.end,
     required this.color,
@@ -38,6 +40,7 @@ class CreateRecipeParams extends Equatable {
   @override
   List<Object?> get props => [
         recipeId,
+        recipeName,
         start,
         end,
         color,

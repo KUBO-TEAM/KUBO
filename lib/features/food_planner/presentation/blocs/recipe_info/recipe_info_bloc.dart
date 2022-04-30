@@ -22,6 +22,7 @@ class RecipeInfoBloc extends Bloc<RecipeInfoEvent, RecipeInfoState> {
         emit(RecipeInfoCreateRecipeScheduleInProgress());
 
         final recipeId = event.recipeId;
+        final recipeName = event.recipeName;
         final start = event.start;
         final end = event.end;
         final color = event.color;
@@ -31,7 +32,8 @@ class RecipeInfoBloc extends Bloc<RecipeInfoEvent, RecipeInfoState> {
             day != null &&
             start != null &&
             end != null &&
-            color != null) {
+            color != null &&
+            recipeName != null) {
           final convertDates = dateConverter.convertStartAndEndTimeOfDay(
             day: day,
             startTimeOfDay: start,
@@ -45,6 +47,7 @@ class RecipeInfoBloc extends Bloc<RecipeInfoEvent, RecipeInfoState> {
           }, (convertedDates) async {
             final createRecipeParams = CreateRecipeParams(
               recipeId: recipeId,
+              recipeName: recipeName,
               start: convertedDates.start,
               end: convertedDates.end,
               color: color,
