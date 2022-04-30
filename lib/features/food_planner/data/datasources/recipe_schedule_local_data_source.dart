@@ -33,17 +33,10 @@ abstract class RecipeScheduleLocalDataSource {
       fetchRecipeScheduleLinkedHashmap();
 }
 
-@module
-abstract class RecipeScheduleBox {
-  @preResolve
-  Future<Box<RecipeSchedule>> get recipeSchedule =>
-      Hive.openBox(kRecipeScheduleBoxKey);
-}
-
 @LazySingleton(as: RecipeScheduleLocalDataSource)
 class RecipeScheduleLocalDataSourceImpl
     implements RecipeScheduleLocalDataSource {
-  final Box<RecipeScheduleModel> recipeScheduleBox;
+  final Box<RecipeSchedule> recipeScheduleBox;
 
   RecipeScheduleLocalDataSourceImpl({required this.recipeScheduleBox});
 
@@ -51,16 +44,15 @@ class RecipeScheduleLocalDataSourceImpl
   Future<String> createRecipeSchedule(
     CreateRecipeParams params,
   ) async {
-    await recipeScheduleBox.put(
-      'test',
-      RecipeScheduleModel(
-        recipeId: params.recipeId,
-        start: params.start,
-        end: params.end,
-        color: params.color,
-        isAllDay: params.isAllDay,
-      ),
+    final recipeScheduleModel = RecipeScheduleModel(
+      recipeId: params.recipeId,
+      start: params.start,
+      end: params.end,
+      color: params.color,
+      isAllDay: params.isAllDay,
     );
+
+    recipeScheduleBox.add(recipeScheduleModel);
 
     return 'Successfully Created!';
   }
@@ -70,8 +62,12 @@ class RecipeScheduleLocalDataSourceImpl
     final List<RecipeScheduleModel> recipeSchedules = [];
 
     for (var recipeSchedule in recipeScheduleBox.values) {
-      recipeSchedules.add(recipeSchedule);
+      recipeSchedules.add(
+        RecipeScheduleModel.fromHiveObject(recipeSchedule),
+      );
     }
+
+    // recipeScheduleBox.deleteAll(recipeScheduleBox.keys);
 
     return recipeSchedules;
   }
@@ -89,7 +85,7 @@ class RecipeScheduleLocalDataSourceImpl
       hashCode: getHashCode,
     );
 
-    final Map<DateTime, List<RecipeScheduleModel>> scheduleMap = {};
+    // final Map<DateTime, List<RecipeScheduleModel>> scheduleMap = {};
 
     // for (var recipeSchedule in recipeScheduleBox.values) {
     //   final key = DateTime(

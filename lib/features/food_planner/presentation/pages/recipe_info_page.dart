@@ -39,7 +39,6 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     _tabController = TabController(length: 3, vsync: this);
-    // _tabController.addListener(_smoothScrollToTop);
   }
 
   @override
@@ -74,20 +73,6 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
         showAppBar = true;
       });
     }
-
-    /** Inside main tab */
-    // if (_scrollController.offset >= 350 && appBarColor != Colors.black) {
-    //   setState(() {
-    //     appBarColor = Colors.black;
-    //   });
-    // } else if (_scrollController.offset < 350 && appBarColor != Colors.white) {
-    //   setState(() {
-    //     appBarColor = Colors.white;
-    //   });
-    // }
-    // if (fixedScroll) {
-    //   _scrollController.jumpTo(0);
-    // }
   }
 
   @override

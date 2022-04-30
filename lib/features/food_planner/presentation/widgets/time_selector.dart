@@ -3,55 +3,37 @@ import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/text_styles_constants.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/picker_card.dart';
 
-class TimeSelector extends StatelessWidget {
+class TimeSelector extends StatefulWidget {
   const TimeSelector({
     Key? key,
     required this.title,
     required this.onTimePicked,
-    this.initialTime,
   }) : super(key: key);
 
   final String title;
   final Function(TimeOfDay?) onTimePicked;
-  final TimeOfDay? initialTime;
 
-  Text _timeStatus(BuildContext context) {
-    if (initialTime != null) {
-      return Text(
-        initialTime!.format(context),
-        style: kCaptionTextStyle.copyWith(
-          color: kDefaultGrey,
-        ),
-      );
-    }
+  @override
+  State<TimeSelector> createState() => _TimeSelectorState();
+}
 
-    return Text(
-      'Pick a time',
-      style: kCaptionTextStyle.copyWith(
-        color: kDefaultGrey,
-      ),
-    );
-  }
+class _TimeSelectorState extends State<TimeSelector> {
+  TimeOfDay? selectedTime;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        if (initialTime != null) {
-          TimeOfDay? timeSelected = await showTimePicker(
-            initialTime: initialTime!,
-            context: context,
-          );
+        TimeOfDay? timeSelected = await showTimePicker(
+          initialTime: TimeOfDay.now(),
+          context: context,
+        );
 
-          onTimePicked(timeSelected);
-        } else {
-          TimeOfDay? timeSelected = await showTimePicker(
-            initialTime: TimeOfDay.now(),
-            context: context,
-          );
+        setState(() {
+          selectedTime = timeSelected;
+        });
 
-          onTimePicked(timeSelected);
-        }
+        widget.onTimePicked(timeSelected);
       },
       child: PickerCard(
         child: Row(
@@ -71,7 +53,7 @@ class TimeSelector extends StatelessWidget {
                 horizontal: 8.0,
               ),
               child: Text(
-                title,
+                widget.title,
                 style: kCaptionTextStyle.copyWith(
                   fontWeight: FontWeight.w900,
                 ),
@@ -81,7 +63,14 @@ class TimeSelector extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                 vertical: 16.0,
               ),
-              child: _timeStatus(context),
+              child: Text(
+                selectedTime != null
+                    ? selectedTime!.format(context)
+                    : 'Pick a time',
+                style: kCaptionTextStyle.copyWith(
+                  color: kDefaultGrey,
+                ),
+              ),
             )
           ],
         ),

@@ -29,7 +29,7 @@ class SmartRecipeListTile extends StatelessWidget {
             DaySelector(
               list: kDayList,
               leadingIcon: Icons.calendar_today,
-              onSelected: (int? i) {},
+              onSelectedDay: (int? i) {},
             ),
             TimeSelector(
               title: 'Start',

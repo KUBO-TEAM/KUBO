@@ -6,9 +6,11 @@ class SquareButton extends StatelessWidget {
   const SquareButton({
     Key? key,
     required this.onPressed,
+    required this.title,
   }) : super(key: key);
 
-  final Function() onPressed;
+  final GestureTapCallback onPressed;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +23,10 @@ class SquareButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
             vertical: 16.0,
           ),
-          child: const Center(
+          child: Center(
             child: Text(
-              'Save Schedule',
-              style: TextStyle(
+              title,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 15.0,
               ),

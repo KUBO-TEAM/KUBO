@@ -8,10 +8,10 @@ import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/hive/adapters/color.adapter.dart';
 import 'package:kubo/core/widgets/splash_page.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/assign_meal/assign_meal_plan_bloc.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart.old';
+import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu_history/menu_history_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/predict_image/predict_image_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_pictures/scanned_pictures_bloc.dart';
 import 'package:kubo/injection.dart';
@@ -51,8 +51,8 @@ class Kubo extends StatelessWidget {
         BlocProvider(create: (_) => getIt<MenuBloc>()),
         BlocProvider(create: (_) => getIt<MenuHistoryBloc>()),
         BlocProvider(create: (_) => getIt<RecipeBloc>()),
+        BlocProvider(create: (_) => getIt<RecipeInfoBloc>()),
         BlocProvider(create: (_) => getIt<PredictImageBloc>()),
-        BlocProvider(create: (_) => AssignMealPlanBloc()),
         BlocProvider(create: (_) => ScannedPicturesBloc()),
       ],
       child: MaterialApp(
