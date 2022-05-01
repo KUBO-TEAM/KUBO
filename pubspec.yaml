@@ -37,6 +37,7 @@ dependencies:
   skeletons: ^0.0.3
   syncfusion_flutter_calendar: ^19.4.40
   table_calendar: ^3.0.3
+  timeline_tile: ^2.0.0
 
 dev_dependencies:
   build_runner: ^2.1.7

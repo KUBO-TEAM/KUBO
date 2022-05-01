@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kubo/core/constants/list_costants.dart';
 import 'package:kubo/core/constants/menu_constants.dart';
+import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -40,12 +42,27 @@ const tColor = Colors.white;
 const tAllDay = false;
 
 final tRecipeScheduleModel = RecipeSchedule(
-  recipeId: tId,
-  recipeName: tName,
+  recipe: const Recipe(
+    id: tId,
+    name: tName,
+    description: tDescription,
+    course: 'test',
+    cuisine: 'test',
+    prepTime: 20,
+    cookTime: 20,
+    servings: 20,
+    reference: 'test',
+    displayPhoto: 'test',
+    categories: ['Talong'],
+    ingredients: [Ingredient(name: 'test', quantity: 4)],
+    instructions: ['test'],
+    createdAt: 'gasdg',
+  ),
   start: tStart,
   end: tEnd,
   color: tColor,
   isAllDay: tAllDay,
+  createdAt: tStart,
 );
 
 final tRecipeSchedule = tRecipeScheduleModel;
