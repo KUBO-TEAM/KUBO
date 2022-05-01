@@ -16,8 +16,12 @@ class RecipeInfoFetchRecipeSchedulesInProgress
 class RecipeInfoFetchRecipeSchedulesSuccess
     extends RecipeInfoFetchRecipeSchedulesState {
   final List<RecipeSchedule> recipeSchedules;
+  final RecipeSchedule? latestRecipeSchedule;
 
-  const RecipeInfoFetchRecipeSchedulesSuccess({required this.recipeSchedules});
+  const RecipeInfoFetchRecipeSchedulesSuccess({
+    required this.recipeSchedules,
+    this.latestRecipeSchedule,
+  });
 }
 
 class RecipeInfoFetchRecipeSchedulesFailure

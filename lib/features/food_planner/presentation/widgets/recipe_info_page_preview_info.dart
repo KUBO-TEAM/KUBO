@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_fetch_recipe_schedules_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_info_icon_with_text.dart';
 
 class RecipeInfoPagePreviewInfo extends StatelessWidget {
@@ -16,13 +19,26 @@ class RecipeInfoPagePreviewInfo extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Monday, 11:00 PM - 12:00 PM',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 16.0,
-            ),
+          BlocBuilder<RecipeInfoFetchRecipeSchedulesBloc,
+              RecipeInfoFetchRecipeSchedulesState>(
+            builder: (context, state) {
+              String schedule = 'No schedule';
+              if (state is RecipeInfoFetchRecipeSchedulesSuccess &&
+                  state.latestRecipeSchedule != null) {
+                final latestSchedule = state.latestRecipeSchedule;
+
+                schedule =
+                    '${DateFormat.yMMMEd('en_US').format(latestSchedule!.start)} ${DateFormat.jm('en_US').format(latestSchedule.start)} - ${DateFormat.jm('en_US').format(latestSchedule.end)} ';
+              }
+              return Text(
+                schedule,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16.0,
+                ),
+              );
+            },
           ),
           const SizedBox(
             height: 16.0,

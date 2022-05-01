@@ -28,9 +28,33 @@ class RecipeInfoFetchRecipeSchedulesBloc extends Bloc<
             ),
           );
         }, (recipeSchedules) {
+          String recipeId = event.recipeId;
+
+          List<RecipeSchedule> filterById = recipeSchedules
+              .where(
+                (recipeSchedule) => recipeSchedule.recipe.id == recipeId,
+              )
+              .toList();
+
+          if (filterById.isEmpty) {
+            emit(
+              const RecipeInfoFetchRecipeSchedulesSuccess(
+                recipeSchedules: [],
+              ),
+            );
+            return;
+          }
+
+          filterById.sort(
+            (a, b) {
+              return b.start.compareTo(a.start);
+            },
+          );
+
           emit(
             RecipeInfoFetchRecipeSchedulesSuccess(
-              recipeSchedules: recipeSchedules,
+              recipeSchedules: filterById,
+              latestRecipeSchedule: filterById[0],
             ),
           );
         });

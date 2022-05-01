@@ -8,4 +8,8 @@ abstract class RecipeInfoFetchRecipeSchedulesEvent extends Equatable {
 }
 
 class RecipeInfoFetchRecipeSchedulesFetched
-    extends RecipeInfoFetchRecipeSchedulesEvent {}
+    extends RecipeInfoFetchRecipeSchedulesEvent {
+  final String recipeId;
+
+  const RecipeInfoFetchRecipeSchedulesFetched({required this.recipeId});
+}

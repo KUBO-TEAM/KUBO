@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_fetch_recipe_schedules_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/info_tab.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/procedure_tab.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_clipper.dart';
@@ -38,6 +40,9 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     _tabController = TabController(length: 3, vsync: this);
+    BlocProvider.of<RecipeInfoFetchRecipeSchedulesBloc>(context).add(
+      RecipeInfoFetchRecipeSchedulesFetched(recipeId: widget.recipe.id),
+    );
   }
 
   @override
