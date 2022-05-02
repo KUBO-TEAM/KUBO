@@ -30,7 +30,7 @@ class StartingTimeline extends StatelessWidget {
         padding: const EdgeInsets.only(
           left: 7.5,
           right: 7.5,
-          top: 25.0,
+          top: 15.0,
         ),
         constraints: const BoxConstraints(
           minHeight: 100,
@@ -47,7 +47,6 @@ class StartingTimeline extends StatelessWidget {
                   DateFormat.yMMMEd('en_US').format(recipeSchedule.start),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
                   ),
                 ),
               ),

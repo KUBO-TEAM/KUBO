@@ -6,9 +6,10 @@ import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_fetch_recipe_schedules_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/create_recipe_schedule_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/ending_timeline.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/future_latest_timeline.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/future_timeline.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/middle_timeline.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/starting_timeline.dart';
 
 class ScheduleTab extends StatefulWidget {
   const ScheduleTab({Key? key, required this.recipe}) : super(key: key);
@@ -51,8 +52,6 @@ class _ScheduleTabState extends State<ScheduleTab> {
       child: Container(
         color: Colors.white,
         padding: const EdgeInsets.only(
-          left: 16.0,
-          right: 16.0,
           top: 16.0,
         ),
         child: SingleChildScrollView(
@@ -60,37 +59,71 @@ class _ScheduleTabState extends State<ScheduleTab> {
               RecipeInfoFetchRecipeSchedulesState>(
             builder: (context, state) {
               if (state is RecipeInfoFetchRecipeSchedulesSuccess) {
-                final recipeSchedules = state.recipeSchedules;
+                final pastRecipeSchedules = state.pastRecipeSchedules;
+                final futureRecipeSchedules = state.futureRecipeSchedules;
+                final latestRecipeSchedule = state.latestRecipeSchedule;
+
                 return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    RoundedButton(
-                      onPressed: () {
-                        _showCreateScheduleDialog();
-                      },
-                      title: const Text('New schedule for this recipe'),
-                      icon: const Icon(
-                        Icons.schedule,
-                        color: Colors.white,
+                    Center(
+                      child: RoundedButton(
+                        onPressed: () {
+                          _showCreateScheduleDialog();
+                        },
+                        title: const Text('New schedule for this recipe'),
+                        icon: const Icon(
+                          Icons.schedule,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
+                    SingleChildScrollView(
+                      reverse: true,
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child: SizedBox(
+                        height: 90.0,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            ...List.generate(futureRecipeSchedules.length,
+                                (index) {
+                              if (latestRecipeSchedule ==
+                                  futureRecipeSchedules[index]) {
+                                return Container();
+                              }
+                              return FutureTimeline(
+                                isFirst: index % 2 == 0 ? true : false,
+                                recipeSchedule: futureRecipeSchedules[index],
+                              );
+                            }),
+                            if (latestRecipeSchedule != null)
+                              FutureLatestTimeline(
+                                recipeSchedule: latestRecipeSchedule,
+                              )
+                          ],
+                        ),
+                      ),
+                      scrollDirection: Axis.horizontal,
+                    ),
                     ...List.generate(
-                      recipeSchedules.length,
+                      pastRecipeSchedules.length,
                       (index) {
-                        if (index == 0) {
-                          return StartingTimeline(
-                            recipeSchedule: recipeSchedules[index],
-                          );
-                        } else if (index == (recipeSchedules.length - 1)) {
+                        if (latestRecipeSchedule ==
+                            pastRecipeSchedules[index]) {
+                          return Container();
+                        }
+
+                        if (index == (pastRecipeSchedules.length - 1)) {
                           return EndingTimeline(
-                            recipeSchedule: recipeSchedules[index],
-                            isStart: index % 2 == 0 ? true : false,
+                            recipeSchedule: pastRecipeSchedules[index],
+                            isStart: index % 2 == 0 ? false : true,
                           );
                         }
 
                         return MiddleTimeline(
-                          recipeSchedule: recipeSchedules[index],
-                          isStart: index % 2 == 0 ? true : false,
+                          recipeSchedule: pastRecipeSchedules[index],
+                          isStart: index % 2 == 0 ? false : true,
                         );
                       },
                     ),

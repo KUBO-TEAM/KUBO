@@ -39,22 +39,42 @@ class RecipeInfoFetchRecipeSchedulesBloc extends Bloc<
           if (filterById.isEmpty) {
             emit(
               const RecipeInfoFetchRecipeSchedulesSuccess(
-                recipeSchedules: [],
+                pastRecipeSchedules: [],
+                futureRecipeSchedules: [],
               ),
             );
             return;
           }
 
-          filterById.sort(
-            (a, b) {
-              return b.start.compareTo(a.start);
-            },
-          );
+          filterById.sort((a, b) {
+            return b.start.compareTo(a.start);
+          });
+
+          List<RecipeSchedule> pastRecipeSchedules = filterById
+              .where(
+                (recipeSchedule) => recipeSchedule.start.isBefore(
+                  DateTime.now(),
+                ),
+              )
+              .toList();
+
+          List<RecipeSchedule> futureRecipeSchedules = filterById
+              .where(
+                (recipeSchedule) => recipeSchedule.start.isAfter(
+                  DateTime.now(),
+                ),
+              )
+              .toList();
+
+          RecipeSchedule latestRecipeSchedule = futureRecipeSchedules.isNotEmpty
+              ? futureRecipeSchedules[futureRecipeSchedules.length - 1]
+              : pastRecipeSchedules[0];
 
           emit(
             RecipeInfoFetchRecipeSchedulesSuccess(
-              recipeSchedules: filterById,
-              latestRecipeSchedule: filterById[0],
+              pastRecipeSchedules: pastRecipeSchedules,
+              futureRecipeSchedules: futureRecipeSchedules,
+              latestRecipeSchedule: latestRecipeSchedule,
             ),
           );
         });

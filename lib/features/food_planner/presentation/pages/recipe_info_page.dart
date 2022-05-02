@@ -29,16 +29,10 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
     with TickerProviderStateMixin {
   final List<String> recipeInfoTab = ['Info', 'Procedure', 'Schedule'];
   late TabController _tabController;
-  late ScrollController _scrollController;
-  bool fixedScroll = false;
-  bool showAppBar = true;
-  Color appBarColor = Colors.white;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
     _tabController = TabController(length: 3, vsync: this);
     BlocProvider.of<RecipeInfoFetchRecipeSchedulesBloc>(context).add(
       RecipeInfoFetchRecipeSchedulesFetched(recipeId: widget.recipe.id),
@@ -48,64 +42,13 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
   @override
   void dispose() {
     _tabController.dispose();
-    _scrollController.dispose();
     super.dispose();
-  }
-
-  _scrollListener() {
-    /** Across infobar */
-    if (_scrollController.offset >= 10 &&
-        _scrollController.offset < 140 &&
-        showAppBar != false) {
-      setState(() {
-        showAppBar = false;
-      });
-    } else if (_scrollController.offset >= 280 &&
-        _scrollController.offset <= 330 &&
-        showAppBar != false) {
-      setState(() {
-        showAppBar = false;
-      });
-    } else if (_scrollController.offset > 140 &&
-        _scrollController.offset < 280 &&
-        showAppBar != true) {
-      setState(() {
-        showAppBar = true;
-      });
-    } else if (_scrollController.offset < 10 && showAppBar != true) {
-      setState(() {
-        showAppBar = true;
-      });
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: showAppBar
-          ? AppBar(
-              backgroundColor: Colors.transparent,
-              titleSpacing: 0,
-              leading: IconButton(
-                padding: const EdgeInsets.only(left: 20),
-                icon: Icon(Icons.arrow_back_ios, color: appBarColor),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              elevation: 0,
-              title: Padding(
-                padding: const EdgeInsets.only(right: 10.0),
-                child: Text(
-                  widget.recipe.name,
-                  style: TextStyle(
-                    color: appBarColor,
-                    fontFamily: 'Pushster',
-                    fontSize: 30.0,
-                  ),
-                ),
-              ),
-            )
-          : null,
       body: Hero(
         tag: "recipe-img-${widget.recipe.displayPhoto}",
         child: Stack(
@@ -130,12 +73,11 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
             ),
             const ScreenDarkEffect(),
             NestedScrollView(
-              controller: _scrollController,
               headerSliverBuilder: (context, value) {
                 return [
                   SliverToBoxAdapter(
                     child: SizedBox(
-                      height: 400,
+                      height: 430,
                       width: double.infinity,
                       child: Stack(
                         alignment: AlignmentDirectional.bottomEnd,
@@ -149,6 +91,43 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    right: 8.0,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      IconButton(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 10.0),
+                                        icon: const Icon(
+                                          Icons.arrow_back_ios,
+                                          color: Colors.white,
+                                        ),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                      ),
+                                      Expanded(
+                                        child: SizedBox(
+                                          child: Text(
+                                            widget.recipe.name,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'Pushster',
+                                              fontSize: 30.0,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 10.0),
                                 RecipeInfoPagePreviewInfo(
                                   recipe: widget.recipe,
                                 ),
