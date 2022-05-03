@@ -77,7 +77,7 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
                 return [
                   SliverToBoxAdapter(
                     child: SizedBox(
-                      height: 430,
+                      height: 420,
                       width: double.infinity,
                       child: Stack(
                         alignment: AlignmentDirectional.bottomEnd,
@@ -145,13 +145,17 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
                   ),
                 ];
               },
-              body: TabBarView(
-                controller: _tabController,
-                children: [
-                  InfoTab(recipe: widget.recipe),
-                  ProcedureTab(recipe: widget.recipe),
-                  ScheduleTab(recipe: widget.recipe),
-                ],
+              body: Container(
+                color: Colors.white,
+                transform: Matrix4.translationValues(0.0, -1.0, 0.0),
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    InfoTab(recipe: widget.recipe),
+                    ProcedureTab(recipe: widget.recipe),
+                    ScheduleTab(recipe: widget.recipe),
+                  ],
+                ),
               ),
             ),
           ],

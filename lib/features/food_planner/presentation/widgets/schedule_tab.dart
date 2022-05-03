@@ -92,10 +92,18 @@ class _ScheduleTabState extends State<ScheduleTab> {
                                   futureRecipeSchedules[index]) {
                                 return Container();
                               }
-                              return FutureTimeline(
-                                isFirst: index % 2 == 0 ? true : false,
-                                recipeSchedule: futureRecipeSchedules[index],
-                              );
+
+                              if (index == 0) {
+                                return FutureTimeline(
+                                  isFirst: true,
+                                  recipeSchedule: futureRecipeSchedules[index],
+                                );
+                              } else {
+                                return FutureTimeline(
+                                  isFirst: false,
+                                  recipeSchedule: futureRecipeSchedules[index],
+                                );
+                              }
                             }),
                             if (latestRecipeSchedule != null)
                               FutureLatestTimeline(
