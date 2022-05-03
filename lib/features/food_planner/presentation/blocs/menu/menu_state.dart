@@ -24,5 +24,23 @@ class MenuRecipeScheduleFetchSuccess extends MenuState {
 class MenuRecipeScheduleFetchFailure extends MenuState {
   final String message;
 
-  const MenuRecipeScheduleFetchFailure({required this.message});
+  const MenuRecipeScheduleFetchFailure({
+    required this.message,
+  });
+}
+
+class MenuRecipeScheduleUpdateFetchSuccess extends MenuState {
+  final List<RecipeSchedule> recipeSchedules;
+
+  const MenuRecipeScheduleUpdateFetchSuccess({required this.recipeSchedules});
+}
+
+class MenuRecipeScheduleUpdateFetchFailure extends MenuState {
+  final String message;
+  final List<RecipeSchedule> recipeSchedules;
+
+  const MenuRecipeScheduleUpdateFetchFailure({
+    required this.message,
+    required this.recipeSchedules,
+  });
 }

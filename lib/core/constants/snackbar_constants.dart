@@ -39,3 +39,30 @@ var kFailedSaveSnackBar = SnackBar(
     ],
   ),
 );
+
+var kUpdatingRecipeScheduleSnackBar = SnackBar(
+  backgroundColor: kGreenPrimary,
+  content: SizedBox(
+    height: 30,
+    child: Column(
+      children: [
+        Row(
+          children: const [
+            Icon(
+              Icons.check_circle,
+              color: Colors.white,
+            ),
+            SizedBox(
+              width: 10.0,
+            ),
+            Text(
+              'Successfully save new schedule!',
+              style: TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
+        const LinearProgressIndicator(),
+      ],
+    ),
+  ),
+);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 
+// TODO: Design the paragraphs wit recipe name title big
 class InfoTab extends StatelessWidget {
   const InfoTab({
     Key? key,

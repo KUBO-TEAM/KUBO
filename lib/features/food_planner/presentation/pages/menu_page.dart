@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_selection_dialog.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+
+// TODO: When cell click show create recipe dialog automatically and go to the schedule tab automatically
+// TODO: Clicking scheduled cell redirects to the recipe schedule without automatically opening the create dialog
+// TODO: Arrow back button
 
 const _calendarHeaderStyle = CalendarHeaderStyle(
   backgroundColor: kBrownPrimary,
@@ -58,98 +61,10 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: SafeArea(
-        child: BlocBuilder<MenuBloc, MenuState>(builder: (context, state) {
-          List<RecipeSchedule> recipeSchedules = [];
-
-          if (state is MenuRecipeScheduleFetchInProgress) {
-            final recipeScheuleCache = state.recipeSchedules;
-
-            if (recipeScheuleCache != null) {
-              recipeSchedules = recipeScheuleCache;
-            }
-
-            EasyLoading.show(
-              status: 'Checking for updates...',
-              maskType: EasyLoadingMaskType.black,
-            );
-          }
-          if (state is MenuRecipeScheduleFetchSuccess) {
-            recipeSchedules = state.recipeSchedules;
-            EasyLoading.dismiss();
-          }
-
-          return SfCalendar(
-            todayHighlightColor: Colors.green,
-            dataSource: ScheduleDataSource(recipeSchedules),
-            timeSlotViewSettings: _calendarTimeSlotViewSettings,
-            headerStyle: _calendarHeaderStyle,
-            viewHeaderStyle: _calendarViewHeaderStyle,
-            view: CalendarView.week,
-            weekNumberStyle: _calendarWeekNumberStyle,
-            firstDayOfWeek: 1,
-            onTap: (CalendarTapDetails details) {
-              _calendarTapped(
-                details: details,
-                context: context,
-                recipeSchedules: recipeSchedules,
-              );
-            },
-          );
-        }),
+        child: MenuPageCalendar(),
       ),
-    );
-  }
-
-  void _calendarTapped({
-    required CalendarTapDetails details,
-    required BuildContext context,
-    required List<RecipeSchedule> recipeSchedules,
-  }) {
-    dynamic schedule = details.appointments;
-    DateTime startingDate = details.date!;
-    CalendarElement element = details.targetElement;
-    if (schedule != null) {
-      _navigateToScheduledMeal(context, schedule);
-    } else if (element == CalendarElement.calendarCell) {
-      _cellPressed(context, startingDate);
-    }
-  }
-
-  void _navigateToScheduledMeal(
-    BuildContext context,
-    dynamic recipeSchedule,
-  ) {
-    // Navigator.pushNamed(
-    //   context,
-    //   AssignMealTimePage.id,
-    //   arguments: AssignMealTimePageArguments(
-    //     recipe: Recipe(
-    //       id: recipeSchedule.first.id,
-    //       name: recipeSchedule.first.name,
-    //       description: recipeSchedule.first.description,
-    //       displayPhoto: recipeSchedule.first.displayPhoto,
-    //     ),
-    //   ),
-    // );
-  }
-
-  void _cellPressed(
-    BuildContext context,
-    DateTime startingDate,
-  ) {
-    _showIngredientsPickerDialog(context);
-  }
-
-  Future<void> _showIngredientsPickerDialog(
-    BuildContext context,
-  ) async {
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return const RecipeSelectionDialog();
-      },
     );
   }
 }
@@ -182,5 +97,143 @@ class ScheduleDataSource extends CalendarDataSource {
   @override
   Color getColor(int index) {
     return appointments![index].color;
+  }
+}
+
+class MenuPageCalendar extends StatelessWidget {
+  const MenuPageCalendar({Key? key}) : super(key: key);
+
+  void _calendarTapped({
+    required CalendarTapDetails details,
+    required BuildContext context,
+    required List<RecipeSchedule> recipeSchedules,
+  }) {
+    dynamic schedule = details.appointments;
+    DateTime startingDate = details.date!;
+    CalendarElement element = details.targetElement;
+    if (schedule != null) {
+      _navigateToScheduledMeal(context, schedule);
+    } else if (element == CalendarElement.calendarCell) {
+      _cellPressed(context, startingDate);
+    }
+  }
+
+  void _navigateToScheduledMeal(
+    BuildContext context,
+    dynamic recipeSchedule,
+  ) {
+    // );
+  }
+
+  void _cellPressed(
+    BuildContext context,
+    DateTime startingDate,
+  ) {
+    _showIngredientsPickerDialog(context);
+  }
+
+  Future<void> _showIngredientsPickerDialog(
+    BuildContext context,
+  ) async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const RecipeSelectionDialog();
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<MenuBloc, MenuState>(
+      listener: (context, state) {
+        if (state is MenuRecipeScheduleUpdateFetchFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: kBrownPrimary,
+              content: Row(
+                children: const [
+                  Icon(
+                    Icons.thumb_up,
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(
+                    "Fail to update recipe, let's try it later",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        if (state is MenuRecipeScheduleUpdateFetchSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: kGreenPrimary,
+              content: Row(
+                children: const [
+                  Icon(
+                    Icons.check_circle,
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(
+                    'Successfully update your scheduled recipes',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+      },
+      builder: (_, state) {
+        List<RecipeSchedule> recipeSchedules = [];
+
+        if (state is MenuRecipeScheduleFetchInProgress) {
+          final recipeScheuleCache = state.recipeSchedules;
+
+          if (recipeScheuleCache != null) {
+            recipeSchedules = recipeScheuleCache;
+          }
+        }
+
+        if (state is MenuRecipeScheduleFetchSuccess) {
+          recipeSchedules = state.recipeSchedules;
+        }
+
+        if (state is MenuRecipeScheduleUpdateFetchFailure) {
+          recipeSchedules = state.recipeSchedules;
+        }
+
+        if (state is MenuRecipeScheduleUpdateFetchSuccess) {
+          recipeSchedules = state.recipeSchedules;
+        }
+
+        return SfCalendar(
+          todayHighlightColor: Colors.green,
+          dataSource: ScheduleDataSource(recipeSchedules),
+          timeSlotViewSettings: _calendarTimeSlotViewSettings,
+          headerStyle: _calendarHeaderStyle,
+          viewHeaderStyle: _calendarViewHeaderStyle,
+          view: CalendarView.week,
+          weekNumberStyle: _calendarWeekNumberStyle,
+          firstDayOfWeek: 1,
+          onTap: (CalendarTapDetails details) {
+            _calendarTapped(
+              details: details,
+              context: context,
+              recipeSchedules: recipeSchedules,
+            );
+          },
+        );
+      },
+    );
   }
 }

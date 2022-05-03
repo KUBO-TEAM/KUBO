@@ -18,17 +18,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // BlocProvider.of<RecipeInfoBloc>(context).add(
-    //   RecipeInfoRecipeScheduleCreated(
-    //     createRecipeParams: CreateRecipeParams(
-    //       recipeId: 'test',
-    //       start: DateTime.now(),
-    //       end: DateTime.now(),
-    //       color: Colors.red,
-    //       isAllDay: true,
-    //     ),
-    //   ),
-    // );
   }
 
   @override

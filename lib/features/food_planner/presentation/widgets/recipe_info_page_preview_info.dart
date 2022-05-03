@@ -14,7 +14,6 @@ class RecipeInfoPagePreviewInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 260,
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

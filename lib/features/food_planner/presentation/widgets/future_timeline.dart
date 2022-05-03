@@ -23,7 +23,7 @@ class FutureTimeline extends StatelessWidget {
       indicatorStyle: IndicatorStyle(
         padding: const EdgeInsets.only(bottom: 5),
         height: 30,
-        color: const Color.fromARGB(255, 0, 160, 83),
+        color: kGreenPrimary,
         iconStyle: IconStyle(
           color: Colors.white,
           iconData: Icons.access_time_filled,

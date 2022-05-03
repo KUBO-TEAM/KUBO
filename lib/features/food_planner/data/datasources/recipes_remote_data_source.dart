@@ -30,23 +30,27 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
 
   @override
   Future<List<RecipeModel>> fetchRecipes() async {
-    final response = await client.get(
-      Uri.parse('$kKuboUrl/api/recipes'),
-      headers: {'Content-Type': 'application/json'},
-    );
-    if (response.statusCode == 200) {
-      var body = json.decode(response.body);
+    try {
+      final response = await client.get(
+        Uri.parse('$kKuboUrl/api/recipes'),
+        headers: {'Content-Type': 'application/json'},
+      );
+      if (response.statusCode == 200) {
+        var body = json.decode(response.body);
 
-      var data = body['data'];
+        var data = body['data'];
 
-      List<RecipeModel> recipes = [];
+        List<RecipeModel> recipes = [];
 
-      for (var value in data) {
-        recipes.add(RecipeModel.fromJson(value));
+        for (var value in data) {
+          recipes.add(RecipeModel.fromJson(value));
+        }
+
+        return recipes;
+      } else {
+        throw ServerException();
       }
-
-      return recipes;
-    } else {
+    } on Exception {
       throw ServerException();
     }
   }
@@ -55,51 +59,59 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
   Future<List<RecipeModel>> fetchFilteredRecipes(
     List<Category> categories,
   ) async {
-    List<String> categoriesArray = [];
+    try {
+      List<String> categoriesArray = [];
 
-    for (var value in categories) {
-      categoriesArray.add(value.name);
-    }
-
-    final response = await client.post(
-      Uri.parse('$kKuboUrl/api/recipes/filter'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(
-        {"categories": categoriesArray},
-      ),
-    );
-    if (response.statusCode == 200) {
-      var body = json.decode(response.body);
-
-      var data = body['data'];
-
-      List<RecipeModel> recipes = [];
-
-      for (var value in data) {
-        recipes.add(RecipeModel.fromJson(value));
+      for (var value in categories) {
+        categoriesArray.add(value.name);
       }
 
-      return recipes;
-    } else {
+      final response = await client.post(
+        Uri.parse('$kKuboUrl/api/recipes/filter'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(
+          {"categories": categoriesArray},
+        ),
+      );
+      if (response.statusCode == 200) {
+        var body = json.decode(response.body);
+
+        var data = body['data'];
+
+        List<RecipeModel> recipes = [];
+
+        for (var value in data) {
+          recipes.add(RecipeModel.fromJson(value));
+        }
+
+        return recipes;
+      } else {
+        throw ServerException();
+      }
+    } on Exception {
       throw ServerException();
     }
   }
 
   @override
   Future<RecipeModel> fetchRecipe(String recipeId) async {
-    final response = await client.get(
-      Uri.parse('$kKuboUrl/api/recipes/$recipeId'),
-      headers: {'Content-Type': 'application/json'},
-    );
-    if (response.statusCode == 200) {
-      var body = json.decode(response.body);
+    try {
+      final response = await client.get(
+        Uri.parse('$kKuboUrl/api/recipes/$recipeId'),
+        headers: {'Content-Type': 'application/json'},
+      );
+      if (response.statusCode == 200) {
+        var body = json.decode(response.body);
 
-      var data = body['data'];
+        var data = body['data'];
 
-      RecipeModel recipe = RecipeModel.fromJson(data);
+        RecipeModel recipe = RecipeModel.fromJson(data);
 
-      return recipe;
-    } else {
+        return recipe;
+      } else {
+        throw ServerException();
+      }
+    } on Exception {
       throw ServerException();
     }
   }

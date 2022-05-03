@@ -39,11 +39,15 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             MenuRecipeScheduleFetchInProgress(recipeSchedules: recipeSchedules),
           );
 
+          bool isSomethingFail = false;
+
           for (RecipeSchedule recipeSchedule in recipeSchedules) {
             final failureOrRecipe = await fetchRecipe(recipeSchedule.recipe.id);
 
-            await failureOrRecipe.fold(
-              (l) {},
+            failureOrRecipe.fold(
+              (failure) {
+                isSomethingFail = true;
+              },
               (recipe) async {
                 if (recipe != recipeSchedule.recipe) {
                   recipeSchedule.recipe = recipe;
@@ -52,9 +56,20 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
               },
             );
           }
-          emit(
-            MenuRecipeScheduleFetchSuccess(recipeSchedules: recipeSchedules),
-          );
+          if (isSomethingFail) {
+            emit(
+              MenuRecipeScheduleUpdateFetchFailure(
+                message: 'No internet connection',
+                recipeSchedules: recipeSchedules,
+              ),
+            );
+          } else {
+            emit(
+              MenuRecipeScheduleUpdateFetchSuccess(
+                recipeSchedules: recipeSchedules,
+              ),
+            );
+          }
         });
       }
     });

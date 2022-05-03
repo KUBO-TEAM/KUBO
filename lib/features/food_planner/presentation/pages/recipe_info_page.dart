@@ -77,65 +77,71 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
                 return [
                   SliverToBoxAdapter(
                     child: SizedBox(
-                      height: 420,
+                      height: MediaQuery.of(context).size.height * .6,
                       width: double.infinity,
                       child: Stack(
                         alignment: AlignmentDirectional.bottomEnd,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 20.0,
-                              right: 10.0,
-                              bottom: 15.0,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    right: 8.0,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      IconButton(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 10.0),
-                                        icon: const Icon(
-                                          Icons.arrow_back_ios,
-                                          color: Colors.white,
+                          SafeArea(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 20.0,
+                                right: 10.0,
+                                bottom: 15.0,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      right: 8.0,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        IconButton(
+                                          padding: const EdgeInsets.only(
+                                            bottom: 10.0,
+                                          ),
+                                          icon: const Icon(
+                                            Icons.arrow_back_ios,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(),
                                         ),
-                                        onPressed: () =>
-                                            Navigator.of(context).pop(),
-                                      ),
-                                      Expanded(
-                                        child: SizedBox(
-                                          child: Text(
-                                            widget.recipe.name,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: 'Pushster',
-                                              fontSize: 30.0,
+                                        Expanded(
+                                          child: SizedBox(
+                                            child: Text(
+                                              widget.recipe.name,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: 'Pushster',
+                                                fontSize: 30.0,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 10.0),
-                                RecipeInfoPagePreviewInfo(
-                                  recipe: widget.recipe,
-                                ),
-                                RecipeInfoTabBar(
-                                  recipeInfoTab: recipeInfoTab,
-                                  tabController: _tabController,
-                                ),
-                              ],
+                                  const SizedBox(height: 10.0),
+                                  Expanded(
+                                    child: RecipeInfoPagePreviewInfo(
+                                      recipe: widget.recipe,
+                                    ),
+                                  ),
+                                  RecipeInfoTabBar(
+                                    recipeInfoTab: recipeInfoTab,
+                                    tabController: _tabController,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           const RecipeClipper(),

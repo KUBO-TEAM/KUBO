@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/snackbar_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_create_recipe_schedule_bloc.dart';
@@ -67,16 +68,79 @@ class _ScheduleTabState extends State<ScheduleTab> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Center(
-                      child: RoundedButton(
-                        onPressed: () {
-                          _showCreateScheduleDialog();
-                        },
-                        title: const Text('New schedule for this recipe'),
-                        icon: const Icon(
-                          Icons.schedule,
-                          color: Colors.white,
-                        ),
+                      child: Column(
+                        children: [
+                          RoundedButton(
+                            onPressed: () {
+                              _showCreateScheduleDialog();
+                            },
+                            title: const Text('New schedule for this recipe'),
+                            icon: const Icon(
+                              Icons.schedule,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 8.0,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              CircleAvatar(
+                                radius: 12,
+                                backgroundColor: kGreenPrimary,
+                                child: Icon(
+                                  Icons.access_time_filled,
+                                  color: Colors.white,
+                                  size: 16.0,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 6.0,
+                              ),
+                              Text('Upcoming'),
+                              SizedBox(
+                                width: 6.0,
+                              ),
+                              CircleAvatar(
+                                radius: 12,
+                                backgroundColor: kGreenPrimary,
+                                child: Icon(
+                                  Icons.flag,
+                                  color: Colors.white,
+                                  size: 16.0,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 6.0,
+                              ),
+                              Text('Most recent'),
+                              SizedBox(
+                                width: 6.0,
+                              ),
+                              CircleAvatar(
+                                radius: 12,
+                                backgroundColor: kBrownPrimary,
+                                child: Icon(
+                                  Icons.hourglass_full,
+                                  color: Colors.white,
+                                  size: 16.0,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 6.0,
+                              ),
+                              Text('Previous'),
+                              SizedBox(
+                                width: 6.0,
+                              ),
+                            ],
+                          )
+                        ],
                       ),
+                    ),
+                    const SizedBox(
+                      height: 6.0,
                     ),
                     SingleChildScrollView(
                       reverse: true,
