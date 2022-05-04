@@ -10,8 +10,11 @@ class DaySelector extends StatefulWidget {
     required this.list,
     required this.leadingIcon,
     required this.onSelectedDay,
+    this.initialDay,
     this.customLeadingWidget,
   }) : super(key: key);
+
+  final int? initialDay;
 
   final List<String> list;
   final IconData leadingIcon;
@@ -47,6 +50,15 @@ class _DaySelectorState extends State<DaySelector> {
   @override
   void initState() {
     super.initState();
+
+    final initialDay = widget.initialDay;
+
+    if (initialDay != null) {
+      setState(() {
+        initialIndex = initialDay;
+      });
+    }
+
     widget.onSelectedDay(initialIndex);
   }
 

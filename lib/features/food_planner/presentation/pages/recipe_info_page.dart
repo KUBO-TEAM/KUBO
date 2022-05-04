@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_fetch_recipe_schedules_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/info_tab.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/procedure_tab.dart';
@@ -12,14 +13,22 @@ import 'package:kubo/features/food_planner/presentation/widgets/recipe_info_tabb
 import 'package:kubo/features/food_planner/presentation/widgets/schedule_tab.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/screen_dark_effect.dart';
 
+class RecipeInfoPageArguments {
+  final Recipe recipe;
+
+  RecipeInfoPageArguments({
+    required this.recipe,
+  });
+}
+
 class RecipeInfoPage extends StatefulWidget {
   static const String id = 'recipe_steps_page';
   const RecipeInfoPage({
     Key? key,
-    required this.recipe,
+    required this.arguments,
   }) : super(key: key);
 
-  final Recipe recipe;
+  final RecipeInfoPageArguments arguments;
 
   @override
   _RecipeInfoPageState createState() => _RecipeInfoPageState();
@@ -33,9 +42,26 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+
+    final createRecipeDialogState =
+        BlocProvider.of<CreateRecipeScheduleDialogBloc>(context).state;
+
+    int initialTabIndex = 0;
+
+    if (createRecipeDialogState is CreateRecipeScheduleDialogSuccess) {
+      initialTabIndex = 2;
+    }
+
+    _tabController = TabController(
+      initialIndex: initialTabIndex,
+      length: 3,
+      vsync: this,
+    );
+
     BlocProvider.of<RecipeInfoFetchRecipeSchedulesBloc>(context).add(
-      RecipeInfoFetchRecipeSchedulesFetched(recipeId: widget.recipe.id),
+      RecipeInfoFetchRecipeSchedulesFetched(
+        recipeId: widget.arguments.recipe.id,
+      ),
     );
   }
 
@@ -50,11 +76,11 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Hero(
-        tag: "recipe-img-${widget.recipe.displayPhoto}",
+        tag: "recipe-img-${widget.arguments.recipe.displayPhoto}",
         child: Stack(
           children: [
             CachedNetworkImage(
-              imageUrl: widget.recipe.displayPhoto,
+              imageUrl: widget.arguments.recipe.displayPhoto,
               width: double.infinity,
               fit: BoxFit.fill,
               alignment: Alignment.center,
@@ -116,7 +142,7 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
                                         Expanded(
                                           child: SizedBox(
                                             child: Text(
-                                              widget.recipe.name,
+                                              widget.arguments.recipe.name,
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                               style: const TextStyle(
@@ -133,7 +159,7 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
                                   const SizedBox(height: 10.0),
                                   Expanded(
                                     child: RecipeInfoPagePreviewInfo(
-                                      recipe: widget.recipe,
+                                      recipe: widget.arguments.recipe,
                                     ),
                                   ),
                                   RecipeInfoTabBar(
@@ -157,9 +183,11 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
                 child: TabBarView(
                   controller: _tabController,
                   children: [
-                    InfoTab(recipe: widget.recipe),
-                    ProcedureTab(recipe: widget.recipe),
-                    ScheduleTab(recipe: widget.recipe),
+                    InfoTab(recipe: widget.arguments.recipe),
+                    ProcedureTab(recipe: widget.arguments.recipe),
+                    ScheduleTab(
+                      recipe: widget.arguments.recipe,
+                    ),
                   ],
                 ),
               ),

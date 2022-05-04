@@ -8,10 +8,12 @@ class TimeSelector extends StatefulWidget {
     Key? key,
     required this.title,
     required this.onTimePicked,
+    this.initialTimeOfDay,
   }) : super(key: key);
 
   final String title;
   final Function(TimeOfDay?) onTimePicked;
+  final TimeOfDay? initialTimeOfDay;
 
   @override
   State<TimeSelector> createState() => _TimeSelectorState();
@@ -21,19 +23,36 @@ class _TimeSelectorState extends State<TimeSelector> {
   TimeOfDay? selectedTime;
 
   @override
+  void initState() {
+    super.initState();
+
+    if (widget.initialTimeOfDay != null) {
+      setState(() {
+        selectedTime = widget.initialTimeOfDay;
+      });
+
+      widget.onTimePicked(widget.initialTimeOfDay);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
+        final initialTimeOfDay = widget.initialTimeOfDay;
+
         TimeOfDay? timeSelected = await showTimePicker(
-          initialTime: TimeOfDay.now(),
+          initialTime: initialTimeOfDay ?? TimeOfDay.now(),
           context: context,
         );
 
-        setState(() {
-          selectedTime = timeSelected;
-        });
+        if (timeSelected != null) {
+          setState(() {
+            selectedTime = timeSelected;
+          });
 
-        widget.onTimePicked(timeSelected);
+          widget.onTimePicked(timeSelected);
+        }
       },
       child: PickerCard(
         child: Row(

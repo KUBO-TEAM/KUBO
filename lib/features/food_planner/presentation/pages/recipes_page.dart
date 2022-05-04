@@ -2,15 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/category.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/pages/recipe_info_page.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/create_recipe_schedule_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_list_tile.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/search_field.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
 import 'package:badges/badges.dart';
 
+//TODO: Dialog shows up when click app bar
+
 class RecipesPageArguments {
   final List<Category>? categories;
 
-  RecipesPageArguments({this.categories});
+  RecipesPageArguments({
+    this.categories,
+  });
 }
 
 class RecipesPage extends StatefulWidget {
@@ -131,6 +138,31 @@ class _RecipesPageState extends State<RecipesPage> {
                       itemBuilder: (BuildContext context, int index) {
                         return RecipeListTile(
                           recipe: recipes[index],
+                          onPressed: (recipe) {
+                            Navigator.pushNamed(
+                              context,
+                              RecipeInfoPage.id,
+                              arguments: RecipeInfoPageArguments(
+                                recipe: recipe,
+                              ),
+                            );
+
+                            final state =
+                                BlocProvider.of<CreateRecipeScheduleDialogBloc>(
+                                        context)
+                                    .state;
+
+                            if (state is CreateRecipeScheduleDialogSuccess) {
+                              showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return CreateRecipeScheduleDialog(
+                                    recipe: recipe,
+                                  );
+                                },
+                              );
+                            }
+                          },
                         );
                       },
                     );

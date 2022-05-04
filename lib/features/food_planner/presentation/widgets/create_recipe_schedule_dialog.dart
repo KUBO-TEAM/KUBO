@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/list_costants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_create_recipe_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/color_selector.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/day_selector.dart';
@@ -27,19 +28,34 @@ class _CreateRecipeScheduleDialogState
   TimeOfDay? selectedStartTime;
   TimeOfDay? selectedEndTime;
   Color? selectedColor;
-  int? selecetdDay;
+  int? selectedDay;
 
   void saveSchedule() {
     BlocProvider.of<RecipeInfoCreateRecipeScheduleBloc>(context).add(
       RecipeInfoCreateRecipeScheduleCreated(
         recipe: widget.recipe,
-        day: selecetdDay,
+        day: selectedDay,
         start: selectedStartTime,
         end: selectedEndTime,
         color: selectedColor,
       ),
     );
     Navigator.pop(context);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final createRecipeDialogState =
+        BlocProvider.of<CreateRecipeScheduleDialogBloc>(context).state;
+
+    if (createRecipeDialogState is CreateRecipeScheduleDialogSuccess) {
+      setState(() {
+        selectedStartTime = createRecipeDialogState.start;
+        selectedEndTime = createRecipeDialogState.end;
+        selectedDay = createRecipeDialogState.day;
+      });
+    }
   }
 
   @override
@@ -69,9 +85,10 @@ class _CreateRecipeScheduleDialogState
                 ),
                 child: DaySelector(
                   list: kDayList,
+                  initialDay: selectedDay,
                   leadingIcon: Icons.calendar_today,
                   onSelectedDay: (int? value) {
-                    selecetdDay = value;
+                    selectedDay = value;
                   },
                 ),
               ),
@@ -81,6 +98,7 @@ class _CreateRecipeScheduleDialogState
                 ),
                 child: TimeSelector(
                   title: 'Start',
+                  initialTimeOfDay: selectedStartTime,
                   onTimePicked: (TimeOfDay? value) {
                     selectedStartTime = value;
                   },
@@ -92,6 +110,7 @@ class _CreateRecipeScheduleDialogState
                 ),
                 child: TimeSelector(
                   title: 'End',
+                  initialTimeOfDay: selectedEndTime,
                   onTimePicked: (TimeOfDay? value) {
                     selectedEndTime = value;
                   },

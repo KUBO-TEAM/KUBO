@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/pages/recipe_info_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_selection_dialog.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
-// TODO: When cell click show create recipe dialog automatically and go to the schedule tab automatically
-// TODO: Clicking scheduled cell redirects to the recipe schedule without automatically opening the create dialog
-// TODO: Arrow back button
 
 const _calendarHeaderStyle = CalendarHeaderStyle(
   backgroundColor: kBrownPrimary,
@@ -108,11 +106,12 @@ class MenuPageCalendar extends StatelessWidget {
     required BuildContext context,
     required List<RecipeSchedule> recipeSchedules,
   }) {
-    dynamic schedule = details.appointments;
+    dynamic schedulesClicked = details.appointments;
     DateTime startingDate = details.date!;
+
     CalendarElement element = details.targetElement;
-    if (schedule != null) {
-      _navigateToScheduledMeal(context, schedule);
+    if (schedulesClicked != null && schedulesClicked.isNotEmpty) {
+      _navigateToScheduledMeal(context, schedulesClicked.first);
     } else if (element == CalendarElement.calendarCell) {
       _cellPressed(context, startingDate);
     }
@@ -120,16 +119,31 @@ class MenuPageCalendar extends StatelessWidget {
 
   void _navigateToScheduledMeal(
     BuildContext context,
-    dynamic recipeSchedule,
+    RecipeSchedule recipeSchedule,
   ) {
-    // );
+    BlocProvider.of<CreateRecipeScheduleDialogBloc>(context).add(
+      CreateRecipeScheduleDialogInitializeState(),
+    );
+
+    Navigator.pushNamed(
+      context,
+      RecipeInfoPage.id,
+      arguments: RecipeInfoPageArguments(
+        recipe: recipeSchedule.recipe,
+      ),
+    );
   }
 
   void _cellPressed(
     BuildContext context,
-    DateTime startingDate,
+    DateTime startedTime,
   ) {
-    _showIngredientsPickerDialog(context);
+    BlocProvider.of<CreateRecipeScheduleDialogBloc>(context).add(
+      CreateRecipeScheduleDialogDateTimeSaved(startedTime: startedTime),
+    );
+    _showIngredientsPickerDialog(
+      context,
+    );
   }
 
   Future<void> _showIngredientsPickerDialog(
@@ -216,22 +230,37 @@ class MenuPageCalendar extends StatelessWidget {
           recipeSchedules = state.recipeSchedules;
         }
 
-        return SfCalendar(
-          todayHighlightColor: Colors.green,
-          dataSource: ScheduleDataSource(recipeSchedules),
-          timeSlotViewSettings: _calendarTimeSlotViewSettings,
-          headerStyle: _calendarHeaderStyle,
-          viewHeaderStyle: _calendarViewHeaderStyle,
-          view: CalendarView.week,
-          weekNumberStyle: _calendarWeekNumberStyle,
-          firstDayOfWeek: 1,
-          onTap: (CalendarTapDetails details) {
-            _calendarTapped(
-              details: details,
-              context: context,
-              recipeSchedules: recipeSchedules,
-            );
-          },
+        return Stack(
+          children: [
+            SfCalendar(
+              todayHighlightColor: Colors.green,
+              dataSource: ScheduleDataSource(recipeSchedules),
+              timeSlotViewSettings: _calendarTimeSlotViewSettings,
+              headerStyle: _calendarHeaderStyle,
+              viewHeaderStyle: _calendarViewHeaderStyle,
+              view: CalendarView.week,
+              weekNumberStyle: _calendarWeekNumberStyle,
+              firstDayOfWeek: 1,
+              onTap: (CalendarTapDetails details) {
+                _calendarTapped(
+                  details: details,
+                  context: context,
+                  recipeSchedules: recipeSchedules,
+                );
+              },
+            ),
+            IconButton(
+              padding: const EdgeInsets.only(
+                left: 10.0,
+                bottom: 10.0,
+              ),
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
         );
       },
     );

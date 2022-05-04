@@ -2,25 +2,24 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
-import 'package:kubo/features/food_planner/presentation/pages/recipe_info_page.dart';
 import 'package:skeletons/skeletons.dart';
 
 class RecipeListTile extends StatelessWidget {
   const RecipeListTile({
     Key? key,
     required this.recipe,
+    required this.onPressed,
   }) : super(key: key);
 
   final Recipe recipe;
+  final Function(Recipe) onPressed;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(
-        context,
-        RecipeInfoPage.id,
-        arguments: recipe,
-      ),
+      onTap: () {
+        onPressed(recipe);
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
         child: Card(

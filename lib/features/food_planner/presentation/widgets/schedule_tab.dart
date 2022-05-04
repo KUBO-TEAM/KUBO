@@ -13,7 +13,10 @@ import 'package:kubo/features/food_planner/presentation/widgets/middle_timeline.
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
 
 class ScheduleTab extends StatefulWidget {
-  const ScheduleTab({Key? key, required this.recipe}) : super(key: key);
+  const ScheduleTab({
+    Key? key,
+    required this.recipe,
+  }) : super(key: key);
 
   final Recipe recipe;
 

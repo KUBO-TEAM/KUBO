@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/widgets/splash_page.dart';
 import 'package:kubo/core/widgets/welcome_page.dart';
-import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/presentation/pages/agenda_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/home_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/menu_history_page.dart';
@@ -54,9 +53,9 @@ class AppRouter {
           ),
         );
       case RecipeInfoPage.id:
-        final recipe = routeSettings.arguments as Recipe;
+        final arguments = routeSettings.arguments as RecipeInfoPageArguments;
         return MaterialPageRoute(
-          builder: (_) => RecipeInfoPage(recipe: recipe),
+          builder: (_) => RecipeInfoPage(arguments: arguments),
         );
       case ReminderPage.id:
         return MaterialPageRoute(
