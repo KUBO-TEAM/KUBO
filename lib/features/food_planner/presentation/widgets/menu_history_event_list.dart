@@ -40,7 +40,7 @@ class MenuHistoryEventsList extends StatelessWidget {
                               topRight: Radius.circular(40),
                               bottomRight: Radius.circular(40),
                             ),
-                            color: Colors.grey.shade400,
+                            color: Colors.grey.shade300,
                           ),
                           padding: const EdgeInsets.only(left: 25, right: 15),
                           child: const Center(

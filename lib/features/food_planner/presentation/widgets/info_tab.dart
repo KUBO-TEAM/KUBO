@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:pod_player/pod_player.dart';
 
 class InfoTab extends StatefulWidget {
   const InfoTab({
     Key? key,
     required this.recipe,
-    required this.player,
+    // required this.player,
   }) : super(key: key);
 
   final Recipe recipe;
-  final YoutubePlayer player;
+  // final YoutubePlayer player;
 
   @override
   State<InfoTab> createState() => _InfoTabState();
@@ -19,8 +19,28 @@ class InfoTab extends StatefulWidget {
 
 class _InfoTabState extends State<InfoTab>
     with AutomaticKeepAliveClientMixin<InfoTab> {
+  late PodPlayerController _podController;
+
+  @override
+  void initState() {
+    _podController = PodPlayerController(
+        playVideoFrom: PlayVideoFrom.youtube('https://youtu.be/BIarUjm4U-0'))
+      ..initialise();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _podController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Container(
       color: Colors.white,
       child: ListView(
@@ -29,7 +49,7 @@ class _InfoTabState extends State<InfoTab>
         ),
         shrinkWrap: true,
         children: [
-          widget.player,
+          PodVideoPlayer(controller: _podController),
           const SizedBox(height: 16.0),
           Container(
             margin: const EdgeInsets.symmetric(

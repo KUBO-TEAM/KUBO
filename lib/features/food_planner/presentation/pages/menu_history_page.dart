@@ -31,7 +31,7 @@ const _calendarHeaderStyle = HeaderStyle(
 
 const _calendarStyle = CalendarStyle(
   selectedDecoration: BoxDecoration(
-    color: Colors.green,
+    color: kGreenPrimary,
     shape: BoxShape.circle,
   ),
   todayDecoration: BoxDecoration(
@@ -39,7 +39,7 @@ const _calendarStyle = CalendarStyle(
     shape: BoxShape.circle,
   ),
   markerDecoration: BoxDecoration(
-    color: Colors.green,
+    color: kGreenPrimary,
     shape: BoxShape.circle,
   ),
   weekendTextStyle: TextStyle(
@@ -79,13 +79,16 @@ class MenuHistoryPage extends StatefulWidget {
 
 class _MenuHistoryPageState extends State<MenuHistoryPage> {
   late final ValueNotifier<List<RecipeSchedule>> _selectedEvents;
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  CalendarFormat _calendarFormat = CalendarFormat.twoWeeks;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<MenuHistoryBloc>(context)
+        .add(MenuHistoryRecipeScheduleFetched());
+
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(
       _getListOfRecipeScheduleForDay(

@@ -75,29 +75,29 @@ class RecipeScheduleLocalDataSourceImpl
       hashCode: getHashCode,
     );
 
-    // final Map<DateTime, List<RecipeScheduleModel>> scheduleMap = {};
+    final Map<DateTime, List<RecipeSchedule>> scheduleMap = {};
 
-    // for (var recipeSchedule in recipeScheduleBox.values) {
-    //   final key = DateTime(
-    //     recipeSchedule.start.year,
-    //     recipeSchedule.start.month,
-    //     recipeSchedule.start.day,
-    //   );
+    for (var recipeSchedule in recipeScheduleBox.values) {
+      final key = DateTime(
+        recipeSchedule.start.year,
+        recipeSchedule.start.month,
+        recipeSchedule.start.day,
+      );
 
-    //   if (scheduleMap[key] == null) {
-    //     scheduleMap[key] = [recipeSchedule];
-    //   } else {
-    //     final scheduleMapList = scheduleMap[key];
+      if (scheduleMap[key] == null) {
+        scheduleMap[key] = [recipeSchedule];
+      } else {
+        final scheduleMapList = scheduleMap[key];
 
-    //     if (scheduleMapList != null) {
-    //       scheduleMapList.add(recipeSchedule);
+        if (scheduleMapList != null) {
+          scheduleMapList.add(recipeSchedule);
 
-    //       scheduleMap[key] = scheduleMapList;
-    //     }
-    //   }
-    // }
+          scheduleMap[key] = scheduleMapList;
+        }
+      }
+    }
 
-    // scheduleLinkedHashMap.addAll(scheduleMap);
+    scheduleLinkedHashMap.addAll(scheduleMap);
 
     return scheduleLinkedHashMap;
   }

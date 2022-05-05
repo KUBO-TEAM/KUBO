@@ -54,8 +54,8 @@ class MenuHistoryListTile extends StatelessWidget {
               // '7:00 - 8:00 am',
               style: kCaptionTextStyle,
             ),
-            const Text(
-              'test',
+            Text(
+              recipeSchedule.recipe.name,
               style: kPreSubTitleTextStyle,
             ),
           ],

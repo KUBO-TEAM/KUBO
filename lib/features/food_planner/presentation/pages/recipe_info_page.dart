@@ -12,7 +12,6 @@ import 'package:kubo/features/food_planner/presentation/widgets/recipe_info_page
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_info_tabbar.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/schedule_tab.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/screen_dark_effect.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class RecipeInfoPageArguments {
   final Recipe recipe;
@@ -40,7 +39,6 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
   final List<String> recipeInfoTab = ['Info', 'Procedure', 'Schedule'];
   late TabController _tabController;
 
-  late YoutubePlayerController _youtubeController;
   @override
   void initState() {
     super.initState();
@@ -59,13 +57,6 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
       length: 3,
       vsync: this,
     );
-    _youtubeController = YoutubePlayerController(
-      initialVideoId: 'SX9kRGdY_IM',
-      flags: const YoutubePlayerFlags(
-        autoPlay: true,
-        disableDragSeek: true,
-      ),
-    );
 
     BlocProvider.of<RecipeInfoFetchRecipeSchedulesBloc>(context).add(
       RecipeInfoFetchRecipeSchedulesFetched(
@@ -77,16 +68,15 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
   @override
   void dispose() {
     _tabController.dispose();
-    _youtubeController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final player = YoutubePlayer(
-      controller: _youtubeController,
-      aspectRatio: 16 / 9,
-    );
+    // final player = YoutubePlayer(
+    //   controller: _youtubeController,
+    //   aspectRatio: 16 / 9,
+    // );
     return Scaffold(
       body: Hero(
         tag: "recipe-img-${widget.arguments.recipe.displayPhoto}",
@@ -195,17 +185,14 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
                 transform: Matrix4.translationValues(0.0, -1.0, 0.0),
                 child: Column(
                   children: [
-                    SizedBox(
-                      child: player,
-                      height: 0,
-                    ),
+                    // player,
+
                     Expanded(
                       child: TabBarView(
                         controller: _tabController,
                         children: [
                           InfoTab(
                             recipe: widget.arguments.recipe,
-                            player: player,
                           ),
                           ProcedureTab(recipe: widget.arguments.recipe),
                           ScheduleTab(

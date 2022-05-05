@@ -159,54 +159,7 @@ class MenuPageCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MenuBloc, MenuState>(
-      listener: (context, state) {
-        if (state is MenuRecipeScheduleUpdateFetchFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: kBrownPrimary,
-              content: Row(
-                children: const [
-                  Icon(
-                    Icons.thumb_up,
-                    color: Colors.white,
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(
-                    "Fail to update recipe, let's try it later",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-
-        if (state is MenuRecipeScheduleUpdateFetchSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: kGreenPrimary,
-              content: Row(
-                children: const [
-                  Icon(
-                    Icons.check_circle,
-                    color: Colors.white,
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(
-                    'Successfully update your scheduled recipes',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-      },
+    return BlocBuilder<MenuBloc, MenuState>(
       builder: (_, state) {
         List<RecipeSchedule> recipeSchedules = [];
 

@@ -44,6 +44,8 @@ class _ScheduleTabState extends State<ScheduleTab>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return BlocListener<RecipeInfoCreateRecipeScheduleBloc,
         RecipeInfoCreateRecipeScheduleState>(
       listener: (context, state) {

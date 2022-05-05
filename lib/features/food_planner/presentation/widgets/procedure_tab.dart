@@ -33,6 +33,8 @@ class _ProcedureTabState extends State<ProcedureTab>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.only(
@@ -40,126 +42,126 @@ class _ProcedureTabState extends State<ProcedureTab>
         right: 16.0,
         top: 16.0,
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Ingredients: ',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+      child: ListView(
+        padding: const EdgeInsets.symmetric(
+          vertical: 16.0,
+        ),
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Ingredients: ',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
                 ),
-                RecipeInfoIconWithText(
-                  icon: Icons.group,
-                  title: 'people',
-                  data: widget.recipe.servings.toString(),
-                  color: kBlackPrimary,
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            DataTable(
-              showCheckboxColumn: true,
-              columns: const [
-                DataColumn(
-                    label: Text(
-                  'Quantity',
-                  style: TextStyle(fontSize: 16.0),
-                )),
-                DataColumn(
+              ),
+              RecipeInfoIconWithText(
+                icon: Icons.group,
+                title: 'people',
+                data: widget.recipe.servings.toString(),
+                color: kBlackPrimary,
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          DataTable(
+            showCheckboxColumn: true,
+            columns: const [
+              DataColumn(
                   label: Text(
-                    'Ingredient',
-                    style: TextStyle(fontSize: 16.0),
-                  ),
+                'Quantity',
+                style: TextStyle(fontSize: 16.0),
+              )),
+              DataColumn(
+                label: Text(
+                  'Ingredient',
+                  style: TextStyle(fontSize: 16.0),
                 ),
-              ],
-              rows: [
-                for (Ingredient ingredient in widget.recipe.ingredients)
-                  DataRow(
-                    selected: isIngredientSelected(ingredient),
-                    cells: [
-                      DataCell(
-                        Center(
-                          child: Text(
-                            ingredient.quantity.toString(),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      DataCell(
-                        Text(
-                          ingredient.name,
+              ),
+            ],
+            rows: [
+              for (Ingredient ingredient in widget.recipe.ingredients)
+                DataRow(
+                  selected: isIngredientSelected(ingredient),
+                  cells: [
+                    DataCell(
+                      Center(
+                        child: Text(
+                          ingredient.quantity.toString(),
                           style: const TextStyle(
+                            fontWeight: FontWeight.bold,
                             fontSize: 16.0,
                           ),
                         ),
                       ),
-                    ],
-                    onSelectChanged: (bool? value) {
-                      if (value == true) {
-                        setState(() {
-                          selectedIngredients.add(ingredient);
-                        });
-                      } else {
-                        setState(() {
-                          selectedIngredients.remove(ingredient);
-                        });
-                      }
-                    },
-                  ),
-              ],
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            const Text(
-              'Instructions: ',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(
-              height: 16.0,
-            ),
-            ListView.separated(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              itemBuilder: (context, index) => RichText(
-                text: TextSpan(
-                  text: '${(index + 1).toString()}. ',
-                  style: TextStyle(
-                    color: DefaultTextStyle.of(context).style.color,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: widget.recipe.instructions[index],
-                      style: const TextStyle(
-                        fontWeight: FontWeight.normal,
+                    ),
+                    DataCell(
+                      Text(
+                        ingredient.name,
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                        ),
                       ),
                     ),
                   ],
+                  onSelectChanged: (bool? value) {
+                    if (value == true) {
+                      setState(() {
+                        selectedIngredients.add(ingredient);
+                      });
+                    } else {
+                      setState(() {
+                        selectedIngredients.remove(ingredient);
+                      });
+                    }
+                  },
                 ),
-              ),
-              separatorBuilder: (context, index) => const SizedBox(
-                height: 8.0,
-              ),
-              itemCount: widget.recipe.instructions.length,
+            ],
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          const Text(
+            'Instructions: ',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
             ),
-          ],
-        ),
+          ),
+          const SizedBox(
+            height: 16.0,
+          ),
+          ListView.separated(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            itemBuilder: (context, index) => RichText(
+              text: TextSpan(
+                text: '${(index + 1).toString()}. ',
+                style: TextStyle(
+                  color: DefaultTextStyle.of(context).style.color,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: widget.recipe.instructions[index],
+                    style: const TextStyle(
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            separatorBuilder: (context, index) => const SizedBox(
+              height: 8.0,
+            ),
+            itemCount: widget.recipe.instructions.length,
+          ),
+        ],
       ),
     );
   }
