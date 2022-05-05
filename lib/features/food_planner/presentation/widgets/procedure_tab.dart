@@ -16,7 +16,8 @@ class ProcedureTab extends StatefulWidget {
   State<ProcedureTab> createState() => _ProcedureTabState();
 }
 
-class _ProcedureTabState extends State<ProcedureTab> {
+class _ProcedureTabState extends State<ProcedureTab>
+    with AutomaticKeepAliveClientMixin<ProcedureTab> {
   List<Ingredient> selectedIngredients = [];
 
   bool isIngredientSelected(Ingredient ingredient) {
@@ -162,4 +163,7 @@ class _ProcedureTabState extends State<ProcedureTab> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -24,7 +24,8 @@ class ScheduleTab extends StatefulWidget {
   State<ScheduleTab> createState() => _ScheduleTabState();
 }
 
-class _ScheduleTabState extends State<ScheduleTab> {
+class _ScheduleTabState extends State<ScheduleTab>
+    with AutomaticKeepAliveClientMixin<ScheduleTab> {
   Future<void> _showCreateScheduleDialog() async {
     await showDialog(
       context: context,
@@ -213,4 +214,7 @@ class _ScheduleTabState extends State<ScheduleTab> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

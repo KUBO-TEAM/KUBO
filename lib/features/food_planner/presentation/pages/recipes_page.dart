@@ -10,8 +10,6 @@ import 'package:kubo/features/food_planner/presentation/widgets/search_field.dar
 import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
 import 'package:badges/badges.dart';
 
-//TODO: Dialog shows up when click app bar
-
 class RecipesPageArguments {
   final List<Category>? categories;
 
