@@ -74,12 +74,14 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     Either<Failure, List<Recipe>> failOrCachedRecipes,
   ) async {
     await failOrCachedRecipes.fold((failure) async {}, (listOfRecipes) async {
-      emit(
-        RecipeSuccess(
-          recipes: listOfRecipes,
-          cached: listOfRecipes,
-        ),
-      );
+      if (listOfRecipes.isNotEmpty) {
+        emit(
+          RecipeSuccess(
+            recipes: listOfRecipes,
+            cached: listOfRecipes,
+          ),
+        );
+      }
     });
 
     // Fetch recipes in the server
