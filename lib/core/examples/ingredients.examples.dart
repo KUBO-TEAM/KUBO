@@ -1,14 +1,13 @@
-import 'package:kubo/features/food_planner/data/models/category_model.dart';
+import 'package:kubo/features/food_planner/domain/entities/category.dart';
 
-List<CategoryModel> kCategoriesExample = [
-  CategoryModel(name: 'Kangkong', quantity: 4, dateCreated: DateTime.now()),
-  CategoryModel(name: 'Talong', quantity: 12, dateCreated: DateTime.now()),
-  CategoryModel(name: 'Carrot', quantity: 4, dateCreated: DateTime.now()),
-  CategoryModel(name: 'Repolyo', quantity: 4, dateCreated: DateTime.now()),
-  CategoryModel(name: 'Sayote', quantity: 4, dateCreated: DateTime.now()),
-  CategoryModel(name: 'Kamatis', quantity: 4, dateCreated: DateTime.now()),
-  CategoryModel(name: 'Upo', quantity: 4, dateCreated: DateTime.now()),
-  CategoryModel(name: 'Ampalaya', quantity: 4, dateCreated: DateTime.now()),
-  CategoryModel(name: 'Sitaw', quantity: 4, dateCreated: DateTime.now()),
-  CategoryModel(name: 'Talong', quantity: 4, dateCreated: DateTime.now()),
+List<Category> kCategoriesExample = [
+  Category(name: 'KangKong', quantity: 4, dateCreated: DateTime.now()),
+  Category(name: 'Talong', quantity: 12, dateCreated: DateTime.now()),
+  Category(name: 'Carrot', quantity: 4, dateCreated: DateTime.now()),
+  Category(name: 'Repolyo', quantity: 4, dateCreated: DateTime.now()),
+  Category(name: 'Sayote', quantity: 4, dateCreated: DateTime.now()),
+  Category(name: 'Kamatis', quantity: 4, dateCreated: DateTime.now()),
+  Category(name: 'Upo', quantity: 4, dateCreated: DateTime.now()),
+  Category(name: 'Ampalaya', quantity: 4, dateCreated: DateTime.now()),
+  Category(name: 'Sitaw', quantity: 4, dateCreated: DateTime.now()),
 ];

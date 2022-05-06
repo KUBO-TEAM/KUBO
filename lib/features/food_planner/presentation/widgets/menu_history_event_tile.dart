@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kubo/core/constants/text_styles_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
+import 'package:kubo/features/food_planner/presentation/pages/recipe_info_page.dart';
 
 class MenuHistoryListTile extends StatelessWidget {
   const MenuHistoryListTile({
@@ -42,23 +43,38 @@ class MenuHistoryListTile extends StatelessWidget {
               ),
           ],
         ),
-        const SizedBox(
-          width: 10,
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              _formatDateTime(recipeSchedule.start, recipeSchedule.end),
-              // '7:00 - 8:00 am',
-              style: kCaptionTextStyle,
+        Expanded(
+          child: Material(
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  RecipeInfoPage.id,
+                  arguments: RecipeInfoPageArguments(
+                    recipe: recipeSchedule.recipe,
+                  ),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      _formatDateTime(recipeSchedule.start, recipeSchedule.end),
+                      // '7:00 - 8:00 am',
+                      style: kCaptionTextStyle,
+                    ),
+                    Text(
+                      recipeSchedule.recipe.name,
+                      style: kPreSubTitleTextStyle,
+                    ),
+                  ],
+                ),
+              ),
             ),
-            Text(
-              recipeSchedule.recipe.name,
-              style: kPreSubTitleTextStyle,
-            ),
-          ],
+          ),
         )
       ],
     );

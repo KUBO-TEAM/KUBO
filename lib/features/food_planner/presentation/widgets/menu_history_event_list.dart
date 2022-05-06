@@ -45,7 +45,7 @@ class MenuHistoryEventsList extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 25, right: 15),
                           child: const Center(
                             child: Text(
-                              'Your event',
+                              'Your schedules',
                               style: TextStyle(
                                 fontFamily: 'Arvo',
                                 color: kBlackPrimary,

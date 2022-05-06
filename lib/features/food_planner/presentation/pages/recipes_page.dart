@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/category.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipe_info_page.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/create_recipe_schedule_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_list_tile.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/search_field.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
-import 'package:badges/badges.dart';
 
 class RecipesPageArguments {
   final List<Category>? categories;
@@ -66,28 +63,6 @@ class _RecipesPageState extends State<RecipesPage> {
             fontSize: 30.0,
           ),
         ),
-        actions: <Widget>[
-          if (widget.arguments.categories != null)
-            IconButton(
-              icon: Badge(
-                badgeContent: Text(
-                  widget.arguments.categories!.length.toString(),
-                  style: const TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                child: const Icon(
-                  Icons.restaurant,
-                  color: kBlackPrimary,
-                ),
-              ),
-              tooltip: 'Show Snackbar',
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('This is a snackbar')));
-              },
-            ),
-        ],
       ),
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -144,22 +119,6 @@ class _RecipesPageState extends State<RecipesPage> {
                                 recipe: recipe,
                               ),
                             );
-
-                            final state =
-                                BlocProvider.of<CreateRecipeScheduleDialogBloc>(
-                                        context)
-                                    .state;
-
-                            if (state is CreateRecipeScheduleDialogSuccess) {
-                              showDialog(
-                                context: context,
-                                builder: (_) {
-                                  return CreateRecipeScheduleDialog(
-                                    recipe: recipe,
-                                  );
-                                },
-                              );
-                            }
                           },
                         );
                       },

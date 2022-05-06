@@ -19,14 +19,18 @@ class InfoTab extends StatefulWidget {
 
 class _InfoTabState extends State<InfoTab>
     with AutomaticKeepAliveClientMixin<InfoTab> {
-  late PodPlayerController _podController;
+  PodPlayerController? _podController;
 
   @override
   void initState() {
-    _podController = PodPlayerController(
-        playVideoFrom: PlayVideoFrom.youtube('https://youtu.be/BIarUjm4U-0'))
-      ..initialise();
-
+    if (widget.recipe.youtubeId != null &&
+        widget.recipe.youtubeId!.isNotEmpty) {
+      _podController = PodPlayerController(
+        playVideoFrom: PlayVideoFrom.youtube(
+          'https://youtu.be/${widget.recipe.youtubeId}',
+        ),
+      )..initialise();
+    }
     super.initState();
   }
 
@@ -34,12 +38,14 @@ class _InfoTabState extends State<InfoTab>
   void dispose() {
     super.dispose();
 
-    _podController.dispose();
+    _podController?.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    final podController = _podController;
 
     return Container(
       color: Colors.white,
@@ -49,8 +55,8 @@ class _InfoTabState extends State<InfoTab>
         ),
         shrinkWrap: true,
         children: [
-          PodVideoPlayer(controller: _podController),
-          const SizedBox(height: 16.0),
+          if (podController != null) PodVideoPlayer(controller: podController),
+          if (podController != null) const SizedBox(height: 16.0),
           Container(
             margin: const EdgeInsets.symmetric(
               horizontal: 16.0,

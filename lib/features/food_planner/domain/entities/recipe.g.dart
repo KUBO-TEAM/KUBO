@@ -26,18 +26,19 @@ class RecipeAdapter extends TypeAdapter<Recipe> {
       cookTime: fields[6] as int,
       servings: fields[7] as int,
       reference: fields[8] as String,
-      displayPhoto: fields[9] as String,
-      categories: (fields[10] as List).cast<String>(),
-      ingredients: (fields[11] as List).cast<Ingredient>(),
-      instructions: (fields[12] as List).cast<String>(),
-      createdAt: fields[13] as String,
+      youtubeId: fields[9] as String?,
+      displayPhoto: fields[10] as String,
+      categories: (fields[11] as List).cast<String>(),
+      ingredients: (fields[12] as List).cast<Ingredient>(),
+      instructions: (fields[13] as List).cast<String>(),
+      createdAt: fields[14] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Recipe obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(15)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -57,14 +58,16 @@ class RecipeAdapter extends TypeAdapter<Recipe> {
       ..writeByte(8)
       ..write(obj.reference)
       ..writeByte(9)
-      ..write(obj.displayPhoto)
+      ..write(obj.youtubeId)
       ..writeByte(10)
-      ..write(obj.categories)
+      ..write(obj.displayPhoto)
       ..writeByte(11)
-      ..write(obj.ingredients)
+      ..write(obj.categories)
       ..writeByte(12)
-      ..write(obj.instructions)
+      ..write(obj.ingredients)
       ..writeByte(13)
+      ..write(obj.instructions)
+      ..writeByte(14)
       ..write(obj.createdAt);
   }
 

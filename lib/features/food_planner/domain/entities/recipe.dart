@@ -34,18 +34,21 @@ class Recipe extends Equatable {
   final String reference;
 
   @HiveField(9)
-  final String displayPhoto;
+  final String? youtubeId;
 
   @HiveField(10)
-  final List<String> categories;
+  final String displayPhoto;
 
   @HiveField(11)
-  final List<Ingredient> ingredients;
+  final List<String> categories;
 
   @HiveField(12)
-  final List<String> instructions;
+  final List<Ingredient> ingredients;
 
   @HiveField(13)
+  final List<String> instructions;
+
+  @HiveField(14)
   final String createdAt;
 
   const Recipe({
@@ -58,6 +61,7 @@ class Recipe extends Equatable {
     required this.cookTime,
     required this.servings,
     required this.reference,
+    this.youtubeId,
     required this.displayPhoto,
     required this.categories,
     required this.ingredients,

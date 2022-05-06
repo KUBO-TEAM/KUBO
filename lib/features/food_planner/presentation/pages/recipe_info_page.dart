@@ -5,6 +5,7 @@ import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_fetch_recipe_schedules_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/create_recipe_schedule_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/info_tab.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/procedure_tab.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_clipper.dart';
@@ -50,6 +51,16 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
 
     if (createRecipeDialogState is CreateRecipeScheduleDialogSuccess) {
       initialTabIndex = 2;
+      Future.delayed(const Duration(milliseconds: 800), () {
+        showDialog(
+          context: context,
+          builder: (_) {
+            return CreateRecipeScheduleDialog(
+              recipe: widget.arguments.recipe,
+            );
+          },
+        );
+      });
     }
 
     _tabController = TabController(
@@ -73,10 +84,6 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
 
   @override
   Widget build(BuildContext context) {
-    // final player = YoutubePlayer(
-    //   controller: _youtubeController,
-    //   aspectRatio: 16 / 9,
-    // );
     return Scaffold(
       body: Hero(
         tag: "recipe-img-${widget.arguments.recipe.displayPhoto}",

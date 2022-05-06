@@ -13,6 +13,7 @@ class RecipeModel extends Recipe {
     required int cookTime,
     required int servings,
     required String reference,
+    String? youtubeId,
     required String displayPhoto,
     required List<String> categories,
     required List<Ingredient> ingredients,
@@ -28,6 +29,7 @@ class RecipeModel extends Recipe {
           cookTime: cookTime,
           servings: servings,
           reference: reference,
+          youtubeId: youtubeId,
           displayPhoto: displayPhoto,
           categories: categories,
           ingredients: ingredients,
@@ -46,6 +48,7 @@ class RecipeModel extends Recipe {
       cookTime: (json['cook_time'] as num).toInt(),
       servings: (json['servings'] as num).toInt(),
       reference: json['reference'],
+      youtubeId: json['youtubeId'],
       displayPhoto: json['displayPhoto'],
       categories: List<String>.from(json['categories']),
       ingredients: List<Ingredient>.from((json['ingredients'] as List).map(
