@@ -47,7 +47,7 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
                         style: TextStyle(
                           color: kBlackPrimary,
                           fontFamily: 'Montserrat Bold',
-                          fontSize: 18.0,
+                          fontSize: 16.0,
                         ),
                       ),
                     ),
@@ -57,7 +57,7 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
                         style: TextStyle(
                           color: kBlackPrimary,
                           fontFamily: 'Montserrat Bold',
-                          fontSize: 18.0,
+                          fontSize: 16.0,
                         ),
                       ),
                     ),
@@ -73,7 +73,7 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
                               style: const TextStyle(
                                 color: kBlackPrimary,
                                 fontFamily: 'Montserrat ',
-                                fontSize: 16.0,
+                                fontSize: 14.0,
                               ),
                             ),
                           ),
@@ -83,7 +83,7 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
                               style: const TextStyle(
                                 color: kBlackPrimary,
                                 fontFamily: 'Montserrat ',
-                                fontSize: 16.0,
+                                fontSize: 14.0,
                               ),
                             ),
                           ),

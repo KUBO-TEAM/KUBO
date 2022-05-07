@@ -40,21 +40,21 @@ class _HomePageState extends State<HomePage> {
             ),
             WeeklyReport(),
             SizedBox(
-              height: 32.0,
+              height: 16.0,
             ),
             EventPlan(
               title: 'Today',
               date: 'December 28, 2021',
             ),
             SizedBox(
-              height: 32.0,
+              height: 16.0,
             ),
             EventPlan(
               title: 'Tomorrow',
               date: 'December 29, 2021',
             ),
             SizedBox(
-              height: 32.0,
+              height: 16.0,
             ),
             DailyPlan(),
           ],
