@@ -54,21 +54,19 @@ class RecipeListTile extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(16),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(
-                      width: 100,
-                      child: Text(
-                        recipe.name,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        maxLines: 1,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    Text(
+                      recipe.name,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: false,
+                      maxLines: 1,
+                      style: const TextStyle(
+                        color: kBlackPrimary,
+                        fontFamily: 'Montserrat Bold',
+                        fontSize: 16.0,
                       ),
                     ),
                     const SizedBox(
@@ -79,7 +77,9 @@ class RecipeListTile extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.fade,
                       style: const TextStyle(
-                        fontSize: 11,
+                        color: kBlackPrimary,
+                        fontFamily: 'Montserrat',
+                        fontSize: 14.0,
                       ),
                     ),
                   ],

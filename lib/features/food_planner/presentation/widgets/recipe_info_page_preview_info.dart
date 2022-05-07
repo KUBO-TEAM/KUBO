@@ -33,7 +33,7 @@ class RecipeInfoPagePreviewInfo extends StatelessWidget {
                 schedule,
                 style: const TextStyle(
                   color: Colors.white,
-                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat Bold',
                   fontSize: 16.0,
                 ),
               );

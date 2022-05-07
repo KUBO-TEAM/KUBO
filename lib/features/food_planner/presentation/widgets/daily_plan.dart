@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/core/constants/text_styles_constants.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/icon_title.dart';
 
 const _title = 'Daily Schedule';
@@ -57,7 +57,11 @@ class DailyPlan extends StatelessWidget {
                     ),
                     Text(
                       'Adobong Sitaw',
-                      style: kSubTitleTextStyle,
+                      style: TextStyle(
+                        color: kBlackPrimary,
+                        fontFamily: 'Montserrat Bold',
+                        fontSize: 16.0,
+                      ),
                     ),
                   ],
                 ),
@@ -66,6 +70,11 @@ class DailyPlan extends StatelessWidget {
                 ),
                 const Text(
                   '11:00 AM - 2:00 PM',
+                  style: TextStyle(
+                    color: kBlackPrimary,
+                    fontFamily: 'Montserrat',
+                    fontSize: 13.0,
+                  ),
                 ),
                 const SizedBox(
                   height: 8.0,
@@ -91,13 +100,22 @@ class DailyPlan extends StatelessWidget {
                       children: const [
                         Text(
                           'Tinolang Isda',
-                          style: kPreSubTitleTextStyle,
+                          style: TextStyle(
+                            color: kBlackPrimary,
+                            fontFamily: 'Montserrat Bold',
+                            fontSize: 16.0,
+                          ),
                         ),
                         SizedBox(
                           height: 5.0,
                         ),
                         Text(
                           '11:00 AM - 2:00 PM',
+                          style: TextStyle(
+                            color: kBlackPrimary,
+                            fontFamily: 'Montserrat',
+                            fontSize: 13.0,
+                          ),
                         ),
                       ],
                     ),
@@ -121,7 +139,11 @@ class DailyPlan extends StatelessWidget {
                         ),
                         Text(
                           'Show more',
-                          style: kCaptionTextStyle,
+                          style: TextStyle(
+                            color: kBlackPrimary,
+                            fontFamily: 'Montserrat',
+                            fontSize: 14.0,
+                          ),
                         ),
                       ],
                     ),

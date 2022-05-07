@@ -53,8 +53,9 @@ class _ProcedureTabState extends State<ProcedureTab>
               const Text(
                 'Ingredients: ',
                 style: TextStyle(
+                  color: kBlackPrimary,
                   fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat Bold',
                 ),
               ),
               RecipeInfoIconWithText(
@@ -72,14 +73,23 @@ class _ProcedureTabState extends State<ProcedureTab>
             showCheckboxColumn: true,
             columns: const [
               DataColumn(
-                  label: Text(
-                'Quantity',
-                style: TextStyle(fontSize: 16.0),
-              )),
+                label: Text(
+                  'Quantity',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: kBlackPrimary,
+                    fontFamily: 'Montserrat Bold',
+                  ),
+                ),
+              ),
               DataColumn(
                 label: Text(
                   'Ingredient',
-                  style: TextStyle(fontSize: 16.0),
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: kBlackPrimary,
+                    fontFamily: 'Montserrat Bold',
+                  ),
                 ),
               ),
             ],
@@ -93,8 +103,9 @@ class _ProcedureTabState extends State<ProcedureTab>
                         child: Text(
                           ingredient.quantity.toString(),
                           style: const TextStyle(
-                            fontWeight: FontWeight.bold,
                             fontSize: 16.0,
+                            color: kBlackPrimary,
+                            fontFamily: 'Montserrat',
                           ),
                         ),
                       ),
@@ -104,6 +115,8 @@ class _ProcedureTabState extends State<ProcedureTab>
                         ingredient.name,
                         style: const TextStyle(
                           fontSize: 16.0,
+                          color: kBlackPrimary,
+                          fontFamily: 'Montserrat',
                         ),
                       ),
                     ),
@@ -129,11 +142,12 @@ class _ProcedureTabState extends State<ProcedureTab>
             'Instructions: ',
             style: TextStyle(
               fontSize: 20.0,
-              fontWeight: FontWeight.bold,
+              color: kBlackPrimary,
+              fontFamily: 'Montserrat Bold',
             ),
           ),
           const SizedBox(
-            height: 16.0,
+            height: 8.0,
           ),
           ListView.separated(
             padding: EdgeInsets.zero,
@@ -141,16 +155,18 @@ class _ProcedureTabState extends State<ProcedureTab>
             itemBuilder: (context, index) => RichText(
               text: TextSpan(
                 text: '${(index + 1).toString()}. ',
-                style: TextStyle(
-                  color: DefaultTextStyle.of(context).style.color,
-                  fontWeight: FontWeight.bold,
+                style: const TextStyle(
                   fontSize: 16,
+                  color: kBlackPrimary,
+                  fontFamily: 'Montserrat Bold',
                 ),
                 children: <TextSpan>[
                   TextSpan(
                     text: widget.recipe.instructions[index],
                     style: const TextStyle(
-                      fontWeight: FontWeight.normal,
+                      fontSize: 16,
+                      color: kBlackPrimary,
+                      fontFamily: 'Montserrat',
                     ),
                   ),
                 ],

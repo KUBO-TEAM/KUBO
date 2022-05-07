@@ -13,26 +13,29 @@ const _calendarHeaderStyle = CalendarHeaderStyle(
   textAlign: TextAlign.center,
   textStyle: TextStyle(
     color: Colors.white,
-    fontFamily: 'Lora',
-    fontSize: 24,
+    fontFamily: 'Montserrat Bold',
+    fontSize: 20.0,
   ),
 );
 
 const _calendarViewHeaderStyle = ViewHeaderStyle(
   backgroundColor: kBrownPrimary,
-  dateTextStyle: TextStyle(
-    color: Colors.white,
-    fontFamily: 'Arvo',
-  ),
   dayTextStyle: TextStyle(
     color: Colors.white,
-    fontFamily: 'Arvo',
+    fontFamily: 'Montserrat Medium',
+    fontSize: 16.0,
+  ),
+  dateTextStyle: TextStyle(
+    color: Colors.white,
+    fontFamily: 'Montserrat',
+    fontSize: 14.0,
   ),
 );
 
 const _calendarWeekNumberStyle = WeekNumberStyle(
   textStyle: TextStyle(
-    fontFamily: 'Arvo',
+    color: Colors.white,
+    fontFamily: 'Montserrat',
   ),
 );
 

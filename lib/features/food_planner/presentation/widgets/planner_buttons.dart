@@ -18,6 +18,10 @@ class PlannerButtons extends StatelessWidget {
           elevation: 0,
           title: const Text(
             'Menu',
+            style: TextStyle(
+              fontFamily: 'Montserrat Medium',
+              fontSize: 14.0,
+            ),
           ),
           onPressed: () => Navigator.pushNamed(context, MenuPage.id),
         ),
@@ -28,6 +32,10 @@ class PlannerButtons extends StatelessWidget {
           elevation: 0,
           title: const Text(
             'Menu History',
+            style: TextStyle(
+              fontFamily: 'Montserrat Medium',
+              fontSize: 14.0,
+            ),
           ),
           onPressed: () => Navigator.pushNamed(context, MenuHistoryPage.id),
         ),
@@ -38,6 +46,10 @@ class PlannerButtons extends StatelessWidget {
           elevation: 0,
           title: const Text(
             'Agenda',
+            style: TextStyle(
+              fontFamily: 'Montserrat Medium',
+              fontSize: 14.0,
+            ),
           ),
           onPressed: () => Navigator.pushNamed(context, AgendaPage.id),
         ),

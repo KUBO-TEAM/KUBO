@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/examples/ingredients.examples.dart';
 import 'package:kubo/features/food_planner/domain/entities/category.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
@@ -40,16 +41,52 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
               child: SingleChildScrollView(
                 child: DataTable(
                   columns: const [
-                    DataColumn(label: Text('Quantity')),
-                    DataColumn(label: Text('Ingredient')),
+                    DataColumn(
+                      label: Text(
+                        'Quantity',
+                        style: TextStyle(
+                          color: kBlackPrimary,
+                          fontFamily: 'Montserrat Bold',
+                          fontSize: 18.0,
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'Ingredient',
+                        style: TextStyle(
+                          color: kBlackPrimary,
+                          fontFamily: 'Montserrat Bold',
+                          fontSize: 18.0,
+                        ),
+                      ),
+                    ),
                   ],
                   rows: [
                     for (Category category in kCategoriesExample)
                       DataRow(
                         selected: isCategorySelected(category),
                         cells: [
-                          DataCell(Text(category.quantity.toString())),
-                          DataCell(Text(category.name)),
+                          DataCell(
+                            Text(
+                              category.quantity.toString(),
+                              style: const TextStyle(
+                                color: kBlackPrimary,
+                                fontFamily: 'Montserrat ',
+                                fontSize: 16.0,
+                              ),
+                            ),
+                          ),
+                          DataCell(
+                            Text(
+                              category.name,
+                              style: const TextStyle(
+                                color: kBlackPrimary,
+                                fontFamily: 'Montserrat ',
+                                fontSize: 16.0,
+                              ),
+                            ),
+                          ),
                         ],
                         onSelectChanged: (bool? value) {
                           if (value == true) {
@@ -87,7 +124,14 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
                       ),
                     );
                   },
-                  title: const Text('Proceed to recipe selection'),
+                  title: const Text(
+                    'Proceed to recipe selection',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Montserrat Medium',
+                      fontSize: 14.0,
+                    ),
+                  ),
                 ),
               ],
             ),

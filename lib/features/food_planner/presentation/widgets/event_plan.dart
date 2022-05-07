@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/core/constants/text_styles_constants.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/event_card.dart';
 
 class EventPlan extends StatelessWidget {
@@ -24,11 +24,19 @@ class EventPlan extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: kTitleTextStyle,
+                style: const TextStyle(
+                  color: kBlackPrimary,
+                  fontFamily: 'Montserrat Bold',
+                  fontSize: 20.0,
+                ),
               ),
               Text(
                 date,
-                style: kCaptionTextStyle,
+                style: const TextStyle(
+                  color: kBlackPrimary,
+                  fontFamily: 'Montserrat',
+                  fontSize: 13.0,
+                ),
               ),
             ],
           ),

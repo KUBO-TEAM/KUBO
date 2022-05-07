@@ -16,7 +16,7 @@ class IconTitle extends StatelessWidget {
     return Row(
       children: [
         CircleAvatar(
-          radius: 15,
+          radius: 16,
           backgroundColor: kGreenPrimary,
           child: Icon(
             icon,
@@ -30,9 +30,9 @@ class IconTitle extends StatelessWidget {
         Text(
           title,
           style: const TextStyle(
-            fontSize: 16.0,
             color: kGreenPrimary,
-            fontWeight: FontWeight.w700,
+            fontFamily: 'Montserrat Medium',
+            fontSize: 16.0,
           ),
         ),
       ],

@@ -59,8 +59,8 @@ class _RecipesPageState extends State<RecipesPage> {
           'Recipe List',
           style: TextStyle(
             color: kBlackPrimary,
-            fontFamily: 'Pushster',
-            fontSize: 30.0,
+            fontFamily: 'Montserrat Bold',
+            fontSize: 24.0,
           ),
         ),
       ),

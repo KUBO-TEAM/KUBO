@@ -79,3 +79,23 @@ flutter:
     - family: JosefinSans Bold
       fonts:
         - asset: assets/fonts/JosefinSans-SemiBold.ttf
+
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat-Regular.ttf
+
+    - family: Montserrat Thin
+      fonts:
+        - asset: assets/fonts/Montserrat-Thin.ttf
+
+    - family: Montserrat Bold
+      fonts:
+        - asset: assets/fonts/Montserrat-Bold.ttf
+
+    - family: Montserrat Medium
+      fonts:
+        - asset: assets/fonts/Montserrat-Medium.ttf
+
+    - family: BebasNeue
+      fonts:
+        - asset: assets/fonts/BebasNeue-Regular.ttf

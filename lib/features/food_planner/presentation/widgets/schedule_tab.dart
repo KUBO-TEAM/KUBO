@@ -80,7 +80,14 @@ class _ScheduleTabState extends State<ScheduleTab>
                             onPressed: () {
                               _showCreateScheduleDialog();
                             },
-                            title: const Text('New schedule for this recipe'),
+                            title: const Text(
+                              'New schedule for this recipe',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontFamily: 'Montserrat Medium',
+                              ),
+                            ),
                             icon: const Icon(
                               Icons.schedule,
                               color: Colors.white,
@@ -104,7 +111,14 @@ class _ScheduleTabState extends State<ScheduleTab>
                               SizedBox(
                                 width: 6.0,
                               ),
-                              Text('Upcoming'),
+                              Text(
+                                'Upcoming',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: kBlackPrimary,
+                                  fontFamily: 'Montserrat Medium',
+                                ),
+                              ),
                               SizedBox(
                                 width: 6.0,
                               ),
@@ -120,7 +134,14 @@ class _ScheduleTabState extends State<ScheduleTab>
                               SizedBox(
                                 width: 6.0,
                               ),
-                              Text('Most recent'),
+                              Text(
+                                'Most recent',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: kBlackPrimary,
+                                  fontFamily: 'Montserrat Medium',
+                                ),
+                              ),
                               SizedBox(
                                 width: 6.0,
                               ),
@@ -136,7 +157,14 @@ class _ScheduleTabState extends State<ScheduleTab>
                               SizedBox(
                                 width: 6.0,
                               ),
-                              Text('Previous'),
+                              Text(
+                                'Previous',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: kBlackPrimary,
+                                  fontFamily: 'Montserrat Medium',
+                                ),
+                              ),
                               SizedBox(
                                 width: 6.0,
                               ),

@@ -76,7 +76,7 @@ class _InfoTabState extends State<InfoTab>
               widget.recipe.name,
               style: const TextStyle(
                 fontSize: 30.0,
-                fontWeight: FontWeight.w900,
+                fontFamily: 'Montserrat Bold',
               ),
             ),
           ),
@@ -88,6 +88,7 @@ class _InfoTabState extends State<InfoTab>
               style: const TextStyle(
                 fontSize: 16.0,
                 height: 1.5,
+                fontFamily: 'Montserrat',
               ),
               textAlign: TextAlign.justify,
             ),

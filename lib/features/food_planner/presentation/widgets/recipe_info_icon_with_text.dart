@@ -26,8 +26,8 @@ class RecipeInfoIconWithText extends StatelessWidget {
           ' $data $title',
           style: TextStyle(
             color: color,
-            fontWeight: FontWeight.bold,
             fontSize: 14.0,
+            fontFamily: 'Montserrat Medium',
           ),
         ),
       ],

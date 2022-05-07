@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/core/constants/text_styles_constants.dart';
 
 class EventCard extends StatelessWidget {
   const EventCard({
@@ -39,7 +38,7 @@ class EventCard extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  radius: 15,
+                  radius: 16,
                   backgroundColor: kGreenPrimary,
                   child: Icon(
                     icon,
@@ -53,9 +52,9 @@ class EventCard extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 16.0,
                     color: kGreenPrimary,
-                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Montserrat Medium',
+                    fontSize: 16.0,
                   ),
                 ),
               ],
@@ -63,16 +62,27 @@ class EventCard extends StatelessWidget {
             Center(
               child: Image.asset('assets/images/no_events.jpg'),
             ),
+            const SizedBox(
+              height: 5.0,
+            ),
             Text(
               subTitle,
-              style: kSubTitleTextStyle,
+              style: const TextStyle(
+                color: kBlackPrimary,
+                fontFamily: 'Montserrat Bold',
+                fontSize: 18.0,
+              ),
             ),
             const SizedBox(
               height: 5.0,
             ),
             Text(
               caption,
-              style: kCaptionTextStyle,
+              style: const TextStyle(
+                color: kBlackPrimary,
+                fontFamily: 'Montserrat',
+                fontSize: 16.0,
+              ),
             ),
           ],
         ),

@@ -150,15 +150,18 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
                                               Navigator.of(context).pop(),
                                         ),
                                         Expanded(
-                                          child: SizedBox(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 5,
+                                            ),
                                             child: Text(
                                               widget.arguments.recipe.name,
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                               style: const TextStyle(
                                                 color: Colors.white,
-                                                fontFamily: 'Pushster',
-                                                fontSize: 30.0,
+                                                fontFamily: 'Montserrat Bold',
+                                                fontSize: 24.0,
                                               ),
                                             ),
                                           ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/core/constants/text_styles_constants.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/icon_title.dart';
 
 const _title = 'Weekly report';
@@ -43,14 +43,22 @@ class WeeklyReport extends StatelessWidget {
             ),
             Text(
               _subTitle,
-              style: kSubTitleTextStyle,
+              style: TextStyle(
+                color: kBlackPrimary,
+                fontFamily: 'Montserrat Bold',
+                fontSize: 18.0,
+              ),
             ),
             SizedBox(
               height: 5.0,
             ),
             Text(
               _caption,
-              style: kCaptionTextStyle,
+              style: TextStyle(
+                color: kBlackPrimary,
+                fontFamily: 'Montserrat',
+                fontSize: 16.0,
+              ),
             ),
           ],
         ),
