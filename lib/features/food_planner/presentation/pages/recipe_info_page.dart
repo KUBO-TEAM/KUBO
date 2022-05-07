@@ -85,138 +85,134 @@ class _RecipeInfoPageState extends State<RecipeInfoPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Hero(
-        tag: "recipe-img-${widget.arguments.recipe.displayPhoto}",
-        child: Stack(
-          children: [
-            CachedNetworkImage(
-              imageUrl: widget.arguments.recipe.displayPhoto,
-              width: double.infinity,
-              height: double.infinity,
-              fit: BoxFit.cover,
-              progressIndicatorBuilder: (context, url, downloadProgress) {
-                // if (downloadProgress == null) return Container();
-                return Center(
-                  child: CircularProgressIndicator(
-                    strokeWidth: 3,
-                    valueColor: const AlwaysStoppedAnimation<Color>(
-                      kBrownPrimary,
-                    ),
-                    value: downloadProgress.progress,
+      body: Stack(
+        children: [
+          CachedNetworkImage(
+            imageUrl: widget.arguments.recipe.displayPhoto,
+            width: double.infinity,
+            height: double.infinity,
+            fit: BoxFit.cover,
+            progressIndicatorBuilder: (context, url, downloadProgress) {
+              // if (downloadProgress == null) return Container();
+              return Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                    kBrownPrimary,
                   ),
-                );
-              },
-            ),
-            const ScreenDarkEffect(),
-            NestedScrollView(
-              headerSliverBuilder: (context, value) {
-                return [
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * .6,
-                      width: double.infinity,
-                      child: Stack(
-                        alignment: AlignmentDirectional.bottomEnd,
-                        children: [
-                          SafeArea(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 20.0,
-                                right: 10.0,
-                                bottom: 15.0,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      right: 8.0,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        IconButton(
+                  value: downloadProgress.progress,
+                ),
+              );
+            },
+          ),
+          const ScreenDarkEffect(),
+          NestedScrollView(
+            headerSliverBuilder: (context, value) {
+              return [
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * .6,
+                    width: double.infinity,
+                    child: Stack(
+                      alignment: AlignmentDirectional.bottomEnd,
+                      children: [
+                        SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 20.0,
+                              right: 10.0,
+                              bottom: 15.0,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    right: 8.0,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      IconButton(
+                                        padding: const EdgeInsets.only(
+                                          bottom: 10.0,
+                                        ),
+                                        icon: const Icon(
+                                          Icons.arrow_back_ios,
+                                          color: Colors.white,
+                                        ),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                      ),
+                                      Expanded(
+                                        child: Padding(
                                           padding: const EdgeInsets.only(
-                                            bottom: 10.0,
+                                            top: 5,
                                           ),
-                                          icon: const Icon(
-                                            Icons.arrow_back_ios,
-                                            color: Colors.white,
-                                          ),
-                                          onPressed: () =>
-                                              Navigator.of(context).pop(),
-                                        ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                              top: 5,
-                                            ),
-                                            child: Text(
-                                              widget.arguments.recipe.name,
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: 'Montserrat Bold',
-                                                fontSize: 24.0,
-                                              ),
+                                          child: Text(
+                                            widget.arguments.recipe.name,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'Montserrat Bold',
+                                              fontSize: 24.0,
                                             ),
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(height: 10.0),
-                                  Expanded(
-                                    child: RecipeInfoPagePreviewInfo(
-                                      recipe: widget.arguments.recipe,
-                                    ),
+                                ),
+                                const SizedBox(height: 10.0),
+                                Expanded(
+                                  child: RecipeInfoPagePreviewInfo(
+                                    recipe: widget.arguments.recipe,
                                   ),
-                                  RecipeInfoTabBar(
-                                    recipeInfoTab: recipeInfoTab,
-                                    tabController: _tabController,
-                                  ),
-                                ],
-                              ),
+                                ),
+                                RecipeInfoTabBar(
+                                  recipeInfoTab: recipeInfoTab,
+                                  tabController: _tabController,
+                                ),
+                              ],
                             ),
                           ),
-                          const RecipeClipper(),
-                        ],
-                      ),
+                        ),
+                        const RecipeClipper(),
+                      ],
                     ),
                   ),
-                ];
-              },
-              body: Container(
-                color: Colors.white,
-                transform: Matrix4.translationValues(0.0, -1.0, 0.0),
-                child: Column(
-                  children: [
-                    // player,
-
-                    Expanded(
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: [
-                          InfoTab(
-                            recipe: widget.arguments.recipe,
-                          ),
-                          ProcedureTab(recipe: widget.arguments.recipe),
-                          ScheduleTab(
-                            recipe: widget.arguments.recipe,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
                 ),
+              ];
+            },
+            body: Container(
+              color: Colors.white,
+              transform: Matrix4.translationValues(0.0, -1.0, 0.0),
+              child: Column(
+                children: [
+                  // player,
+
+                  Expanded(
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        InfoTab(
+                          recipe: widget.arguments.recipe,
+                        ),
+                        ProcedureTab(recipe: widget.arguments.recipe),
+                        ScheduleTab(
+                          recipe: widget.arguments.recipe,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

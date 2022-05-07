@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/screen_dark_effect.dart';
 import 'package:skeletons/skeletons.dart';
 
 class RecipeListTile extends StatelessWidget {
@@ -29,60 +30,41 @@ class RecipeListTile extends StatelessWidget {
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: Stack(
             children: [
-              Expanded(
-                child: Hero(
-                  tag: "recipe-img-${recipe.displayPhoto}",
-                  child: CachedNetworkImage(
-                    imageUrl: recipe.displayPhoto,
-                    fit: BoxFit.cover,
-                    progressIndicatorBuilder: (context, url, downloadProgress) {
-                      // if (downloadProgress == null) return Container();
-                      return Center(
-                        child: CircularProgressIndicator(
-                          strokeWidth: 3,
-                          valueColor: const AlwaysStoppedAnimation<Color>(
-                            kBrownPrimary,
-                          ),
-                          value: downloadProgress.progress,
+              Hero(
+                tag: "recipe-img-${recipe.displayPhoto}",
+                child: CachedNetworkImage(
+                  imageUrl: recipe.displayPhoto,
+                  fit: BoxFit.cover,
+                  height: double.infinity,
+                  progressIndicatorBuilder: (context, url, downloadProgress) {
+                    // if (downloadProgress == null) return Container();
+                    return Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 3,
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                          kBrownPrimary,
                         ),
-                      );
-                    },
-                  ),
+                        value: downloadProgress.progress,
+                      ),
+                    );
+                  },
                 ),
               ),
+              const ScreenDarkEffect(),
               Container(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      recipe.name,
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: false,
-                      maxLines: 1,
-                      style: const TextStyle(
-                        color: kBlackPrimary,
-                        fontFamily: 'Montserrat Bold',
-                        fontSize: 16.0,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      recipe.description,
-                      maxLines: 2,
-                      overflow: TextOverflow.fade,
-                      style: const TextStyle(
-                        color: kBlackPrimary,
-                        fontFamily: 'Montserrat',
-                        fontSize: 14.0,
-                      ),
-                    ),
-                  ],
+                padding: const EdgeInsets.all(10.0),
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  recipe.name,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Montserrat Bold',
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ],

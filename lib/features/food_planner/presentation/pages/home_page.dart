@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/bottom_navigation.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/daily_plan.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/event_plan.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/floating_buttons.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/planner_buttons.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/weekly_report.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = 'home_page';
@@ -16,15 +18,22 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffeeeeee),
-      floatingActionButton: const FloatingHomeButton(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, CameraPage.id);
+        },
+        backgroundColor: kGreenPrimary,
+        child: const Icon(
+          Icons.camera,
+          color: Colors.white,
+          size: 40,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: const BottomNavigation(),
       appBar: const KuboHomeAppBar('Overview'),
       body: SafeArea(
         child: ListView(

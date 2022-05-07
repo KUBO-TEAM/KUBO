@@ -8,7 +8,6 @@ import 'package:kubo/features/smart_recipe_selection/presentation/widgets/camera
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/camera_clipper.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/camera_top_buttons.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 
 class CameraPage extends StatefulWidget {
   static const String id = 'camera_page';
@@ -129,18 +128,18 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   Future<void> _getFirstCacheFile() async {
-    final tempDirectory = await getTemporaryDirectory();
+    // final tempDirectory = await getTemporaryDirectory();
 
-    final tempDirFiles = tempDirectory.listSync(
-      recursive: false,
-      followLinks: false,
-    );
-    // print(tempDirFiles[0].path);
-    if (tempDirFiles.isNotEmpty) {
-      setState(() {
-        latestCacheImage = File(tempDirFiles.last.path);
-      });
-    }
+    // final tempDirFiles = tempDirectory.listSync(
+    //   recursive: false,
+    //   followLinks: false,
+    // );
+    // // print(tempDirFiles[0].path);
+    // if (tempDirFiles.isNotEmpty) {
+    //   setState(() {
+    //     latestCacheImage = File(tempDirFiles.last.path);
+    //   });
+    // }
   }
 
   Future<void> _getCameras() async {

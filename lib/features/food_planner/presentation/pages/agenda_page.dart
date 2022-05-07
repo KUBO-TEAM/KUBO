@@ -1,70 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/agenda_modal_form.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/recipe_schedule_calendar.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class AgendaPage extends StatelessWidget {
+class AgendaPage extends StatefulWidget {
   static const String id = 'agenda_page';
   const AgendaPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        backgroundColor: kGreenPrimary,
-        foregroundColor: Colors.white,
-        onPressed: () => _showAgendaBottomModal(context),
-      ),
-      backgroundColor: Colors.white,
-      body: Container(),
-      // body: SafeArea(
-      //   child: BlocBuilder<MenuBloc, MenuState>(
-      //     builder: (context, state) => Column(
-      //       children: const [
-      //         KuboClippedAppBar("Agenda"),
-      //         SizedBox(
-      //           height: 20,
-      //         ),
-      // Expanded(
-      //   child: ListView.builder(
-      //     itemCount: state.agendas.length,
-      //     itemBuilder: (context, index) {
-      //       var agenda = state.agendas[index];
-      //       return AgendaCardTile(agenda: agenda);
-      //     },
-      //   ),
-      // ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
+  State<AgendaPage> createState() => _AgendaPageState();
+}
+
+class _AgendaPageState extends State<AgendaPage> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<MenuBloc>(context).add(
+      MenuRecipeScheduleFetched(),
     );
   }
 
-  void _showAgendaBottomModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) {
-        return SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(25.0),
-                topRight: Radius.circular(25.0),
-              ),
-            ),
-            child: const Padding(
-              padding: EdgeInsets.fromLTRB(16, 52, 16, 10),
-              child: AgendaModalForm(),
-            ),
-          ),
-        );
-      },
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: SafeArea(
+        child: RecipeScheduleCalendar(
+          calendarView: CalendarView.schedule,
+        ),
+      ),
     );
   }
 }
