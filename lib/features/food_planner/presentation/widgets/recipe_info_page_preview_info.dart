@@ -47,13 +47,13 @@ class RecipeInfoPagePreviewInfo extends StatelessWidget {
             children: [
               RecipeInfoIconWithText(
                 icon: Icons.outdoor_grill,
-                title: 'Cook Time',
+                title: 'min Cook Time',
                 data: recipe.cookTime.toString(),
                 color: Colors.white,
               ),
               RecipeInfoIconWithText(
                 icon: Icons.hourglass_top,
-                title: 'Prep Time',
+                title: 'min Prep Time',
                 data: recipe.prepTime.toString(),
                 color: Colors.white,
               ),

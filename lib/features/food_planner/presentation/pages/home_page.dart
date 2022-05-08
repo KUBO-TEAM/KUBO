@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/core/helpers/notification_reminder.dart';
+import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/bottom_navigation.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/daily_plan.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/event_plan.dart';
@@ -17,6 +19,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+
+    NotificationReminder.init();
+    listenNotifications();
+  }
+
+  void listenNotifications() =>
+      NotificationReminder.onNotifications.stream.listen(onClickedNotification);
+
+  void onClickedNotification(String? payload) => Navigator.pushNamed(
+        context,
+        RecipesPage.id,
+        arguments: RecipesPageArguments(),
+      );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

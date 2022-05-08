@@ -87,7 +87,7 @@ class _InfoTabState extends State<InfoTab>
               '\t\t\t\t${widget.recipe.description}',
               style: const TextStyle(
                 fontSize: 16.0,
-                height: 1.5,
+                height: 1.4,
                 fontFamily: 'Montserrat',
               ),
               textAlign: TextAlign.justify,
