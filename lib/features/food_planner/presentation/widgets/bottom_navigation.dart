@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/core/helpers/notification_reminder.dart';
+import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/reminders_page.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -37,20 +37,14 @@ class _BottomNavigationState extends State<BottomNavigation>
   void _navigate(int index) {
     switch (index) {
       case 0: // Navigate to recipes
-
-        // Navigator.pushNamed(
-        //   context,
-        //   RecipesPage.id,
-        //   arguments: RecipesPageArguments(),
-        // );
-
-        NotificationReminder.showNotification(
-          title: 'Title',
-          body: 'Body',
-          payload: 'Payload',
+        Navigator.pushNamed(
+          context,
+          RecipesPage.id,
+          arguments: RecipesPageArguments(),
         );
         return;
       case 1: // Navigate to reminders;
+
         Navigator.pushNamed(context, ReminderPage.id);
         return;
     }

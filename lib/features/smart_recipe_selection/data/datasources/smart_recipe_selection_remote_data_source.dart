@@ -22,7 +22,7 @@ class SmartRecipeSelectionRemoteDataSourceImpl
   Future<PredictedImageModel> predictImage(File imageFile) async {
     final request = http.MultipartRequest(
       'POST',
-      Uri.parse('$kKuboUrl/api/ai/detect'),
+      Uri.parse('$kKuboUrl/api/yolov4/detect'),
     );
 
     request.files.add(http.MultipartFile(

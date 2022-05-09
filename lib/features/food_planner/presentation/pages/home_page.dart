@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    NotificationReminder.init();
+    NotificationReminder.init(initScheduled: true);
     listenNotifications();
   }
 

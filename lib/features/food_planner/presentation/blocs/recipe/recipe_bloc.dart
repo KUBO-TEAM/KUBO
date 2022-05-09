@@ -32,8 +32,10 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
         emit(RecipeInProgress());
 
         final failOrCachedRecipes = await fetchCachedRecipes(NoParams());
+        final failOrRecipes = await fetchRecipes(NoParams());
 
         await _eitherLoadedCachedOrErroState(emit, failOrCachedRecipes);
+        await _eitherLoadedOrErrorState(emit, failOrRecipes);
       } else if (event is RecipeModelListFilter) {
         String? query = event.query;
         List<Category>? categories = event.categories;
@@ -56,8 +58,10 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
 
           if (categories.isEmpty) {
             final failOrCachedRecipes = await fetchCachedRecipes(NoParams());
+            final failOrRecipes = await fetchRecipes(NoParams());
 
-            await _eitherLoadedOrErrorState(emit, failOrCachedRecipes);
+            await _eitherLoadedCachedOrErroState(emit, failOrCachedRecipes);
+            await _eitherLoadedOrErrorState(emit, failOrRecipes);
           } else {
             final failOrListOfFilteredRecipes =
                 await fetchFilteredRecipes(categories);
@@ -82,7 +86,6 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
           ),
         );
       }
-      _createCachedRecipes(listOfRecipes);
     });
   }
 
@@ -93,7 +96,6 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     failOrRecipes.fold(
       (failure) {
         // Cannot update the cached data something went wrong in the server
-        emit(RecipeFailure());
       },
       (listOfRecipes) async {
         emit(

@@ -60,6 +60,20 @@ class _CapturedPageState extends State<CapturedPage> {
                 height: double.infinity,
                 width: double.infinity,
                 alignment: Alignment.center,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
+                  );
+                },
               );
             }
             return Image.file(
