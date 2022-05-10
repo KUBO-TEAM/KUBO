@@ -1,20 +1,20 @@
 import 'package:equatable/equatable.dart';
 
 class Reminder extends Equatable {
-  final String title;
-  final String subTitle;
-  final String message;
-
   const Reminder({
     required this.title,
-    required this.subTitle,
     required this.message,
+    this.recipeId,
   });
+
+  final String title;
+  final String message;
+  final String? recipeId;
 
   @override
   List<Object?> get props => [
         title,
-        subTitle,
         message,
+        recipeId,
       ];
 }

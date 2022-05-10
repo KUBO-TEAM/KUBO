@@ -73,12 +73,12 @@ class RecipeInfoCreateRecipeScheduleBloc extends Bloc<
                 box.put('notification id', 0);
               }
 
-              // 30 minutes before
+              // The real schedule
               _scheduleNotification(
                 id: box.get('notification id'),
                 startingDate: convertedDates.start,
+                timeToSubstract: Duration.zero,
                 recipe: recipe,
-                timeToSubstract: const Duration(hours: 1),
                 title: 'Upcoming recipe',
                 message:
                     'Your scheduled recipe is ready, please prepare it now.',
@@ -108,7 +108,7 @@ class RecipeInfoCreateRecipeScheduleBloc extends Bloc<
               );
               box.put('notification id', box.get('notification id') + 1);
 
-              // 30 minutes before
+              // 1 hour before
               _scheduleNotification(
                 id: box.get('notification id'),
                 startingDate: convertedDates.start,
@@ -151,7 +151,7 @@ class RecipeInfoCreateRecipeScheduleBloc extends Bloc<
         payload: recipe.name,
         largeIconUrl: 'https://kuboph.dev/assets/logo.ico',
         bigPictureUrl: recipe.displayPhoto,
-        scheduledDate: startingDate.add(const Duration(seconds: 10)),
+        scheduledDate: defferenceStartingDate,
       );
     }
   }

@@ -14,6 +14,7 @@ import 'package:kubo/features/food_planner/domain/usecases/fetch_recipes.dart';
 part 'recipe_event.dart';
 part 'recipe_state.dart';
 
+// TODO: Seperate caching recipes and remote recipes bloc
 @injectable
 class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   final FetchRecipes fetchRecipes;

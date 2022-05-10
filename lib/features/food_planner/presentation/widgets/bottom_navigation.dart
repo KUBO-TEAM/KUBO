@@ -2,7 +2,9 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/reminders_page.dart';
 
@@ -37,6 +39,11 @@ class _BottomNavigationState extends State<BottomNavigation>
   void _navigate(int index) {
     switch (index) {
       case 0: // Navigate to recipes
+
+        BlocProvider.of<CreateRecipeScheduleDialogBloc>(context).add(
+          CreateRecipeScheduleDialogInitializeState(),
+        );
+
         Navigator.pushNamed(
           context,
           RecipesPage.id,

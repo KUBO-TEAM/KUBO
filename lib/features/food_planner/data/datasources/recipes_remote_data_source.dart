@@ -17,11 +17,6 @@ abstract class RecipesRemoteDataSource {
   Future<RecipeModel> fetchRecipe(String recipeId);
 }
 
-@module
-abstract class RemoteModule {
-  http.Client get prefs => http.Client();
-}
-
 @LazySingleton(as: RecipesRemoteDataSource)
 class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
   final http.Client client;
