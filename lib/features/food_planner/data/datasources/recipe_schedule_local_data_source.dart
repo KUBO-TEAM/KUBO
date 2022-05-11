@@ -7,8 +7,6 @@ import 'package:kubo/core/helpers/menu_linked_hashmap.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedule.dart';
 
-const kRecipeScheduleBoxKey = 'Recipe Schedule Box Key';
-
 abstract class RecipeScheduleLocalDataSource {
   /// create [RecipeScheduleModel] to the cached.
   ///

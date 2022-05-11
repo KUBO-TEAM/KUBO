@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/list_costants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
+import 'package:kubo/features/food_planner/domain/entities/user.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/bloc/user_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_create_recipe_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/color_selector.dart';
@@ -31,16 +33,24 @@ class _CreateRecipeScheduleDialogState
   int? selectedDay;
 
   void saveSchedule() {
-    BlocProvider.of<RecipeInfoCreateRecipeScheduleBloc>(context).add(
-      RecipeInfoCreateRecipeScheduleCreated(
-        recipe: widget.recipe,
-        day: selectedDay,
-        start: selectedStartTime,
-        end: selectedEndTime,
-        color: selectedColor,
-      ),
-    );
-    Navigator.pop(context);
+    UserState userState = BlocProvider.of<UserBloc>(context).state;
+
+    if (userState is UserSuccess) {
+      User user = userState.user;
+
+      BlocProvider.of<RecipeInfoCreateRecipeScheduleBloc>(context).add(
+        RecipeInfoCreateRecipeScheduleCreated(
+          recipe: widget.recipe,
+          day: selectedDay,
+          start: selectedStartTime,
+          end: selectedEndTime,
+          color: selectedColor,
+          user: user,
+        ),
+      );
+
+      Navigator.pop(context);
+    }
   }
 
   @override

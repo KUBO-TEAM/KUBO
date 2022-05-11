@@ -14,6 +14,7 @@ class RecipeInfoCreateRecipeScheduleCreated
   final TimeOfDay? start;
   final TimeOfDay? end;
   final Color? color;
+  final User user;
 
   const RecipeInfoCreateRecipeScheduleCreated({
     required this.recipe,
@@ -21,5 +22,6 @@ class RecipeInfoCreateRecipeScheduleCreated
     required this.start,
     required this.end,
     required this.color,
+    required this.user,
   });
 }

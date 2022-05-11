@@ -4,6 +4,8 @@ import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
 
 part 'recipe.g.dart';
 
+const kRecipeBoxKey = 'Recipe Box Key';
+
 @HiveType(typeId: 2)
 class Recipe extends Equatable {
   @HiveField(0)

@@ -5,6 +5,8 @@ import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 
 part 'recipe_schedule.g.dart';
 
+const kRecipeScheduleBoxKey = 'Recipe Schedule Box Key';
+
 @HiveType(typeId: 0)
 class RecipeSchedule extends HiveObject {
   @HiveField(0)

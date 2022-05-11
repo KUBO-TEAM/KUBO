@@ -76,39 +76,37 @@ class _ReminderPageState extends State<ReminderPage> {
                           maskType: EasyLoadingMaskType.black,
                         );
                       }
+
+                      if (state is ReminderFetchNotificationsFailure) {
+                        EasyLoading.dismiss();
+                      }
+
                       if (state is ReminderFetchNotificationsSuccess) {
                         EasyLoading.dismiss();
                         List<Reminder> reminders = state.reminders;
                         return ListView.builder(
-                            itemCount: reminders.length,
-                            itemBuilder: (context, index) {
-                              Reminder reminder = reminders[index];
-                              return Container(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      width: 1.0,
-                                      color: Colors.grey.shade300,
-                                    ),
+                          itemCount: reminders.length,
+                          itemBuilder: (context, index) {
+                            Reminder reminder = reminders[index];
+                            return Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    width: 1.0,
+                                    color: Colors.grey.shade300,
                                   ),
                                 ),
-                                child: Row(children: <Widget>[
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
                                   Expanded(
                                     child: ListTile(
-                                      leading: Container(
-                                        height: 35,
-                                        width: 35,
-                                        decoration: const BoxDecoration(
-                                          color: Color(0xffFFE6C0),
-                                          shape: BoxShape.circle,
-                                        ),
+                                      leading: CircleAvatar(
+                                        backgroundColor: Colors.white,
                                         child: Center(
-                                          child: Text(
-                                            (index + 1).toString(),
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16,
-                                            ),
+                                          child: Image.asset(
+                                            'assets/images/logo.png',
                                           ),
                                         ),
                                       ),
@@ -127,9 +125,11 @@ class _ReminderPageState extends State<ReminderPage> {
                                       ),
                                     ),
                                   ),
-                                ]),
-                              );
-                            });
+                                ],
+                              ),
+                            );
+                          },
+                        );
                       }
                       return Container();
                     },

@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/usecases/usecase.dart';
 import 'package:kubo/features/food_planner/domain/entities/reminder.dart';
-import 'package:kubo/features/food_planner/domain/usecases/fetch_notifications.dart';
+import 'package:kubo/features/food_planner/domain/usecases/fetch_reminders.dart';
 
 part 'reminder_event.dart';
 part 'reminder_state.dart';

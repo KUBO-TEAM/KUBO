@@ -5,8 +5,6 @@ import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/data/models/recipe_model.dart';
 import 'package:kubo/features/food_planner/domain/usecases/create_cache_recipe.dart';
 
-const kRecipeBoxKey = 'Recipe Box Key';
-
 abstract class RecipeLocalDataSource {
   /// create [RecipeModel] to the cached.
   ///
