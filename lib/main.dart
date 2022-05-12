@@ -11,7 +11,7 @@ import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/entities/user.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/bloc/user_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/user/user_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu_history/menu_history_bloc.dart';

@@ -56,7 +56,6 @@ import 'features/food_planner/domain/usecases/fetch_recipes.dart' as _i44;
 import 'features/food_planner/domain/usecases/fetch_reminders.dart' as _i28;
 import 'features/food_planner/domain/usecases/fetch_user.dart' as _i29;
 import 'features/food_planner/domain/usecases/initialize_user.dart' as _i30;
-import 'features/food_planner/presentation/blocs/bloc/user_bloc.dart' as _i39;
 import 'features/food_planner/presentation/blocs/menu/menu_bloc.dart' as _i45;
 import 'features/food_planner/presentation/blocs/menu_history/menu_history_bloc.dart'
     as _i31;
@@ -68,6 +67,7 @@ import 'features/food_planner/presentation/blocs/recipe_info/recipe_info_fetch_r
     as _i35;
 import 'features/food_planner/presentation/blocs/reminder/reminder_bloc.dart'
     as _i38;
+import 'features/food_planner/presentation/blocs/user/user_bloc.dart' as _i39;
 import 'features/smart_recipe_selection/data/datasources/smart_recipe_selection_remote_data_source.dart'
     as _i19;
 import 'features/smart_recipe_selection/data/repositories/smart_recipe_selection_repository_impl.dart'

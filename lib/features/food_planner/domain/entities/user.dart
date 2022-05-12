@@ -11,15 +11,14 @@ class User extends HiveObject {
   int notificationChannelIdCounter;
 
   @HiveField(1)
-  int unreadNotificationCount;
-
-  //Others
-  @HiveField(2)
   DateTime startedAt;
+
+  @HiveField(2)
+  DateTime remindersSeenAt;
 
   User({
     required this.notificationChannelIdCounter,
-    required this.unreadNotificationCount,
+    required this.remindersSeenAt,
     required this.startedAt,
   });
 }

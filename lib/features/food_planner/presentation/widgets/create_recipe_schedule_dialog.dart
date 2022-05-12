@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/list_costants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/entities/user.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/bloc/user_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/user/user_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_create_recipe_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/color_selector.dart';

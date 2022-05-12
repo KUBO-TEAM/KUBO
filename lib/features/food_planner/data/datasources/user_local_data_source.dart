@@ -36,7 +36,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
 
     User user = User(
       notificationChannelIdCounter: 0,
-      unreadNotificationCount: 0,
+      remindersSeenAt: DateTime.now(),
       startedAt: DateTime.now(),
     );
     await userBox.add(user);

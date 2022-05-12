@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:intl/intl.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/reminder.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/reminder/reminder_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/user/user_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/icon_button.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/list_clipper.dart';
 
@@ -19,7 +21,14 @@ class _ReminderPageState extends State<ReminderPage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<ReminderBloc>(context).add(ReminderNotificationsFetched());
+
+    UserState userState = BlocProvider.of<UserBloc>(context).state;
+
+    if (userState is UserSuccess) {
+      BlocProvider.of<ReminderBloc>(context).add(
+        ReminderNotificationsFetched(user: userState.user),
+      );
+    }
   }
 
   @override
@@ -82,14 +91,20 @@ class _ReminderPageState extends State<ReminderPage> {
                       }
 
                       if (state is ReminderFetchNotificationsSuccess) {
+                        int unseenReminders = state.unseenReminders;
+
                         EasyLoading.dismiss();
                         List<Reminder> reminders = state.reminders;
                         return ListView.builder(
                           itemCount: reminders.length,
                           itemBuilder: (context, index) {
                             Reminder reminder = reminders[index];
+                            Color? unseenColor = unseenReminders > index
+                                ? Colors.green.withOpacity(0.1)
+                                : null;
                             return Container(
                               decoration: BoxDecoration(
+                                color: unseenColor,
                                 border: Border(
                                   bottom: BorderSide(
                                     width: 1.0,
@@ -118,7 +133,9 @@ class _ReminderPageState extends State<ReminderPage> {
                                         ),
                                       ),
                                       subtitle: Text(
-                                        reminder.message,
+                                        DateFormat.yMMMEd('en_US')
+                                            .add_jm()
+                                            .format(reminder.createdAt),
                                         style: const TextStyle(
                                           fontSize: 13,
                                         ),

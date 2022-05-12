@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/helpers/notification_reminder.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/bloc/user_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/user/user_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/bottom_navigation.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/daily_plan.dart';

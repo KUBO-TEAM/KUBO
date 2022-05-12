@@ -30,7 +30,9 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   }) : super(RecipeInitial()) {
     on<RecipeEvent>((event, emit) async {
       if (event is RecipeModelListFetched) {
-        emit(RecipeInProgress());
+        if (state is RecipeInitial) {
+          emit(RecipeInProgress());
+        }
 
         final failOrCachedRecipes = await fetchCachedRecipes(NoParams());
         final failOrRecipes = await fetchRecipes(NoParams());
@@ -47,7 +49,9 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
            */
           final recipes = (state as RecipeSuccess).cached;
 
-          emit(RecipeInProgress());
+          if (state is RecipeInitial) {
+            emit(RecipeInProgress());
+          }
 
           var filteredRecipes = recipes.where((recipe) {
             return recipe.name.toLowerCase().contains(query.toLowerCase());
@@ -55,7 +59,9 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
 
           emit(RecipeSuccess(recipes: filteredRecipes, cached: recipes));
         } else if (categories != null) {
-          emit(RecipeInProgress());
+          if (state is RecipeInitial) {
+            emit(RecipeInProgress());
+          }
 
           if (categories.isEmpty) {
             final failOrCachedRecipes = await fetchCachedRecipes(NoParams());

@@ -5,6 +5,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/reminder/reminder_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/user/user_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/reminders_page.dart';
 
@@ -51,7 +53,6 @@ class _BottomNavigationState extends State<BottomNavigation>
         );
         return;
       case 1: // Navigate to reminders;
-
         Navigator.pushNamed(context, ReminderPage.id);
         return;
     }
@@ -86,19 +87,39 @@ class _BottomNavigationState extends State<BottomNavigation>
     );
   }
 
-  Badge _buildRemindersBadgedIcon(IconData icon) {
-    return Badge(
-      badgeColor: Colors.red.shade700,
-      badgeContent: const Text(
-        '6',
-        style: TextStyle(
-          color: Colors.white,
-        ),
-      ),
-      child: Icon(
-        icon,
-        size: 24,
-        color: Colors.white,
+  BlocListener _buildRemindersBadgedIcon(IconData icon) {
+    return BlocListener<UserBloc, UserState>(
+      listener: (context, state) {
+        if (state is UserSuccess) {
+          BlocProvider.of<ReminderBloc>(context).add(
+            ReminderNotificationsFetched(user: state.user),
+          );
+        }
+      },
+      child: BlocBuilder<ReminderBloc, ReminderState>(
+        builder: (context, state) {
+          int notification = 0;
+
+          if (state is ReminderFetchNotificationsSuccess) {
+            notification = state.unseenReminders;
+          }
+
+          return Badge(
+            showBadge: notification == 0 ? false : true,
+            badgeColor: Colors.red.shade700,
+            badgeContent: Text(
+              notification.toString(),
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            child: Icon(
+              icon,
+              size: 24,
+              color: Colors.white,
+            ),
+          );
+        },
       ),
     );
   }

@@ -18,8 +18,8 @@ class UserAdapter extends TypeAdapter<User> {
     };
     return User(
       notificationChannelIdCounter: fields[0] as int,
-      unreadNotificationCount: fields[1] as int,
-      startedAt: fields[2] as DateTime,
+      remindersSeenAt: fields[2] as DateTime,
+      startedAt: fields[1] as DateTime,
     );
   }
 
@@ -30,9 +30,9 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(0)
       ..write(obj.notificationChannelIdCounter)
       ..writeByte(1)
-      ..write(obj.unreadNotificationCount)
+      ..write(obj.startedAt)
       ..writeByte(2)
-      ..write(obj.startedAt);
+      ..write(obj.remindersSeenAt);
   }
 
   @override
