@@ -18,9 +18,13 @@ class ReminderPage extends StatefulWidget {
 }
 
 class _ReminderPageState extends State<ReminderPage> {
+  int? unseenRemindersState;
+
   @override
   void initState() {
     super.initState();
+
+    BlocProvider.of<UserBloc>(context).add(UserReminderSeenAtUpdated());
 
     UserState userState = BlocProvider.of<UserBloc>(context).state;
 
@@ -91,15 +95,19 @@ class _ReminderPageState extends State<ReminderPage> {
                       }
 
                       if (state is ReminderFetchNotificationsSuccess) {
-                        int unseenReminders = state.unseenReminders;
-
                         EasyLoading.dismiss();
+
+                        unseenRemindersState ??= state.unseenReminders;
+
+                        final unseenReminders = unseenRemindersState;
+
                         List<Reminder> reminders = state.reminders;
                         return ListView.builder(
                           itemCount: reminders.length,
                           itemBuilder: (context, index) {
                             Reminder reminder = reminders[index];
-                            Color? unseenColor = unseenReminders > index
+                            Color? unseenColor = unseenReminders != null &&
+                                    unseenReminders > index
                                 ? Colors.green.withOpacity(0.1)
                                 : null;
                             return Container(

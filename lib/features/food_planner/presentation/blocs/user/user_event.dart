@@ -8,3 +8,5 @@ abstract class UserEvent extends Equatable {
 }
 
 class UserFetched extends UserEvent {}
+
+class UserReminderSeenAtUpdated extends UserEvent {}

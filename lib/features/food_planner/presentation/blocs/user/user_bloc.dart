@@ -19,7 +19,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     required this.initializeUser,
   }) : super(UserInitial()) {
     on<UserEvent>((event, emit) async {
-      if (event is UserFetched) {
+      if (event is UserReminderSeenAtUpdated) {
+        UserState currentState = state;
+        if (currentState is UserSuccess) {
+          User user = currentState.user;
+          user.remindersSeenAt = DateTime.now();
+          user.save();
+        }
+      } else if (event is UserFetched) {
         final failureOrUser = await fetchUser(NoParams());
 
         await failureOrUser.fold(

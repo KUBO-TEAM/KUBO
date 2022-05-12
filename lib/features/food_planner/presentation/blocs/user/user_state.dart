@@ -1,10 +1,7 @@
 part of 'user_bloc.dart';
 
-abstract class UserState extends Equatable {
+abstract class UserState {
   const UserState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class UserInitial extends UserState {}
