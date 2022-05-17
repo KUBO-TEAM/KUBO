@@ -11,6 +11,7 @@ import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.da
 import 'package:kubo/features/food_planner/presentation/widgets/planner_buttons.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/weekly_report.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = 'home_page';
@@ -29,6 +30,11 @@ class _HomePageState extends State<HomePage> {
     listenNotifications();
 
     BlocProvider.of<UserBloc>(context).add(UserFetched());
+    permissionRequiest();
+  }
+
+  Future<void> permissionRequiest() async {
+    Permission.storage.request();
   }
 
   void listenNotifications() =>

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:external_path/external_path.dart';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/captured_page.dart';
@@ -8,6 +9,7 @@ import 'package:kubo/features/smart_recipe_selection/presentation/widgets/camera
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/camera_clipper.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/camera_top_buttons.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 
 class CameraPage extends StatefulWidget {
   static const String id = 'camera_page';
@@ -27,29 +29,19 @@ class _CameraPageState extends State<CameraPage> {
   double y = 0.0;
   double x = 0.0;
 
-  File? latestCacheImage;
+  File? latestPicture;
 
   @override
   void initState() {
     super.initState();
     _getCameras();
-    _getFirstCacheFile();
+    _getLastPicturedFile();
   }
 
   @override
   void dispose() {
     controller!.dispose();
     super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kBrownPrimary,
-      body: SafeArea(
-        child: _loadingOrCamera(),
-      ),
-    );
   }
 
   Widget _loadingOrCamera() {
@@ -80,10 +72,10 @@ class _CameraPageState extends State<CameraPage> {
                     onTap: _pickImage,
                     child: CircleAvatar(
                       radius: 30,
-                      backgroundImage: latestCacheImage != null
-                          ? FileImage(latestCacheImage!)
+                      backgroundImage: latestPicture != null
+                          ? FileImage(latestPicture!)
                           : null,
-                      backgroundColor: Colors.red,
+                      backgroundColor: Colors.black,
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -124,22 +116,45 @@ class _CameraPageState extends State<CameraPage> {
   Future<void> _pickImage() async {
     final ImagePicker _picker = ImagePicker();
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {}
+    if (image != null) {
+      Navigator.pushReplacementNamed(
+        context,
+        CapturedPage.id,
+        arguments: CapturedPageArguments(
+          imagePath: image.path,
+        ),
+      );
+    }
   }
 
-  Future<void> _getFirstCacheFile() async {
-    // final tempDirectory = await getTemporaryDirectory();
+  Future<void> _getLastPicturedFile() async {
+    var path = await ExternalPath.getExternalStoragePublicDirectory(
+      ExternalPath.DIRECTORY_PICTURES,
+    );
 
-    // final tempDirFiles = tempDirectory.listSync(
-    //   recursive: false,
-    //   followLinks: false,
-    // );
-    // // print(tempDirFiles[0].path);
-    // if (tempDirFiles.isNotEmpty) {
-    //   setState(() {
-    //     latestCacheImage = File(tempDirFiles.last.path);
-    //   });
-    // }
+    var picturesDirectory = Directory('$path/kubo');
+
+    if (await picturesDirectory.exists() == false) {
+      picturesDirectory = Directory(path);
+    }
+
+    final pictures = picturesDirectory.listSync(
+      recursive: false,
+      followLinks: false,
+    );
+
+    for (var picture in pictures.reversed) {
+      var fileType = lookupMimeType(picture.path);
+      if (fileType != null) {
+        if (fileType.split('/')[0] == 'image') {
+          var lastPicture = File(picture.path);
+          setState(() {
+            latestPicture = lastPicture;
+          });
+          break;
+        }
+      }
+    }
   }
 
   Future<void> _getCameras() async {
@@ -189,7 +204,7 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   void _onTakePictureButtonPressed() {
-    _takePicture().then((XFile? file) {
+    _takePicture().then((XFile? file) async {
       if (mounted) {
         if (file != null) {
           Navigator.pushReplacementNamed(
@@ -246,5 +261,15 @@ class _CameraPageState extends State<CameraPage> {
       hdrEnabled = !hdrEnabled;
     });
     _getCameras();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: kBrownPrimary,
+      body: SafeArea(
+        child: _loadingOrCamera(),
+      ),
+    );
   }
 }
