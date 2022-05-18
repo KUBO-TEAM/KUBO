@@ -19,6 +19,7 @@ import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_create_recipe_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_fetch_recipe_schedules_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/reminder/reminder_bloc.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/predict_image/predict_image_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_pictures/scanned_pictures_bloc.dart';
 import 'package:kubo/injection.dart';
@@ -37,6 +38,7 @@ Future<void> main() async {
     ..registerAdapter(IngredientAdapter())
     ..registerAdapter(RecipeAdapter())
     ..registerAdapter(UserAdapter())
+    ..registerAdapter(CategoryAdapter())
     ..registerAdapter(RecipeScheduleAdapter());
 
   await configureDependencies();

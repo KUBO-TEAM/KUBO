@@ -5,7 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:kubo/features/food_planner/data/datasources/recipe_local_data_source.dart';
 import 'package:kubo/features/food_planner/data/datasources/recipes_remote_data_source.dart';
 import 'package:kubo/features/food_planner/data/models/recipe_model.dart';
-import 'package:kubo/features/food_planner/domain/entities/category.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/repositories/recipe_repository.dart';
 import 'package:kubo/features/food_planner/domain/usecases/create_cache_recipe.dart';
@@ -54,13 +54,13 @@ class RecipeRepositoryImpl implements RecipeRepository {
   }
 
   @override
-  Future<Either<Failure, String>> createCacheRecipe(
+  Future<Either<Failure, CreateCacheRecipeResponse>> createCacheRecipe(
     CreateCacheRecipeParams params,
   ) async {
     try {
-      final message = await recipeLocalDataSource.createCacheRecipe(params);
+      final response = await recipeLocalDataSource.createCacheRecipe(params);
 
-      return Right(message);
+      return Right(response);
     } on ServerException {
       return Left(CacheFailure());
     }

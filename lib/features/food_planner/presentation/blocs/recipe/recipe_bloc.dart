@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/error/failures.dart';
 import 'package:kubo/core/usecases/usecase.dart';
-import 'package:kubo/features/food_planner/domain/entities/category.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/usecases/create_cache_recipe.dart';
 import 'package:kubo/features/food_planner/domain/usecases/fetch_cached_recipes.dart';

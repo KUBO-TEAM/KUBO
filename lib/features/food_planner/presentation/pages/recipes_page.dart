@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/features/food_planner/domain/entities/category.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipe_info_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_list_tile.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_list_tile_parallax.dart';

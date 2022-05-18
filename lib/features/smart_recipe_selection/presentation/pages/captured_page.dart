@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:camera/camera.dart';
 import 'package:external_path/external_path.dart';
@@ -32,23 +33,23 @@ class CapturedPage extends StatefulWidget {
 }
 
 class _CapturedPageState extends State<CapturedPage> {
-  PredictedImage? resultUrl;
+  PredictedImage? predictedImage;
 
   void saveScannedIngredients() async {
     EasyLoading.show(
       status: 'loading...',
       maskType: EasyLoadingMaskType.black,
     );
-    final url = resultUrl;
+    final predictedImageFinal = predictedImage;
 
-    if (url == null) {
+    if (predictedImageFinal == null) {
       return;
     }
 
     try {
       // Saved with this method.
       var imageId = await ImageDownloader.downloadImage(
-        url.imageUrl,
+        predictedImageFinal.imageUrl,
         destination: AndroidDestinationType.directoryPictures
           ..inExternalFilesDir(),
       );
@@ -96,7 +97,7 @@ class _CapturedPageState extends State<CapturedPage> {
         ),
       );
     } on PlatformException catch (error) {
-      print(error);
+      debugPrint(error.message);
     }
   }
 
@@ -113,87 +114,146 @@ class _CapturedPageState extends State<CapturedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(children: [
-        BlocBuilder<PredictImageBloc, PredictImageState>(
-          builder: (context, state) {
-            if (state is PredictImageInProgress) {
-              EasyLoading.show(
-                status: 'loading...',
-                maskType: EasyLoadingMaskType.black,
-              );
-            }
-
-            if (state is PredictImageFailure) {
-              EasyLoading.dismiss();
-            }
-
-            if (state is PredictImageSuccess) {
-              EasyLoading.dismiss();
-              resultUrl = state.predictedImage;
-
-              return Image.network(
-                resultUrl!.imageUrl,
-                fit: BoxFit.cover,
-                height: double.infinity,
-                width: double.infinity,
-                alignment: Alignment.center,
-                loadingBuilder: (BuildContext context, Widget child,
-                    ImageChunkEvent? loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child;
-                  }
-                  return Center(
-                    child: CircularProgressIndicator(
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                          : null,
-                    ),
-                  );
-                },
-              );
-            }
-            return Image.file(
-              File(widget.arguments.imagePath),
-              fit: BoxFit.cover,
-              height: double.infinity,
-              width: double.infinity,
-              alignment: Alignment.center,
+      body: BlocBuilder<PredictImageBloc, PredictImageState>(
+        builder: (context, state) {
+          if (state is PredictImageInProgress) {
+            EasyLoading.show(
+              status: 'loading...',
+              maskType: EasyLoadingMaskType.black,
             );
-          },
-        ),
-        Positioned(
-          right: 0,
-          top: MediaQuery.of(context).viewPadding.top,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, CameraPage.id);
-            },
-            child: const Icon(Icons.close, color: Colors.white),
-            style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
-              padding: const EdgeInsets.all(2.0),
-              primary: kBrownPrimary,
-            ),
-          ),
-        ),
-        Positioned(
-          bottom: 16,
-          width: MediaQuery.of(context).size.width,
-          child: Center(
-            child: RoundedButton(
-              icon: const Icon(Icons.save),
-              title: const Text(
-                'Save as scanned ingredients',
-                style: TextStyle(
-                  fontSize: 16.0,
-                ),
-              ),
-              onPressed: saveScannedIngredients,
-            ),
-          ),
-        ),
-      ]),
+          }
+          if (state is PredictImageFailure) {
+            EasyLoading.dismiss();
+          }
+          if (state is PredictImageSuccess) {
+            EasyLoading.dismiss();
+            predictedImage = state.predictedImage;
+          }
+
+          return state is PredictImageSuccess
+              ? Stack(children: [
+                  Image.network(
+                    predictedImage!.imageUrl,
+                    height: double.infinity,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    fit: BoxFit.cover,
+                  ),
+                  ClipRRect(
+                    // Clip it cleanly.
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: Container(
+                        color: Colors.grey.withOpacity(0.1),
+                        alignment: Alignment.center,
+                      ),
+                    ),
+                  ),
+                  Image.network(
+                    predictedImage!.imageUrl,
+                    height: double.infinity,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    loadingBuilder: (
+                      BuildContext context,
+                      Widget child,
+                      ImageChunkEvent? loadingProgress,
+                    ) {
+                      if (loadingProgress == null) {
+                        return child;
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    },
+                  ),
+                  Positioned(
+                    right: 0,
+                    top: MediaQuery.of(context).viewPadding.top,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, CameraPage.id);
+                      },
+                      child: const Icon(Icons.close, color: Colors.white),
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(2.0),
+                        primary: kBrownPrimary,
+                      ),
+                    ),
+                  ),
+                  state.predictedImage.categories.isNotEmpty
+                      ? Positioned(
+                          bottom: 16,
+                          width: MediaQuery.of(context).size.width,
+                          child: Center(
+                            child: RoundedButton(
+                              icon: const Icon(Icons.save),
+                              title: const Text(
+                                'Save as scanned ingredients',
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                              onPressed: saveScannedIngredients,
+                            ),
+                          ),
+                        )
+                      : Positioned(
+                          bottom: 16,
+                          width: MediaQuery.of(context).size.width,
+                          child: Center(
+                            child: RoundedButton(
+                              title: const Text(
+                                'No ingredients scanned, Please try again.',
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  CameraPage.id,
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                ])
+              : Stack(
+                  children: [
+                    Image.file(
+                      File(widget.arguments.imagePath),
+                      height: double.infinity,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      fit: BoxFit.cover,
+                    ),
+                    ClipRRect(
+                      // Clip it cleanly.
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: Container(
+                          color: Colors.grey.withOpacity(0.1),
+                          alignment: Alignment.center,
+                        ),
+                      ),
+                    ),
+                    Image.file(
+                      File(widget.arguments.imagePath),
+                      height: double.infinity,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                    ),
+                  ],
+                );
+        },
+      ),
     );
   }
 }

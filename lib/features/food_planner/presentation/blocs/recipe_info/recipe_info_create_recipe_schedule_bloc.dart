@@ -66,7 +66,7 @@ class RecipeInfoCreateRecipeScheduleBloc extends Bloc<
                   message: 'Failed to create recipe schedule',
                 ),
               );
-            }, (successMessage) async {
+            }, (response) async {
               User user = event.user;
 
               _scheduleNotification(
@@ -118,7 +118,7 @@ class RecipeInfoCreateRecipeScheduleBloc extends Bloc<
 
               emit(
                 RecipeInfoCreateRecipeScheduleSuccess(
-                  message: successMessage,
+                  message: response.message,
                 ),
               );
             });

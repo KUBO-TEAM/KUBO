@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/examples/ingredients.examples.dart';
-import 'package:kubo/features/food_planner/domain/entities/category.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
 
@@ -65,10 +65,10 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
                       DataRow(
                         selected: isCategorySelected(category),
                         cells: [
-                          DataCell(
+                          const DataCell(
                             Text(
-                              category.quantity.toString(),
-                              style: const TextStyle(
+                              '1',
+                              style: TextStyle(
                                 color: kBlackPrimary,
                                 fontFamily: 'Montserrat ',
                                 fontSize: 14.0,

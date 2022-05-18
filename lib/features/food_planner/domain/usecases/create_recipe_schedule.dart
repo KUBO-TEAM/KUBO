@@ -8,17 +8,29 @@ import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/repositories/recipe_schedule_repository.dart';
 
 @lazySingleton
-class CreateRecipeSchedule implements UseCase<String, CreateRecipeParams> {
+class CreateRecipeSchedule
+    implements UseCase<CreateRecipeScheduleResponse, CreateRecipeParams> {
   final RecipeScheduleRepository repository;
 
   CreateRecipeSchedule(this.repository);
 
   @override
-  Future<Either<Failure, String>> call(
+  Future<Either<Failure, CreateRecipeScheduleResponse>> call(
     CreateRecipeParams params,
   ) async {
     return await repository.createRecipeSchedule(params);
   }
+}
+
+class CreateRecipeScheduleResponse extends Equatable {
+  final String message;
+
+  const CreateRecipeScheduleResponse({
+    required this.message,
+  });
+
+  @override
+  List<Object?> get props => [message];
 }
 
 class CreateRecipeParams extends Equatable {

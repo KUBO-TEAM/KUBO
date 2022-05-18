@@ -6,7 +6,7 @@ import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart'
 import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedule.dart';
 
 abstract class RecipeScheduleRepository {
-  Future<Either<Failure, String>> createRecipeSchedule(
+  Future<Either<Failure, CreateRecipeScheduleResponse>> createRecipeSchedule(
     CreateRecipeParams params,
   );
 

@@ -8,6 +8,7 @@ import 'package:kubo/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
 
 import 'package:kubo/features/food_planner/domain/repositories/recipe_schedule_repository.dart';
+import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedule.dart';
 
 @LazySingleton(as: RecipeScheduleRepository)
 class RecipeScheduleRepositoryImpl implements RecipeScheduleRepository {
@@ -16,15 +17,15 @@ class RecipeScheduleRepositoryImpl implements RecipeScheduleRepository {
   RecipeScheduleRepositoryImpl({required this.recipeLocalDataSource});
 
   @override
-  Future<Either<Failure, String>> createRecipeSchedule(
+  Future<Either<Failure, CreateRecipeScheduleResponse>> createRecipeSchedule(
     recipeSchedule,
   ) async {
     try {
-      final message = await recipeLocalDataSource.createRecipeSchedule(
+      final response = await recipeLocalDataSource.createRecipeSchedule(
         recipeSchedule,
       );
 
-      return Right(message);
+      return Right(response);
     } on CacheException {
       return Left(CacheFailure());
     }

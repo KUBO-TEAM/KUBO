@@ -12,7 +12,7 @@ abstract class RecipeScheduleLocalDataSource {
   ///
   /// Throws [CacheException] if data is not save.
   ///
-  Future<String> createRecipeSchedule(
+  Future<CreateRecipeScheduleResponse> createRecipeSchedule(
     CreateRecipeParams params,
   );
 
@@ -38,7 +38,7 @@ class RecipeScheduleLocalDataSourceImpl
   RecipeScheduleLocalDataSourceImpl({required this.recipeScheduleBox});
 
   @override
-  Future<String> createRecipeSchedule(
+  Future<CreateRecipeScheduleResponse> createRecipeSchedule(
     CreateRecipeParams params,
   ) async {
     final recipeScheduleModel = RecipeSchedule(
@@ -52,7 +52,7 @@ class RecipeScheduleLocalDataSourceImpl
 
     recipeScheduleBox.add(recipeScheduleModel);
 
-    return 'Successfully Created!';
+    return const CreateRecipeScheduleResponse(message: 'Successfully Created!');
   }
 
   @override

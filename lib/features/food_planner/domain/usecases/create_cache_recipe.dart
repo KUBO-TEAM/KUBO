@@ -7,13 +7,14 @@ import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/repositories/recipe_repository.dart';
 
 @lazySingleton
-class CreateCacheRecipe implements UseCase<String, CreateCacheRecipeParams> {
+class CreateCacheRecipe
+    implements UseCase<CreateCacheRecipeResponse, CreateCacheRecipeParams> {
   final RecipeRepository repository;
 
   CreateCacheRecipe(this.repository);
 
   @override
-  Future<Either<Failure, String>> call(
+  Future<Either<Failure, CreateCacheRecipeResponse>> call(
     CreateCacheRecipeParams params,
   ) async {
     return await repository.createCacheRecipe(params);
@@ -29,4 +30,15 @@ class CreateCacheRecipeParams extends Equatable {
 
   @override
   List<Object?> get props => [recipes];
+}
+
+class CreateCacheRecipeResponse extends Equatable {
+  final String message;
+
+  const CreateCacheRecipeResponse({
+    required this.message,
+  });
+
+  @override
+  List<Object?> get props => [message];
 }

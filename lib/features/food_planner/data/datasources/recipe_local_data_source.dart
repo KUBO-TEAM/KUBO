@@ -10,7 +10,7 @@ abstract class RecipeLocalDataSource {
   ///
   /// Throws [CacheException] if data is not save.
   ///
-  Future<String> createCacheRecipe(
+  Future<CreateCacheRecipeResponse> createCacheRecipe(
     CreateCacheRecipeParams params,
   );
 
@@ -24,12 +24,15 @@ class RecipeLocalDataSourceImpl implements RecipeLocalDataSource {
   RecipeLocalDataSourceImpl({required this.recipeBox});
 
   @override
-  Future<String> createCacheRecipe(CreateCacheRecipeParams params) async {
+  Future<CreateCacheRecipeResponse> createCacheRecipe(
+      CreateCacheRecipeParams params) async {
     for (Recipe recipeModel in params.recipes) {
       recipeBox.put(recipeModel.id, recipeModel);
     }
 
-    return 'Successfully Cache Recipes!';
+    return const CreateCacheRecipeResponse(
+      message: 'Successfully Cache Recipes!',
+    );
   }
 
   @override

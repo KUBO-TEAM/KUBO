@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/features/food_planner/data/models/category_model.dart';
+import 'package:kubo/features/smart_recipe_selection/data/models/category_model.dart';
 
 class KuboCheckBox extends StatefulWidget {
   const KuboCheckBox({
@@ -40,7 +40,7 @@ class _KuboCheckBoxState extends State<KuboCheckBox> {
           ),
         ),
         Text(
-          '${widget.category.quantity} ${widget.category.name}',
+          '1 ${widget.category.name}',
           style: const TextStyle(
             fontSize: 16.0,
           ),

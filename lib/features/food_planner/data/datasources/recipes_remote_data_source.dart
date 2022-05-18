@@ -5,7 +5,7 @@ import 'package:kubo/core/constants/string_constants.dart';
 import 'package:kubo/core/error/exceptions.dart';
 import 'package:kubo/features/food_planner/data/models/recipe_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:kubo/features/food_planner/domain/entities/category.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 
 abstract class RecipesRemoteDataSource {
   /// fetch [RecipeModel] in remote

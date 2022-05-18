@@ -1,18 +1,26 @@
+import 'package:kubo/features/smart_recipe_selection/data/models/category_model.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
+
 import '../../domain/entities/predicted_image.dart';
 
 class PredictedImageModel extends PredictedImage {
   const PredictedImageModel({
     required String imageUrl,
-    required List<String> ingredients,
+    required List<Category> categories,
   }) : super(
           imageUrl: imageUrl,
-          ingredients: ingredients,
+          categories: categories,
         );
 
-  factory PredictedImageModel.fromJson(Map<String, dynamic> json) {
+  factory PredictedImageModel.fromJson(Map<String, dynamic> raw) {
+    Iterable categories = raw['categories'];
     return PredictedImageModel(
-      imageUrl: json['imageUrl'],
-      ingredients: List<String>.from(json['ingredients']),
+      imageUrl: raw['imageUrl'],
+      categories: List<Category>.from(
+        categories.map(
+          (category) => CategoryModel.fromJson(category),
+        ),
+      ),
     );
   }
 }
