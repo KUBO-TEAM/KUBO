@@ -1,8 +1,6 @@
 import 'dart:io';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/widgets/image_dialog.dart';
 
 class ScannedPicturesListTile extends StatefulWidget {
   const ScannedPicturesListTile({
@@ -60,53 +58,18 @@ class _ScannedPicturesListTileState extends State<ScannedPicturesListTile> {
                     radius: 4,
                     backgroundColor: isSelected
                         ? Colors.green
-                        : const Color.fromARGB(255, 241, 241, 241),
+                        : const Color.fromARGB(
+                            255,
+                            241,
+                            241,
+                            241,
+                          ),
                   ),
                 ),
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class ImageDialog extends StatelessWidget {
-  final File imageFile;
-
-  const ImageDialog({Key? key, required this.imageFile}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: kBrownPrimary,
-      child: Stack(
-        children: [
-          Image.file(
-            imageFile,
-            height: double.infinity,
-            width: double.infinity,
-            alignment: Alignment.center,
-            fit: BoxFit.cover,
-          ),
-          ClipRRect(
-            // Clip it cleanly.
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: Container(
-                color: Colors.grey.withOpacity(0.1),
-                alignment: Alignment.center,
-              ),
-            ),
-          ),
-          Image.file(
-            imageFile,
-            height: double.infinity,
-            width: double.infinity,
-            alignment: Alignment.center,
-          ),
-        ],
       ),
     );
   }

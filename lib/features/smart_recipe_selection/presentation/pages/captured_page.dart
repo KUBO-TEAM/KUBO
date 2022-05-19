@@ -15,6 +15,7 @@ import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_p
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/scanned_pictures_list_page.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_downloader/image_downloader.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/widgets/detected_categories_dialog.dart';
 
 class CapturedPageArguments {
   final String imagePath;
@@ -114,7 +115,19 @@ class _CapturedPageState extends State<CapturedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: BlocBuilder<PredictImageBloc, PredictImageState>(
+      body: BlocConsumer<PredictImageBloc, PredictImageState>(
+        listener: (context, state) {
+          if (state is PredictImageSuccess) {
+            if (state.predictedImage.categories.isNotEmpty) {
+              showDialog(
+                context: context,
+                builder: (_) => DetectedCategoriesDialog(
+                  categories: state.predictedImage.categories,
+                ),
+              );
+            }
+          }
+        },
         builder: (context, state) {
           if (state is PredictImageInProgress) {
             EasyLoading.show(
@@ -131,100 +144,177 @@ class _CapturedPageState extends State<CapturedPage> {
           }
 
           return state is PredictImageSuccess
-              ? Stack(children: [
-                  Image.network(
-                    predictedImage!.imageUrl,
-                    height: double.infinity,
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    fit: BoxFit.cover,
-                  ),
-                  ClipRRect(
-                    // Clip it cleanly.
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                      child: Container(
-                        color: Colors.grey.withOpacity(0.1),
-                        alignment: Alignment.center,
-                      ),
+              ? Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image.network(
+                      predictedImage!.imageUrl,
+                      alignment: Alignment.center,
+                      fit: BoxFit.cover,
                     ),
-                  ),
-                  Image.network(
-                    predictedImage!.imageUrl,
-                    height: double.infinity,
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    loadingBuilder: (
-                      BuildContext context,
-                      Widget child,
-                      ImageChunkEvent? loadingProgress,
-                    ) {
-                      if (loadingProgress == null) {
-                        return child;
-                      }
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
+                    ClipRRect(
+                      // Clip it cleanly.
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: Container(
+                          color: Colors.grey.withOpacity(0.1),
+                          alignment: Alignment.center,
                         ),
-                      );
-                    },
-                  ),
-                  Positioned(
-                    right: 0,
-                    top: MediaQuery.of(context).viewPadding.top,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(context, CameraPage.id);
-                      },
-                      child: const Icon(Icons.close, color: Colors.white),
-                      style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        padding: const EdgeInsets.all(2.0),
-                        primary: kBrownPrimary,
                       ),
                     ),
-                  ),
-                  state.predictedImage.categories.isNotEmpty
-                      ? Positioned(
-                          bottom: 16,
-                          width: MediaQuery.of(context).size.width,
-                          child: Center(
-                            child: RoundedButton(
-                              icon: const Icon(Icons.save),
-                              title: const Text(
-                                'Save as scanned ingredients',
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                ),
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: MediaQuery.of(context).viewPadding.top + 55,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          SizedBox(
+                            height: 30,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: state.predictedImage.categories.length,
+                              padding: const EdgeInsets.only(
+                                left: 30.0,
                               ),
-                              onPressed: saveScannedIngredients,
+                              itemBuilder: (
+                                BuildContext context,
+                                int index,
+                              ) {
+                                return Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor: kBboxColorClass[state
+                                          .predictedImage
+                                          .categories[index]
+                                          .name],
+                                      radius: 6.0,
+                                    ),
+                                    const SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    Text(
+                                      state.predictedImage.categories[index]
+                                          .name,
+                                      style: const TextStyle(
+                                        fontSize: 16.0,
+                                        fontFamily: 'Montserrat Medium',
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 15.0,
+                                    ),
+                                  ],
+                                );
+                              },
                             ),
                           ),
-                        )
-                      : Positioned(
-                          bottom: 16,
-                          width: MediaQuery.of(context).size.width,
-                          child: Center(
-                            child: RoundedButton(
+                          Expanded(
+                            child: Image.network(
+                              predictedImage!.imageUrl,
+                              alignment: Alignment.center,
+                              loadingBuilder: (
+                                BuildContext context,
+                                Widget child,
+                                ImageChunkEvent? loadingProgress,
+                              ) {
+                                if (loadingProgress == null) {
+                                  return child;
+                                }
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      right: 0,
+                      top: MediaQuery.of(context).viewPadding.top + 5,
+                      child: Row(
+                        children: [
+                          if (state.predictedImage.categories.isNotEmpty)
+                            RoundedButton(
+                              icon: const Icon(Icons.restaurant),
                               title: const Text(
-                                'No ingredients scanned, Please try again.',
+                                'Show accuracy result list',
                                 style: TextStyle(
                                   fontSize: 16.0,
                                 ),
                               ),
                               onPressed: () {
-                                Navigator.pushReplacementNamed(
-                                  context,
-                                  CameraPage.id,
+                                showDialog(
+                                  context: context,
+                                  builder: (_) => DetectedCategoriesDialog(
+                                    categories: state.predictedImage.categories,
+                                  ),
                                 );
                               },
                             ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(
+                                  context, CameraPage.id);
+                            },
+                            child: const Icon(Icons.close, color: Colors.white),
+                            style: ElevatedButton.styleFrom(
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(2.0),
+                              primary: kBrownPrimary,
+                            ),
                           ),
-                        ),
-                ])
+                        ],
+                      ),
+                    ),
+                    state.predictedImage.categories.isNotEmpty
+                        ? Positioned(
+                            bottom: 16,
+                            width: MediaQuery.of(context).size.width,
+                            child: Center(
+                              child: RoundedButton(
+                                icon: const Icon(Icons.save),
+                                title: const Text(
+                                  'Save as scanned ingredients',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                onPressed: saveScannedIngredients,
+                              ),
+                            ),
+                          )
+                        : Positioned(
+                            bottom: 16,
+                            width: MediaQuery.of(context).size.width,
+                            child: Center(
+                              child: RoundedButton(
+                                title: const Text(
+                                  'No ingredients scanned, Please try again.',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    CameraPage.id,
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                  ],
+                )
               : Stack(
                   children: [
                     Image.file(
