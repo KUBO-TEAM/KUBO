@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/core/helpers/utils.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/predict_image/predict_image_bloc.dart';
@@ -138,210 +139,212 @@ class _CapturedPageState extends State<CapturedPage> {
           if (state is PredictImageFailure) {
             EasyLoading.dismiss();
           }
+
           if (state is PredictImageSuccess) {
             EasyLoading.dismiss();
             predictedImage = state.predictedImage;
-          }
 
-          return state is PredictImageSuccess
-              ? Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    Image.network(
-                      predictedImage!.imageUrl,
+            final categoriesWithQuantity =
+                Utils.fixRepeatingCategories(state.predictedImage.categories);
+
+            return Stack(
+              fit: StackFit.expand,
+              children: [
+                Image.network(
+                  predictedImage!.imageUrl,
+                  alignment: Alignment.center,
+                  fit: BoxFit.cover,
+                ),
+                ClipRRect(
+                  // Clip it cleanly.
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    child: Container(
+                      color: Colors.black.withOpacity(0.2),
                       alignment: Alignment.center,
-                      fit: BoxFit.cover,
                     ),
-                    ClipRRect(
-                      // Clip it cleanly.
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                        child: Container(
-                          color: Colors.grey.withOpacity(0.1),
-                          alignment: Alignment.center,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(
+                    top: MediaQuery.of(context).viewPadding.top + 55,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(
+                        height: 30,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: categoriesWithQuantity.length,
+                          padding: const EdgeInsets.only(
+                            left: 30.0,
+                          ),
+                          itemBuilder: (
+                            BuildContext context,
+                            int index,
+                          ) {
+                            return Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: kBboxColorClass[
+                                      categoriesWithQuantity[index]
+                                          .category
+                                          .name],
+                                  radius: 6.0,
+                                ),
+                                const SizedBox(
+                                  width: 5.0,
+                                ),
+                                Text(
+                                  '${categoriesWithQuantity[index].quantity.toString()} ${categoriesWithQuantity[index].category.name}',
+                                  style: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontFamily: 'Montserrat Medium',
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 15.0,
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(
-                        top: MediaQuery.of(context).viewPadding.top + 55,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          SizedBox(
-                            height: 30,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: state.predictedImage.categories.length,
-                              padding: const EdgeInsets.only(
-                                left: 30.0,
+                      Expanded(
+                        child: Image.network(
+                          predictedImage!.imageUrl,
+                          alignment: Alignment.center,
+                          loadingBuilder: (
+                            BuildContext context,
+                            Widget child,
+                            ImageChunkEvent? loadingProgress,
+                          ) {
+                            if (loadingProgress == null) {
+                              return child;
+                            }
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
                               ),
-                              itemBuilder: (
-                                BuildContext context,
-                                int index,
-                              ) {
-                                return Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor: kBboxColorClass[state
-                                          .predictedImage
-                                          .categories[index]
-                                          .name],
-                                      radius: 6.0,
-                                    ),
-                                    const SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Text(
-                                      state.predictedImage.categories[index]
-                                          .name,
-                                      style: const TextStyle(
-                                        fontSize: 16.0,
-                                        fontFamily: 'Montserrat Medium',
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 15.0,
-                                    ),
-                                  ],
-                                );
-                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  top: MediaQuery.of(context).viewPadding.top + 5,
+                  child: Row(
+                    children: [
+                      if (state.predictedImage.categories.isNotEmpty)
+                        RoundedButton(
+                          icon: const Icon(Icons.restaurant),
+                          title: const Text(
+                            'Show accuracy table of results',
+                            style: TextStyle(
+                              fontSize: 16.0,
                             ),
                           ),
-                          Expanded(
-                            child: Image.network(
-                              predictedImage!.imageUrl,
-                              alignment: Alignment.center,
-                              loadingBuilder: (
-                                BuildContext context,
-                                Widget child,
-                                ImageChunkEvent? loadingProgress,
-                              ) {
-                                if (loadingProgress == null) {
-                                  return child;
-                                }
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes !=
-                                            null
-                                        ? loadingProgress
-                                                .cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
-                                        : null,
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      right: 0,
-                      top: MediaQuery.of(context).viewPadding.top + 5,
-                      child: Row(
-                        children: [
-                          if (state.predictedImage.categories.isNotEmpty)
-                            RoundedButton(
-                              icon: const Icon(Icons.restaurant),
-                              title: const Text(
-                                'Show accuracy result list',
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                ),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (_) => DetectedCategoriesDialog(
+                                categories: state.predictedImage.categories,
                               ),
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (_) => DetectedCategoriesDialog(
-                                    categories: state.predictedImage.categories,
-                                  ),
-                                );
-                              },
+                            );
+                          },
+                        ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(
+                              context, CameraPage.id);
+                        },
+                        child: const Icon(Icons.close, color: Colors.white),
+                        style: ElevatedButton.styleFrom(
+                          shape: const CircleBorder(),
+                          padding: const EdgeInsets.all(2.0),
+                          primary: kBrownPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                state.predictedImage.categories.isNotEmpty
+                    ? Positioned(
+                        bottom: 16,
+                        width: MediaQuery.of(context).size.width,
+                        child: Center(
+                          child: RoundedButton(
+                            icon: const Icon(Icons.save),
+                            title: const Text(
+                              'Save as scanned ingredients',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                              ),
                             ),
-                          ElevatedButton(
+                            onPressed: saveScannedIngredients,
+                          ),
+                        ),
+                      )
+                    : Positioned(
+                        bottom: 16,
+                        width: MediaQuery.of(context).size.width,
+                        child: Center(
+                          child: RoundedButton(
+                            title: const Text(
+                              'No ingredients scanned, Please try again.',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                              ),
+                            ),
                             onPressed: () {
                               Navigator.pushReplacementNamed(
-                                  context, CameraPage.id);
+                                context,
+                                CameraPage.id,
+                              );
                             },
-                            child: const Icon(Icons.close, color: Colors.white),
-                            style: ElevatedButton.styleFrom(
-                              shape: const CircleBorder(),
-                              padding: const EdgeInsets.all(2.0),
-                              primary: kBrownPrimary,
-                            ),
                           ),
-                        ],
-                      ),
-                    ),
-                    state.predictedImage.categories.isNotEmpty
-                        ? Positioned(
-                            bottom: 16,
-                            width: MediaQuery.of(context).size.width,
-                            child: Center(
-                              child: RoundedButton(
-                                icon: const Icon(Icons.save),
-                                title: const Text(
-                                  'Save as scanned ingredients',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                                onPressed: saveScannedIngredients,
-                              ),
-                            ),
-                          )
-                        : Positioned(
-                            bottom: 16,
-                            width: MediaQuery.of(context).size.width,
-                            child: Center(
-                              child: RoundedButton(
-                                title: const Text(
-                                  'No ingredients scanned, Please try again.',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.pushReplacementNamed(
-                                    context,
-                                    CameraPage.id,
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                  ],
-                )
-              : Stack(
-                  children: [
-                    Image.file(
-                      File(widget.arguments.imagePath),
-                      height: double.infinity,
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      fit: BoxFit.cover,
-                    ),
-                    ClipRRect(
-                      // Clip it cleanly.
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                        child: Container(
-                          color: Colors.grey.withOpacity(0.1),
-                          alignment: Alignment.center,
                         ),
                       ),
-                    ),
-                    Image.file(
-                      File(widget.arguments.imagePath),
-                      height: double.infinity,
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                    ),
-                  ],
-                );
+              ],
+            );
+          }
+
+          return Stack(
+            children: [
+              Image.file(
+                File(widget.arguments.imagePath),
+                height: double.infinity,
+                width: double.infinity,
+                alignment: Alignment.center,
+                fit: BoxFit.cover,
+              ),
+              ClipRRect(
+                // Clip it cleanly.
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: Container(
+                    color: Colors.black.withOpacity(0.2),
+                    alignment: Alignment.center,
+                  ),
+                ),
+              ),
+              Image.file(
+                File(widget.arguments.imagePath),
+                height: double.infinity,
+                width: double.infinity,
+                alignment: Alignment.center,
+              ),
+            ],
+          );
         },
       ),
     );

@@ -6,9 +6,11 @@ import '../../domain/entities/predicted_image.dart';
 class PredictedImageModel extends PredictedImage {
   const PredictedImageModel({
     required String imageUrl,
+    required DateTime predictedAt,
     required List<Category> categories,
   }) : super(
           imageUrl: imageUrl,
+          predictedAt: predictedAt,
           categories: categories,
         );
 
@@ -16,6 +18,7 @@ class PredictedImageModel extends PredictedImage {
     Iterable categories = raw['categories'];
     return PredictedImageModel(
       imageUrl: raw['imageUrl'],
+      predictedAt: DateTime.parse(raw['predictedAt']),
       categories: List<Category>.from(
         categories.map(
           (category) => CategoryModel.fromJson(category),
