@@ -9,6 +9,7 @@ import 'dart:io';
 
 import 'package:kubo/features/smart_recipe_selection/domain/repositories/smart_recipe_selection_repository.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/usecases/create_category.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/usecases/create_predicted_image.dart';
 
 @LazySingleton(as: SmartRecipeSelectionRepository)
 class SmartRecipeSelectionRepositoryImpl
@@ -44,6 +45,19 @@ class SmartRecipeSelectionRepositoryImpl
           .createCategory(predictedImage);
 
       return Right(createCategoryResponse);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, CreatePredictedImageResponse>> createPredictedImage(
+      PredictedImage predictedImage) async {
+    try {
+      final createPredictedImage = await smartRecipeSelectionLocalDataSource
+          .createPredictedImage(predictedImage);
+
+      return Right(createPredictedImage);
     } on ServerException {
       return Left(ServerFailure());
     }

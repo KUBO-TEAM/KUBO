@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
           size: 40,
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       bottomNavigationBar: const BottomNavigation(),
       appBar: const KuboHomeAppBar('Overview'),
       body: SafeArea(

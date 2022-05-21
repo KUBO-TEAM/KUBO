@@ -9,6 +9,7 @@ import 'package:kubo/features/food_planner/presentation/blocs/reminder/reminder_
 import 'package:kubo/features/food_planner/presentation/blocs/user/user_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/reminders_page.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/pages/scanned_pictures_list_page.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({Key? key}) : super(key: key);
@@ -21,16 +22,14 @@ class _BottomNavigationState extends State<BottomNavigation>
     with SingleTickerProviderStateMixin {
   final iconList = <IconData>[
     Icons.storefront,
-    // Icons.menu_book,
-    // Icons.home,
     Icons.notifications,
+    Icons.menu_book,
   ];
 
   final titleList = <String>[
     'Recipes',
-    // 'Ingredients',
-    // 'Home',
     'Reminders',
+    'Ingredients',
   ];
 
   final autoSizeGroup = AutoSizeGroup();
@@ -54,6 +53,13 @@ class _BottomNavigationState extends State<BottomNavigation>
         return;
       case 1: // Navigate to reminders;
         Navigator.pushNamed(context, ReminderPage.id);
+        return;
+      case 2: // Navigate to scanned pictures list page;
+
+        Navigator.pushNamed(
+          context,
+          ScannedPicturesListPage.id,
+        );
         return;
     }
   }
@@ -134,7 +140,7 @@ class _BottomNavigationState extends State<BottomNavigation>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (index == 1) _buildRemindersBadgedIcon(iconList[index]),
-              if (index == 0)
+              if (index == 0 || index == 2)
                 Icon(
                   iconList[index],
                   size: 24,
@@ -158,9 +164,7 @@ class _BottomNavigationState extends State<BottomNavigation>
         notchAndCornersAnimation: animation,
         splashSpeedInMilliseconds: 300,
         notchSmoothness: NotchSmoothness.verySmoothEdge,
-        gapLocation: GapLocation.center,
-        leftCornerRadius: 32,
-        rightCornerRadius: 32,
+        gapLocation: GapLocation.end,
         onTap: (index) {
           _navigate(index);
         });

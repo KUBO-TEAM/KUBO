@@ -1,22 +1,24 @@
-import 'package:equatable/equatable.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
+import 'package:hive/hive.dart';
 
-//TODO: make it hive!
+part 'predicted_image.g.dart';
 
-class PredictedImage extends Equatable {
-  final String imageUrl;
+const kPredictedImageBoxKey = 'Predicted Image Box Key';
+
+@HiveType(typeId: 6)
+class PredictedImage extends HiveObject {
+  @HiveField(1)
+  String imageUrl;
+
+  @HiveField(22)
   final DateTime predictedAt;
+
+  @HiveField(3)
   final List<Category> categories;
 
-  const PredictedImage({
+  PredictedImage({
     required this.imageUrl,
     required this.categories,
     required this.predictedAt,
   });
-
-  @override
-  List<Object?> get props => [
-        imageUrl,
-        categories,
-      ];
 }

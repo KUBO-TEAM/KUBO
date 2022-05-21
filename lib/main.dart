@@ -20,6 +20,8 @@ import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_fetch_recipe_schedules_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/reminder/reminder_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/blocs/captured_page/save_scanned_ingredients_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/predict_image/predict_image_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_pictures/scanned_pictures_bloc.dart';
 import 'package:kubo/injection.dart';
@@ -38,6 +40,7 @@ Future<void> main() async {
     ..registerAdapter(IngredientAdapter())
     ..registerAdapter(RecipeAdapter())
     ..registerAdapter(UserAdapter())
+    ..registerAdapter(PredictedImageAdapter())
     ..registerAdapter(CategoryAdapter())
     ..registerAdapter(RecipeScheduleAdapter());
 
@@ -72,6 +75,7 @@ class Kubo extends StatelessWidget {
         BlocProvider(create: (_) => getIt<PredictImageBloc>()),
         BlocProvider(create: (_) => getIt<ReminderBloc>()),
         BlocProvider(create: (_) => getIt<UserBloc>()),
+        BlocProvider(create: (_) => getIt<SaveScannedIngredientsBloc>()),
         BlocProvider(create: (_) => ScannedPicturesBloc()),
         BlocProvider(create: (_) => CreateRecipeScheduleDialogBloc()),
       ],

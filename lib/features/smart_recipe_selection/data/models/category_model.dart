@@ -1,7 +1,7 @@
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 
 class CategoryModel extends Category {
-  const CategoryModel({
+  CategoryModel({
     required String name,
     required double accuracy,
     required DateTime predictedAt,

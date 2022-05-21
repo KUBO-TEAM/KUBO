@@ -4,6 +4,7 @@ import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/entities/user.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
 
 @module
 abstract class BoxModule {
@@ -19,4 +20,8 @@ abstract class BoxModule {
 
   @preResolve
   Future<Box<Category>> get category => Hive.openBox(kCategoryBoxKey);
+  @preResolve
+  Future<Box<PredictedImage>> get predictedImage => Hive.openBox(
+        kPredictedImageBoxKey,
+      );
 }

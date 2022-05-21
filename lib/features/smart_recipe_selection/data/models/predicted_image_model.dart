@@ -4,7 +4,7 @@ import 'package:kubo/features/smart_recipe_selection/domain/entities/category.da
 import '../../domain/entities/predicted_image.dart';
 
 class PredictedImageModel extends PredictedImage {
-  const PredictedImageModel({
+  PredictedImageModel({
     required String imageUrl,
     required DateTime predictedAt,
     required List<Category> categories,

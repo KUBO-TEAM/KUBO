@@ -12,6 +12,7 @@ part 'predict_image_state.dart';
 @injectable
 class PredictImageBloc extends Bloc<PredictImageEvent, PredictImageState> {
   final PredictImage predictImage;
+
   PredictImageBloc({required this.predictImage})
       : super(PredictImageInitial()) {
     on<PredictImageEvent>((event, emit) async {
@@ -25,7 +26,7 @@ class PredictImageBloc extends Bloc<PredictImageEvent, PredictImageState> {
           (failure) {
             emit(PredictImageFailure());
           },
-          (predictedImage) {
+          (predictedImage) async {
             emit(PredictImageSuccess(predictedImage: predictedImage));
           },
         );

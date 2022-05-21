@@ -9,21 +9,11 @@ import 'package:kubo/features/smart_recipe_selection/presentation/pages/smart_re
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/scanned_pictures_list_tile.dart';
 import 'package:skeletons/skeletons.dart';
 
-class ScannedPicturesListPageArguments {
-  final String imagePath;
-
-  ScannedPicturesListPageArguments({required this.imagePath});
-}
-
+//TODO: Fetch created predicted image, and add timer
 class ScannedPicturesListPage extends StatefulWidget {
   static const String id = 'scanned_picture_list_page';
 
-  const ScannedPicturesListPage({
-    Key? key,
-    required this.arguments,
-  }) : super(key: key);
-
-  final ScannedPicturesListPageArguments arguments;
+  const ScannedPicturesListPage({Key? key}) : super(key: key);
 
   @override
   State<ScannedPicturesListPage> createState() =>
@@ -44,8 +34,7 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
       ),
       appBar: KuboAppBar(
         'Scanned Pictures',
-        onBackButtonPressed: () =>
-            Navigator.of(context).pushReplacementNamed(CameraPage.id),
+        onBackButtonPressed: () => Navigator.of(context).pop(),
       ),
       body: Column(
         children: [

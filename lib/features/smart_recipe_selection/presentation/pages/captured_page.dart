@@ -9,7 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/helpers/utils.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/blocs/captured_page/save_scanned_ingredients_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/predict_image/predict_image_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_pictures/scanned_pictures_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
@@ -88,15 +90,27 @@ class _CapturedPageState extends State<CapturedPage> {
 
       EasyLoading.dismiss();
 
+      /** Image Path Edits */
+      predictedImageFinal.imageUrl = externalFilePath;
+
+      for (Category category in predictedImageFinal.categories) {
+        category.imageUrl = externalFilePath;
+      }
+
       BlocProvider.of<ScannedPicturesBloc>(context).add(
         ScannedPicturesSaved(imagePath: externalFilePath),
       );
+
+      /** Save Scanned Predicted Image */
+      BlocProvider.of<SaveScannedIngredientsBloc>(context).add(
+        SaveScannedIngredientsCreatedPredictedImage(
+          predictedImage: predictedImageFinal,
+        ),
+      );
+
       Navigator.pushReplacementNamed(
         context,
         ScannedPicturesListPage.id,
-        arguments: ScannedPicturesListPageArguments(
-          imagePath: externalFilePath,
-        ),
       );
     } on PlatformException catch (error) {
       debugPrint(error.message);

@@ -75,11 +75,8 @@ class AppRouter {
           builder: (_) => CapturedPage(arguments: arguments),
         );
       case ScannedPicturesListPage.id:
-        final arguments =
-            routeSettings.arguments as ScannedPicturesListPageArguments;
-
         return MaterialPageRoute(
-          builder: (_) => ScannedPicturesListPage(arguments: arguments),
+          builder: (_) => const ScannedPicturesListPage(),
         );
 
       case SmartRecipeListPage.id:
