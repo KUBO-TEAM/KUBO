@@ -62,4 +62,16 @@ class SmartRecipeSelectionRepositoryImpl
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, List<PredictedImage>>> fetchPredictedImages() async {
+    try {
+      final predictedImages =
+          await smartRecipeSelectionLocalDataSource.fetchPredictedImages();
+
+      return Right(predictedImages);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
 }

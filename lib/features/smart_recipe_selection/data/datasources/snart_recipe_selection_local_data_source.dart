@@ -10,8 +10,12 @@ abstract class SmartRecipeSelectionLocalDataSource {
   ///
   /// Throws [CacheException] if data is not save.
   Future<CreateCategoryResponse> createCategory(PredictedImage predictedImage);
+
   Future<CreatePredictedImageResponse> createPredictedImage(
-      PredictedImage predictedImage);
+    PredictedImage predictedImage,
+  );
+
+  Future<List<PredictedImage>> fetchPredictedImages();
 }
 
 @LazySingleton(as: SmartRecipeSelectionLocalDataSource)
@@ -55,5 +59,10 @@ class SmartRecipeSelectionLocalDataSourceImpl
     return const CreatePredictedImageResponse(
       message: 'Successfully Created PredictedImage',
     );
+  }
+
+  @override
+  Future<List<PredictedImage>> fetchPredictedImages() async {
+    return predictedImageBox.values.toList();
   }
 }

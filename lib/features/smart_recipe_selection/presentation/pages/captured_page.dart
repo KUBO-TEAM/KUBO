@@ -13,13 +13,13 @@ import 'package:kubo/features/smart_recipe_selection/domain/entities/category.da
 import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/captured_page/save_scanned_ingredients_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/predict_image/predict_image_bloc.dart';
-import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_pictures/scanned_pictures_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/scanned_pictures_list_page.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_downloader/image_downloader.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/detected_categories_dialog.dart';
 
+// TODO: Urgent Error in Scanned Againn!!!!!
 class CapturedPageArguments {
   final String imagePath;
 
@@ -84,22 +84,18 @@ class _CapturedPageState extends State<CapturedPage> {
         directory.createSync();
       }
 
-      await file.saveTo('$externalPath/kubo/${file.name}');
-
       String externalFilePath = '$externalPath/kubo/${file.name}';
+
+      await file.saveTo(externalFilePath);
 
       EasyLoading.dismiss();
 
       /** Image Path Edits */
-      predictedImageFinal.imageUrl = externalFilePath;
+      predictedImageFinal.imageUrl = path;
 
       for (Category category in predictedImageFinal.categories) {
-        category.imageUrl = externalFilePath;
+        category.imageUrl = path;
       }
-
-      BlocProvider.of<ScannedPicturesBloc>(context).add(
-        ScannedPicturesSaved(imagePath: externalFilePath),
-      );
 
       /** Save Scanned Predicted Image */
       BlocProvider.of<SaveScannedIngredientsBloc>(context).add(

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
-import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_pictures/scanned_pictures_bloc.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_pictures_list/scanned_pictures_list_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/smart_recipe_list_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/scanned_pictures_list_tile.dart';
@@ -22,6 +22,15 @@ class ScannedPicturesListPage extends StatefulWidget {
 
 class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
   List<String> selectedPictures = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    BlocProvider.of<ScannedPicturesListBloc>(context).add(
+      ScannedPicturesListFetched(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +80,10 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
             height: 16.0,
           ),
           Expanded(
-            child: BlocBuilder<ScannedPicturesBloc, ScannedPicturesState>(
+            child:
+                BlocBuilder<ScannedPicturesListBloc, ScannedPicturesListState>(
               builder: (context, state) {
-                if (state is ScannedPicturesInProgress) {
+                if (state is ScannedPicturesListInProgress) {
                   return GridView.builder(
                     itemCount: 30,
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -89,11 +99,11 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
                       );
                     },
                   );
-                } else if (state is ScannedPicturesSuccess) {
-                  final pictures = state.pictures;
+                } else if (state is ScannedPicturesListSuccess) {
+                  final predictedImages = state.predictedImages;
 
                   return GridView.builder(
-                    itemCount: pictures.length,
+                    itemCount: predictedImages.length,
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -102,7 +112,7 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
                     ),
                     itemBuilder: (BuildContext context, int index) {
                       return ScannedPicturesListTile(
-                        picture: pictures[index],
+                        picture: predictedImages[index].imageUrl,
                         onChange: (String picture) {
                           selectedPictures.add(picture);
                         },

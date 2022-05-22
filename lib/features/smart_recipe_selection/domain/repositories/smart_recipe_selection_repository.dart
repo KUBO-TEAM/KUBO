@@ -15,4 +15,6 @@ abstract class SmartRecipeSelectionRepository {
   Future<Either<Failure, CreatePredictedImageResponse>> createPredictedImage(
     PredictedImage predictedImage,
   );
+
+  Future<Either<Failure, List<PredictedImage>>> fetchPredictedImages();
 }

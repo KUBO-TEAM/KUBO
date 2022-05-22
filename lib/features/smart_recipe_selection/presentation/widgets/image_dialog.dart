@@ -27,7 +27,7 @@ class ImageDialog extends StatelessWidget {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
               child: Container(
-                color: Colors.grey.withOpacity(0.1),
+                color: Colors.black.withOpacity(0.2),
                 alignment: Alignment.center,
               ),
             ),

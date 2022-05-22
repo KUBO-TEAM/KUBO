@@ -127,6 +127,21 @@ class _CameraPageState extends State<CameraPage> {
     }
   }
 
+  void findTheLatestPicture(List<FileSystemEntity> pictures) {
+    for (var picture in pictures.reversed) {
+      var fileType = lookupMimeType(picture.path);
+      if (fileType != null) {
+        if (fileType.split('/')[0] == 'image') {
+          var lastPicture = File(picture.path);
+          setState(() {
+            latestPicture = lastPicture;
+          });
+          break;
+        }
+      }
+    }
+  }
+
   Future<void> _getLastPicturedFile() async {
     var path = await ExternalPath.getExternalStoragePublicDirectory(
       ExternalPath.DIRECTORY_PICTURES,
@@ -143,17 +158,17 @@ class _CameraPageState extends State<CameraPage> {
       followLinks: false,
     );
 
-    for (var picture in pictures.reversed) {
-      var fileType = lookupMimeType(picture.path);
-      if (fileType != null) {
-        if (fileType.split('/')[0] == 'image') {
-          var lastPicture = File(picture.path);
-          setState(() {
-            latestPicture = lastPicture;
-          });
-          break;
-        }
-      }
+    if (pictures.isNotEmpty) {
+      findTheLatestPicture(pictures);
+    } else {
+      var picturesRootDirectory = Directory(path);
+
+      final rootPictures = picturesRootDirectory.listSync(
+        recursive: false,
+        followLinks: false,
+      );
+
+      findTheLatestPicture(rootPictures);
     }
   }
 
