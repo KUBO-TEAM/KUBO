@@ -1,15 +1,16 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:kubo/features/smart_recipe_selection/presentation/widgets/image_dialog.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/pages/predicted_image_view_page.dart';
 
 class ScannedPicturesListTile extends StatefulWidget {
   const ScannedPicturesListTile({
     Key? key,
-    required this.picture,
+    required this.predictedImage,
     required this.onChange,
   }) : super(key: key);
 
-  final String picture;
+  final PredictedImage predictedImage;
   final ValueChanged<String> onChange;
 
   @override
@@ -24,10 +25,11 @@ class _ScannedPicturesListTileState extends State<ScannedPicturesListTile> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        showDialog(
-          context: context,
-          builder: (_) => ImageDialog(
-            imageFile: File(widget.picture),
+        Navigator.pushNamed(
+          context,
+          PredictedImageViewPage.id,
+          arguments: PredictedImageViewPageArguments(
+            predictedImage: widget.predictedImage,
           ),
         );
       },
@@ -37,7 +39,7 @@ class _ScannedPicturesListTileState extends State<ScannedPicturesListTile> {
           children: [
             Positioned.fill(
               child: Image.file(
-                File(widget.picture),
+                File(widget.predictedImage.imageUrl),
                 fit: BoxFit.cover,
               ),
             ),
@@ -48,7 +50,7 @@ class _ScannedPicturesListTileState extends State<ScannedPicturesListTile> {
                 onTap: () {
                   setState(() {
                     isSelected = !isSelected;
-                    widget.onChange(widget.picture);
+                    widget.onChange(widget.predictedImage.imageUrl);
                   });
                 },
                 child: CircleAvatar(

@@ -11,6 +11,7 @@ import 'package:kubo/features/food_planner/presentation/pages/recipe_info_page.d
 import 'package:kubo/features/food_planner/presentation/pages/reminders_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/captured_page.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/pages/predicted_image_view_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/scanned_pictures_list_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/smart_recipe_list_page.dart';
 
@@ -82,6 +83,14 @@ class AppRouter {
       case SmartRecipeListPage.id:
         return MaterialPageRoute(
           builder: (_) => const SmartRecipeListPage(),
+        );
+
+      case PredictedImageViewPage.id:
+        final arguments =
+            routeSettings.arguments as PredictedImageViewPageArguments;
+
+        return MaterialPageRoute(
+          builder: (_) => PredictedImageViewPage(arguments: arguments),
         );
     }
     return null;

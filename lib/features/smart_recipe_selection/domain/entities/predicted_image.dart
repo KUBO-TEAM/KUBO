@@ -21,4 +21,11 @@ class PredictedImage extends HiveObject {
     required this.categories,
     required this.predictedAt,
   });
+
+  PredictedImage.clone(PredictedImage predictedImage)
+      : this(
+          imageUrl: predictedImage.imageUrl,
+          predictedAt: predictedImage.predictedAt,
+          categories: predictedImage.categories,
+        );
 }

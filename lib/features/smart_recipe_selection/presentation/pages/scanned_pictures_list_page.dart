@@ -7,9 +7,10 @@ import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/smart_recipe_list_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/scanned_pictures_list_tile.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:skeletons/skeletons.dart';
 
-//TODO: Fetch created predicted image, and add timer
+//TODO: add timer
 class ScannedPicturesListPage extends StatefulWidget {
   static const String id = 'scanned_picture_list_page';
 
@@ -59,8 +60,11 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
                   title: const Text(
                     'Scan again',
                   ),
-                  onPressed: () =>
-                      Navigator.of(context).pushReplacementNamed(CameraPage.id),
+                  onPressed: () async {
+                    if (await Permission.camera.request().isGranted) {
+                      Navigator.pushNamed(context, CameraPage.id);
+                    }
+                  },
                 ),
                 const SizedBox(
                   width: 5,
@@ -112,7 +116,7 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
                     ),
                     itemBuilder: (BuildContext context, int index) {
                       return ScannedPicturesListTile(
-                        picture: predictedImages[index].imageUrl,
+                        predictedImage: predictedImages[index],
                         onChange: (String picture) {
                           selectedPictures.add(picture);
                         },

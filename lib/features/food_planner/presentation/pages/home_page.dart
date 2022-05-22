@@ -30,11 +30,6 @@ class _HomePageState extends State<HomePage> {
     listenNotifications();
 
     BlocProvider.of<UserBloc>(context).add(UserFetched());
-    permissionRequiest();
-  }
-
-  Future<void> permissionRequiest() async {
-    Permission.storage.request();
   }
 
   void listenNotifications() =>
@@ -51,8 +46,10 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: const Color(0xffeeeeee),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, CameraPage.id);
+        onPressed: () async {
+          if (await Permission.camera.request().isGranted) {
+            Navigator.pushNamed(context, CameraPage.id);
+          }
         },
         backgroundColor: kGreenPrimary,
         child: const Icon(

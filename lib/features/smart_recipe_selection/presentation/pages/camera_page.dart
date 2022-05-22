@@ -181,6 +181,7 @@ class _CameraPageState extends State<CameraPage> {
       cameras[0],
       hdrEnabled ? ResolutionPreset.max : ResolutionPreset.low,
       imageFormatGroup: ImageFormatGroup.yuv420,
+      enableAudio: false,
     );
     controller!.initialize().then((_) {
       if (!mounted) {

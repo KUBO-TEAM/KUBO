@@ -6,9 +6,6 @@ import 'package:external_path/external_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/core/helpers/utils.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/captured_page/save_scanned_ingredients_bloc.dart';
@@ -18,8 +15,9 @@ import 'package:kubo/features/smart_recipe_selection/presentation/pages/scanned_
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_downloader/image_downloader.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/detected_categories_dialog.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/widgets/predicted_image_info.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-// TODO: Urgent Error in Scanned Againn!!!!!
 class CapturedPageArguments {
   final String imagePath;
 
@@ -28,7 +26,10 @@ class CapturedPageArguments {
 
 class CapturedPage extends StatefulWidget {
   static const String id = 'captured_page';
-  const CapturedPage({Key? key, required this.arguments}) : super(key: key);
+  const CapturedPage({
+    Key? key,
+    required this.arguments,
+  }) : super(key: key);
 
   final CapturedPageArguments arguments;
 
@@ -39,27 +40,17 @@ class CapturedPage extends StatefulWidget {
 class _CapturedPageState extends State<CapturedPage> {
   PredictedImage? predictedImage;
 
-  void saveScannedIngredients() async {
-    EasyLoading.show(
-      status: 'loading...',
-      maskType: EasyLoadingMaskType.black,
-    );
-    final predictedImageFinal = predictedImage;
-
-    if (predictedImageFinal == null) {
-      return;
-    }
-
+  Future<String?> downloadImage(String imageUrl) async {
     try {
       // Saved with this method.
       var imageId = await ImageDownloader.downloadImage(
-        predictedImageFinal.imageUrl,
+        imageUrl,
         destination: AndroidDestinationType.directoryPictures
           ..inExternalFilesDir(),
       );
 
       if (imageId == null) {
-        return;
+        return null;
       }
 
       // Below is a method of obtaining saved image information.
@@ -68,39 +59,67 @@ class _CapturedPageState extends State<CapturedPage> {
       // var size = await ImageDownloader.findByteSize(imageId);
       // var mimeType = await ImageDownloader.findMimeType(imageId);
 
-      var externalPath = await ExternalPath.getExternalStoragePublicDirectory(
-        ExternalPath.DIRECTORY_PICTURES,
+      return path;
+    } on PlatformException catch (error) {
+      debugPrint(error.message);
+      return null;
+    }
+  }
+
+  Future<void> saveImageToExternalStorage(String imagePath) async {
+    var externalPath = await ExternalPath.getExternalStoragePublicDirectory(
+      ExternalPath.DIRECTORY_PICTURES,
+    );
+
+    var file = XFile(imagePath);
+
+    var directory = Directory('$externalPath/kubo');
+
+    if (directory.existsSync() == false) {
+      directory.createSync();
+    }
+
+    String externalFilePath = '$externalPath/kubo/${file.name}';
+
+    await file.saveTo(externalFilePath);
+  }
+
+  Future<void> saveScannedIngredients() async {
+    //TODO: Add dialog if permission is not granted
+    if (await Permission.storage.request().isGranted) {
+      EasyLoading.show(
+        status: 'loading...',
+        maskType: EasyLoadingMaskType.black,
       );
+      final predictedImageFinal = predictedImage;
+
+      if (predictedImageFinal == null) {
+        return;
+      }
+
+      String? path = await downloadImage(predictedImageFinal.imageUrl);
 
       if (path == null) {
         return;
       }
 
-      var file = XFile(path);
-
-      var directory = Directory('$externalPath/kubo');
-
-      if (directory.existsSync() == false) {
-        directory.createSync();
-      }
-
-      String externalFilePath = '$externalPath/kubo/${file.name}';
-
-      await file.saveTo(externalFilePath);
+      await saveImageToExternalStorage(path);
 
       EasyLoading.dismiss();
 
       /** Image Path Edits */
-      predictedImageFinal.imageUrl = path;
+      final predictedImageCopy = PredictedImage.clone(predictedImageFinal);
 
-      for (Category category in predictedImageFinal.categories) {
+      predictedImageCopy.imageUrl = path;
+
+      for (Category category in predictedImageCopy.categories) {
         category.imageUrl = path;
       }
 
       /** Save Scanned Predicted Image */
       BlocProvider.of<SaveScannedIngredientsBloc>(context).add(
         SaveScannedIngredientsCreatedPredictedImage(
-          predictedImage: predictedImageFinal,
+          predictedImage: predictedImageCopy,
         ),
       );
 
@@ -108,8 +127,6 @@ class _CapturedPageState extends State<CapturedPage> {
         context,
         ScannedPicturesListPage.id,
       );
-    } on PlatformException catch (error) {
-      debugPrint(error.message);
     }
   }
 
@@ -129,6 +146,7 @@ class _CapturedPageState extends State<CapturedPage> {
       body: BlocConsumer<PredictImageBloc, PredictImageState>(
         listener: (context, state) {
           if (state is PredictImageSuccess) {
+            predictedImage = state.predictedImage;
             if (state.predictedImage.categories.isNotEmpty) {
               showDialog(
                 context: context,
@@ -152,179 +170,17 @@ class _CapturedPageState extends State<CapturedPage> {
 
           if (state is PredictImageSuccess) {
             EasyLoading.dismiss();
-            predictedImage = state.predictedImage;
 
-            final categoriesWithQuantity =
-                Utils.fixRepeatingCategories(state.predictedImage.categories);
-
-            return Stack(
-              fit: StackFit.expand,
-              children: [
-                Image.network(
-                  predictedImage!.imageUrl,
-                  alignment: Alignment.center,
-                  fit: BoxFit.cover,
-                ),
-                ClipRRect(
-                  // Clip it cleanly.
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                    child: Container(
-                      color: Colors.black.withOpacity(0.2),
-                      alignment: Alignment.center,
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: MediaQuery.of(context).viewPadding.top + 55,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(
-                        height: 30,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: categoriesWithQuantity.length,
-                          padding: const EdgeInsets.only(
-                            left: 30.0,
-                          ),
-                          itemBuilder: (
-                            BuildContext context,
-                            int index,
-                          ) {
-                            return Row(
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: kBboxColorClass[
-                                      categoriesWithQuantity[index]
-                                          .category
-                                          .name],
-                                  radius: 6.0,
-                                ),
-                                const SizedBox(
-                                  width: 5.0,
-                                ),
-                                Text(
-                                  '${categoriesWithQuantity[index].quantity.toString()} ${categoriesWithQuantity[index].category.name}',
-                                  style: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontFamily: 'Montserrat Medium',
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 15.0,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: Image.network(
-                          predictedImage!.imageUrl,
-                          alignment: Alignment.center,
-                          loadingBuilder: (
-                            BuildContext context,
-                            Widget child,
-                            ImageChunkEvent? loadingProgress,
-                          ) {
-                            if (loadingProgress == null) {
-                              return child;
-                            }
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  right: 0,
-                  top: MediaQuery.of(context).viewPadding.top + 5,
-                  child: Row(
-                    children: [
-                      if (state.predictedImage.categories.isNotEmpty)
-                        RoundedButton(
-                          icon: const Icon(Icons.restaurant),
-                          title: const Text(
-                            'Show accuracy table of results',
-                            style: TextStyle(
-                              fontSize: 16.0,
-                            ),
-                          ),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (_) => DetectedCategoriesDialog(
-                                categories: state.predictedImage.categories,
-                              ),
-                            );
-                          },
-                        ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(
-                              context, CameraPage.id);
-                        },
-                        child: const Icon(Icons.close, color: Colors.white),
-                        style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                          padding: const EdgeInsets.all(2.0),
-                          primary: kBrownPrimary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                state.predictedImage.categories.isNotEmpty
-                    ? Positioned(
-                        bottom: 16,
-                        width: MediaQuery.of(context).size.width,
-                        child: Center(
-                          child: RoundedButton(
-                            icon: const Icon(Icons.save),
-                            title: const Text(
-                              'Save as scanned ingredients',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                              ),
-                            ),
-                            onPressed: saveScannedIngredients,
-                          ),
-                        ),
-                      )
-                    : Positioned(
-                        bottom: 16,
-                        width: MediaQuery.of(context).size.width,
-                        child: Center(
-                          child: RoundedButton(
-                            title: const Text(
-                              'No ingredients scanned, Please try again.',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                context,
-                                CameraPage.id,
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-              ],
+            return PredictedImageInfo(
+              predictedImage: state.predictedImage,
+              saveScannedIngredients: saveScannedIngredients,
+              isNetworkImage: true,
+              close: () {
+                Navigator.pushReplacementNamed(
+                  context,
+                  CameraPage.id,
+                );
+              },
             );
           }
 
