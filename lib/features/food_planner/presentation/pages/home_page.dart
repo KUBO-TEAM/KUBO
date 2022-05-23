@@ -47,7 +47,8 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: const Color(0xffeeeeee),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          if (await Permission.camera.request().isGranted) {
+          if (await Permission.camera.request().isGranted &&
+              await Permission.storage.request().isGranted) {
             Navigator.pushNamed(context, CameraPage.id);
           }
         },
