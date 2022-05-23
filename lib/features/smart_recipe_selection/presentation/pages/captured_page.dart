@@ -6,6 +6,7 @@ import 'package:external_path/external_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/captured_page/save_scanned_ingredients_bloc.dart';
@@ -171,9 +172,32 @@ class _CapturedPageState extends State<CapturedPage> {
           if (state is PredictImageSuccess) {
             EasyLoading.dismiss();
 
+            bool isCategoriesNotEmpty =
+                state.predictedImage.categories.isNotEmpty;
+
             return PredictedImageInfo(
               predictedImage: state.predictedImage,
-              saveScannedIngredients: saveScannedIngredients,
+              buttonCenterBottom: RoundedButton(
+                icon: isCategoriesNotEmpty ? const Icon(Icons.save) : null,
+                title: Text(
+                  isCategoriesNotEmpty
+                      ? 'Save as scanned ingredients'
+                      : 'No ingredients scanned, Please try again.',
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
+                onPressed: () {
+                  if (isCategoriesNotEmpty) {
+                    saveScannedIngredients();
+                  } else {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      CameraPage.id,
+                    );
+                  }
+                },
+              ),
               isNetworkImage: true,
               close: () {
                 Navigator.pushReplacementNamed(

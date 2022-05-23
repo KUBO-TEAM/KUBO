@@ -10,6 +10,7 @@ import 'package:kubo/features/smart_recipe_selection/presentation/widgets/scanne
 import 'package:permission_handler/permission_handler.dart';
 import 'package:skeletons/skeletons.dart';
 
+//TODO: Add delete ingredients if expired
 class ScannedPicturesListPage extends StatefulWidget {
   static const String id = 'scanned_picture_list_page';
 

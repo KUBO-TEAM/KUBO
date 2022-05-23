@@ -6,30 +6,28 @@ import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/helpers/utils.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
-import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/detected_categories_dialog.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/widgets/vegetable_expiration_timer.dart';
 
 class PredictedImageInfo extends StatelessWidget {
   const PredictedImageInfo({
     Key? key,
     required this.predictedImage,
-    this.saveScannedIngredients,
     required this.close,
     required this.isNetworkImage,
+    this.buttonCenterBottom,
   }) : super(key: key);
 
   final PredictedImage predictedImage;
 
-  final VoidCallback? saveScannedIngredients;
   final VoidCallback close;
+  final Widget? buttonCenterBottom;
   final bool isNetworkImage;
 
   @override
   Widget build(BuildContext context) {
     final categoriesWithQuantity =
         Utils.fixRepeatingCategories(predictedImage.categories);
-
-    final saveScannedIngredientsFinal = saveScannedIngredients;
 
     return Stack(
       fit: StackFit.expand,
@@ -62,6 +60,12 @@ class PredictedImageInfo extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              VegetableExpirationTimer(
+                predictedImage: predictedImage,
+              ),
+              const SizedBox(
+                height: 8.0,
+              ),
               SizedBox(
                 height: 30,
                 child: ListView.builder(
@@ -100,11 +104,14 @@ class PredictedImageInfo extends StatelessWidget {
                   },
                 ),
               ),
+              const SizedBox(
+                height: 10.0,
+              ),
               Expanded(
                 child: isNetworkImage == true
                     ? Image.network(
                         predictedImage.imageUrl,
-                        alignment: Alignment.center,
+                        alignment: Alignment.topCenter,
                         loadingBuilder: (
                           BuildContext context,
                           Widget child,
@@ -127,7 +134,7 @@ class PredictedImageInfo extends StatelessWidget {
                         File(
                           predictedImage.imageUrl,
                         ),
-                        alignment: Alignment.center,
+                        alignment: Alignment.topCenter,
                       ),
               ),
             ],
@@ -168,44 +175,14 @@ class PredictedImageInfo extends StatelessWidget {
             ],
           ),
         ),
-        predictedImage.categories.isNotEmpty &&
-                saveScannedIngredientsFinal != null
-            ? Positioned(
-                bottom: 16,
-                width: MediaQuery.of(context).size.width,
-                child: Center(
-                  child: RoundedButton(
-                    icon: const Icon(Icons.save),
-                    title: const Text(
-                      'Save as scanned ingredients',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                      ),
-                    ),
-                    onPressed: saveScannedIngredientsFinal,
-                  ),
-                ),
-              )
-            : Positioned(
-                bottom: 16,
-                width: MediaQuery.of(context).size.width,
-                child: Center(
-                  child: RoundedButton(
-                    title: const Text(
-                      'No ingredients scanned, Please try again.',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(
-                        context,
-                        CameraPage.id,
-                      );
-                    },
-                  ),
-                ),
-              ),
+        if (buttonCenterBottom != null)
+          Positioned(
+            bottom: 16,
+            width: MediaQuery.of(context).size.width,
+            child: Center(
+              child: buttonCenterBottom,
+            ),
+          ),
       ],
     );
   }

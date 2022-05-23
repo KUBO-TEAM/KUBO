@@ -10,6 +10,7 @@ class PredictedImageViewPageArguments {
 
 class PredictedImageViewPage extends StatelessWidget {
   static const String id = 'predicted_image_view_page';
+
   const PredictedImageViewPage({
     Key? key,
     required this.arguments,
