@@ -1,0 +1,1 @@
+const kGlobalVegetablesExpirationDurationDate = Duration.zero;

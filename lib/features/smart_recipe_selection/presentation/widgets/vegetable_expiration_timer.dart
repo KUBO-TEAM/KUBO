@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
-import 'package:kubo/core/constants/date_time.dart';
+import 'package:kubo/core/constants/date_time_constants.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
 
 class VegetableExpirationTimer extends StatelessWidget {
@@ -19,9 +19,21 @@ class VegetableExpirationTimer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CountdownTimer(
+      endTime: predictedImage.predictedAt
+          .add(kGlobalVegetablesExpirationDurationDate)
+          .millisecondsSinceEpoch,
       widgetBuilder: (_, time) {
         if (time == null) {
-          return const Text('Vegetable is Expired!');
+          return Text(
+            predictedImage.categories.length > 1
+                ? 'This vegetables are not fresh'
+                : 'This vegetable is not fresh',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20.0,
+              color: Colors.white,
+            ),
+          );
         }
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -143,9 +155,6 @@ class VegetableExpirationTimer extends StatelessWidget {
           ],
         );
       },
-      endTime: predictedImage.predictedAt
-          .add(kGlobalVegetablesExpirationDurationDate)
-          .millisecondsSinceEpoch,
     );
   }
 }

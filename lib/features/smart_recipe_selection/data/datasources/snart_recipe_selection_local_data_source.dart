@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
+import 'package:kubo/core/helpers/utils.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/usecases/create_category.dart';
@@ -16,6 +17,8 @@ abstract class SmartRecipeSelectionLocalDataSource {
   );
 
   Future<List<PredictedImage>> fetchPredictedImages();
+
+  Future<List<PredictedImage>> fetchPredictedImagesAndDeleteExpired();
 }
 
 @LazySingleton(as: SmartRecipeSelectionLocalDataSource)
@@ -64,5 +67,24 @@ class SmartRecipeSelectionLocalDataSourceImpl
   @override
   Future<List<PredictedImage>> fetchPredictedImages() async {
     return predictedImageBox.values.toList();
+  }
+
+  @override
+  Future<List<PredictedImage>> fetchPredictedImagesAndDeleteExpired() async {
+    final predictedImages = predictedImageBox.values.toList();
+
+    List<PredictedImage> nonExpiredPredictedImages = [];
+
+    for (PredictedImage predictedImage in predictedImages) {
+      final predictedAt = predictedImage.predictedAt;
+
+      if (Utils.isPredictedImageExpired(predictedAt)) {
+        predictedImage.delete();
+      } else {
+        nonExpiredPredictedImages.add(predictedImage);
+      }
+    }
+
+    return nonExpiredPredictedImages;
   }
 }

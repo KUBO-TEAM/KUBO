@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/core/constants/string_constants.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/ingredient_expired_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/message_dialog.dart';
@@ -12,7 +13,7 @@ import 'package:kubo/features/smart_recipe_selection/presentation/widgets/scanne
 import 'package:permission_handler/permission_handler.dart';
 import 'package:skeletons/skeletons.dart';
 
-//TODO: Add delete ingredients if expired
+//TODO: When user click yes in IngredientExpiredDialogMessage the ingridients must be deleted
 class ScannedPicturesListPage extends StatefulWidget {
   static const String id = 'scanned_picture_list_page';
 
@@ -70,8 +71,7 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
                         context: context,
                         builder: (_) => const MessageDialog(
                           title: 'Permission is required!',
-                          message:
-                              "We understand your concern about your privacy, but the action that you are trying to do right will not work. Please turn on all the permissions for this app, trust us, Thank you. ",
+                          message: kPermissionDenniedDialogMessage,
                         ),
                       );
                     }
@@ -96,7 +96,21 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
           ),
           Expanded(
             child:
-                BlocBuilder<ScannedPicturesListBloc, ScannedPicturesListState>(
+                BlocConsumer<ScannedPicturesListBloc, ScannedPicturesListState>(
+              listener: (context, state) {
+                if (state is ScannedPicturesListSuccess) {
+                  final thereIsAnExpiredPredictedImage =
+                      state.thereIsAnExpiredPredictedImage;
+
+                  if (thereIsAnExpiredPredictedImage != null &&
+                      thereIsAnExpiredPredictedImage == true) {
+                    showDialog(
+                      context: context,
+                      builder: (_) => const IngredientExpiredDialog(),
+                    );
+                  }
+                }
+              },
               builder: (context, state) {
                 if (state is ScannedPicturesListInProgress) {
                   return GridView.builder(

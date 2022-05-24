@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:kubo/core/helpers/utils.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/predicted_image_view_page.dart';
 
@@ -34,7 +35,7 @@ class _ScannedPicturesListTileState extends State<ScannedPicturesListTile> {
         );
       },
       child: Container(
-        padding: const EdgeInsets.all(2),
+        padding: const EdgeInsets.all(3),
         child: Stack(
           children: [
             Positioned.fill(
@@ -43,9 +44,23 @@ class _ScannedPicturesListTileState extends State<ScannedPicturesListTile> {
                 fit: BoxFit.cover,
               ),
             ),
+            if (isSelected)
+              Positioned.fill(
+                child: Container(
+                  color: const Color.fromARGB(52, 0, 94, 255),
+                ),
+              ),
+            if (Utils.isPredictedImageExpired(
+              widget.predictedImage.predictedAt,
+            ))
+              Positioned.fill(
+                child: Container(
+                  color: const Color.fromARGB(52, 255, 0, 0),
+                ),
+              ),
             Positioned(
-              top: 3,
-              right: 3,
+              top: 5,
+              right: 5,
               child: GestureDetector(
                 onTap: () {
                   setState(() {
@@ -54,18 +69,13 @@ class _ScannedPicturesListTileState extends State<ScannedPicturesListTile> {
                   });
                 },
                 child: CircleAvatar(
-                  radius: 5,
+                  radius: 8.5,
                   backgroundColor: Colors.black,
                   child: CircleAvatar(
-                    radius: 4,
+                    radius: 7,
                     backgroundColor: isSelected
-                        ? Colors.green
-                        : const Color.fromARGB(
-                            255,
-                            241,
-                            241,
-                            241,
-                          ),
+                        ? const Color.fromARGB(255, 0, 94, 255)
+                        : Colors.white,
                   ),
                 ),
               ),

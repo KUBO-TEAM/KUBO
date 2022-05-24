@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:kubo/core/constants/date_time_constants.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category_with_quantity.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,6 +15,14 @@ class Utils {
 
     await file.writeAsBytes(response.bodyBytes);
     return filePath;
+  }
+
+  static bool isPredictedImageExpired(DateTime date) {
+    final expirationDate = date.add(kGlobalVegetablesExpirationDurationDate);
+
+    final isExpired = expirationDate.isBefore(DateTime.now());
+
+    return isExpired;
   }
 
   static List<CategoryWithQuantity> fixRepeatingCategories(

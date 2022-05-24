@@ -1,10 +1,7 @@
 part of 'scanned_pictures_list_bloc.dart';
 
-abstract class ScannedPicturesListState extends Equatable {
+abstract class ScannedPicturesListState {
   const ScannedPicturesListState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class ScannedPicturesListInitial extends ScannedPicturesListState {}
@@ -13,8 +10,12 @@ class ScannedPicturesListInProgress extends ScannedPicturesListState {}
 
 class ScannedPicturesListSuccess extends ScannedPicturesListState {
   final List<PredictedImage> predictedImages;
+  final bool? thereIsAnExpiredPredictedImage;
 
-  const ScannedPicturesListSuccess({required this.predictedImages});
+  const ScannedPicturesListSuccess({
+    required this.predictedImages,
+    this.thereIsAnExpiredPredictedImage,
+  });
 }
 
 class ScannedPicturesListFailure extends ScannedPicturesListState {

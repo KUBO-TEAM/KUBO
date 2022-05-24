@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:kubo/core/helpers/utils.dart';
 import 'package:kubo/core/usecases/usecase.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/usecases/fetch_predicted_images.dart';
@@ -27,6 +28,19 @@ class ScannedPicturesListBloc
               predictedImages: predictedImages,
             ),
           );
+
+          for (var predictedImage in predictedImages) {
+            if (Utils.isPredictedImageExpired(predictedImage.predictedAt)) {
+              emit(
+                ScannedPicturesListSuccess(
+                  predictedImages: predictedImages,
+                  thereIsAnExpiredPredictedImage: true,
+                ),
+              );
+
+              break;
+            }
+          }
         });
       }
     });

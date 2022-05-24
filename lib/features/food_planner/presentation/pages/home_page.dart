@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/core/constants/string_constants.dart';
 import 'package:kubo/core/helpers/notification_reminder.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/user/user_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
@@ -56,11 +57,7 @@ class _HomePageState extends State<HomePage> {
               context: context,
               builder: (_) => const MessageDialog(
                 title: 'Permission is required!',
-                message: """
-                          We understand your concern about your privacy, 
-                          but the action that you are trying to do right will not work. 
-                          Please turn on all the permissions that on this app, trust us, Thank you.
-                          """,
+                message: kPermissionDenniedDialogMessage,
               ),
             );
           }
