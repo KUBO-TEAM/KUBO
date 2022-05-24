@@ -8,6 +8,7 @@ import 'package:kubo/features/food_planner/presentation/widgets/bottom_navigatio
 import 'package:kubo/features/food_planner/presentation/widgets/daily_plan.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/event_plan.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/message_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/planner_buttons.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/weekly_report.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
@@ -50,6 +51,18 @@ class _HomePageState extends State<HomePage> {
           if (await Permission.camera.request().isGranted &&
               await Permission.storage.request().isGranted) {
             Navigator.pushNamed(context, CameraPage.id);
+          } else {
+            showDialog(
+              context: context,
+              builder: (_) => const MessageDialog(
+                title: 'Permission is required!',
+                message: """
+                          We understand your concern about your privacy, 
+                          but the action that you are trying to do right will not work. 
+                          Please turn on all the permissions that on this app, trust us, Thank you.
+                          """,
+              ),
+            );
           }
         },
         backgroundColor: kGreenPrimary,

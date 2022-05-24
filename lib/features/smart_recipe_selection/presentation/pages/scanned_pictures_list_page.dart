@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/ingredient_expired_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/message_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_pictures_list/scanned_pictures_list_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
@@ -27,7 +29,6 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
   @override
   void initState() {
     super.initState();
-
     BlocProvider.of<ScannedPicturesListBloc>(context).add(
       ScannedPicturesListFetched(),
     );
@@ -64,6 +65,15 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
                     if (await Permission.camera.request().isGranted &&
                         await Permission.storage.request().isGranted) {
                       Navigator.pushNamed(context, CameraPage.id);
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (_) => const MessageDialog(
+                          title: 'Permission is required!',
+                          message:
+                              "We understand your concern about your privacy, but the action that you are trying to do right will not work. Please turn on all the permissions for this app, trust us, Thank you. ",
+                        ),
+                      );
                     }
                   },
                 ),

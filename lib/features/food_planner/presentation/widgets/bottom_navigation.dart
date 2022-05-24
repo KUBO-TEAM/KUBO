@@ -9,6 +9,7 @@ import 'package:kubo/features/food_planner/presentation/blocs/reminder/reminder_
 import 'package:kubo/features/food_planner/presentation/blocs/user/user_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/reminders_page.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/ingredient_expired_dialog.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/scanned_pictures_list_page.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -56,6 +57,10 @@ class _BottomNavigationState extends State<BottomNavigation>
         return;
       case 2: // Navigate to scanned pictures list page;
 
+        showDialog(
+          context: context,
+          builder: (_) => const IngredientExpiredDialog(),
+        );
         Navigator.pushNamed(
           context,
           ScannedPicturesListPage.id,
