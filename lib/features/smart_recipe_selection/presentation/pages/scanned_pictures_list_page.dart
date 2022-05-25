@@ -52,10 +52,57 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          //TODO: add dialog for confirmation please!!
-          BlocProvider.of<ScannedPicturesListBloc>(context).add(
-            ScannedPicturesListPredictedImagesDeleted(
-              predictedImages: selectedPredictedImages,
+          if (selectedPredictedImages.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: const Color.fromARGB(255, 141, 87, 0),
+                content: Row(
+                  children: const [
+                    Icon(
+                      Icons.priority_high,
+                      color: Colors.white,
+                    ),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    Text(
+                      'No selected predicted images.',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+            );
+            return;
+          }
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: const Text('Accept ?'),
+              content: const Text(
+                'Are you sure you want to delete this predicted images?',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    BlocProvider.of<ScannedPicturesListBloc>(context).add(
+                      ScannedPicturesListPredictedImagesDeleted(
+                        predictedImages: selectedPredictedImages,
+                      ),
+                    );
+
+                    selectedPredictedImages = [];
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Yes'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('No'),
+                ),
+              ],
             ),
           );
         },
@@ -159,6 +206,7 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
                     ),
                     itemBuilder: (BuildContext context, int index) {
                       return ScannedPicturesListTile(
+                        key: ValueKey(predictedImages.length + index),
                         predictedImage: predictedImages[index],
                         onChange: predictedImageSelected,
                       );

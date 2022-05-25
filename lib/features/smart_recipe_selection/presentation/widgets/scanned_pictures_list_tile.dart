@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/helpers/utils.dart';
@@ -20,7 +21,7 @@ class ScannedPicturesListTile extends StatefulWidget {
 }
 
 class _ScannedPicturesListTileState extends State<ScannedPicturesListTile> {
-  bool isSelected = false;
+  bool _isSelected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class _ScannedPicturesListTileState extends State<ScannedPicturesListTile> {
                 fit: BoxFit.cover,
               ),
             ),
-            if (isSelected)
+            if (_isSelected)
               Positioned.fill(
                 child: Container(
                   color: const Color.fromARGB(52, 0, 94, 255),
@@ -61,10 +62,10 @@ class _ScannedPicturesListTileState extends State<ScannedPicturesListTile> {
             Positioned(
               top: 5,
               right: 5,
-              child: GestureDetector(
+              child: InkWell(
                 onTap: () {
                   setState(() {
-                    isSelected = !isSelected;
+                    _isSelected = !_isSelected;
                     widget.onChange(widget.predictedImage);
                   });
                 },
@@ -73,7 +74,7 @@ class _ScannedPicturesListTileState extends State<ScannedPicturesListTile> {
                   backgroundColor: Colors.black,
                   child: CircleAvatar(
                     radius: 7,
-                    backgroundColor: isSelected
+                    backgroundColor: _isSelected
                         ? const Color.fromARGB(255, 0, 94, 255)
                         : Colors.white,
                   ),

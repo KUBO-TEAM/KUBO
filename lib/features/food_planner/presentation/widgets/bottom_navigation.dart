@@ -9,6 +9,7 @@ import 'package:kubo/features/food_planner/presentation/blocs/reminder/reminder_
 import 'package:kubo/features/food_planner/presentation/blocs/user/user_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/reminders_page.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_pictures_list/scanned_pictures_list_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/scanned_pictures_list_page.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -40,7 +41,6 @@ class _BottomNavigationState extends State<BottomNavigation>
   void _navigate(int index) {
     switch (index) {
       case 0: // Navigate to recipes
-
         BlocProvider.of<CreateRecipeScheduleDialogBloc>(context).add(
           CreateRecipeScheduleDialogInitializeState(),
         );
