@@ -48,7 +48,7 @@ class PredictedImageInfo extends StatelessWidget {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
             child: Container(
-              color: Colors.black.withOpacity(0.2),
+              color: Colors.black.withOpacity(0.4),
               alignment: Alignment.center,
             ),
           ),

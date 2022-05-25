@@ -8,3 +8,14 @@ abstract class ScannedPicturesListEvent extends Equatable {
 }
 
 class ScannedPicturesListFetched extends ScannedPicturesListEvent {}
+
+class ScannedPicturesListExpiredPredictedImagesDeleted
+    extends ScannedPicturesListEvent {}
+
+class ScannedPicturesListPredictedImagesDeleted
+    extends ScannedPicturesListEvent {
+  final List<PredictedImage> predictedImages;
+
+  const ScannedPicturesListPredictedImagesDeleted(
+      {required this.predictedImages});
+}

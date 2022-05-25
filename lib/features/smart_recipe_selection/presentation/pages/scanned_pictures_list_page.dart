@@ -6,6 +6,7 @@ import 'package:kubo/features/food_planner/presentation/widgets/ingredient_expir
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/message_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_pictures_list/scanned_pictures_list_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/smart_recipe_list_page.dart';
@@ -13,7 +14,6 @@ import 'package:kubo/features/smart_recipe_selection/presentation/widgets/scanne
 import 'package:permission_handler/permission_handler.dart';
 import 'package:skeletons/skeletons.dart';
 
-//TODO: When user click yes in IngredientExpiredDialogMessage the ingridients must be deleted
 class ScannedPicturesListPage extends StatefulWidget {
   static const String id = 'scanned_picture_list_page';
 
@@ -25,7 +25,7 @@ class ScannedPicturesListPage extends StatefulWidget {
 }
 
 class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
-  List<String> selectedPictures = [];
+  List<PredictedImage> selectedPredictedImages = [];
 
   @override
   void initState() {
@@ -35,12 +35,30 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
     );
   }
 
+  void predictedImageSelected(PredictedImage selectedPredictedImage) {
+    bool isSelectedImageExist =
+        selectedPredictedImages.contains(selectedPredictedImage);
+
+    if (isSelectedImageExist) {
+      selectedPredictedImages.remove(selectedPredictedImage);
+    } else {
+      selectedPredictedImages.add(selectedPredictedImage);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          //TODO: add dialog for confirmation please!!
+          BlocProvider.of<ScannedPicturesListBloc>(context).add(
+            ScannedPicturesListPredictedImagesDeleted(
+              predictedImages: selectedPredictedImages,
+            ),
+          );
+        },
         backgroundColor: kBrownPrimary,
         child: const Icon(Icons.delete),
       ),
@@ -142,9 +160,7 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
                     itemBuilder: (BuildContext context, int index) {
                       return ScannedPicturesListTile(
                         predictedImage: predictedImages[index],
-                        onChange: (String picture) {
-                          selectedPictures.add(picture);
-                        },
+                        onChange: predictedImageSelected,
                       );
                     },
                   );

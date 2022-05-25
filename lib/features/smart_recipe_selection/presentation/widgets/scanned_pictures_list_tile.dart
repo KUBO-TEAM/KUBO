@@ -12,7 +12,7 @@ class ScannedPicturesListTile extends StatefulWidget {
   }) : super(key: key);
 
   final PredictedImage predictedImage;
-  final ValueChanged<String> onChange;
+  final ValueChanged<PredictedImage> onChange;
 
   @override
   State<ScannedPicturesListTile> createState() =>
@@ -65,7 +65,7 @@ class _ScannedPicturesListTileState extends State<ScannedPicturesListTile> {
                 onTap: () {
                   setState(() {
                     isSelected = !isSelected;
-                    widget.onChange(widget.predictedImage.imageUrl);
+                    widget.onChange(widget.predictedImage);
                   });
                 },
                 child: CircleAvatar(

@@ -24,7 +24,9 @@ class PredictImageBloc extends Bloc<PredictImageEvent, PredictImageState> {
 
         failOrPredictImage.fold(
           (failure) {
-            emit(PredictImageFailure());
+            emit(
+              PredictImageFailure(),
+            );
           },
           (predictedImage) async {
             emit(PredictImageSuccess(predictedImage: predictedImage));

@@ -6,6 +6,7 @@ import 'package:external_path/external_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/message_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
@@ -123,10 +124,9 @@ class _CapturedPageState extends State<CapturedPage> {
           predictedImage: predictedImageCopy,
         ),
       );
-
-      Navigator.pushReplacementNamed(
-        context,
+      Navigator.of(context).pushNamedAndRemoveUntil(
         ScannedPicturesListPage.id,
+        (route) => route.isFirst,
       );
     }
   }
@@ -156,6 +156,16 @@ class _CapturedPageState extends State<CapturedPage> {
                 ),
               );
             }
+          }
+          if (state is PredictImageFailure) {
+            showDialog(
+              context: context,
+              builder: (_) => const MessageDialog(
+                title: 'Sorry for the inconvenience ',
+                message:
+                    'It seems that you encounter a server error, the server might go on maintenance or your internet connection is slow, please contact us on our website, https://kuboph.dev',
+              ),
+            );
           }
         },
         builder: (context, state) {
@@ -222,7 +232,7 @@ class _CapturedPageState extends State<CapturedPage> {
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                   child: Container(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Colors.black.withOpacity(0.4),
                     alignment: Alignment.center,
                   ),
                 ),

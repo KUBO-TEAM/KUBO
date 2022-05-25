@@ -10,6 +10,7 @@ import 'dart:io';
 import 'package:kubo/features/smart_recipe_selection/domain/repositories/smart_recipe_selection_repository.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/usecases/create_category.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/usecases/create_predicted_image.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/usecases/delete_predicted_images.dart';
 
 @LazySingleton(as: SmartRecipeSelectionRepository)
 class SmartRecipeSelectionRepositoryImpl
@@ -70,6 +71,32 @@ class SmartRecipeSelectionRepositoryImpl
           await smartRecipeSelectionLocalDataSource.fetchPredictedImages();
 
       return Right(predictedImages);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<PredictedImage>>>
+      deleteExpiredPredictedImages() async {
+    try {
+      final response = await smartRecipeSelectionLocalDataSource
+          .deleteExpiredPredictedImages();
+
+      return Right(response);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, DeletePredictedImageResponse>> deletePredictedImages(
+      List<PredictedImage> predictedImages) async {
+    try {
+      final response = await smartRecipeSelectionLocalDataSource
+          .deletePredictedImages(predictedImages);
+
+      return Right(response);
     } on ServerException {
       return Left(ServerFailure());
     }

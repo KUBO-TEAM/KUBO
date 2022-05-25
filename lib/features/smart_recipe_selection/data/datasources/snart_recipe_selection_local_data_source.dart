@@ -5,6 +5,7 @@ import 'package:kubo/features/smart_recipe_selection/domain/entities/category.da
 import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/usecases/create_category.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/usecases/create_predicted_image.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/usecases/delete_predicted_images.dart';
 
 abstract class SmartRecipeSelectionLocalDataSource {
   /// create [RecipeScheduleModel] to the cached.
@@ -18,7 +19,10 @@ abstract class SmartRecipeSelectionLocalDataSource {
 
   Future<List<PredictedImage>> fetchPredictedImages();
 
-  Future<List<PredictedImage>> fetchPredictedImagesAndDeleteExpired();
+  Future<List<PredictedImage>> deleteExpiredPredictedImages();
+
+  Future<DeletePredictedImageResponse> deletePredictedImages(
+      List<PredictedImage> predictedImages);
 }
 
 @LazySingleton(as: SmartRecipeSelectionLocalDataSource)
@@ -70,7 +74,7 @@ class SmartRecipeSelectionLocalDataSourceImpl
   }
 
   @override
-  Future<List<PredictedImage>> fetchPredictedImagesAndDeleteExpired() async {
+  Future<List<PredictedImage>> deleteExpiredPredictedImages() async {
     final predictedImages = predictedImageBox.values.toList();
 
     List<PredictedImage> nonExpiredPredictedImages = [];
@@ -86,5 +90,18 @@ class SmartRecipeSelectionLocalDataSourceImpl
     }
 
     return nonExpiredPredictedImages;
+  }
+
+  @override
+  Future<DeletePredictedImageResponse> deletePredictedImages(
+      List<PredictedImage> predictedImages) async {
+    //TODO:  external images not been delete only the hives one deleted
+    for (PredictedImage predictedImage in predictedImages) {
+      predictedImage.delete();
+    }
+
+    return const DeletePredictedImageResponse(
+      message: 'Successfully deleted the predicted images !',
+    );
   }
 }
