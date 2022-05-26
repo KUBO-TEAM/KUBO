@@ -42,6 +42,4 @@ class SmartRecipeSelectionRemoteDataSourceImpl
       throw ServerException();
     }
   }
-
-  basename(String path) {}
 }

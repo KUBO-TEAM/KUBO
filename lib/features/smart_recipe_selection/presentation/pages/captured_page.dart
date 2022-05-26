@@ -124,6 +124,7 @@ class _CapturedPageState extends State<CapturedPage> {
           predictedImage: predictedImageCopy,
         ),
       );
+
       Navigator.of(context).pushNamedAndRemoveUntil(
         ScannedPicturesListPage.id,
         (route) => route.isFirst,

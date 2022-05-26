@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/helpers/utils.dart';
@@ -16,6 +18,8 @@ abstract class SmartRecipeSelectionLocalDataSource {
   Future<CreatePredictedImageResponse> createPredictedImage(
     PredictedImage predictedImage,
   );
+
+  Future<List<Category>> fetchCategories();
 
   Future<List<PredictedImage>> fetchPredictedImages();
 
@@ -95,13 +99,36 @@ class SmartRecipeSelectionLocalDataSourceImpl
   @override
   Future<DeletePredictedImageResponse> deletePredictedImages(
       List<PredictedImage> predictedImages) async {
-    //TODO:  external images not been delete only the hives one deleted
+    List<Category> categories = categoryBox.values.toList();
+
     for (PredictedImage predictedImage in predictedImages) {
+      final imageUrl = predictedImage.imageUrl;
+
+      final imageFile = File(imageUrl);
+
+      // Delete the actual image file of predicted image
+      if (imageFile.existsSync()) {
+        imageFile.deleteSync();
+      }
+
+      //Delete category box
+      for (var category in categories) {
+        if (category.imageUrl == predictedImage.imageUrl) {
+          category.delete();
+        }
+      }
+
+      // Delete predicted image box
       predictedImage.delete();
     }
 
     return const DeletePredictedImageResponse(
       message: 'Successfully deleted the predicted images !',
     );
+  }
+
+  @override
+  Future<List<Category>> fetchCategories() async {
+    return categoryBox.values.toList();
   }
 }

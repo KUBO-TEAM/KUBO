@@ -24,6 +24,7 @@ import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_i
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/captured_page/save_scanned_ingredients_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/predict_image/predict_image_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_pictures_list/scanned_pictures_list_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/recipe_selection_dialog/recipe_selection_dialog_bloc.dart';
 import 'package:kubo/injection.dart';
 import 'package:kubo/router.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
@@ -77,6 +78,7 @@ class Kubo extends StatelessWidget {
         BlocProvider(create: (_) => getIt<UserBloc>()),
         BlocProvider(create: (_) => getIt<SaveScannedIngredientsBloc>()),
         BlocProvider(create: (_) => getIt<ScannedPicturesListBloc>()),
+        BlocProvider(create: (_) => getIt<RecipeSelectionDialogBloc>()),
         BlocProvider(create: (_) => CreateRecipeScheduleDialogBloc()),
       ],
       child: MaterialApp(

@@ -1,7 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/error/exceptions.dart';
 import 'package:kubo/features/smart_recipe_selection/data/datasources/smart_recipe_selection_remote_data_source.dart';
-import 'package:kubo/features/smart_recipe_selection/data/datasources/snart_recipe_selection_local_data_source.dart';
+import 'package:kubo/features/smart_recipe_selection/data/datasources/smart_recipe_selection_local_data_source.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
 import 'package:kubo/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
@@ -97,6 +98,18 @@ class SmartRecipeSelectionRepositoryImpl
           .deletePredictedImages(predictedImages);
 
       return Right(response);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Category>>> fetchCategories() async {
+    try {
+      final categories =
+          await smartRecipeSelectionLocalDataSource.fetchCategories();
+
+      return Right(categories);
     } on ServerException {
       return Left(ServerFailure());
     }

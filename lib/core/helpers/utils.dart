@@ -52,4 +52,9 @@ class Utils {
         )
         .toList();
   }
+
+  static String toPercentage(double num) {
+    final timeHundred = num * 100;
+    return '${timeHundred.toStringAsFixed(2)}%';
+  }
 }

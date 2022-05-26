@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/core/helpers/utils.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 
 class DetectedCategoriesDialog extends StatelessWidget {
@@ -9,11 +10,6 @@ class DetectedCategoriesDialog extends StatelessWidget {
   }) : super(key: key);
 
   final List<Category> categories;
-
-  String toPercentage(double num) {
-    final timeHundred = num * 100;
-    return '${timeHundred.toStringAsFixed(2)}%';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +60,7 @@ class DetectedCategoriesDialog extends StatelessWidget {
                         cells: [
                           DataCell(
                             Text(
-                              toPercentage(category.accuracy),
+                              Utils.toPercentage(category.accuracy),
                               style: const TextStyle(
                                 color: kBlackPrimary,
                                 fontFamily: 'Montserrat ',

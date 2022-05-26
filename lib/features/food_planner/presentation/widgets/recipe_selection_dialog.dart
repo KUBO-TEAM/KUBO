@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/core/examples/ingredients.examples.dart';
+import 'package:kubo/core/helpers/utils.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/recipe_selection_dialog/recipe_selection_dialog_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
@@ -16,6 +18,14 @@ class RecipeSelectionDialog extends StatefulWidget {
 
 class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
   List<Category> selectedCategory = [];
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<RecipeSelectionDialogBloc>(context).add(
+      RecipeSelectionDialogCategoriesFetched(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,67 +49,76 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                child: DataTable(
-                  columns: const [
-                    DataColumn(
-                      label: Text(
-                        'Quantity',
-                        style: TextStyle(
-                          color: kBlackPrimary,
-                          fontFamily: 'Montserrat Bold',
-                        ),
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        'Ingredient',
-                        style: TextStyle(
-                          color: kBlackPrimary,
-                          fontFamily: 'Montserrat Bold',
-                        ),
-                      ),
-                    ),
-                  ],
-                  rows: [
-                    for (Category category in kCategoriesExample)
-                      DataRow(
-                        selected: isCategorySelected(category),
-                        cells: [
-                          const DataCell(
-                            Text(
-                              '1',
+                child: BlocBuilder<RecipeSelectionDialogBloc,
+                    RecipeSelectionDialogState>(
+                  builder: (context, state) {
+                    if (state is RecipeSelectionDialogSuccess) {
+                      return DataTable(
+                        columns: const [
+                          DataColumn(
+                            label: Text(
+                              'Accuracy',
                               style: TextStyle(
                                 color: kBlackPrimary,
-                                fontFamily: 'Montserrat ',
-                                fontSize: 14.0,
+                                fontFamily: 'Montserrat Bold',
                               ),
                             ),
                           ),
-                          DataCell(
-                            Text(
-                              category.name,
-                              style: const TextStyle(
+                          DataColumn(
+                            label: Text(
+                              'Ingredient',
+                              style: TextStyle(
                                 color: kBlackPrimary,
-                                fontFamily: 'Montserrat ',
-                                fontSize: 14.0,
+                                fontFamily: 'Montserrat Bold',
                               ),
                             ),
                           ),
                         ],
-                        onSelectChanged: (bool? value) {
-                          if (value == true) {
-                            setState(() {
-                              selectedCategory.add(category);
-                            });
-                          } else {
-                            setState(() {
-                              selectedCategory.remove(category);
-                            });
-                          }
-                        },
-                      ),
-                  ],
-                  showCheckboxColumn: true,
+                        rows: [
+                          for (Category category in state.categories)
+                            DataRow(
+                              selected: isCategorySelected(category),
+                              cells: [
+                                DataCell(
+                                  Text(
+                                    Utils.toPercentage(category.accuracy),
+                                    style: const TextStyle(
+                                      color: kBlackPrimary,
+                                      fontFamily: 'Montserrat ',
+                                      fontSize: 14.0,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    category.name,
+                                    style: const TextStyle(
+                                      color: kBlackPrimary,
+                                      fontFamily: 'Montserrat ',
+                                      fontSize: 14.0,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                              onSelectChanged: (bool? value) {
+                                if (value == true) {
+                                  setState(() {
+                                    selectedCategory.add(category);
+                                  });
+                                } else {
+                                  setState(() {
+                                    selectedCategory.remove(category);
+                                  });
+                                }
+                              },
+                            ),
+                        ],
+                        showCheckboxColumn: true,
+                      );
+                    }
+
+                    return Container();
+                  },
                 ),
               ),
             ),
