@@ -80,6 +80,7 @@ class SmartRecipeSelectionLocalDataSourceImpl
   @override
   Future<List<PredictedImage>> deleteExpiredPredictedImages() async {
     final predictedImages = predictedImageBox.values.toList();
+    List<Category> categories = categoryBox.values.toList();
 
     List<PredictedImage> nonExpiredPredictedImages = [];
 
@@ -87,6 +88,22 @@ class SmartRecipeSelectionLocalDataSourceImpl
       final predictedAt = predictedImage.predictedAt;
 
       if (Utils.isPredictedImageExpired(predictedAt)) {
+        final imageUrl = predictedImage.imageUrl;
+
+        final imageFile = File(imageUrl);
+
+        // Delete the actual image file of predicted image
+        if (imageFile.existsSync()) {
+          imageFile.deleteSync();
+        }
+
+        //Delete category box
+        for (var category in categories) {
+          if (category.imageUrl == predictedImage.imageUrl) {
+            category.delete();
+          }
+        }
+
         predictedImage.delete();
       } else {
         nonExpiredPredictedImages.add(predictedImage);
