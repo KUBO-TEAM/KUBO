@@ -9,7 +9,9 @@ import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_sche
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_create_recipe_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipe_info_page.dart';
+import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_selection_dialog.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class RecipeScheduleCalendar extends StatelessWidget {
@@ -65,13 +67,43 @@ class RecipeScheduleCalendar extends StatelessWidget {
     );
   }
 
-  Future<void> _showIngredientsPickerDialog(
+  void _showIngredientsPickerDialog(
     BuildContext context,
-  ) async {
-    await showDialog(
+  ) {
+    showDialog(
       context: context,
       builder: (BuildContext context) {
-        return const RecipeSelectionDialog();
+        return RecipeSelectionDialog(
+          actionButton: (selectedCategories) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  width: 10,
+                ),
+                RoundedButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      RecipesPage.id,
+                      arguments: RecipesPageArguments(
+                        categories: selectedCategories,
+                      ),
+                    );
+                  },
+                  title: const Text(
+                    'Proceed to recipe selection',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Montserrat Medium',
+                      fontSize: 14.0,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
       },
     );
   }

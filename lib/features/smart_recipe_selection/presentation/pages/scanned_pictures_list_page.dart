@@ -5,6 +5,7 @@ import 'package:kubo/core/constants/string_constants.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/ingredient_expired_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/message_dialog.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/recipe_selection_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/scanned_pictures_list/scanned_pictures_list_bloc.dart';
@@ -150,8 +151,39 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
                   title: const Text(
                     'Generate schedule',
                   ),
-                  onPressed: () =>
-                      Navigator.of(context).pushNamed(SmartRecipeListPage.id),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return RecipeSelectionDialog(
+                          actionButton: (selectedCategories) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                RoundedButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pushNamed(SmartRecipeListPage.id);
+                                  },
+                                  title: const Text(
+                                    'Generate recipes schedule',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Montserrat Medium',
+                                      fontSize: 14.0,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
                 ),
               ],
             ),

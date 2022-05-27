@@ -4,20 +4,21 @@ import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/helpers/utils.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_selection_dialog/recipe_selection_dialog_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
-import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
 
 class RecipeSelectionDialog extends StatefulWidget {
   const RecipeSelectionDialog({
     Key? key,
+    required this.actionButton,
   }) : super(key: key);
+
+  final Widget Function(List<Category>) actionButton;
 
   @override
   State<RecipeSelectionDialog> createState() => _RecipeSelectionDialogState();
 }
 
 class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
-  List<Category> selectedCategory = [];
+  List<Category> selectedCategories = [];
 
   @override
   void initState() {
@@ -49,8 +50,15 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                child: BlocBuilder<RecipeSelectionDialogBloc,
+                child: BlocConsumer<RecipeSelectionDialogBloc,
                     RecipeSelectionDialogState>(
+                  listener: (context, state) {
+                    if (state is RecipeSelectionDialogSuccess) {
+                      setState(() {
+                        selectedCategories = List.from(state.categories);
+                      });
+                    }
+                  },
                   builder: (context, state) {
                     if (state is RecipeSelectionDialogSuccess) {
                       return DataTable(
@@ -103,11 +111,11 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
                               onSelectChanged: (bool? value) {
                                 if (value == true) {
                                   setState(() {
-                                    selectedCategory.add(category);
+                                    selectedCategories.add(category);
                                   });
                                 } else {
                                   setState(() {
-                                    selectedCategory.remove(category);
+                                    selectedCategories.remove(category);
                                   });
                                 }
                               },
@@ -125,33 +133,7 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
             const SizedBox(
               height: 10,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  width: 10,
-                ),
-                RoundedButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(
-                      context,
-                      RecipesPage.id,
-                      arguments: RecipesPageArguments(
-                        categories: selectedCategory,
-                      ),
-                    );
-                  },
-                  title: const Text(
-                    'Proceed to recipe selection',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Montserrat Medium',
-                      fontSize: 14.0,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            widget.actionButton(selectedCategories),
             const SizedBox(
               height: 10,
             ),
@@ -162,9 +144,9 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
   }
 
   bool isCategorySelected(Category category) {
-    if (selectedCategory.isNotEmpty) {
+    if (selectedCategories.isNotEmpty) {
       var foundCategories =
-          selectedCategory.where((element) => element == category);
+          selectedCategories.where((element) => element == category);
 
       return foundCategories.isNotEmpty ? true : false;
     }

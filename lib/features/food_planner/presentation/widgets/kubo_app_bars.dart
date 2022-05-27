@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/appbar_clipper.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/icon_button.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/reminder_bell.dart';
 
 const _appBarSize = Size.fromHeight(45.0);
 
@@ -59,6 +60,9 @@ class KuboHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           fontSize: 24.0,
         ),
       ),
+      actions: const [
+        ReminderBell(),
+      ],
     );
   }
 
