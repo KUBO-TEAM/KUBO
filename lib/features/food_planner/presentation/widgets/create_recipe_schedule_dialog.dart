@@ -1,4 +1,3 @@
-import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/list_costants.dart';
@@ -70,84 +69,82 @@ class _CreateRecipeScheduleDialogState
 
   @override
   Widget build(BuildContext context) {
-    return DirectSelectContainer(
-      child: AlertDialog(
-        contentPadding: EdgeInsets.zero,
-        content: SizedBox(
-          width: double.maxFinite,
-          height: 340,
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  padding: const EdgeInsets.only(top: 8, right: 8),
-                  constraints: const BoxConstraints(),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.close),
-                ),
+    return AlertDialog(
+      contentPadding: EdgeInsets.zero,
+      content: SizedBox(
+        width: double.maxFinite,
+        height: 340,
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: IconButton(
+                padding: const EdgeInsets.only(top: 8, right: 8),
+                constraints: const BoxConstraints(),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.close),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                ),
-                child: DaySelector(
-                  list: kDayList,
-                  initialDay: selectedDay,
-                  leadingIcon: Icons.calendar_today,
-                  onSelectedDay: (int? value) {
-                    selectedDay = value;
-                  },
-                ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                ),
-                child: TimeSelector(
-                  title: 'Start',
-                  initialTimeOfDay: selectedStartTime,
-                  onTimePicked: (TimeOfDay? value) {
-                    selectedStartTime = value;
-                  },
-                ),
+              child: DaySelector(
+                list: kDayList,
+                initialDay: selectedDay,
+                leadingIcon: Icons.calendar_today,
+                onSelectedDay: (int? value) {
+                  selectedDay = value;
+                },
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                ),
-                child: TimeSelector(
-                  title: 'End',
-                  initialTimeOfDay: selectedEndTime,
-                  onTimePicked: (TimeOfDay? value) {
-                    selectedEndTime = value;
-                  },
-                ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                ),
-                child: ColorSelector(
-                  // currentColor: colorPicked,
-                  onColorPicked: (Color? value) {
-                    selectedColor = value;
-                  },
-                ),
+              child: TimeSelector(
+                title: 'Start',
+                initialTimeOfDay: selectedStartTime,
+                onTimePicked: (TimeOfDay? value) {
+                  selectedStartTime = value;
+                },
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                ),
-                child: SquareButton(
-                  onPressed: saveSchedule,
-                  title: 'Save Schedule',
-                ),
-              )
-            ],
-          ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+              ),
+              child: TimeSelector(
+                title: 'End',
+                initialTimeOfDay: selectedEndTime,
+                onTimePicked: (TimeOfDay? value) {
+                  selectedEndTime = value;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+              ),
+              child: ColorSelector(
+                // currentColor: colorPicked,
+                onColorPicked: (Color? value) {
+                  selectedColor = value;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+              ),
+              child: SquareButton(
+                onPressed: saveSchedule,
+                title: 'Save Schedule',
+              ),
+            )
+          ],
         ),
       ),
     );

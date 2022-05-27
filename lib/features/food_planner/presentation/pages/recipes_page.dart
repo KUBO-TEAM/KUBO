@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/reminder_bell.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipe_info_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_list_tile.dart';
@@ -64,6 +65,11 @@ class _RecipesPageState extends State<RecipesPage> {
             fontSize: 24.0,
           ),
         ),
+        actions: const [
+          ReminderBell(
+            color: Colors.black,
+          ),
+        ],
       ),
       backgroundColor: Colors.white,
       body: SafeArea(

@@ -26,6 +26,7 @@ class _InfoTabState extends State<InfoTab>
     if (widget.recipe.youtubeId != null &&
         widget.recipe.youtubeId!.isNotEmpty) {
       _podController = PodPlayerController(
+        podPlayerConfig: const PodPlayerConfig(autoPlay: false),
         playVideoFrom: PlayVideoFrom.youtube(
           'https://youtu.be/${widget.recipe.youtubeId}',
         ),

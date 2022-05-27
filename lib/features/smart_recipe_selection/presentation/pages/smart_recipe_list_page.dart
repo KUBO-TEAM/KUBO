@@ -1,4 +1,3 @@
-import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
@@ -34,76 +33,74 @@ class _SmartRecipeListPageState extends State<SmartRecipeListPage> {
         'Smart Recipe List',
         onBackButtonPressed: () => Navigator.of(context).pop(),
       ),
-      body: DirectSelectContainer(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  RoundedButton(
-                    icon: const Icon(
-                      Icons.event,
-                      color: Colors.white,
-                    ),
-                    title: const Text('Check timetable'),
-                    onPressed: () {},
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RoundedButton(
+                  icon: const Icon(
+                    Icons.event,
+                    color: Colors.white,
                   ),
-                  const SizedBox(
-                    width: 8.0,
+                  title: const Text('Check timetable'),
+                  onPressed: () {},
+                ),
+                const SizedBox(
+                  width: 8.0,
+                ),
+                RoundedButton(
+                  icon: const Icon(
+                    Icons.save,
+                    color: Colors.white,
                   ),
-                  RoundedButton(
-                    icon: const Icon(
-                      Icons.save,
-                      color: Colors.white,
-                    ),
-                    title: const Text('Save schedule'),
-                    onPressed: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        HomePage.id,
-                        (route) => route.isFirst,
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 8.0,
-            ),
-            Expanded(
-              child: BlocBuilder<RecipeBloc, RecipeState>(
-                builder: (context, state) {
-                  if (state is RecipeSuccess) {
-                    final recipes = state.recipes;
-
-                    return ListView.builder(
-                      itemCount: recipes.length,
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (BuildContext context, int index) {
-                        return SmartRecipeListTile(
-                          recipe: recipes[index],
-                        );
-                      },
+                  title: const Text('Save schedule'),
+                  onPressed: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      HomePage.id,
+                      (route) => route.isFirst,
                     );
-                  }
+                  },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 8.0,
+          ),
+          Expanded(
+            child: BlocBuilder<RecipeBloc, RecipeState>(
+              builder: (context, state) {
+                if (state is RecipeSuccess) {
+                  final recipes = state.recipes;
 
                   return ListView.builder(
-                    itemCount: 10,
+                    itemCount: recipes.length,
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, int index) {
-                      return const SmartRecipeListSkeleton();
+                      return SmartRecipeListTile(
+                        recipe: recipes[index],
+                      );
                     },
                   );
-                },
-              ),
+                }
+
+                return ListView.builder(
+                  itemCount: 10,
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (BuildContext context, int index) {
+                    return const SmartRecipeListSkeleton();
+                  },
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

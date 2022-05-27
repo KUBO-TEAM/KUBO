@@ -11,6 +11,7 @@ import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe
 import 'package:kubo/features/food_planner/presentation/pages/recipe_info_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_selection_dialog.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/reminder_bell.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -196,6 +197,13 @@ class RecipeScheduleCalendar extends StatelessWidget {
                   color: Colors.white,
                 ),
                 onPressed: () => Navigator.of(context).pop(),
+              ),
+              const Positioned(
+                right: -5,
+                top: -5,
+                child: ReminderBell(
+                  color: Colors.white,
+                ),
               ),
             ],
           );

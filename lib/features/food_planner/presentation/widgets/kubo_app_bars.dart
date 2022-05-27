@@ -34,6 +34,11 @@ class KuboAppBar extends StatelessWidget implements PreferredSizeWidget {
           fontSize: 30.0,
         ),
       ),
+      actions: const [
+        ReminderBell(
+          color: Colors.black,
+        ),
+      ],
     );
   }
 
@@ -61,7 +66,9 @@ class KuboHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: const [
-        ReminderBell(),
+        ReminderBell(
+          color: Colors.black,
+        ),
       ],
     );
   }

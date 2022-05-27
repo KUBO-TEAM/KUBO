@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/reminder/reminder_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/user/user_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/pages/reminders_page.dart';
 
 class ReminderBell extends StatelessWidget {
-  const ReminderBell({Key? key}) : super(key: key);
+  const ReminderBell({Key? key, required this.color}) : super(key: key);
+
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +43,13 @@ class ReminderBell extends StatelessWidget {
                 ),
               ),
               child: IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.notifications,
-                  color: Colors.black,
+                  color: color,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, ReminderPage.id);
+                },
               ),
             ),
           );
