@@ -27,11 +27,10 @@ class _SmartRecipeListTileState extends State<SmartRecipeListTile> {
 
   Color? selectedColor;
 
-  int? selectedDay;
+  String? selectedDay;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     setState(() {
@@ -41,9 +40,7 @@ class _SmartRecipeListTileState extends State<SmartRecipeListTile> {
       selectedEndTime = Utils.dateTimeToTimeOfDay(
         widget.recipeSchedule.end,
       );
-      selectedDay = kDayList.indexOf(
-        Utils.findDay(widget.recipeSchedule.start),
-      );
+      selectedDay = Utils.findDay(widget.recipeSchedule.start);
     });
   }
 
@@ -62,7 +59,7 @@ class _SmartRecipeListTileState extends State<SmartRecipeListTile> {
               list: kDayList,
               initialDay: selectedDay,
               leadingIcon: Icons.calendar_today,
-              onSelectedDay: (int? value) {
+              onSelectedDay: (String? value) {
                 selectedDay = value;
               },
             ),

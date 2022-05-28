@@ -10,7 +10,7 @@ abstract class RecipeInfoCreateRecipeScheduleEvent extends Equatable {
 class RecipeInfoCreateRecipeScheduleCreated
     extends RecipeInfoCreateRecipeScheduleEvent {
   final Recipe? recipe;
-  final int? day;
+  final String? day;
   final TimeOfDay? start;
   final TimeOfDay? end;
   final Color? color;

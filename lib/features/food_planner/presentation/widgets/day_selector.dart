@@ -13,11 +13,11 @@ class DaySelector extends StatefulWidget {
     this.customLeadingWidget,
   }) : super(key: key);
 
-  final int? initialDay;
+  final String? initialDay;
 
   final List<String> list;
   final IconData leadingIcon;
-  final Function(int?) onSelectedDay;
+  final Function(String?) onSelectedDay;
   final Widget? customLeadingWidget;
 
   @override
@@ -25,7 +25,7 @@ class DaySelector extends StatefulWidget {
 }
 
 class _DaySelectorState extends State<DaySelector> {
-  int initialIndex = 0;
+  String selectedDay = 'Monday';
 
   @override
   void initState() {
@@ -35,11 +35,11 @@ class _DaySelectorState extends State<DaySelector> {
 
     if (initialDay != null) {
       setState(() {
-        initialIndex = initialDay;
+        selectedDay = initialDay;
       });
     }
 
-    widget.onSelectedDay(initialIndex);
+    widget.onSelectedDay(initialDay);
   }
 
   @override
@@ -68,10 +68,9 @@ class _DaySelectorState extends State<DaySelector> {
                   contentPadding: EdgeInsets.only(top: 15),
                 ),
                 onChanged: (selected) {
-                  widget.onSelectedDay(
-                      widget.list.indexWhere((element) => element == selected));
+                  widget.onSelectedDay(selected);
                 },
-                selectedItem: "Monday",
+                selectedItem: selectedDay,
               ),
             ),
           ),

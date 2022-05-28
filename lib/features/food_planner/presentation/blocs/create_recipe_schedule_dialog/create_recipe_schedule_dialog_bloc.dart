@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:kubo/core/constants/list_costants.dart';
 import 'package:kubo/core/helpers/utils.dart';
 
 part 'create_recipe_schedule_dialog_event.dart';
@@ -27,9 +26,7 @@ class CreateRecipeScheduleDialogBloc extends Bloc<
           ),
         );
 
-        final day = kDayList.indexOf(
-          Utils.findDay(event.startedTime),
-        );
+        final day = Utils.findDay(event.startedTime);
 
         if (start != null && end != null) {
           emit(

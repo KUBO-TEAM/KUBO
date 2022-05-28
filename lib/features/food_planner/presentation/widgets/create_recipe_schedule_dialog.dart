@@ -29,7 +29,7 @@ class _CreateRecipeScheduleDialogState
   TimeOfDay? selectedStartTime;
   TimeOfDay? selectedEndTime;
   Color? selectedColor;
-  int? selectedDay;
+  String? selectedDay;
 
   void saveSchedule() {
     UserState userState = BlocProvider.of<UserBloc>(context).state;
@@ -95,7 +95,7 @@ class _CreateRecipeScheduleDialogState
                 list: kDayList,
                 initialDay: selectedDay,
                 leadingIcon: Icons.calendar_today,
-                onSelectedDay: (int? value) {
+                onSelectedDay: (String? value) {
                   selectedDay = value;
                 },
               ),

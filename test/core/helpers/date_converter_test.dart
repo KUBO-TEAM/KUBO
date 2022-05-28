@@ -18,7 +18,7 @@ void main() {
     test('should return StartAndEndTimeOfDay if the conversion is successfull',
         () async {
       final result = dateConverter.convertStartAndEndTimeOfDay(
-        day: tDay,
+        day: 'tDay',
         startTimeOfDay: startTimeOfDay,
         endTimeOfDay: endTimeOfDay,
       );

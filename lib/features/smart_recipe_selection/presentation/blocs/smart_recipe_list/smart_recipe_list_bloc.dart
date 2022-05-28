@@ -18,6 +18,7 @@ class SmartRecipeListBloc
   }) : super(SmartRecipeListInitial()) {
     on<SmartRecipeListEvent>((event, emit) async {
       if (event is SmartRecipeListRecipeSchedulesGenerated) {
+        emit(SmartRecipeListInProgress());
         final categories = event.categories;
 
         final failureOrRecipeSchedules =

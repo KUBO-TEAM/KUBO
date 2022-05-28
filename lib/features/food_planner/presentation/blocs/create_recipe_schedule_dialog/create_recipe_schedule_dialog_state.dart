@@ -17,7 +17,7 @@ class CreateRecipeScheduleDialogSuccess
     extends CreateRecipeScheduleDialogState {
   final TimeOfDay start;
   final TimeOfDay end;
-  final int day;
+  final String day;
 
   const CreateRecipeScheduleDialogSuccess({
     required this.start,

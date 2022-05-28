@@ -19,16 +19,18 @@ class StartAndEndDateTime extends Equatable {
 @lazySingleton
 class DateConverter {
   Either<Failure, StartAndEndDateTime> convertStartAndEndTimeOfDay({
-    required int day,
+    required String day,
     required TimeOfDay startTimeOfDay,
     required TimeOfDay endTimeOfDay,
   }) {
     try {
       final today = DateTime.now();
 
+      final intDay = kDayList.indexOf(day);
+
       final todayWeekday = DateFormat('EEEE').format(today);
       final indexTodayWeekDay = kDayList.indexOf(todayWeekday);
-      final scheduleDay = today.day + (day - indexTodayWeekDay);
+      final scheduleDay = today.day + (intDay - indexTodayWeekDay);
 
       final start = DateTime(
         today.year,
