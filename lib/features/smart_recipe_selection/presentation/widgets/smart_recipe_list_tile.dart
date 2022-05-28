@@ -1,19 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/list_costants.dart';
-import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
+import 'package:kubo/core/helpers/utils.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/color_selector.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/day_selector.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/time_selector.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/smart_recipe_list_tile_recipe_card.dart';
 import 'package:skeletons/skeletons.dart';
 
-class SmartRecipeListTile extends StatelessWidget {
+class SmartRecipeListTile extends StatefulWidget {
   const SmartRecipeListTile({
     Key? key,
-    required this.recipe,
+    required this.recipeSchedule,
   }) : super(key: key);
 
-  final Recipe recipe;
+  final RecipeSchedule recipeSchedule;
+
+  @override
+  State<SmartRecipeListTile> createState() => _SmartRecipeListTileState();
+}
+
+class _SmartRecipeListTileState extends State<SmartRecipeListTile> {
+  TimeOfDay? selectedStartTime;
+
+  TimeOfDay? selectedEndTime;
+
+  Color? selectedColor;
+
+  int? selectedDay;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    setState(() {
+      selectedStartTime = Utils.dateTimeToTimeOfDay(
+        widget.recipeSchedule.start,
+      );
+      selectedEndTime = Utils.dateTimeToTimeOfDay(
+        widget.recipeSchedule.end,
+      );
+      selectedDay = kDayList.indexOf(
+        Utils.findDay(widget.recipeSchedule.start),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,24 +57,33 @@ class SmartRecipeListTile extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            SmartRecipeListTileRecipeCard(recipe: recipe),
+            SmartRecipeListTileRecipeCard(recipe: widget.recipeSchedule.recipe),
             DaySelector(
               list: kDayList,
+              initialDay: selectedDay,
               leadingIcon: Icons.calendar_today,
-              onSelectedDay: (int? i) {},
+              onSelectedDay: (int? value) {
+                selectedDay = value;
+              },
             ),
             TimeSelector(
               title: 'Start',
-              onTimePicked: (TimeOfDay? startTimePicked) {},
+              initialTimeOfDay: selectedStartTime,
+              onTimePicked: (TimeOfDay? value) {
+                selectedStartTime = value;
+              },
             ),
             TimeSelector(
               title: 'End',
-              onTimePicked: (TimeOfDay? startTimePicked) {},
+              initialTimeOfDay: selectedEndTime,
+              onTimePicked: (TimeOfDay? value) {
+                selectedEndTime = value;
+              },
             ),
             ColorSelector(
               // currentColor: colorPicked,
-              onColorPicked: (Color? selectedColor) {
-                // colorPicked = selectedColor!;
+              onColorPicked: (Color? value) {
+                selectedColor = value;
               },
             ),
             const SizedBox(

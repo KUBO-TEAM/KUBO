@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kubo/core/constants/date_time_constants.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category_with_quantity.dart';
@@ -57,4 +59,15 @@ class Utils {
     final timeHundred = num * 100;
     return '${timeHundred.toStringAsFixed(2)}%';
   }
+
+  static TimeOfDay? dateTimeToTimeOfDay(DateTime? time) {
+    if (time == null) {
+      return null;
+    }
+
+    return TimeOfDay(hour: time.hour, minute: time.minute);
+  }
+
+  static String findDay(DateTime startedTime) =>
+      DateFormat('EEEE').format(startedTime);
 }

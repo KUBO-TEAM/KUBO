@@ -24,4 +24,11 @@ class Category extends HiveObject {
 
   @HiveField(4)
   String imageUrl;
+
+  Map<String, dynamic> toMap() => {
+        'name': name,
+        'accuracy': accuracy,
+        'predictedAt': predictedAt.toIso8601String(),
+        'imageUrl': imageUrl,
+      };
 }

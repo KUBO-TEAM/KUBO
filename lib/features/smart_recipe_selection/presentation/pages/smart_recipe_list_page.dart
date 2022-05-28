@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/home_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/blocs/smart_recipe_list/smart_recipe_list_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/widgets/smart_recipe_list_tile.dart';
+
+class SmartRecipeListPageArguments {
+  final List<Category> categories;
+
+  SmartRecipeListPageArguments({required this.categories});
+}
 
 class SmartRecipeListPage extends StatefulWidget {
   static const String id = 'smart_recipe_list_page';
 
-  const SmartRecipeListPage({Key? key}) : super(key: key);
+  const SmartRecipeListPage({
+    Key? key,
+    required this.arguments,
+  }) : super(key: key);
+
+  final SmartRecipeListPageArguments arguments;
 
   @override
   State<SmartRecipeListPage> createState() => _SmartRecipeListPageState();
@@ -20,8 +32,10 @@ class _SmartRecipeListPageState extends State<SmartRecipeListPage> {
   void initState() {
     super.initState();
 
-    BlocProvider.of<RecipeBloc>(context).add(
-      RecipeModelListFetched(),
+    BlocProvider.of<SmartRecipeListBloc>(context).add(
+      SmartRecipeListRecipeSchedulesGenerated(
+        categories: widget.arguments.categories,
+      ),
     );
   }
 
@@ -72,18 +86,18 @@ class _SmartRecipeListPageState extends State<SmartRecipeListPage> {
             height: 8.0,
           ),
           Expanded(
-            child: BlocBuilder<RecipeBloc, RecipeState>(
+            child: BlocBuilder<SmartRecipeListBloc, SmartRecipeListState>(
               builder: (context, state) {
-                if (state is RecipeSuccess) {
-                  final recipes = state.recipes;
+                if (state is SmartRecipeListSuccess) {
+                  final recipeSchedules = state.recipeSchedules;
 
                   return ListView.builder(
-                    itemCount: recipes.length,
+                    itemCount: recipeSchedules.length,
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, int index) {
                       return SmartRecipeListTile(
-                        recipe: recipes[index],
+                        recipeSchedule: recipeSchedules[index],
                       );
                     },
                   );

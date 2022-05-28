@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/error/exceptions.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/smart_recipe_selection/data/datasources/smart_recipe_selection_remote_data_source.dart';
 import 'package:kubo/features/smart_recipe_selection/data/datasources/smart_recipe_selection_local_data_source.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
@@ -39,6 +40,19 @@ class SmartRecipeSelectionRepositoryImpl
   }
 
   @override
+  Future<Either<Failure, List<RecipeSchedule>>> generateRecipeSchedules(
+      List<Category> categories) async {
+    try {
+      final recipeSchedules = await smartRecipeSelectionRemoteDataSource
+          .generateRecipeSchedules(categories);
+
+      return Right(recipeSchedules);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
   Future<Either<Failure, CreateCategoryResponse>> createCategory(
     PredictedImage predictedImage,
   ) async {
@@ -48,7 +62,7 @@ class SmartRecipeSelectionRepositoryImpl
 
       return Right(createCategoryResponse);
     } on ServerException {
-      return Left(ServerFailure());
+      return Left(CacheFailure());
     }
   }
 
@@ -61,7 +75,7 @@ class SmartRecipeSelectionRepositoryImpl
 
       return Right(createPredictedImage);
     } on ServerException {
-      return Left(ServerFailure());
+      return Left(CacheFailure());
     }
   }
 
@@ -73,7 +87,7 @@ class SmartRecipeSelectionRepositoryImpl
 
       return Right(predictedImages);
     } on ServerException {
-      return Left(ServerFailure());
+      return Left(CacheFailure());
     }
   }
 
@@ -86,7 +100,7 @@ class SmartRecipeSelectionRepositoryImpl
 
       return Right(response);
     } on ServerException {
-      return Left(ServerFailure());
+      return Left(CacheFailure());
     }
   }
 
@@ -99,7 +113,7 @@ class SmartRecipeSelectionRepositoryImpl
 
       return Right(response);
     } on ServerException {
-      return Left(ServerFailure());
+      return Left(CacheFailure());
     }
   }
 
@@ -111,7 +125,7 @@ class SmartRecipeSelectionRepositoryImpl
 
       return Right(categories);
     } on ServerException {
-      return Left(ServerFailure());
+      return Left(CacheFailure());
     }
   }
 }

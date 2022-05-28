@@ -165,8 +165,12 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
                                 ),
                                 RoundedButton(
                                   onPressed: () {
-                                    Navigator.of(context)
-                                        .pushNamed(SmartRecipeListPage.id);
+                                    Navigator.of(context).pushNamed(
+                                      SmartRecipeListPage.id,
+                                      arguments: SmartRecipeListPageArguments(
+                                        categories: selectedCategories,
+                                      ),
+                                    );
                                   },
                                   title: const Text(
                                     'Generate recipes schedule',

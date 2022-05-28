@@ -81,8 +81,12 @@ class AppRouter {
         );
 
       case SmartRecipeListPage.id:
+        final arguments =
+            routeSettings.arguments as SmartRecipeListPageArguments;
         return MaterialPageRoute(
-          builder: (_) => const SmartRecipeListPage(),
+          builder: (_) => SmartRecipeListPage(
+            arguments: arguments,
+          ),
         );
 
       case PredictedImageViewPage.id:

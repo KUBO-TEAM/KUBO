@@ -20,8 +20,8 @@ class RecipeScheduleAdapter extends TypeAdapter<RecipeSchedule> {
       recipe: fields[0] as Recipe,
       start: fields[1] as DateTime,
       end: fields[2] as DateTime,
-      color: fields[3] as Color,
-      isAllDay: fields[4] as bool,
+      color: fields[3] as Color?,
+      isAllDay: fields[4] as bool?,
       createdAt: fields[5] as DateTime,
     );
   }

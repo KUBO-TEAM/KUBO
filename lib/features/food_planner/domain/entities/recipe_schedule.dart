@@ -19,10 +19,10 @@ class RecipeSchedule extends HiveObject {
   DateTime end;
 
   @HiveField(3)
-  Color color;
+  Color? color;
 
   @HiveField(4)
-  bool isAllDay;
+  bool? isAllDay;
 
   @HiveField(5)
   final DateTime createdAt;
@@ -31,8 +31,8 @@ class RecipeSchedule extends HiveObject {
     required this.recipe,
     required this.start,
     required this.end,
-    required this.color,
-    required this.isAllDay,
+    this.color,
+    this.isAllDay,
     required this.createdAt,
   });
 }

@@ -167,7 +167,8 @@ class _MenuHistoryPageState extends State<MenuHistoryPage> {
                           return Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: lightenColor(event.color, .2),
+                              color: lightenColor(
+                                  event.color ?? kGreenPrimary, .2),
                             ),
                             width: 7.0,
                             height: 7.0,

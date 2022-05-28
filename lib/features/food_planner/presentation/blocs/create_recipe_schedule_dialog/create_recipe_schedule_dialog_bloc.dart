@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:kubo/core/constants/list_costants.dart';
+import 'package:kubo/core/helpers/utils.dart';
 
 part 'create_recipe_schedule_dialog_event.dart';
 part 'create_recipe_schedule_dialog_state.dart';
@@ -19,16 +19,16 @@ class CreateRecipeScheduleDialogBloc extends Bloc<
 
         emit(CreateRecipeScheduleDialogInProgress());
 
-        final start = _dateTimeToTimeOfDay(startedTime);
+        final start = Utils.dateTimeToTimeOfDay(startedTime);
 
-        final end = _dateTimeToTimeOfDay(
+        final end = Utils.dateTimeToTimeOfDay(
           startedTime.add(
             const Duration(hours: 1),
           ),
         );
 
         final day = kDayList.indexOf(
-          DateFormat('EEEE').format(event.startedTime),
+          Utils.findDay(event.startedTime),
         );
 
         if (start != null && end != null) {
@@ -48,13 +48,5 @@ class CreateRecipeScheduleDialogBloc extends Bloc<
         }
       }
     });
-  }
-
-  TimeOfDay? _dateTimeToTimeOfDay(DateTime? time) {
-    if (time == null) {
-      return null;
-    }
-
-    return TimeOfDay(hour: time.hour, minute: time.minute);
   }
 }

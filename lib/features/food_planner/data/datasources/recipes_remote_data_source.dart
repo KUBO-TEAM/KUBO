@@ -55,17 +55,17 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
     List<Category> categories,
   ) async {
     try {
-      List<String> categoriesArray = [];
+      List<Map<String, dynamic>> categoriesArrayMap = [];
 
-      for (var value in categories) {
-        categoriesArray.add(value.name);
+      for (Category category in categories) {
+        categoriesArrayMap.add(category.toMap());
       }
 
       final response = await client.post(
         Uri.parse('$kKuboUrl/api/recipes/filter'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(
-          {"categories": categoriesArray},
+          {"categories": categoriesArrayMap},
         ),
       );
       if (response.statusCode == 200) {
