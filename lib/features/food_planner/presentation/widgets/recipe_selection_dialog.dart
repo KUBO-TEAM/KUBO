@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/helpers/utils.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_selection_dialog/recipe_selection_dialog_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/empty_state.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 
 class RecipeSelectionDialog extends StatefulWidget {
@@ -61,6 +62,13 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
                   },
                   builder: (context, state) {
                     if (state is RecipeSelectionDialogSuccess) {
+                      if (state.categories.isEmpty) {
+                        return const EmptyState(
+                          message: 'No categories found',
+                          assetImageUrl: "assets/images/empty_2.png",
+                          imageSize: 200,
+                        );
+                      }
                       return DataTable(
                         columns: const [
                           DataColumn(

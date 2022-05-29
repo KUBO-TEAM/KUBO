@@ -1,1 +1,1 @@
-const kGlobalVegetablesExpirationDurationDate = Duration.zero;
+const kGlobalVegetablesExpirationDurationDate = Duration(days: 3);

@@ -110,6 +110,7 @@ class RecipeScheduleLocalDataSourceImpl
     final recipeSchedules = recipeScheduleBox.values.toList();
 
     final currentDate = DateTime.now();
+
     final tomorrowDate = currentDate.add(
       const Duration(
         days: 1,
@@ -150,24 +151,14 @@ class RecipeScheduleLocalDataSourceImpl
   Future<RecipeSchedule?> fetchTomorrowRecipeSchedule() async {
     final recipeSchedules = recipeScheduleBox.values.toList();
 
-    final currentDate = DateTime.now().add(
-      const Duration(
-        days: 1,
-      ),
-    );
+    final currentDate = DateTime.now();
 
-    final tomorrowDate = currentDate.add(
-      const Duration(
-        days: 1,
-      ),
-    );
-
-    final startingHourOfTommorow = DateTime(
-      tomorrowDate.year,
-      tomorrowDate.month,
-      tomorrowDate.day,
-      0,
-      0,
+    final tomorrowDate = DateTime(
+      currentDate.year,
+      currentDate.month,
+      currentDate.day,
+      11,
+      59,
     );
 
     RecipeSchedule? latestSchedule;
@@ -175,10 +166,7 @@ class RecipeScheduleLocalDataSourceImpl
     for (RecipeSchedule recipeSchedule in recipeSchedules) {
       final scheduleDate = recipeSchedule.start;
 
-      if (scheduleDate.isAfter(currentDate) &&
-          scheduleDate.isBefore(
-            startingHourOfTommorow,
-          )) {
+      if (scheduleDate.isAfter(tomorrowDate)) {
         if (latestSchedule != null) {
           if (latestSchedule.start.isAfter(scheduleDate)) {
             latestSchedule = recipeSchedule;

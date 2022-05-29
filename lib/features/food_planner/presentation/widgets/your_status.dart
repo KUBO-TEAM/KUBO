@@ -69,15 +69,12 @@ class _YourStatusState extends State<YourStatus> {
                   final categoriesLength = state.categoriesLength;
                   final recipeSchedulesLength = state.recipeSchedulesLength;
 
-                  if (categoriesLength != null &&
-                      recipeSchedulesLength != null) {
-                    return UserStatus(
-                      recipeSchedulesLength: recipeSchedulesLength,
-                      categoriesLength: categoriesLength,
-                    );
-                  }
+                  return UserStatus(
+                    recipeSchedulesLength: recipeSchedulesLength,
+                    categoriesLength: categoriesLength,
+                  );
                 }
-                return const YourStatusNewGuide();
+                return const UserStatus();
               },
             ),
             Column(
@@ -113,7 +110,7 @@ class _YourStatusState extends State<YourStatus> {
                           width: 10,
                         ),
                         Text(
-                          'Start scanning again!',
+                          'Scan ingredients!',
                           style: TextStyle(
                             color: kBlackPrimary,
                             fontFamily: 'Montserrat',
@@ -136,12 +133,12 @@ class _YourStatusState extends State<YourStatus> {
 class UserStatus extends StatelessWidget {
   const UserStatus({
     Key? key,
-    required this.categoriesLength,
-    required this.recipeSchedulesLength,
+    this.categoriesLength,
+    this.recipeSchedulesLength,
   }) : super(key: key);
 
-  final int categoriesLength;
-  final int recipeSchedulesLength;
+  final int? categoriesLength;
+  final int? recipeSchedulesLength;
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +146,7 @@ class UserStatus extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Hi! again welcome to KUBO',
+          'Welcome to KUBO',
           style: TextStyle(
             color: kBlackPrimary,
             fontFamily: 'Montserrat Bold',
@@ -181,7 +178,7 @@ class UserStatus extends StatelessWidget {
             ),
             RichText(
               text: TextSpan(
-                text: '${recipeSchedulesLength.toString()} ',
+                text: '${(recipeSchedulesLength ?? 0).toString()} ',
                 style: const TextStyle(
                   color: kBlackPrimary,
                   fontFamily: 'Montserrat',
@@ -222,7 +219,7 @@ class UserStatus extends StatelessWidget {
                 ),
                 children: <TextSpan>[
                   TextSpan(
-                    text: '${categoriesLength.toString()} vegetables',
+                    text: '${(categoriesLength ?? 0).toString()} vegetables',
                     style: const TextStyle(
                       color: kBlackPrimary,
                       fontFamily: 'Montserrat',

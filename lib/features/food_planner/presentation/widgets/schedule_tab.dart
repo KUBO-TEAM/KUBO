@@ -8,6 +8,7 @@ import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe
 import 'package:kubo/features/food_planner/presentation/blocs/today_schedule/today_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/tomorrow_schedule/tomorrow_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/create_recipe_schedule_dialog.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/empty_state.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/ending_timeline.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/future_latest_timeline.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/future_timeline.dart';
@@ -184,6 +185,17 @@ class _ScheduleTabState extends State<ScheduleTab>
                         ],
                       ),
                     ),
+                    const SizedBox(
+                      height: 6.0,
+                    ),
+                    if (pastRecipeSchedules.isEmpty &&
+                        futureRecipeSchedules.isEmpty &&
+                        latestRecipeSchedule == null)
+                      const EmptyState(
+                        message: 'No schedules found',
+                        assetImageUrl: "assets/images/empty_2.png",
+                        imageSize: 200,
+                      ),
                     const SizedBox(
                       height: 6.0,
                     ),

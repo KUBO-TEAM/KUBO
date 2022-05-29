@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/string_constants.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/empty_state.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/ingredient_expired_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/message_dialog.dart';
@@ -167,24 +168,25 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                RoundedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pushNamed(
-                                      SmartRecipeListPage.id,
-                                      arguments: SmartRecipeListPageArguments(
-                                        categories: selectedCategories,
+                                if (selectedCategories.isNotEmpty)
+                                  RoundedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pushNamed(
+                                        SmartRecipeListPage.id,
+                                        arguments: SmartRecipeListPageArguments(
+                                          categories: selectedCategories,
+                                        ),
+                                      );
+                                    },
+                                    title: const Text(
+                                      'Generate recipes schedule',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Montserrat Medium',
+                                        fontSize: 14.0,
                                       ),
-                                    );
-                                  },
-                                  title: const Text(
-                                    'Generate recipes schedule',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Montserrat Medium',
-                                      fontSize: 14.0,
                                     ),
                                   ),
-                                ),
                               ],
                             );
                           },
@@ -235,6 +237,13 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
                   );
                 } else if (state is ScannedPicturesListSuccess) {
                   final predictedImages = state.predictedImages;
+
+                  if (predictedImages.isEmpty) {
+                    return const EmptyState(
+                      message: 'No scanned Pictures',
+                      assetImageUrl: "assets/images/empty_1.png",
+                    );
+                  }
 
                   return GridView.builder(
                     itemCount: predictedImages.length,

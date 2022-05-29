@@ -193,9 +193,11 @@ class RecipeScheduleCalendar extends StatelessWidget {
                 ) {
                   return Container(
                     padding: const EdgeInsets.all(8),
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage("assets/images/calendar/1.webp"),
+                        image: AssetImage(
+                          "assets/images/calendar/${DateFormat.M().format(details.date)}.png",
+                        ),
                         fit: BoxFit.cover,
                       ),
                     ),
