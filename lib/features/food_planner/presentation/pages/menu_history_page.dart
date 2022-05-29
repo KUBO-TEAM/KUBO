@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/menu_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu_history/menu_history_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/menu_history_event_list.dart';
@@ -86,8 +87,9 @@ class _MenuHistoryPageState extends State<MenuHistoryPage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<MenuHistoryBloc>(context)
-        .add(MenuHistoryRecipeScheduleFetched());
+    BlocProvider.of<CreateRecipeScheduleDialogBloc>(context).add(
+      CreateRecipeScheduleDialogInitializeState(),
+    );
 
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(

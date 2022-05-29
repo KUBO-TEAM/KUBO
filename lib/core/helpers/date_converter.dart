@@ -2,9 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:intl/intl.dart';
-import 'package:kubo/core/constants/list_costants.dart';
 import 'package:kubo/core/error/failures.dart';
+import 'package:kubo/core/helpers/utils.dart';
 
 class StartAndEndDateTime extends Equatable {
   final DateTime start;
@@ -24,31 +23,13 @@ class DateConverter {
     required TimeOfDay endTimeOfDay,
   }) {
     try {
-      final today = DateTime.now();
-
-      final intDay = kDayList.indexOf(day);
-
-      final todayWeekday = DateFormat('EEEE').format(today);
-      final indexTodayWeekDay = kDayList.indexOf(todayWeekday);
-      final scheduleDay = today.day + (intDay - indexTodayWeekDay);
-
-      final start = DateTime(
-        today.year,
-        today.month,
-        scheduleDay,
-        startTimeOfDay.hour,
-        startTimeOfDay.minute,
+      return Right(
+        Utils.convertStartAndEndTimeOfDay(
+          day: day,
+          startTimeOfDay: startTimeOfDay,
+          endTimeOfDay: endTimeOfDay,
+        ),
       );
-
-      final end = DateTime(
-        today.year,
-        today.month,
-        scheduleDay,
-        endTimeOfDay.hour,
-        endTimeOfDay.minute,
-      );
-
-      return Right(StartAndEndDateTime(start: start, end: end));
     } on Exception {
       return Left(DateConverterFailure());
     }

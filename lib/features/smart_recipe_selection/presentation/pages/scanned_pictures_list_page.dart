@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/string_constants.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/ingredient_expired_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/message_dialog.dart';
@@ -31,6 +32,9 @@ class _ScannedPicturesListPageState extends State<ScannedPicturesListPage> {
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<CreateRecipeScheduleDialogBloc>(context).add(
+      CreateRecipeScheduleDialogInitializeState(),
+    );
     BlocProvider.of<ScannedPicturesListBloc>(context).add(
       ScannedPicturesListFetched(),
     );

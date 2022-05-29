@@ -11,6 +11,8 @@ import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/entities/user.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/today_schedule/today_schedule_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/tomorrow_schedule/tomorrow_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/user/user_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
@@ -19,6 +21,7 @@ import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_create_recipe_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_fetch_recipe_schedules_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/reminder/reminder_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/your_status/your_status_bloc.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/captured_page/save_scanned_ingredients_bloc.dart';
@@ -81,6 +84,9 @@ class Kubo extends StatelessWidget {
         BlocProvider(create: (_) => getIt<ScannedPicturesListBloc>()),
         BlocProvider(create: (_) => getIt<RecipeSelectionDialogBloc>()),
         BlocProvider(create: (_) => getIt<SmartRecipeListBloc>()),
+        BlocProvider(create: (_) => getIt<TodayScheduleBloc>()),
+        BlocProvider(create: (_) => getIt<TomorrowScheduleBloc>()),
+        BlocProvider(create: (_) => getIt<YourStatusBloc>()),
         BlocProvider(create: (_) => CreateRecipeScheduleDialogBloc()),
       ],
       child: MaterialApp(

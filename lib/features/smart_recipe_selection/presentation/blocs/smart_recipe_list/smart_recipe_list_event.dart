@@ -12,3 +12,9 @@ class SmartRecipeListRecipeSchedulesGenerated extends SmartRecipeListEvent {
 
   const SmartRecipeListRecipeSchedulesGenerated({required this.categories});
 }
+
+class SmartRecipeListRecipeSchedulesSaved extends SmartRecipeListEvent {
+  final List<RecipeSchedule> recipeSchedules;
+
+  const SmartRecipeListRecipeSchedulesSaved({required this.recipeSchedules});
+}

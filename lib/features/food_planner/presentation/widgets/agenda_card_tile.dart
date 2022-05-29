@@ -17,14 +17,6 @@ class AgendaCardTile extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 2.0),
             child: ListTile(
-              // title: Padding(
-              //   padding: const EdgeInsets.only(bottom: 8.0),
-              //   child: Text(
-              //     agenda.name,
-              //     style: const TextStyle(
-              //         fontSize: 20, fontWeight: FontWeight.w700),
-              //   ),
-              // ),
               subtitle: Row(
                 children: const [
                   Icon(

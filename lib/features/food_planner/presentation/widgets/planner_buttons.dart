@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/menu_history/menu_history_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/agenda_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/menu_history_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/menu_page.dart';
@@ -37,7 +39,12 @@ class PlannerButtons extends StatelessWidget {
               fontSize: 14.0,
             ),
           ),
-          onPressed: () => Navigator.pushNamed(context, MenuHistoryPage.id),
+          onPressed: () {
+            BlocProvider.of<MenuHistoryBloc>(context).add(
+              MenuHistoryRecipeScheduleFetched(),
+            );
+            Navigator.pushNamed(context, MenuHistoryPage.id);
+          },
         ),
         const SizedBox(
           width: 8.0,

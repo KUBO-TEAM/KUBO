@@ -26,8 +26,8 @@ class VegetableExpirationTimer extends StatelessWidget {
         if (time == null) {
           return Text(
             predictedImage.categories.length > 1
-                ? 'This vegetables are not fresh'
-                : 'This vegetable is not fresh',
+                ? 'Warning: These vegetables surpassed the date recommended for cooking.'
+                : 'Warning: This vegetable surpassed the date recommended for cooking.',
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 20.0,

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:kubo/core/constants/calendar_style.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/helpers/calendar_schedule_datasource.dart';
+import 'package:kubo/core/helpers/utils.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
@@ -60,12 +61,36 @@ class RecipeScheduleCalendar extends StatelessWidget {
     BuildContext context,
     DateTime startedTime,
   ) {
-    BlocProvider.of<CreateRecipeScheduleDialogBloc>(context).add(
-      CreateRecipeScheduleDialogDateTimeSaved(startedTime: startedTime),
-    );
-    _showIngredientsPickerDialog(
-      context,
-    );
+    int daysBetween = Utils.daysBetween(DateTime.now(), startedTime);
+    if (daysBetween >= 0 && daysBetween < 7) {
+      BlocProvider.of<CreateRecipeScheduleDialogBloc>(context).add(
+        CreateRecipeScheduleDialogDateTimeSaved(startedTime: startedTime),
+      );
+      _showIngredientsPickerDialog(
+        context,
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: const Color.fromARGB(255, 141, 87, 0),
+          content: Row(
+            children: const [
+              Icon(
+                Icons.priority_high,
+                color: Colors.white,
+              ),
+              SizedBox(
+                width: 10.0,
+              ),
+              Text(
+                "You can't schedule on that cell",
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   void _showIngredientsPickerDialog(

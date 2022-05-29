@@ -8,9 +8,9 @@ class IngredientExpiredDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Delete expired ingredients?'),
+      title: const Text('Delete unfit vegatables?'),
       content: const Text(
-        'Vegetables only takes 2 for 4 days before become rotten, Do you want to delete the expired ingredients?',
+        'Vegetables only takes 2-4 days before it becomes unfit for cooking. Do you want to delete pictures that match this description?',
       ),
       actions: [
         TextButton(

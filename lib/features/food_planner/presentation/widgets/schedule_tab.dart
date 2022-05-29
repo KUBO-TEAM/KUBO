@@ -5,6 +5,8 @@ import 'package:kubo/core/constants/snackbar_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_create_recipe_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_fetch_recipe_schedules_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/today_schedule/today_schedule_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/tomorrow_schedule/tomorrow_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/create_recipe_schedule_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/ending_timeline.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/future_latest_timeline.dart';
@@ -51,8 +53,17 @@ class _ScheduleTabState extends State<ScheduleTab>
       listener: (context, state) {
         if (state is RecipeInfoCreateRecipeScheduleSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(kSuccessfullySaveSnackBar);
+
           BlocProvider.of<RecipeInfoFetchRecipeSchedulesBloc>(context).add(
             RecipeInfoFetchRecipeSchedulesFetched(recipeId: widget.recipe.id),
+          );
+
+          BlocProvider.of<TomorrowScheduleBloc>(context).add(
+            TomorrowScheduleFetched(),
+          );
+
+          BlocProvider.of<TodayScheduleBloc>(context).add(
+            TodayScheduleFetched(),
           );
         }
       },

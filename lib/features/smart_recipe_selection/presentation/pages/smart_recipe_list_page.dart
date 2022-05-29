@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:art_sweetalert/art_sweetalert.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/today_schedule/today_schedule_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/tomorrow_schedule/tomorrow_schedule_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/pages/generated_menu_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/home_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/rounded_button.dart';
@@ -28,6 +34,8 @@ class SmartRecipeListPage extends StatefulWidget {
 }
 
 class _SmartRecipeListPageState extends State<SmartRecipeListPage> {
+  List<RecipeSchedule> recipeSchedules = [];
+
   @override
   void initState() {
     super.initState();
@@ -61,7 +69,15 @@ class _SmartRecipeListPageState extends State<SmartRecipeListPage> {
                     color: Colors.white,
                   ),
                   title: const Text('Check timetable'),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      GeneratedMenuPage.id,
+                      arguments: GeneratedMenuPageArguments(
+                        recipeSchedules: recipeSchedules,
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(
                   width: 8.0,
@@ -72,10 +88,11 @@ class _SmartRecipeListPageState extends State<SmartRecipeListPage> {
                     color: Colors.white,
                   ),
                   title: const Text('Save schedule'),
-                  onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      HomePage.id,
-                      (route) => route.isFirst,
+                  onPressed: () async {
+                    BlocProvider.of<SmartRecipeListBloc>(context).add(
+                      SmartRecipeListRecipeSchedulesSaved(
+                        recipeSchedules: recipeSchedules,
+                      ),
                     );
                   },
                 ),
@@ -86,18 +103,44 @@ class _SmartRecipeListPageState extends State<SmartRecipeListPage> {
             height: 8.0,
           ),
           Expanded(
-            child: BlocBuilder<SmartRecipeListBloc, SmartRecipeListState>(
+            child: BlocConsumer<SmartRecipeListBloc, SmartRecipeListState>(
+              listener: (context, state) async {
+                if (state is SmartRecipeListCreateSuccess) {
+                  BlocProvider.of<TomorrowScheduleBloc>(context).add(
+                    TomorrowScheduleFetched(),
+                  );
+
+                  BlocProvider.of<TodayScheduleBloc>(context).add(
+                    TodayScheduleFetched(),
+                  );
+                  await ArtSweetAlert.show(
+                    context: context,
+                    artDialogArgs: ArtDialogArgs(
+                      type: ArtSweetAlertType.success,
+                      title: "Successfully save schedules!",
+                      confirmButtonColor: kGreenPrimary,
+                    ),
+                  );
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    HomePage.id,
+                    (route) => route.isFirst,
+                  );
+                }
+              },
               builder: (context, state) {
-                if (state is SmartRecipeListSuccess) {
-                  final recipeSchedules = state.recipeSchedules;
+                if (state is SmartRecipeListFetchSuccess) {
+                  recipeSchedules = state.recipeSchedules;
 
                   return ListView.builder(
-                    itemCount: recipeSchedules.length,
+                    itemCount: state.recipeSchedules.length,
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, int index) {
                       return SmartRecipeListTile(
                         recipeSchedule: recipeSchedules[index],
+                        onChange: (recipeSchedule) {
+                          recipeSchedules[index] = recipeSchedule;
+                        },
                       );
                     },
                   );

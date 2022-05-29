@@ -1,46 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/text_styles_constants.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/picker_card.dart';
 
 class ColorSelector extends StatefulWidget {
   const ColorSelector({
+    this.initialColor,
     Key? key,
     required this.onColorPicked,
   }) : super(key: key);
 
   final Function(Color?) onColorPicked;
+  final Color? initialColor;
 
   @override
   State<ColorSelector> createState() => _ColorSelectorState();
 }
 
 class _ColorSelectorState extends State<ColorSelector> {
-  Color pickerColor = kGreenPrimary;
+  Color? pickerColor;
 
   @override
   void initState() {
     super.initState();
-    widget.onColorPicked(pickerColor);
+
+    if (widget.initialColor != null) {
+      setState(() {
+        pickerColor = widget.initialColor;
+      });
+
+      widget.onColorPicked(pickerColor);
+    }
+  }
+
+  void changeColor(Color color) {
+    setState(() => pickerColor = color);
+    widget.onColorPicked(color);
   }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        void changeColor(Color color) {
-          setState(() => pickerColor = color);
-          widget.onColorPicked(color);
-        }
-
         showDialog(
           context: context,
           builder: (BuildContext context) => AlertDialog(
             title: const Text('Pick a color!'),
             content: SingleChildScrollView(
               child: HueRingPicker(
-                pickerColor: pickerColor,
+                pickerColor: pickerColor ?? Colors.white,
                 onColorChanged: changeColor,
               ),
             ),

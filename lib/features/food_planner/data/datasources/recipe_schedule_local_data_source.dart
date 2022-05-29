@@ -28,6 +28,12 @@ abstract class RecipeScheduleLocalDataSource {
   ///
   Future<LinkedHashMap<DateTime, List<RecipeSchedule>>>
       fetchRecipeScheduleLinkedHashmap();
+
+  Future<RecipeSchedule?> fetchTodayRecipeSchedule();
+
+  Future<RecipeSchedule?> fetchTomorrowRecipeSchedule();
+
+  Future<int> fetchRecipeSchedulesLength();
 }
 
 @LazySingleton(as: RecipeScheduleLocalDataSource)
@@ -57,7 +63,6 @@ class RecipeScheduleLocalDataSourceImpl
 
   @override
   Future<List<RecipeSchedule>> fetchRecipeSchedules() async {
-    // recipeScheduleBox.deleteAll(recipeScheduleBox.keys);
     return recipeScheduleBox.values.toList();
   }
 
@@ -98,5 +103,96 @@ class RecipeScheduleLocalDataSourceImpl
     scheduleLinkedHashMap.addAll(scheduleMap);
 
     return scheduleLinkedHashMap;
+  }
+
+  @override
+  Future<RecipeSchedule?> fetchTodayRecipeSchedule() async {
+    final recipeSchedules = recipeScheduleBox.values.toList();
+
+    final currentDate = DateTime.now();
+    final tomorrowDate = currentDate.add(
+      const Duration(
+        days: 1,
+      ),
+    );
+
+    final startingHourOfTommorow = DateTime(
+      tomorrowDate.year,
+      tomorrowDate.month,
+      tomorrowDate.day,
+      0,
+      0,
+    );
+
+    RecipeSchedule? latestSchedule;
+
+    for (RecipeSchedule recipeSchedule in recipeSchedules) {
+      final scheduleDate = recipeSchedule.start;
+
+      if (scheduleDate.isAfter(currentDate) &&
+          scheduleDate.isBefore(
+            startingHourOfTommorow,
+          )) {
+        if (latestSchedule != null) {
+          if (latestSchedule.start.isAfter(scheduleDate)) {
+            latestSchedule = recipeSchedule;
+          }
+        } else {
+          latestSchedule = recipeSchedule;
+        }
+      }
+    }
+
+    return latestSchedule;
+  }
+
+  @override
+  Future<RecipeSchedule?> fetchTomorrowRecipeSchedule() async {
+    final recipeSchedules = recipeScheduleBox.values.toList();
+
+    final currentDate = DateTime.now().add(
+      const Duration(
+        days: 1,
+      ),
+    );
+
+    final tomorrowDate = currentDate.add(
+      const Duration(
+        days: 1,
+      ),
+    );
+
+    final startingHourOfTommorow = DateTime(
+      tomorrowDate.year,
+      tomorrowDate.month,
+      tomorrowDate.day,
+      0,
+      0,
+    );
+
+    RecipeSchedule? latestSchedule;
+
+    for (RecipeSchedule recipeSchedule in recipeSchedules) {
+      final scheduleDate = recipeSchedule.start;
+
+      if (scheduleDate.isAfter(currentDate) &&
+          scheduleDate.isBefore(
+            startingHourOfTommorow,
+          )) {
+        if (latestSchedule != null) {
+          if (latestSchedule.start.isAfter(scheduleDate)) {
+            latestSchedule = recipeSchedule;
+          }
+        } else {
+          latestSchedule = recipeSchedule;
+        }
+      }
+    }
+    return latestSchedule;
+  }
+
+  @override
+  Future<int> fetchRecipeSchedulesLength() async {
+    return recipeScheduleBox.values.length;
   }
 }

@@ -11,6 +11,7 @@ import 'dart:io';
 
 import 'package:kubo/features/smart_recipe_selection/domain/repositories/smart_recipe_selection_repository.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/usecases/create_category.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/usecases/create_generate_recipe_schedules.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/usecases/create_predicted_image.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/usecases/delete_predicted_images.dart';
 
@@ -124,6 +125,32 @@ class SmartRecipeSelectionRepositoryImpl
           await smartRecipeSelectionLocalDataSource.fetchCategories();
 
       return Right(categories);
+    } on ServerException {
+      return Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, CreateGenerateRecipeSchedulesResponse>>
+      createGenerateRecipeSchedules(
+          List<RecipeSchedule> recipeSchedules) async {
+    try {
+      final response = await smartRecipeSelectionLocalDataSource
+          .createGenerateRecipeSchedule(recipeSchedules);
+
+      return Right(response);
+    } on ServerException {
+      return Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> fetchCategoriesLength() async {
+    try {
+      final categoriesLength =
+          await smartRecipeSelectionLocalDataSource.fetchCategoriesLength();
+
+      return Right(categoriesLength);
     } on ServerException {
       return Left(CacheFailure());
     }

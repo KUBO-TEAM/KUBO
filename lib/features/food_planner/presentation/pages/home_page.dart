@@ -6,12 +6,13 @@ import 'package:kubo/core/helpers/notification_reminder.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/user/user_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/bottom_navigation.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/daily_plan.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/event_plan.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/today_schedule.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/tomorrow_schedule.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/your_status.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/message_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/planner_buttons.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/weekly_report.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/kubo_updates.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -84,25 +85,19 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 5.0,
             ),
-            WeeklyReport(),
+            KuboUpdates(),
             SizedBox(
               height: 16.0,
             ),
-            EventPlan(
-              title: 'Today',
-              date: 'December 28, 2021',
-            ),
+            YourStatus(),
             SizedBox(
               height: 16.0,
             ),
-            EventPlan(
-              title: 'Tomorrow',
-              date: 'December 29, 2021',
-            ),
+            TodaySchedule(),
             SizedBox(
               height: 16.0,
             ),
-            DailyPlan(),
+            TomorrowSchedule(),
           ],
         ),
       ),

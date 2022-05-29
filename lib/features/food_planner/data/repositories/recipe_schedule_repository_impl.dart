@@ -12,16 +12,16 @@ import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedul
 
 @LazySingleton(as: RecipeScheduleRepository)
 class RecipeScheduleRepositoryImpl implements RecipeScheduleRepository {
-  final RecipeScheduleLocalDataSource recipeLocalDataSource;
+  final RecipeScheduleLocalDataSource recipeScheduleLocalDataSource;
 
-  RecipeScheduleRepositoryImpl({required this.recipeLocalDataSource});
+  RecipeScheduleRepositoryImpl({required this.recipeScheduleLocalDataSource});
 
   @override
   Future<Either<Failure, CreateRecipeScheduleResponse>> createRecipeSchedule(
     recipeSchedule,
   ) async {
     try {
-      final response = await recipeLocalDataSource.createRecipeSchedule(
+      final response = await recipeScheduleLocalDataSource.createRecipeSchedule(
         recipeSchedule,
       );
 
@@ -35,7 +35,7 @@ class RecipeScheduleRepositoryImpl implements RecipeScheduleRepository {
   Future<Either<Failure, List<RecipeSchedule>>> fetchRecipeSchedules() async {
     try {
       final recipeSchedules =
-          await recipeLocalDataSource.fetchRecipeSchedules();
+          await recipeScheduleLocalDataSource.fetchRecipeSchedules();
 
       return Right(recipeSchedules);
     } on CacheException {
@@ -47,10 +47,46 @@ class RecipeScheduleRepositoryImpl implements RecipeScheduleRepository {
   Future<Either<Failure, LinkedHashMap<DateTime, List<RecipeSchedule>>>>
       fetchRecipeScheduleLinkedHashmap() async {
     try {
-      final schedules =
-          await recipeLocalDataSource.fetchRecipeScheduleLinkedHashmap();
+      final schedules = await recipeScheduleLocalDataSource
+          .fetchRecipeScheduleLinkedHashmap();
 
       return Right(schedules);
+    } on CacheException {
+      return Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, RecipeSchedule?>> fetchTodayRecipeSchedule() async {
+    try {
+      final schedule =
+          await recipeScheduleLocalDataSource.fetchTodayRecipeSchedule();
+
+      return Right(schedule);
+    } on CacheException {
+      return Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, RecipeSchedule?>> fetchTomorrowRecipeSchedule() async {
+    try {
+      final schedule =
+          await recipeScheduleLocalDataSource.fetchTomorrowRecipeSchedule();
+
+      return Right(schedule);
+    } on CacheException {
+      return Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> fetchRecipeSchedulesLength() async {
+    try {
+      final recipeSchedulesLength =
+          await recipeScheduleLocalDataSource.fetchRecipeSchedulesLength();
+
+      return Right(recipeSchedulesLength);
     } on CacheException {
       return Left(CacheFailure());
     }

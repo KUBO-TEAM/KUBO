@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/list_costants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/entities/user.dart';
@@ -28,7 +29,7 @@ class _CreateRecipeScheduleDialogState
     extends State<CreateRecipeScheduleDialog> {
   TimeOfDay? selectedStartTime;
   TimeOfDay? selectedEndTime;
-  Color? selectedColor;
+  Color? selectedColor = kGreenPrimary;
   String? selectedDay;
 
   void saveSchedule() {
@@ -129,7 +130,7 @@ class _CreateRecipeScheduleDialogState
                 horizontal: 8.0,
               ),
               child: ColorSelector(
-                // currentColor: colorPicked,
+                initialColor: selectedColor,
                 onColorPicked: (Color? value) {
                   selectedColor = value;
                 },

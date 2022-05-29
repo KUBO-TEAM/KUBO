@@ -12,10 +12,11 @@ class SmartRecipeListTile extends StatefulWidget {
   const SmartRecipeListTile({
     Key? key,
     required this.recipeSchedule,
+    required this.onChange,
   }) : super(key: key);
 
   final RecipeSchedule recipeSchedule;
-
+  final ValueChanged<RecipeSchedule> onChange;
   @override
   State<SmartRecipeListTile> createState() => _SmartRecipeListTileState();
 }
@@ -41,7 +42,35 @@ class _SmartRecipeListTileState extends State<SmartRecipeListTile> {
         widget.recipeSchedule.end,
       );
       selectedDay = Utils.findDay(widget.recipeSchedule.start);
+
+      selectedColor = widget.recipeSchedule.color;
     });
+  }
+
+  void updateRecipeSchedule() {
+    final day = selectedDay;
+    final start = selectedStartTime;
+    final end = selectedEndTime;
+    final color = selectedColor;
+
+    if (day != null && start != null && end != null && color != null) {
+      final convertedStartAndEnd = Utils.convertStartAndEndTimeOfDay(
+        day: day,
+        startTimeOfDay: start,
+        endTimeOfDay: end,
+      );
+
+      final recipeSchedule = RecipeSchedule(
+        recipe: widget.recipeSchedule.recipe,
+        start: convertedStartAndEnd.start,
+        end: convertedStartAndEnd.end,
+        color: color,
+        isAllDay: widget.recipeSchedule.isAllDay,
+        createdAt: widget.recipeSchedule.createdAt,
+      );
+
+      widget.onChange(recipeSchedule);
+    }
   }
 
   @override
@@ -61,6 +90,7 @@ class _SmartRecipeListTileState extends State<SmartRecipeListTile> {
               leadingIcon: Icons.calendar_today,
               onSelectedDay: (String? value) {
                 selectedDay = value;
+                updateRecipeSchedule();
               },
             ),
             TimeSelector(
@@ -68,6 +98,7 @@ class _SmartRecipeListTileState extends State<SmartRecipeListTile> {
               initialTimeOfDay: selectedStartTime,
               onTimePicked: (TimeOfDay? value) {
                 selectedStartTime = value;
+                updateRecipeSchedule();
               },
             ),
             TimeSelector(
@@ -75,12 +106,14 @@ class _SmartRecipeListTileState extends State<SmartRecipeListTile> {
               initialTimeOfDay: selectedEndTime,
               onTimePicked: (TimeOfDay? value) {
                 selectedEndTime = value;
+                updateRecipeSchedule();
               },
             ),
             ColorSelector(
-              // currentColor: colorPicked,
+              initialColor: selectedColor,
               onColorPicked: (Color? value) {
                 selectedColor = value;
+                updateRecipeSchedule();
               },
             ),
             const SizedBox(

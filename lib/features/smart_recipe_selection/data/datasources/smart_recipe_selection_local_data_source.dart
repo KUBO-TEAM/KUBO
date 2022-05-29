@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/helpers/utils.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/predicted_image.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/usecases/create_category.dart';
+import 'package:kubo/features/smart_recipe_selection/domain/usecases/create_generate_recipe_schedules.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/usecases/create_predicted_image.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/usecases/delete_predicted_images.dart';
 
@@ -26,7 +28,14 @@ abstract class SmartRecipeSelectionLocalDataSource {
   Future<List<PredictedImage>> deleteExpiredPredictedImages();
 
   Future<DeletePredictedImageResponse> deletePredictedImages(
-      List<PredictedImage> predictedImages);
+    List<PredictedImage> predictedImages,
+  );
+
+  Future<CreateGenerateRecipeSchedulesResponse> createGenerateRecipeSchedule(
+    List<RecipeSchedule> recipeSchedules,
+  );
+
+  Future<int> fetchCategoriesLength();
 }
 
 @LazySingleton(as: SmartRecipeSelectionLocalDataSource)
@@ -34,10 +43,12 @@ class SmartRecipeSelectionLocalDataSourceImpl
     implements SmartRecipeSelectionLocalDataSource {
   final Box<Category> categoryBox;
   final Box<PredictedImage> predictedImageBox;
+  final Box<RecipeSchedule> recipeScheduleBox;
 
   SmartRecipeSelectionLocalDataSourceImpl({
     required this.categoryBox,
     required this.predictedImageBox,
+    required this.recipeScheduleBox,
   });
 
   @override
@@ -147,5 +158,21 @@ class SmartRecipeSelectionLocalDataSourceImpl
   @override
   Future<List<Category>> fetchCategories() async {
     return categoryBox.values.toList();
+  }
+
+  @override
+  Future<CreateGenerateRecipeSchedulesResponse> createGenerateRecipeSchedule(
+      List<RecipeSchedule> recipeSchedules) async {
+    for (var recipeSchedule in recipeSchedules) {
+      recipeScheduleBox.add(recipeSchedule);
+    }
+    return const CreateGenerateRecipeSchedulesResponse(
+      message: 'Successfully save schedules!',
+    );
+  }
+
+  @override
+  Future<int> fetchCategoriesLength() async {
+    return categoryBox.values.length;
   }
 }

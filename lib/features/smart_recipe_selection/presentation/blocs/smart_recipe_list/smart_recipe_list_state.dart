@@ -6,16 +6,22 @@ abstract class SmartRecipeListState {
 
 class SmartRecipeListInitial extends SmartRecipeListState {}
 
-class SmartRecipeListInProgress extends SmartRecipeListState {}
+class SmartRecipeListFetchInProgress extends SmartRecipeListState {}
 
-class SmartRecipeListSuccess extends SmartRecipeListState {
+class SmartRecipeListFetchSuccess extends SmartRecipeListState {
   final List<RecipeSchedule> recipeSchedules;
 
-  const SmartRecipeListSuccess({required this.recipeSchedules});
+  const SmartRecipeListFetchSuccess({required this.recipeSchedules});
 }
 
-class SmartRecipeListFailure extends SmartRecipeListState {
+class SmartRecipeListFetchFailure extends SmartRecipeListState {
   final String message;
 
-  const SmartRecipeListFailure({required this.message});
+  const SmartRecipeListFetchFailure({required this.message});
+}
+
+class SmartRecipeListCreateSuccess extends SmartRecipeListState {
+  final String message;
+
+  const SmartRecipeListCreateSuccess({required this.message});
 }
