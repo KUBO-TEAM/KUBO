@@ -15,6 +15,7 @@ abstract class RecipesRemoteDataSource {
   Future<List<RecipeModel>> fetchRecipes();
   Future<List<RecipeModel>> fetchFilteredRecipes(List<Category> categories);
   Future<RecipeModel> fetchRecipe(String recipeId);
+  Future<RecipeModel> fetchLatestRecipe();
 }
 
 @LazySingleton(as: RecipesRemoteDataSource)
@@ -95,6 +96,30 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
         Uri.parse('$kKuboUrl/api/recipes/$recipeId'),
         headers: {'Content-Type': 'application/json'},
       );
+      if (response.statusCode == 200) {
+        var body = json.decode(response.body);
+
+        var data = body['data'];
+
+        RecipeModel recipe = RecipeModel.fromJson(data);
+
+        return recipe;
+      } else {
+        throw ServerException();
+      }
+    } on Exception {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<RecipeModel> fetchLatestRecipe() async {
+    try {
+      final response = await client.get(
+        Uri.parse('$kKuboUrl/api/recipes/get-latest-recipe'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
 

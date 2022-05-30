@@ -78,6 +78,8 @@ class _TomorrowScheduleState extends State<TomorrowSchedule> {
                     height: 5.0,
                   ),
                   EventCard(
+                    eventTitle: 'Pending schedule',
+                    eventIcon: Icons.pending_actions,
                     recipeSchedule: recipeSchedule,
                   )
                 ],

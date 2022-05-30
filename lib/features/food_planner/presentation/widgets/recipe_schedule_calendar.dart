@@ -1,3 +1,4 @@
+import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -70,24 +71,12 @@ class RecipeScheduleCalendar extends StatelessWidget {
         context,
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: const Color.fromARGB(255, 141, 87, 0),
-          content: Row(
-            children: const [
-              Icon(
-                Icons.priority_high,
-                color: Colors.white,
-              ),
-              SizedBox(
-                width: 10.0,
-              ),
-              Text(
-                "You can't schedule on that cell",
-                style: TextStyle(color: Colors.white),
-              ),
-            ],
-          ),
+      ArtSweetAlert.show(
+        context: context,
+        artDialogArgs: ArtDialogArgs(
+          type: ArtSweetAlertType.danger,
+          title: "Oops...",
+          text: "You can't schedule on that cell.",
         ),
       );
     }

@@ -10,8 +10,8 @@ import 'package:http/http.dart' as _i10;
 import 'package:injectable/injectable.dart' as _i2;
 
 import 'core/helpers/date_converter.dart' as _i11;
-import 'core/hive/box_module.dart' as _i69;
-import 'core/hive/remote_module.dart' as _i70;
+import 'core/hive/box_module.dart' as _i71;
+import 'core/hive/remote_module.dart' as _i72;
 import 'features/food_planner/data/datasources/recipe_local_data_source.dart'
     as _i13;
 import 'features/food_planner/data/datasources/recipe_schedule_local_data_source.dart'
@@ -47,14 +47,15 @@ import 'features/food_planner/domain/usecases/fetch_cached_recipes.dart'
     as _i63;
 import 'features/food_planner/domain/usecases/fetch_filtered_recipes.dart'
     as _i64;
-import 'features/food_planner/domain/usecases/fetch_recipe.dart' as _i65;
+import 'features/food_planner/domain/usecases/fetch_latest_recipe.dart' as _i65;
+import 'features/food_planner/domain/usecases/fetch_recipe.dart' as _i66;
 import 'features/food_planner/domain/usecases/fetch_recipe_schedule_linked_hash_map.dart'
     as _i37;
 import 'features/food_planner/domain/usecases/fetch_recipe_schedules.dart'
     as _i38;
 import 'features/food_planner/domain/usecases/fetch_recipe_schedules_length.dart'
     as _i39;
-import 'features/food_planner/domain/usecases/fetch_recipes.dart' as _i66;
+import 'features/food_planner/domain/usecases/fetch_recipes.dart' as _i67;
 import 'features/food_planner/domain/usecases/fetch_reminders.dart' as _i40;
 import 'features/food_planner/domain/usecases/fetch_today_recipe_schedule.dart'
     as _i41;
@@ -62,17 +63,19 @@ import 'features/food_planner/domain/usecases/fetch_tomorrow_recipe_schedule.dar
     as _i42;
 import 'features/food_planner/domain/usecases/fetch_user.dart' as _i43;
 import 'features/food_planner/domain/usecases/initialize_user.dart' as _i45;
-import 'features/food_planner/presentation/blocs/menu/menu_bloc.dart' as _i67;
+import 'features/food_planner/presentation/blocs/menu/menu_bloc.dart' as _i68;
 import 'features/food_planner/presentation/blocs/menu_history/menu_history_bloc.dart'
     as _i46;
 import 'features/food_planner/presentation/blocs/recipe/recipe_bloc.dart'
-    as _i68;
+    as _i69;
 import 'features/food_planner/presentation/blocs/recipe_info/recipe_info_create_recipe_schedule_bloc.dart'
     as _i49;
 import 'features/food_planner/presentation/blocs/recipe_info/recipe_info_fetch_recipe_schedules_bloc.dart'
     as _i50;
 import 'features/food_planner/presentation/blocs/recipe_selection_dialog/recipe_selection_dialog_bloc.dart'
     as _i53;
+import 'features/food_planner/presentation/blocs/recipe_updates/recipe_updates_bloc.dart'
+    as _i70;
 import 'features/food_planner/presentation/blocs/reminder/reminder_bloc.dart'
     as _i54;
 import 'features/food_planner/presentation/blocs/today_schedule/today_schedule_bloc.dart'
@@ -268,21 +271,25 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       () => _i63.FetchCachedRecipes(get<_i51.RecipeRepository>()));
   gh.lazySingleton<_i64.FetchFilteredRecipes>(
       () => _i64.FetchFilteredRecipes(get<_i51.RecipeRepository>()));
-  gh.lazySingleton<_i65.FetchRecipe>(
-      () => _i65.FetchRecipe(get<_i51.RecipeRepository>()));
-  gh.lazySingleton<_i66.FetchRecipes>(
-      () => _i66.FetchRecipes(get<_i51.RecipeRepository>()));
-  gh.factory<_i67.MenuBloc>(() => _i67.MenuBloc(
+  gh.lazySingleton<_i65.FetchLatestRecipe>(
+      () => _i65.FetchLatestRecipe(get<_i51.RecipeRepository>()));
+  gh.lazySingleton<_i66.FetchRecipe>(
+      () => _i66.FetchRecipe(get<_i51.RecipeRepository>()));
+  gh.lazySingleton<_i67.FetchRecipes>(
+      () => _i67.FetchRecipes(get<_i51.RecipeRepository>()));
+  gh.factory<_i68.MenuBloc>(() => _i68.MenuBloc(
       fetchRecipeSchedules: get<_i38.FetchRecipeSchedules>(),
-      fetchRecipe: get<_i65.FetchRecipe>()));
-  gh.factory<_i68.RecipeBloc>(() => _i68.RecipeBloc(
-      fetchRecipes: get<_i66.FetchRecipes>(),
+      fetchRecipe: get<_i66.FetchRecipe>()));
+  gh.factory<_i69.RecipeBloc>(() => _i69.RecipeBloc(
+      fetchRecipes: get<_i67.FetchRecipes>(),
       fetchFilteredRecipes: get<_i64.FetchFilteredRecipes>(),
       createCacheRecipe: get<_i62.CreateCacheRecipe>(),
       fetchCachedRecipes: get<_i63.FetchCachedRecipes>()));
+  gh.factory<_i70.RecipeUpdatesBloc>(() =>
+      _i70.RecipeUpdatesBloc(fetchLatestRecipe: get<_i65.FetchLatestRecipe>()));
   return get;
 }
 
-class _$BoxModule extends _i69.BoxModule {}
+class _$BoxModule extends _i71.BoxModule {}
 
-class _$RemoteModule extends _i70.RemoteModule {}
+class _$RemoteModule extends _i72.RemoteModule {}

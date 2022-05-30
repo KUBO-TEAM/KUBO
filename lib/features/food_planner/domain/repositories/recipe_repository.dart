@@ -11,6 +11,7 @@ abstract class RecipeRepository {
   );
 
   Future<Either<Failure, Recipe>> fetchRecipe(String recipeId);
+  Future<Either<Failure, Recipe>> fetchLatestRecipe();
 
   Future<Either<Failure, CreateCacheRecipeResponse>> createCacheRecipe(
     CreateCacheRecipeParams recipes,

@@ -16,15 +16,21 @@ class EmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(
+          height: 40,
+        ),
         Image.asset(
           assetImageUrl,
-          width: imageSize,
+          width: imageSize ?? 280,
+        ),
+        const SizedBox(
+          height: 18,
         ),
         Text(
           message,
           style: TextStyle(
             color: Colors.grey.shade700,
-            fontSize: 20,
+            fontSize: 18,
             fontFamily: 'Montserrat Bold',
           ),
         ),

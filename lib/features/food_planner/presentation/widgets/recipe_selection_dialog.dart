@@ -64,7 +64,7 @@ class _RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
                     if (state is RecipeSelectionDialogSuccess) {
                       if (state.categories.isEmpty) {
                         return const EmptyState(
-                          message: 'No categories found',
+                          message: 'No vegetables found',
                           assetImageUrl: "assets/images/empty_2.png",
                           imageSize: 200,
                         );

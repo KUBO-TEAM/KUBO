@@ -6,13 +6,14 @@ import 'package:kubo/core/helpers/notification_reminder.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/user/user_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/bottom_navigation.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/recipe_updates.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/today_schedule.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/tomorrow_schedule.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/your_status.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/message_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/planner_buttons.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/kubo_updates.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/trained_veggies.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -85,7 +86,8 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 5.0,
             ),
-            KuboUpdates(),
+            TrainedVeggies(),
+            RecipeUpdates(),
             SizedBox(
               height: 16.0,
             ),

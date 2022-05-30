@@ -157,7 +157,7 @@ class RecipeScheduleLocalDataSourceImpl
       currentDate.year,
       currentDate.month,
       currentDate.day,
-      11,
+      23,
       59,
     );
 

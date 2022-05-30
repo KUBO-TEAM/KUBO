@@ -76,4 +76,15 @@ class RecipeRepositoryImpl implements RecipeRepository {
       return Left(CacheFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, Recipe>> fetchLatestRecipe() async {
+    try {
+      final recipe = await recipesRemoteDataSource.fetchLatestRecipe();
+
+      return Right(recipe);
+    } on ServerException {
+      return Left(CacheFailure());
+    }
+  }
 }

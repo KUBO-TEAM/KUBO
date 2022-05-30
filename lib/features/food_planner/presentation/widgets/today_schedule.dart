@@ -58,6 +58,8 @@ class _TodayScheduleState extends State<TodaySchedule> {
                   height: 5.0,
                 ),
                 EventCard(
+                  eventTitle: 'Pending schedule',
+                  eventIcon: Icons.pending_actions,
                   recipeSchedule: recipeSchedule,
                 )
               ],
