@@ -5,8 +5,6 @@ import 'package:kubo/core/constants/snackbar_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_create_recipe_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_fetch_recipe_schedules_bloc.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/today_schedule/today_schedule_bloc.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/tomorrow_schedule/tomorrow_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/create_recipe_schedule_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/empty_state.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/ending_timeline.dart';

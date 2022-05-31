@@ -20,6 +20,7 @@ class RecipeScheduleCalendar extends StatelessWidget {
       {Key? key,
       required this.calendarView,
       required this.recipeSchedules,
+      this.allowDragAndDrop = false,
       this.minDate,
       this.maxDate})
       : super(key: key);
@@ -28,6 +29,7 @@ class RecipeScheduleCalendar extends StatelessWidget {
   final List<RecipeSchedule> recipeSchedules;
   final DateTime? minDate;
   final DateTime? maxDate;
+  final bool allowDragAndDrop;
 
   void _calendarTapped({
     required CalendarTapDetails details,
@@ -133,15 +135,18 @@ class RecipeScheduleCalendar extends StatelessWidget {
     return Stack(
       children: [
         SfCalendar(
-          allowDragAndDrop: true,
+          allowDragAndDrop: allowDragAndDrop,
           minDate: minDate,
           maxDate: maxDate,
           todayHighlightColor: kGreenPrimary,
-          dataSource: CalenderScheduleDataSource(recipeSchedules),
+          dataSource: CalenderScheduleDataSource(
+            recipeSchedules: recipeSchedules,
+            context: context,
+          ),
           timeSlotViewSettings: kCalendarTimeSlotViewSettings,
           headerStyle: kCalendarHeaderStyle,
           viewHeaderStyle: kCalendarViewHeaderStyle,
-          view: CalendarView.week,
+          view: calendarView,
           weekNumberStyle: kCalendarWeekNumberStyle,
           firstDayOfWeek: 1,
           onTap: (CalendarTapDetails details) {

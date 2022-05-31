@@ -77,7 +77,10 @@ class GeneratedRecipeScheduleCalendar extends StatelessWidget {
       children: [
         SfCalendar(
           todayHighlightColor: kGreenPrimary,
-          dataSource: CalenderScheduleDataSource(recipeSchedules),
+          dataSource: CalenderScheduleDataSource(
+            recipeSchedules: recipeSchedules,
+            context: context,
+          ),
           timeSlotViewSettings: kCalendarTimeSlotViewSettings,
           headerStyle: kCalendarHeaderStyle,
           viewHeaderStyle: kCalendarViewHeaderStyle,

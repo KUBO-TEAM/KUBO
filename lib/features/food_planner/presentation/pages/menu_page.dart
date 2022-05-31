@@ -102,6 +102,7 @@ class _MenuPageState extends State<MenuPage> {
                 maxDate: maxDate,
                 calendarView: CalendarView.week,
                 recipeSchedules: recipeSchedules,
+                allowDragAndDrop: true,
               );
             },
           ),

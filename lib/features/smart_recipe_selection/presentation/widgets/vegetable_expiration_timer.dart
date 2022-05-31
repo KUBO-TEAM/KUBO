@@ -18,7 +18,6 @@ class VegetableExpirationTimer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(kGlobalVegetablesExpirationDurationDate);
     return CountdownTimer(
       endTime: predictedImage.predictedAt
           .add(kGlobalVegetablesExpirationDurationDate)

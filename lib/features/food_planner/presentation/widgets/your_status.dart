@@ -1,10 +1,8 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/string_constants.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/your_status/your_status_bloc.dart';
-import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/icon_title.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/message_dialog.dart';
 import 'package:kubo/features/smart_recipe_selection/presentation/blocs/captured_page/save_scanned_ingredients_bloc.dart';
