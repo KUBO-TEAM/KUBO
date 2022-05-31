@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kubo/core/constants/list_costants.dart';
+import 'package:kubo/core/helpers/utils.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/menu/menu_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_create_recipe_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_schedule_calendar.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -29,10 +33,74 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SafeArea(
-        child: RecipeScheduleCalendar(
-          calendarView: CalendarView.week,
+        child: BlocListener<RecipeInfoCreateRecipeScheduleBloc,
+            RecipeInfoCreateRecipeScheduleState>(
+          listener: (context, state) {
+            if (state is RecipeInfoCreateRecipeScheduleSuccess) {
+              BlocProvider.of<MenuBloc>(context).add(
+                MenuRecipeScheduleFetched(),
+              );
+            }
+          },
+          child: BlocBuilder<MenuBloc, MenuState>(
+            builder: (context, state) {
+              List<RecipeSchedule> recipeSchedules = [];
+
+              if (state is MenuRecipeScheduleFetchInProgress) {
+                final recipeScheuleCache = state.recipeSchedules;
+
+                if (recipeScheuleCache != null) {
+                  recipeSchedules = recipeScheuleCache;
+                }
+              }
+
+              if (state is MenuRecipeScheduleFetchSuccess) {
+                recipeSchedules = state.recipeSchedules;
+              }
+
+              if (state is MenuRecipeScheduleUpdateFetchFailure) {
+                recipeSchedules = state.recipeSchedules;
+              }
+
+              if (state is MenuRecipeScheduleUpdateFetchSuccess) {
+                recipeSchedules = state.recipeSchedules;
+              }
+              final today = DateTime.now();
+
+              DateTime minDate = DateTime(
+                today.year,
+                today.month,
+                today.day,
+                0,
+                0,
+              );
+
+              DateTime maxDate = DateTime(
+                today.year,
+                today.month,
+                today.day + 7,
+                23,
+                59,
+              );
+
+              String dayToday = Utils.findDay(today);
+
+              int numDayToday = kDayList.indexOf(dayToday);
+
+              if (numDayToday > 0) {
+                minDate = minDate.add(Duration(days: -numDayToday));
+              }
+
+              return RecipeScheduleCalendar(
+                minDate: minDate,
+                maxDate: maxDate,
+                calendarView: CalendarView.week,
+                recipeSchedules: recipeSchedules,
+              );
+            },
+          ),
         ),
       ),
     );

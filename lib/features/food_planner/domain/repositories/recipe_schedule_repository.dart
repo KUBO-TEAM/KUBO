@@ -12,6 +12,8 @@ abstract class RecipeScheduleRepository {
 
   Future<Either<Failure, List<RecipeSchedule>>> fetchRecipeSchedules();
 
+  Future<Either<Failure, List<RecipeSchedule>>> fetchUpcomingRecipeSchedules();
+
   Future<Either<Failure, LinkedHashMap<DateTime, List<RecipeSchedule>>>>
       fetchRecipeScheduleLinkedHashmap();
 

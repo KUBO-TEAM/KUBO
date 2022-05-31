@@ -81,7 +81,7 @@ class MenuHistoryPage extends StatefulWidget {
 class _MenuHistoryPageState extends State<MenuHistoryPage> {
   late final ValueNotifier<List<RecipeSchedule>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.twoWeeks;
-  DateTime _focusedDay = DateTime.now();
+  DateTime _focusedDay = DateTime.now().add(const Duration(days: -1));
   DateTime? _selectedDay;
 
   @override
@@ -128,8 +128,9 @@ class _MenuHistoryPageState extends State<MenuHistoryPage> {
                   Container(
                     decoration: _calendarContainerRadius,
                     child: TableCalendar<RecipeSchedule>(
+                      currentDay: DateTime.now().add(const Duration(days: -1)),
                       firstDay: kFirstDay,
-                      lastDay: kLastDay,
+                      lastDay: DateTime.now().add(const Duration(days: -1)),
                       focusedDay: _focusedDay,
                       selectedDayPredicate: (day) =>
                           isSameDay(_selectedDay, day),

@@ -11,6 +11,7 @@ import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/entities/user.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/agenda/agenda_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_updates/recipe_updates_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/today_schedule/today_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/tomorrow_schedule/tomorrow_schedule_bloc.dart';
@@ -70,6 +71,7 @@ class Kubo extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => getIt<MenuBloc>()),
+        BlocProvider(create: (_) => getIt<AgendaBloc>()),
         BlocProvider(create: (_) => getIt<MenuHistoryBloc>()),
         BlocProvider(create: (_) => getIt<RecipeBloc>()),
         BlocProvider(

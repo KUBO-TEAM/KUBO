@@ -4,37 +4,28 @@ import 'package:injectable/injectable.dart';
 import 'package:kubo/core/usecases/usecase.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/usecases/fetch_recipe.dart';
-import 'package:kubo/features/food_planner/domain/usecases/fetch_upcoming_recipe_schedules.dart';
+import 'package:kubo/features/food_planner/domain/usecases/fetch_recipe_schedules.dart';
 
-part 'menu_event.dart';
-part 'menu_state.dart';
+part 'agenda_event.dart';
+part 'agenda_state.dart';
 
 @injectable
-class MenuBloc extends Bloc<MenuEvent, MenuState> {
-  final FetchUpcomingRecipeSchedules fetchUpcomingRecipeSchedules;
+class AgendaBloc extends Bloc<AgendaEvent, AgendaState> {
+  final FetchRecipeSchedules fetchRecipeSchedules;
   final FetchRecipe fetchRecipe;
 
-  MenuBloc({
-    required this.fetchUpcomingRecipeSchedules,
+  AgendaBloc({
+    required this.fetchRecipeSchedules,
     required this.fetchRecipe,
-  }) : super(MenuInitial()) {
-    on<MenuEvent>((event, emit) async {
-      if (event is MenuRecipeScheduleFetched) {
-        emit(const MenuRecipeScheduleFetchInProgress());
+  }) : super(AgendaInitial()) {
+    on<AgendaEvent>((event, emit) async {
+      if (event is AgendaRecipeSchedulesFetched) {
+        final failureOrRecipeSchedules = await fetchRecipeSchedules(NoParams());
 
-        final failureOrRecipeFetched =
-            await fetchUpcomingRecipeSchedules(NoParams());
-
-        await failureOrRecipeFetched.fold((failure) {
-          emit(
-            const MenuRecipeScheduleFetchFailure(
-              message: 'Recipe fetched fails',
-            ),
-          );
+        await failureOrRecipeSchedules.fold((failure) {
+          emit(const AgendaFetchFailure(message: 'Fails to fetch agenda!'));
         }, (recipeSchedules) async {
-          emit(
-            MenuRecipeScheduleFetchSuccess(recipeSchedules: recipeSchedules),
-          );
+          emit(AgendaFetchSuccess(recipeSchedules: recipeSchedules));
 
           bool isSomethingFail = false;
 
@@ -55,14 +46,14 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
           }
           if (isSomethingFail) {
             emit(
-              MenuRecipeScheduleUpdateFetchFailure(
+              AgendaUpdateFetchFailure(
                 message: 'No internet connection',
                 recipeSchedules: recipeSchedules,
               ),
             );
           } else {
             emit(
-              MenuRecipeScheduleUpdateFetchSuccess(
+              AgendaUpdateFetchSuccess(
                 recipeSchedules: recipeSchedules,
               ),
             );

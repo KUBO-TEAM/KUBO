@@ -21,6 +21,7 @@ abstract class RecipeScheduleLocalDataSource {
   /// Throws [CacheException] if no cached data is present.
   ///
   Future<List<RecipeSchedule>> fetchRecipeSchedules();
+  Future<List<RecipeSchedule>> fetchUpcomingRecipeSchedules();
 
   /// Fetch the cached linked list of  [RecipeSchedule]
   ///
@@ -62,6 +63,20 @@ class RecipeScheduleLocalDataSourceImpl
   }
 
   @override
+  Future<List<RecipeSchedule>> fetchUpcomingRecipeSchedules() async {
+    final recipeSchedules = recipeScheduleBox.values.toList();
+
+    final today = DateTime.now();
+    final yesterday = DateTime(today.year, today.month, today.day - 1, 23, 59);
+
+    final filteredRecipeSchedule = recipeSchedules
+        .where((element) => element.start.isAfter(yesterday))
+        .toList();
+
+    return filteredRecipeSchedule;
+  }
+
+  @override
   Future<List<RecipeSchedule>> fetchRecipeSchedules() async {
     return recipeScheduleBox.values.toList();
   }
@@ -80,6 +95,9 @@ class RecipeScheduleLocalDataSourceImpl
 
     final Map<DateTime, List<RecipeSchedule>> scheduleMap = {};
 
+    final today = DateTime.now();
+    final yesterday = DateTime(today.year, today.month, today.day - 1, 23, 59);
+
     for (var recipeSchedule in recipeScheduleBox.values) {
       final key = DateTime(
         recipeSchedule.start.year,
@@ -87,15 +105,17 @@ class RecipeScheduleLocalDataSourceImpl
         recipeSchedule.start.day,
       );
 
-      if (scheduleMap[key] == null) {
-        scheduleMap[key] = [recipeSchedule];
-      } else {
-        final scheduleMapList = scheduleMap[key];
+      if (key.isBefore(yesterday)) {
+        if (scheduleMap[key] == null) {
+          scheduleMap[key] = [recipeSchedule];
+        } else {
+          final scheduleMapList = scheduleMap[key];
 
-        if (scheduleMapList != null) {
-          scheduleMapList.add(recipeSchedule);
+          if (scheduleMapList != null) {
+            scheduleMapList.add(recipeSchedule);
 
-          scheduleMap[key] = scheduleMapList;
+            scheduleMap[key] = scheduleMapList;
+          }
         }
       }
     }
