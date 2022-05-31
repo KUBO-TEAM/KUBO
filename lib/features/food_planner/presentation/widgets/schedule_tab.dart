@@ -58,14 +58,6 @@ class _ScheduleTabState extends State<ScheduleTab>
           BlocProvider.of<RecipeInfoFetchRecipeSchedulesBloc>(context).add(
             RecipeInfoFetchRecipeSchedulesFetched(recipeId: widget.recipe.id),
           );
-
-          BlocProvider.of<TomorrowScheduleBloc>(context).add(
-            TomorrowScheduleFetched(),
-          );
-
-          BlocProvider.of<TodayScheduleBloc>(context).add(
-            TodayScheduleFetched(),
-          );
         }
       },
       child: Container(

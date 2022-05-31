@@ -80,7 +80,7 @@ class _MenuPageState extends State<MenuPage> {
               DateTime maxDate = DateTime(
                 today.year,
                 today.month,
-                today.day + 7,
+                today.day + 6,
                 23,
                 59,
               );
@@ -91,6 +91,10 @@ class _MenuPageState extends State<MenuPage> {
 
               if (numDayToday > 0) {
                 minDate = minDate.add(Duration(days: -numDayToday));
+              }
+
+              if (numDayToday < 6 && numDayToday != 0) {
+                maxDate = maxDate.add(Duration(days: 7 - numDayToday));
               }
 
               return RecipeScheduleCalendar(

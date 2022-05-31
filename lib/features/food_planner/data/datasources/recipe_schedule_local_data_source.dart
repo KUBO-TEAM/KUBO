@@ -201,6 +201,8 @@ class RecipeScheduleLocalDataSourceImpl
 
   @override
   Future<int> fetchRecipeSchedulesLength() async {
-    return recipeScheduleBox.values.length;
+    return recipeScheduleBox.values
+        .where((element) => element.start.isAfter(DateTime.now()))
+        .length;
   }
 }

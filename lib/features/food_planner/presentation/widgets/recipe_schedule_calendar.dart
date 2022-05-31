@@ -66,7 +66,9 @@ class RecipeScheduleCalendar extends StatelessWidget {
     DateTime startedTime,
   ) {
     int daysBetween = Utils.daysBetween(DateTime.now(), startedTime);
-    if (daysBetween >= 0 && daysBetween < 7) {
+    if (daysBetween >= 0 &&
+        daysBetween < 7 &&
+        Utils.hoursBetween(DateTime.now(), startedTime) >= 0) {
       BlocProvider.of<CreateRecipeScheduleDialogBloc>(context).add(
         CreateRecipeScheduleDialogDateTimeSaved(startedTime: startedTime),
       );
@@ -131,6 +133,7 @@ class RecipeScheduleCalendar extends StatelessWidget {
     return Stack(
       children: [
         SfCalendar(
+          allowDragAndDrop: true,
           minDate: minDate,
           maxDate: maxDate,
           todayHighlightColor: kGreenPrimary,
@@ -138,7 +141,7 @@ class RecipeScheduleCalendar extends StatelessWidget {
           timeSlotViewSettings: kCalendarTimeSlotViewSettings,
           headerStyle: kCalendarHeaderStyle,
           viewHeaderStyle: kCalendarViewHeaderStyle,
-          view: calendarView,
+          view: CalendarView.week,
           weekNumberStyle: kCalendarWeekNumberStyle,
           firstDayOfWeek: 1,
           onTap: (CalendarTapDetails details) {

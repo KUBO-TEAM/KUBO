@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/today_schedule/today_schedule_bloc.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/tomorrow_schedule/tomorrow_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/generated_menu_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/home_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
@@ -106,13 +104,6 @@ class _SmartRecipeListPageState extends State<SmartRecipeListPage> {
             child: BlocConsumer<SmartRecipeListBloc, SmartRecipeListState>(
               listener: (context, state) async {
                 if (state is SmartRecipeListCreateSuccess) {
-                  BlocProvider.of<TomorrowScheduleBloc>(context).add(
-                    TomorrowScheduleFetched(),
-                  );
-
-                  BlocProvider.of<TodayScheduleBloc>(context).add(
-                    TodayScheduleFetched(),
-                  );
                   await ArtSweetAlert.show(
                     context: context,
                     artDialogArgs: ArtDialogArgs(

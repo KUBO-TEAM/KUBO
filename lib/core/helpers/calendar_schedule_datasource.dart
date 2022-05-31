@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class CalenderScheduleDataSource extends CalendarDataSource {
+class CalenderScheduleDataSource extends CalendarDataSource<RecipeSchedule> {
   CalenderScheduleDataSource(List<RecipeSchedule>? source) {
     appointments = source;
   }
@@ -30,5 +30,15 @@ class CalenderScheduleDataSource extends CalendarDataSource {
   @override
   Color getColor(int index) {
     return appointments![index].color;
+  }
+
+  @override
+  RecipeSchedule? convertAppointmentToObject(
+      RecipeSchedule customData, Appointment appointment) {
+    customData.start = appointment.startTime;
+    customData.end = appointment.endTime;
+
+    customData.save();
+    return customData;
   }
 }

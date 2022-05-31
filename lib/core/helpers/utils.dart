@@ -117,4 +117,8 @@ class Utils {
     to = DateTime(to.year, to.month, to.day);
     return (to.difference(from).inHours / 24).round();
   }
+
+  static int hoursBetween(DateTime from, DateTime to) {
+    return to.difference(from).inHours;
+  }
 }
