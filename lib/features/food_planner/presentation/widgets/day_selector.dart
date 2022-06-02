@@ -17,7 +17,7 @@ class DaySelector extends StatefulWidget {
 
   final List<String> list;
   final IconData leadingIcon;
-  final Function(String?) onSelectedDay;
+  final Function(String) onSelectedDay;
   final Widget? customLeadingWidget;
 
   @override
@@ -25,25 +25,12 @@ class DaySelector extends StatefulWidget {
 }
 
 class _DaySelectorState extends State<DaySelector> {
-  String selectedDay = 'Monday';
-
-  @override
-  void initState() {
-    super.initState();
-
-    final initialDay = widget.initialDay;
-
-    if (initialDay != null) {
-      setState(() {
-        selectedDay = initialDay;
-      });
-    }
-
-    widget.onSelectedDay(initialDay);
-  }
+  String? selectedDay;
 
   @override
   Widget build(BuildContext context) {
+    final selectedDayOrInitialDay = selectedDay ?? widget.initialDay;
+
     return PickerCard(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,9 +55,11 @@ class _DaySelectorState extends State<DaySelector> {
                   contentPadding: EdgeInsets.only(top: 15),
                 ),
                 onChanged: (selected) {
-                  widget.onSelectedDay(selected);
+                  if (selected != null) {
+                    widget.onSelectedDay(selected);
+                  }
                 },
-                selectedItem: selectedDay,
+                selectedItem: selectedDayOrInitialDay,
               ),
             ),
           ),

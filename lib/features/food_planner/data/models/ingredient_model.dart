@@ -3,7 +3,7 @@ import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
 class IngredientModel extends Ingredient {
   const IngredientModel({
     required String name,
-    required int quantity,
+    required double quantity,
   }) : super(
           name: name,
           quantity: quantity,
@@ -12,7 +12,7 @@ class IngredientModel extends Ingredient {
   factory IngredientModel.fromJson(Map<String, dynamic> json) {
     return IngredientModel(
       name: json['ingredient'],
-      quantity: (json['quantity'] as num).toInt(),
+      quantity: (json['quantity'] as num).toDouble(),
     );
   }
 }

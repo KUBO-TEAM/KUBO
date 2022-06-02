@@ -18,28 +18,16 @@ class ColorSelector extends StatefulWidget {
 }
 
 class _ColorSelectorState extends State<ColorSelector> {
-  Color? pickerColor;
-
-  @override
-  void initState() {
-    super.initState();
-
-    if (widget.initialColor != null) {
-      setState(() {
-        pickerColor = widget.initialColor;
-      });
-
-      widget.onColorPicked(pickerColor);
-    }
-  }
+  Color? selectedColor;
 
   void changeColor(Color color) {
-    setState(() => pickerColor = color);
+    setState(() => selectedColor = color);
     widget.onColorPicked(color);
   }
 
   @override
   Widget build(BuildContext context) {
+    final selectedColorOrInitialColor = selectedColor ?? widget.initialColor;
     return InkWell(
       onTap: () {
         showDialog(
@@ -48,7 +36,7 @@ class _ColorSelectorState extends State<ColorSelector> {
             title: const Text('Pick a color!'),
             content: SingleChildScrollView(
               child: HueRingPicker(
-                pickerColor: pickerColor ?? Colors.white,
+                pickerColor: selectedColorOrInitialColor ?? Colors.white,
                 onColorChanged: changeColor,
               ),
             ),
@@ -70,7 +58,7 @@ class _ColorSelectorState extends State<ColorSelector> {
             Container(
               height: 50.0,
               width: 16.0,
-              color: pickerColor,
+              color: selectedColorOrInitialColor,
             ),
             Expanded(
               child: Center(
@@ -91,7 +79,7 @@ class _ColorSelectorState extends State<ColorSelector> {
             Container(
               height: 50.0,
               width: 16.0,
-              color: pickerColor,
+              color: selectedColorOrInitialColor,
             ),
           ],
         ),

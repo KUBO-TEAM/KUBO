@@ -10,6 +10,7 @@ class RecipeScheduleModel extends RecipeSchedule {
     required Recipe recipe,
     required DateTime start,
     required DateTime end,
+    required int notificationStartId,
     Color? color,
     bool? isAllDay,
     required DateTime createdAt,
@@ -20,6 +21,7 @@ class RecipeScheduleModel extends RecipeSchedule {
           color: color,
           isAllDay: isAllDay,
           createdAt: createdAt,
+          notificationStartId: notificationStartId,
         );
 
   factory RecipeScheduleModel.fromJson(Map<String, dynamic> json) {
@@ -30,6 +32,7 @@ class RecipeScheduleModel extends RecipeSchedule {
       createdAt: DateTime.parse(json['createdAt']),
       color: json['color'] ?? kGreenPrimary,
       isAllDay: json['isAllDay'] ?? false,
+      notificationStartId: json['notificationStartId'],
     );
   }
 }

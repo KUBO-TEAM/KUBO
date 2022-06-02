@@ -12,6 +12,8 @@ import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/entities/user.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/agenda/agenda_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule_delete/recipe_schedule_delete_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule_edit/recipe_schedule_edit_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_updates/recipe_updates_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/today_schedule/today_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/tomorrow_schedule/tomorrow_schedule_bloc.dart';
@@ -91,6 +93,8 @@ class Kubo extends StatelessWidget {
         BlocProvider(create: (_) => getIt<TomorrowScheduleBloc>()),
         BlocProvider(create: (_) => getIt<YourStatusBloc>()),
         BlocProvider(create: (_) => getIt<RecipeUpdatesBloc>()),
+        BlocProvider(create: (_) => getIt<RecipeScheduleDeleteBloc>()),
+        BlocProvider(create: (_) => getIt<RecipeScheduleEditBloc>()),
         BlocProvider(create: (_) => CreateRecipeScheduleDialogBloc()),
       ],
       child: MaterialApp(

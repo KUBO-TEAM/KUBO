@@ -29,6 +29,8 @@ class MenuRecipeScheduleFetchFailure extends MenuState {
   });
 }
 
+// Update Recipe Schedule List
+
 class MenuRecipeScheduleUpdateFetchSuccess extends MenuState {
   final List<RecipeSchedule> recipeSchedules;
 

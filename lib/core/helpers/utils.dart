@@ -73,6 +73,34 @@ class Utils {
   static String findDay(DateTime startedTime) =>
       DateFormat('EEEE').format(startedTime);
 
+  static DateTime convertStartTimeOfDay({
+    required String day,
+    required TimeOfDay startTimeOfDay,
+  }) {
+    final today = DateTime.now();
+
+    final intDay = kDayList.indexOf(day);
+
+    final todayWeekday = DateFormat('EEEE').format(today);
+    final indexTodayWeekDay = kDayList.indexOf(todayWeekday);
+
+    int diffIntDayAndTodayWeekday = intDay - indexTodayWeekDay;
+
+    if (diffIntDayAndTodayWeekday < 0) {
+      diffIntDayAndTodayWeekday = 7 + diffIntDayAndTodayWeekday;
+    }
+
+    final scheduleDay = today.day + diffIntDayAndTodayWeekday;
+
+    return DateTime(
+      today.year,
+      today.month,
+      scheduleDay,
+      startTimeOfDay.hour,
+      startTimeOfDay.minute,
+    );
+  }
+
   static StartAndEndDateTime convertStartAndEndTimeOfDay({
     required String day,
     required TimeOfDay startTimeOfDay,

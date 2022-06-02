@@ -1,6 +1,8 @@
+import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/text_styles_constants.dart';
+import 'package:kubo/core/helpers/utils.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/picker_card.dart';
 
 class TimeSelector extends StatefulWidget {
@@ -8,12 +10,18 @@ class TimeSelector extends StatefulWidget {
     Key? key,
     required this.title,
     required this.onTimePicked,
+    required this.day,
     this.initialTimeOfDay,
+    this.start,
+    this.end,
   }) : super(key: key);
 
   final String title;
   final Function(TimeOfDay?) onTimePicked;
   final TimeOfDay? initialTimeOfDay;
+  final String? day;
+  final TimeOfDay? start;
+  final TimeOfDay? end;
 
   @override
   State<TimeSelector> createState() => _TimeSelectorState();
@@ -22,36 +30,77 @@ class TimeSelector extends StatefulWidget {
 class _TimeSelectorState extends State<TimeSelector> {
   TimeOfDay? selectedTime;
 
-  @override
-  void initState() {
-    super.initState();
-
-    if (widget.initialTimeOfDay != null) {
-      setState(() {
-        selectedTime = widget.initialTimeOfDay;
-      });
-
-      widget.onTimePicked(widget.initialTimeOfDay);
-    }
-  }
+  double _toTimeOfDayDouble(TimeOfDay myTime) =>
+      myTime.hour + myTime.minute / 60.0;
 
   @override
   Widget build(BuildContext context) {
+    final selectedTimeOrInitial = selectedTime ?? widget.initialTimeOfDay;
+
     return InkWell(
       onTap: () async {
-        final initialTimeOfDay = widget.initialTimeOfDay;
-
         TimeOfDay? timeSelected = await showTimePicker(
-          initialTime: initialTimeOfDay ?? TimeOfDay.now(),
+          initialTime: selectedTimeOrInitial ?? TimeOfDay.now(),
           context: context,
         );
 
-        if (timeSelected != null) {
-          setState(() {
-            selectedTime = timeSelected;
-          });
+        final day = widget.day;
+        final start = widget.start;
+        final end = widget.end;
 
-          widget.onTimePicked(timeSelected);
+        if (timeSelected != null && day != null) {
+          final startDateTime = Utils.convertStartTimeOfDay(
+            day: day,
+            startTimeOfDay: timeSelected,
+          );
+          if (start != null) {
+            if (_toTimeOfDayDouble(start) >= _toTimeOfDayDouble(timeSelected)) {
+              ArtSweetAlert.show(
+                context: context,
+                artDialogArgs: ArtDialogArgs(
+                  type: ArtSweetAlertType.danger,
+                  title: "Oops...",
+                  text:
+                      "You can't schedule where the end time is less than or equal to the start time",
+                ),
+              );
+
+              return;
+            }
+          }
+
+          if (end != null) {
+            if (_toTimeOfDayDouble(end) <= _toTimeOfDayDouble(timeSelected)) {
+              ArtSweetAlert.show(
+                context: context,
+                artDialogArgs: ArtDialogArgs(
+                  type: ArtSweetAlertType.danger,
+                  title: "Oops...",
+                  text:
+                      "You can't schedule where the start time is greater than or equal to the end time",
+                ),
+              );
+
+              return;
+            }
+          }
+
+          if (startDateTime.isBefore(DateTime.now())) {
+            ArtSweetAlert.show(
+              context: context,
+              artDialogArgs: ArtDialogArgs(
+                type: ArtSweetAlertType.danger,
+                title: "Oops...",
+                text: "You can't schedule in the past, and above 1 week",
+              ),
+            );
+          } else {
+            setState(() {
+              selectedTime = timeSelected;
+            });
+
+            widget.onTimePicked(timeSelected);
+          }
         }
       },
       child: PickerCard(
@@ -83,8 +132,8 @@ class _TimeSelectorState extends State<TimeSelector> {
                 vertical: 16.0,
               ),
               child: Text(
-                selectedTime != null
-                    ? selectedTime!.format(context)
+                selectedTimeOrInitial != null
+                    ? selectedTimeOrInitial.format(context)
                     : 'Pick a time',
                 style: kCaptionTextStyle.copyWith(
                   color: kDefaultGrey,

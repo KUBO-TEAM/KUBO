@@ -18,7 +18,7 @@ class IngredientAdapter extends TypeAdapter<Ingredient> {
     };
     return Ingredient(
       name: fields[1] as String,
-      quantity: fields[2] as int,
+      quantity: fields[2] as double,
     );
   }
 

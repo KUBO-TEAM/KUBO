@@ -32,6 +32,7 @@ class RecipeInfoCreateRecipeScheduleBloc extends Bloc<
         final end = event.end;
         final color = event.color;
         final day = event.day;
+        User user = event.user;
 
         if (recipe != null &&
             day != null &&
@@ -45,9 +46,11 @@ class RecipeInfoCreateRecipeScheduleBloc extends Bloc<
           );
 
           await convertDates.fold((failure) {
-            emit(const RecipeInfoCreateRecipeScheduleFailure(
-              message: 'Failed to create recipe schedule',
-            ));
+            emit(
+              RecipeInfoCreateRecipeScheduleFailure(
+                message: failure.message,
+              ),
+            );
           }, (convertedDates) async {
             final createRecipeParams = CreateRecipeParams(
               recipe: recipe,
@@ -55,6 +58,7 @@ class RecipeInfoCreateRecipeScheduleBloc extends Bloc<
               end: convertedDates.end,
               color: color,
               isAllDay: false,
+              notificationStartId: user.notificationChannelIdCounter,
             );
 
             final failureOrRecipeIsCreated =
@@ -67,8 +71,6 @@ class RecipeInfoCreateRecipeScheduleBloc extends Bloc<
                 ),
               );
             }, (response) async {
-              User user = event.user;
-
               _scheduleNotification(
                 id: user.notificationChannelIdCounter,
                 startingDate: convertedDates.start,

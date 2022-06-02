@@ -20,6 +20,7 @@ class RecipeScheduleAdapter extends TypeAdapter<RecipeSchedule> {
       recipe: fields[0] as Recipe,
       start: fields[1] as DateTime,
       end: fields[2] as DateTime,
+      notificationStartId: fields[6] as int,
       color: fields[3] as Color?,
       isAllDay: fields[4] as bool?,
       createdAt: fields[5] as DateTime,
@@ -29,7 +30,7 @@ class RecipeScheduleAdapter extends TypeAdapter<RecipeSchedule> {
   @override
   void write(BinaryWriter writer, RecipeSchedule obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.recipe)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class RecipeScheduleAdapter extends TypeAdapter<RecipeSchedule> {
       ..writeByte(4)
       ..write(obj.isAllDay)
       ..writeByte(5)
-      ..write(obj.createdAt);
+      ..write(obj.createdAt)
+      ..writeByte(6)
+      ..write(obj.notificationStartId);
   }
 
   @override

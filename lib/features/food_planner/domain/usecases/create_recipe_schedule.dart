@@ -39,6 +39,7 @@ class CreateRecipeParams extends Equatable {
   final DateTime end;
   final Color color;
   final bool isAllDay;
+  final int notificationStartId;
 
   const CreateRecipeParams({
     required this.recipe,
@@ -46,6 +47,7 @@ class CreateRecipeParams extends Equatable {
     required this.end,
     required this.color,
     required this.isAllDay,
+    required this.notificationStartId,
   });
 
   @override
@@ -55,5 +57,6 @@ class CreateRecipeParams extends Equatable {
         end,
         color,
         isAllDay,
+        notificationStartId,
       ];
 }

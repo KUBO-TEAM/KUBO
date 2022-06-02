@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
-import 'package:kubo/features/food_planner/presentation/widgets/recipe_info_icon_with_text.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/recipe_info_servings.dart';
 
 class ProcedureTab extends StatefulWidget {
   const ProcedureTab({
@@ -19,6 +19,8 @@ class ProcedureTab extends StatefulWidget {
 class _ProcedureTabState extends State<ProcedureTab>
     with AutomaticKeepAliveClientMixin<ProcedureTab> {
   List<Ingredient> selectedIngredients = [];
+
+  int servingsCounter = 1;
 
   bool isIngredientSelected(Ingredient ingredient) {
     if (selectedIngredients.isNotEmpty) {
@@ -58,11 +60,16 @@ class _ProcedureTabState extends State<ProcedureTab>
                   fontFamily: 'Montserrat Bold',
                 ),
               ),
-              RecipeInfoIconWithText(
+              RecipeInfoServings(
                 icon: Icons.group,
                 title: 'people',
-                data: widget.recipe.servings.toString(),
+                servings: widget.recipe.servings,
                 color: kBlackPrimary,
+                onChange: (value) {
+                  setState(() {
+                    servingsCounter = value;
+                  });
+                },
               ),
             ],
           ),
@@ -101,7 +108,7 @@ class _ProcedureTabState extends State<ProcedureTab>
                     DataCell(
                       Center(
                         child: Text(
-                          ingredient.quantity.toString(),
+                          (ingredient.quantity * servingsCounter).toString(),
                           style: const TextStyle(
                             fontSize: 16.0,
                             color: kBlackPrimary,

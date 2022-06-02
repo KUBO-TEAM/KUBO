@@ -9,37 +9,42 @@ class EndingTimeline extends StatelessWidget {
     Key? key,
     required this.recipeSchedule,
     required this.isStart,
+    required this.onPressed,
   }) : super(key: key);
 
   final RecipeSchedule recipeSchedule;
   final bool isStart;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return TimelineTile(
-      alignment: TimelineAlign.center,
-      isLast: true,
-      indicatorStyle: IndicatorStyle(
-        width: 30,
-        color: kBrownPrimary,
-        iconStyle: IconStyle(
-          color: Colors.white,
-          iconData: Icons.hourglass_full,
+    return InkWell(
+      onTap: onPressed,
+      child: TimelineTile(
+        alignment: TimelineAlign.center,
+        isLast: true,
+        indicatorStyle: IndicatorStyle(
+          width: 30,
+          color: kBrownPrimary,
+          iconStyle: IconStyle(
+            color: Colors.white,
+            iconData: Icons.hourglass_full,
+          ),
         ),
+        beforeLineStyle: const LineStyle(color: kBlackPrimary),
+        endChild: isStart
+            ? TimelineDateContainer(
+                recipeSchedule: recipeSchedule,
+                isStart: false,
+              )
+            : null,
+        startChild: isStart == false
+            ? TimelineDateContainer(
+                recipeSchedule: recipeSchedule,
+                isStart: true,
+              )
+            : null,
       ),
-      beforeLineStyle: const LineStyle(color: kBlackPrimary),
-      endChild: isStart
-          ? TimelineDateContainer(
-              recipeSchedule: recipeSchedule,
-              isStart: false,
-            )
-          : null,
-      startChild: isStart == false
-          ? TimelineDateContainer(
-              recipeSchedule: recipeSchedule,
-              isStart: true,
-            )
-          : null,
     );
   }
 }

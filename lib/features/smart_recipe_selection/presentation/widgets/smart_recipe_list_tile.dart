@@ -67,6 +67,7 @@ class _SmartRecipeListTileState extends State<SmartRecipeListTile> {
         color: color,
         isAllDay: widget.recipeSchedule.isAllDay,
         createdAt: widget.recipeSchedule.createdAt,
+        notificationStartId: widget.recipeSchedule.notificationStartId,
       );
 
       widget.onChange(recipeSchedule);
@@ -89,23 +90,33 @@ class _SmartRecipeListTileState extends State<SmartRecipeListTile> {
               initialDay: selectedDay,
               leadingIcon: Icons.calendar_today,
               onSelectedDay: (String? value) {
-                selectedDay = value;
+                setState(() {
+                  selectedDay = value;
+                });
                 updateRecipeSchedule();
               },
             ),
             TimeSelector(
               title: 'Start',
+              end: selectedStartTime,
+              day: selectedDay,
               initialTimeOfDay: selectedStartTime,
               onTimePicked: (TimeOfDay? value) {
-                selectedStartTime = value;
+                setState(() {
+                  selectedStartTime = value;
+                });
                 updateRecipeSchedule();
               },
             ),
             TimeSelector(
               title: 'End',
+              day: selectedDay,
+              start: selectedStartTime,
               initialTimeOfDay: selectedEndTime,
               onTimePicked: (TimeOfDay? value) {
-                selectedEndTime = value;
+                setState(() {
+                  selectedEndTime = value;
+                });
                 updateRecipeSchedule();
               },
             ),

@@ -4,6 +4,7 @@ import 'colors_constants.dart';
 
 var kSuccessfullySaveSnackBar = SnackBar(
   backgroundColor: kGreenPrimary,
+  duration: const Duration(milliseconds: 1500),
   content: Row(
     children: const [
       Icon(

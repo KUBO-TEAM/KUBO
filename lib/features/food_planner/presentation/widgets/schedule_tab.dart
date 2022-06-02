@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
-import 'package:kubo/core/constants/snackbar_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_create_recipe_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_info/recipe_info_fetch_recipe_schedules_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule_delete/recipe_schedule_delete_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule_edit/recipe_schedule_edit_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/create_recipe_schedule_dialog.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/edit_recipe_schedule_dialog.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/empty_state.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/ending_timeline.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/future_latest_timeline.dart';
@@ -43,21 +47,133 @@ class _ScheduleTabState extends State<ScheduleTab>
     super.initState();
   }
 
+  String dialogTimeFormat(RecipeSchedule recipeSchedule) {
+    return '${DateFormat.jm().format(recipeSchedule.start)} - ${DateFormat.jm().format(recipeSchedule.end)} ${DateFormat.yMMMEd('en_US').format(recipeSchedule.start)}';
+  }
+
+  void _showEditOrDeleteDialog(RecipeSchedule recipeSchedule) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Edit or Delete ?'),
+        content: Text(
+          'Do you want to edit or delete the schedule of ${dialogTimeFormat(recipeSchedule)}',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              showDialog(
+                context: context,
+                builder: (_) {
+                  return EditRecipeScheduleDialog(
+                    recipeSchedule: recipeSchedule,
+                  );
+                },
+              );
+            },
+            child: const Text('Edit'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _showDeleteConfirmation(recipeSchedule);
+            },
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteConfirmation(RecipeSchedule recipeSchedule) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Are you sure ?'),
+        content: Text(
+          'Are you sure you want to delete the schedule of ${dialogTimeFormat(recipeSchedule)}',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              BlocProvider.of<RecipeScheduleDeleteBloc>(context).add(
+                RecipeScheduleDeleted(recipeSchedule: recipeSchedule),
+              );
+              Navigator.pop(context);
+            },
+            child: const Text('Yes'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('No'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _refetchRecipeSchedules(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: kGreenPrimary,
+        duration: const Duration(milliseconds: 1500),
+        content: Row(
+          children: [
+            const Icon(
+              Icons.check_circle,
+              color: Colors.white,
+            ),
+            const SizedBox(
+              width: 10.0,
+            ),
+            Text(
+              message,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    BlocProvider.of<RecipeInfoFetchRecipeSchedulesBloc>(context).add(
+      RecipeInfoFetchRecipeSchedulesFetched(
+        recipeId: widget.recipe.id,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    return BlocListener<RecipeInfoCreateRecipeScheduleBloc,
-        RecipeInfoCreateRecipeScheduleState>(
-      listener: (context, state) {
-        if (state is RecipeInfoCreateRecipeScheduleSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(kSuccessfullySaveSnackBar);
-
-          BlocProvider.of<RecipeInfoFetchRecipeSchedulesBloc>(context).add(
-            RecipeInfoFetchRecipeSchedulesFetched(recipeId: widget.recipe.id),
-          );
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<RecipeInfoCreateRecipeScheduleBloc,
+            RecipeInfoCreateRecipeScheduleState>(
+          listener: (context, state) {
+            if (state is RecipeInfoCreateRecipeScheduleSuccess) {
+              _refetchRecipeSchedules(state.message);
+            }
+          },
+        ),
+        BlocListener<RecipeScheduleEditBloc, RecipeScheduleEditState>(
+          listener: (context, state) {
+            if (state is RecipeScheduleEditSuccess) {
+              _refetchRecipeSchedules(state.message);
+            }
+          },
+        ),
+        BlocListener<RecipeScheduleDeleteBloc, RecipeScheduleDeleteState>(
+          listener: (context, state) {
+            if (state is RecipeScheduleDeleteSuccess) {
+              _refetchRecipeSchedules(state.message);
+            }
+          },
+        ),
+      ],
       child: Container(
         color: Colors.white,
         padding: const EdgeInsets.only(
@@ -208,17 +324,30 @@ class _ScheduleTabState extends State<ScheduleTab>
                                 return FutureTimeline(
                                   isFirst: true,
                                   recipeSchedule: futureRecipeSchedules[index],
+                                  onPressed: () {
+                                    _showEditOrDeleteDialog(
+                                        futureRecipeSchedules[index]);
+                                  },
                                 );
                               } else {
                                 return FutureTimeline(
                                   isFirst: false,
                                   recipeSchedule: futureRecipeSchedules[index],
+                                  onPressed: () {
+                                    _showEditOrDeleteDialog(
+                                        futureRecipeSchedules[index]);
+                                  },
                                 );
                               }
                             }),
                             if (latestRecipeSchedule != null)
                               FutureLatestTimeline(
                                 recipeSchedule: latestRecipeSchedule,
+                                onPressed: () {
+                                  _showEditOrDeleteDialog(
+                                    latestRecipeSchedule,
+                                  );
+                                },
                               )
                           ],
                         ),
@@ -237,12 +366,14 @@ class _ScheduleTabState extends State<ScheduleTab>
                           return EndingTimeline(
                             recipeSchedule: pastRecipeSchedules[index],
                             isStart: index % 2 == 0 ? false : true,
+                            onPressed: () {},
                           );
                         }
 
                         return MiddleTimeline(
                           recipeSchedule: pastRecipeSchedules[index],
                           isStart: index % 2 == 0 ? false : true,
+                          onPressed: () {},
                         );
                       },
                     ),

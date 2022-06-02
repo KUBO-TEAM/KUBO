@@ -10,8 +10,8 @@ import 'package:http/http.dart' as _i10;
 import 'package:injectable/injectable.dart' as _i2;
 
 import 'core/helpers/date_converter.dart' as _i11;
-import 'core/hive/box_module.dart' as _i73;
-import 'core/hive/remote_module.dart' as _i74;
+import 'core/hive/box_module.dart' as _i77;
+import 'core/hive/remote_module.dart' as _i78;
 import 'features/food_planner/data/datasources/recipe_local_data_source.dart'
     as _i13;
 import 'features/food_planner/data/datasources/recipe_schedule_local_data_source.dart'
@@ -23,7 +23,7 @@ import 'features/food_planner/data/datasources/reminder_remote_data_source.dart'
 import 'features/food_planner/data/datasources/user_local_data_source.dart'
     as _i25;
 import 'features/food_planner/data/repositories/recipe_repository_impl.dart'
-    as _i53;
+    as _i55;
 import 'features/food_planner/data/repositories/recipe_schedule_repository_impl.dart'
     as _i16;
 import 'features/food_planner/data/repositories/reminder_repository_impl.dart'
@@ -34,61 +34,69 @@ import 'features/food_planner/domain/entities/recipe.dart' as _i6;
 import 'features/food_planner/domain/entities/recipe_schedule.dart' as _i5;
 import 'features/food_planner/domain/entities/user.dart' as _i7;
 import 'features/food_planner/domain/repositories/recipe_repository.dart'
-    as _i52;
+    as _i54;
 import 'features/food_planner/domain/repositories/recipe_schedule_repository.dart'
     as _i15;
 import 'features/food_planner/domain/repositories/reminder_repository.dart'
     as _i19;
 import 'features/food_planner/domain/repositories/user_repository.dart' as _i26;
-import 'features/food_planner/domain/usecases/create_cache_recipe.dart' as _i63;
+import 'features/food_planner/domain/usecases/create_cache_recipe.dart' as _i67;
 import 'features/food_planner/domain/usecases/create_recipe_schedule.dart'
     as _i31;
+import 'features/food_planner/domain/usecases/delete_recipe_schedule.dart'
+    as _i34;
+import 'features/food_planner/domain/usecases/edit_recipe_schedule.dart'
+    as _i35;
 import 'features/food_planner/domain/usecases/fetch_cached_recipes.dart'
-    as _i64;
+    as _i68;
 import 'features/food_planner/domain/usecases/fetch_filtered_recipes.dart'
-    as _i65;
-import 'features/food_planner/domain/usecases/fetch_latest_recipe.dart' as _i66;
-import 'features/food_planner/domain/usecases/fetch_recipe.dart' as _i67;
+    as _i69;
+import 'features/food_planner/domain/usecases/fetch_latest_recipe.dart' as _i70;
+import 'features/food_planner/domain/usecases/fetch_recipe.dart' as _i71;
 import 'features/food_planner/domain/usecases/fetch_recipe_schedule_linked_hash_map.dart'
-    as _i37;
-import 'features/food_planner/domain/usecases/fetch_recipe_schedules.dart'
-    as _i38;
-import 'features/food_planner/domain/usecases/fetch_recipe_schedules_length.dart'
     as _i39;
-import 'features/food_planner/domain/usecases/fetch_recipes.dart' as _i68;
-import 'features/food_planner/domain/usecases/fetch_reminders.dart' as _i40;
-import 'features/food_planner/domain/usecases/fetch_today_recipe_schedule.dart'
+import 'features/food_planner/domain/usecases/fetch_recipe_schedules.dart'
+    as _i40;
+import 'features/food_planner/domain/usecases/fetch_recipe_schedules_length.dart'
     as _i41;
-import 'features/food_planner/domain/usecases/fetch_tomorrow_recipe_schedule.dart'
-    as _i42;
-import 'features/food_planner/domain/usecases/fetch_upcoming_recipe_schedules.dart'
+import 'features/food_planner/domain/usecases/fetch_recipes.dart' as _i72;
+import 'features/food_planner/domain/usecases/fetch_reminders.dart' as _i42;
+import 'features/food_planner/domain/usecases/fetch_today_recipe_schedule.dart'
     as _i43;
-import 'features/food_planner/domain/usecases/fetch_user.dart' as _i44;
-import 'features/food_planner/domain/usecases/initialize_user.dart' as _i46;
+import 'features/food_planner/domain/usecases/fetch_tomorrow_recipe_schedule.dart'
+    as _i44;
+import 'features/food_planner/domain/usecases/fetch_upcoming_recipe_schedules.dart'
+    as _i45;
+import 'features/food_planner/domain/usecases/fetch_user.dart' as _i46;
+import 'features/food_planner/domain/usecases/initialize_user.dart' as _i48;
 import 'features/food_planner/presentation/blocs/agenda/agenda_bloc.dart'
-    as _i72;
-import 'features/food_planner/presentation/blocs/menu/menu_bloc.dart' as _i69;
+    as _i76;
+import 'features/food_planner/presentation/blocs/menu/menu_bloc.dart' as _i73;
 import 'features/food_planner/presentation/blocs/menu_history/menu_history_bloc.dart'
-    as _i47;
+    as _i49;
 import 'features/food_planner/presentation/blocs/recipe/recipe_bloc.dart'
-    as _i70;
+    as _i74;
 import 'features/food_planner/presentation/blocs/recipe_info/recipe_info_create_recipe_schedule_bloc.dart'
-    as _i50;
+    as _i52;
 import 'features/food_planner/presentation/blocs/recipe_info/recipe_info_fetch_recipe_schedules_bloc.dart'
-    as _i51;
+    as _i53;
+import 'features/food_planner/presentation/blocs/recipe_schedule_delete/recipe_schedule_delete_bloc.dart'
+    as _i56;
+import 'features/food_planner/presentation/blocs/recipe_schedule_edit/recipe_schedule_edit_bloc.dart'
+    as _i57;
 import 'features/food_planner/presentation/blocs/recipe_selection_dialog/recipe_selection_dialog_bloc.dart'
-    as _i54;
+    as _i58;
 import 'features/food_planner/presentation/blocs/recipe_updates/recipe_updates_bloc.dart'
-    as _i71;
+    as _i75;
 import 'features/food_planner/presentation/blocs/reminder/reminder_bloc.dart'
-    as _i55;
-import 'features/food_planner/presentation/blocs/today_schedule/today_schedule_bloc.dart'
     as _i59;
+import 'features/food_planner/presentation/blocs/today_schedule/today_schedule_bloc.dart'
+    as _i63;
 import 'features/food_planner/presentation/blocs/tomorrow_schedule/tomorrow_schedule_bloc.dart'
-    as _i60;
-import 'features/food_planner/presentation/blocs/user/user_bloc.dart' as _i61;
+    as _i64;
+import 'features/food_planner/presentation/blocs/user/user_bloc.dart' as _i65;
 import 'features/food_planner/presentation/blocs/your_status/your_status_bloc.dart'
-    as _i62;
+    as _i66;
 import 'features/smart_recipe_selection/data/datasources/smart_recipe_selection_local_data_source.dart'
     as _i21;
 import 'features/smart_recipe_selection/data/datasources/smart_recipe_selection_remote_data_source.dart'
@@ -111,23 +119,23 @@ import 'features/smart_recipe_selection/domain/usecases/delete_expired_predicted
 import 'features/smart_recipe_selection/domain/usecases/delete_predicted_images.dart'
     as _i33;
 import 'features/smart_recipe_selection/domain/usecases/fetch_categories.dart'
-    as _i34;
-import 'features/smart_recipe_selection/domain/usecases/fetch_predicted_images.dart'
     as _i36;
+import 'features/smart_recipe_selection/domain/usecases/fetch_predicted_images.dart'
+    as _i38;
 import 'features/smart_recipe_selection/domain/usecases/fetch_recipe_schedules_length.dart'
-    as _i35;
+    as _i37;
 import 'features/smart_recipe_selection/domain/usecases/generate_recipe_schedules.dart'
-    as _i45;
+    as _i47;
 import 'features/smart_recipe_selection/domain/usecases/predict_image.dart'
-    as _i48;
+    as _i50;
 import 'features/smart_recipe_selection/presentation/blocs/captured_page/save_scanned_ingredients_bloc.dart'
-    as _i56;
+    as _i60;
 import 'features/smart_recipe_selection/presentation/blocs/predict_image/predict_image_bloc.dart'
-    as _i49;
+    as _i51;
 import 'features/smart_recipe_selection/presentation/blocs/scanned_pictures_list/scanned_pictures_list_bloc.dart'
-    as _i57;
+    as _i61;
 import 'features/smart_recipe_selection/presentation/blocs/smart_recipe_list/smart_recipe_list_bloc.dart'
-    as _i58;
+    as _i62;
 import 'main.dart' as _i12;
 import 'router.dart' as _i3; // ignore_for_file: unnecessary_lambdas
 
@@ -201,104 +209,113 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
           get<_i23.SmartRecipeSelectionRepository>()));
   gh.lazySingleton<_i33.DeletePredictedImages>(() =>
       _i33.DeletePredictedImages(get<_i23.SmartRecipeSelectionRepository>()));
-  gh.lazySingleton<_i34.FetchCategories>(
-      () => _i34.FetchCategories(get<_i23.SmartRecipeSelectionRepository>()));
-  gh.lazySingleton<_i35.FetchCategoriesLength>(() =>
-      _i35.FetchCategoriesLength(get<_i23.SmartRecipeSelectionRepository>()));
-  gh.lazySingleton<_i36.FetchPredictedImages>(() =>
-      _i36.FetchPredictedImages(get<_i23.SmartRecipeSelectionRepository>()));
-  gh.lazySingleton<_i37.FetchRecipeScheduleLinkedHashMap>(() =>
-      _i37.FetchRecipeScheduleLinkedHashMap(
+  gh.lazySingleton<_i34.DeleteRecipeSchedule>(
+      () => _i34.DeleteRecipeSchedule(get<_i15.RecipeScheduleRepository>()));
+  gh.lazySingleton<_i35.EditRecipeSchedule>(
+      () => _i35.EditRecipeSchedule(get<_i15.RecipeScheduleRepository>()));
+  gh.lazySingleton<_i36.FetchCategories>(
+      () => _i36.FetchCategories(get<_i23.SmartRecipeSelectionRepository>()));
+  gh.lazySingleton<_i37.FetchCategoriesLength>(() =>
+      _i37.FetchCategoriesLength(get<_i23.SmartRecipeSelectionRepository>()));
+  gh.lazySingleton<_i38.FetchPredictedImages>(() =>
+      _i38.FetchPredictedImages(get<_i23.SmartRecipeSelectionRepository>()));
+  gh.lazySingleton<_i39.FetchRecipeScheduleLinkedHashMap>(() =>
+      _i39.FetchRecipeScheduleLinkedHashMap(
           get<_i15.RecipeScheduleRepository>()));
-  gh.lazySingleton<_i38.FetchRecipeSchedules>(
-      () => _i38.FetchRecipeSchedules(get<_i15.RecipeScheduleRepository>()));
-  gh.lazySingleton<_i39.FetchRecipeSchedulesLength>(() =>
-      _i39.FetchRecipeSchedulesLength(get<_i15.RecipeScheduleRepository>()));
-  gh.lazySingleton<_i40.FetchReminders>(
-      () => _i40.FetchReminders(get<_i19.ReminderRepository>()));
-  gh.lazySingleton<_i41.FetchTodaySchedule>(
-      () => _i41.FetchTodaySchedule(get<_i15.RecipeScheduleRepository>()));
-  gh.lazySingleton<_i42.FetchTomorrowSchedule>(
-      () => _i42.FetchTomorrowSchedule(get<_i15.RecipeScheduleRepository>()));
-  gh.lazySingleton<_i43.FetchUpcomingRecipeSchedules>(() =>
-      _i43.FetchUpcomingRecipeSchedules(get<_i15.RecipeScheduleRepository>()));
-  gh.lazySingleton<_i44.FetchUser>(
-      () => _i44.FetchUser(get<_i26.UserRepository>()));
-  gh.lazySingleton<_i45.GenerateRecipeSchedules>(() =>
-      _i45.GenerateRecipeSchedules(get<_i23.SmartRecipeSelectionRepository>()));
-  gh.lazySingleton<_i46.InitializeUser>(
-      () => _i46.InitializeUser(get<_i26.UserRepository>()));
-  gh.factory<_i47.MenuHistoryBloc>(() => _i47.MenuHistoryBloc(
+  gh.lazySingleton<_i40.FetchRecipeSchedules>(
+      () => _i40.FetchRecipeSchedules(get<_i15.RecipeScheduleRepository>()));
+  gh.lazySingleton<_i41.FetchRecipeSchedulesLength>(() =>
+      _i41.FetchRecipeSchedulesLength(get<_i15.RecipeScheduleRepository>()));
+  gh.lazySingleton<_i42.FetchReminders>(
+      () => _i42.FetchReminders(get<_i19.ReminderRepository>()));
+  gh.lazySingleton<_i43.FetchTodaySchedule>(
+      () => _i43.FetchTodaySchedule(get<_i15.RecipeScheduleRepository>()));
+  gh.lazySingleton<_i44.FetchTomorrowSchedule>(
+      () => _i44.FetchTomorrowSchedule(get<_i15.RecipeScheduleRepository>()));
+  gh.lazySingleton<_i45.FetchUpcomingRecipeSchedules>(() =>
+      _i45.FetchUpcomingRecipeSchedules(get<_i15.RecipeScheduleRepository>()));
+  gh.lazySingleton<_i46.FetchUser>(
+      () => _i46.FetchUser(get<_i26.UserRepository>()));
+  gh.lazySingleton<_i47.GenerateRecipeSchedules>(() =>
+      _i47.GenerateRecipeSchedules(get<_i23.SmartRecipeSelectionRepository>()));
+  gh.lazySingleton<_i48.InitializeUser>(
+      () => _i48.InitializeUser(get<_i26.UserRepository>()));
+  gh.factory<_i49.MenuHistoryBloc>(() => _i49.MenuHistoryBloc(
       fetchRecipeScheduleLinkedHashMap:
-          get<_i37.FetchRecipeScheduleLinkedHashMap>()));
-  gh.lazySingleton<_i48.PredictImage>(
-      () => _i48.PredictImage(get<_i23.SmartRecipeSelectionRepository>()));
-  gh.factory<_i49.PredictImageBloc>(
-      () => _i49.PredictImageBloc(predictImage: get<_i48.PredictImage>()));
-  gh.factory<_i50.RecipeInfoCreateRecipeScheduleBloc>(() =>
-      _i50.RecipeInfoCreateRecipeScheduleBloc(
+          get<_i39.FetchRecipeScheduleLinkedHashMap>()));
+  gh.lazySingleton<_i50.PredictImage>(
+      () => _i50.PredictImage(get<_i23.SmartRecipeSelectionRepository>()));
+  gh.factory<_i51.PredictImageBloc>(
+      () => _i51.PredictImageBloc(predictImage: get<_i50.PredictImage>()));
+  gh.factory<_i52.RecipeInfoCreateRecipeScheduleBloc>(() =>
+      _i52.RecipeInfoCreateRecipeScheduleBloc(
           createRecipeSchedule: get<_i31.CreateRecipeSchedule>(),
           dateConverter: get<_i11.DateConverter>()));
-  gh.factory<_i51.RecipeInfoFetchRecipeSchedulesBloc>(() =>
-      _i51.RecipeInfoFetchRecipeSchedulesBloc(
-          fetchRecipeSchedules: get<_i38.FetchRecipeSchedules>()));
-  gh.lazySingleton<_i52.RecipeRepository>(() => _i53.RecipeRepositoryImpl(
+  gh.factory<_i53.RecipeInfoFetchRecipeSchedulesBloc>(() =>
+      _i53.RecipeInfoFetchRecipeSchedulesBloc(
+          fetchRecipeSchedules: get<_i40.FetchRecipeSchedules>()));
+  gh.lazySingleton<_i54.RecipeRepository>(() => _i55.RecipeRepositoryImpl(
       get<_i17.RecipesRemoteDataSource>(), get<_i13.RecipeLocalDataSource>()));
-  gh.factory<_i54.RecipeSelectionDialogBloc>(() =>
-      _i54.RecipeSelectionDialogBloc(
-          fetchCategories: get<_i34.FetchCategories>()));
-  gh.factory<_i55.ReminderBloc>(
-      () => _i55.ReminderBloc(fetchReminders: get<_i40.FetchReminders>()));
-  gh.factory<_i56.SaveScannedIngredientsBloc>(() =>
-      _i56.SaveScannedIngredientsBloc(
+  gh.factory<_i56.RecipeScheduleDeleteBloc>(() => _i56.RecipeScheduleDeleteBloc(
+      deleteRecipeSchedule: get<_i34.DeleteRecipeSchedule>()));
+  gh.factory<_i57.RecipeScheduleEditBloc>(() => _i57.RecipeScheduleEditBloc(
+      editRecipeSchedule: get<_i35.EditRecipeSchedule>(),
+      dateConverter: get<_i11.DateConverter>()));
+  gh.factory<_i58.RecipeSelectionDialogBloc>(() =>
+      _i58.RecipeSelectionDialogBloc(
+          fetchCategories: get<_i36.FetchCategories>()));
+  gh.factory<_i59.ReminderBloc>(
+      () => _i59.ReminderBloc(fetchReminders: get<_i42.FetchReminders>()));
+  gh.factory<_i60.SaveScannedIngredientsBloc>(() =>
+      _i60.SaveScannedIngredientsBloc(
           createPredictedImage: get<_i30.CreatePredictedImage>(),
           createCategory: get<_i28.CreateCategory>()));
-  gh.factory<_i57.ScannedPicturesListBloc>(() => _i57.ScannedPicturesListBloc(
-      fetchPredictedImages: get<_i36.FetchPredictedImages>(),
+  gh.factory<_i61.ScannedPicturesListBloc>(() => _i61.ScannedPicturesListBloc(
+      fetchPredictedImages: get<_i38.FetchPredictedImages>(),
       deleteExpiredPredictedImages: get<_i32.DeleteExpiredPredictedImages>(),
       deletePredictedImages: get<_i33.DeletePredictedImages>()));
-  gh.factory<_i58.SmartRecipeListBloc>(() => _i58.SmartRecipeListBloc(
-      generateRecipeSchedules: get<_i45.GenerateRecipeSchedules>(),
+  gh.factory<_i62.SmartRecipeListBloc>(() => _i62.SmartRecipeListBloc(
+      generateRecipeSchedules: get<_i47.GenerateRecipeSchedules>(),
       createGenerateRecipeSchedules:
           get<_i29.CreateGenerateRecipeSchedules>()));
-  gh.factory<_i59.TodayScheduleBloc>(() => _i59.TodayScheduleBloc(
-      fetchTodaySchedule: get<_i41.FetchTodaySchedule>()));
-  gh.factory<_i60.TomorrowScheduleBloc>(() => _i60.TomorrowScheduleBloc(
-      fetchTomorrowSchedule: get<_i42.FetchTomorrowSchedule>()));
-  gh.factory<_i61.UserBloc>(() => _i61.UserBloc(
-      fetchUser: get<_i44.FetchUser>(),
-      initializeUser: get<_i46.InitializeUser>()));
-  gh.factory<_i62.YourStatusBloc>(() => _i62.YourStatusBloc(
-      fetchCategoriesLength: get<_i35.FetchCategoriesLength>(),
-      fetchRecipeSchedulesLength: get<_i39.FetchRecipeSchedulesLength>()));
-  gh.lazySingleton<_i63.CreateCacheRecipe>(
-      () => _i63.CreateCacheRecipe(get<_i52.RecipeRepository>()));
-  gh.lazySingleton<_i64.FetchCachedRecipes>(
-      () => _i64.FetchCachedRecipes(get<_i52.RecipeRepository>()));
-  gh.lazySingleton<_i65.FetchFilteredRecipes>(
-      () => _i65.FetchFilteredRecipes(get<_i52.RecipeRepository>()));
-  gh.lazySingleton<_i66.FetchLatestRecipe>(
-      () => _i66.FetchLatestRecipe(get<_i52.RecipeRepository>()));
-  gh.lazySingleton<_i67.FetchRecipe>(
-      () => _i67.FetchRecipe(get<_i52.RecipeRepository>()));
-  gh.lazySingleton<_i68.FetchRecipes>(
-      () => _i68.FetchRecipes(get<_i52.RecipeRepository>()));
-  gh.factory<_i69.MenuBloc>(() => _i69.MenuBloc(
-      fetchUpcomingRecipeSchedules: get<_i43.FetchUpcomingRecipeSchedules>(),
-      fetchRecipe: get<_i67.FetchRecipe>()));
-  gh.factory<_i70.RecipeBloc>(() => _i70.RecipeBloc(
-      fetchRecipes: get<_i68.FetchRecipes>(),
-      fetchFilteredRecipes: get<_i65.FetchFilteredRecipes>(),
-      createCacheRecipe: get<_i63.CreateCacheRecipe>(),
-      fetchCachedRecipes: get<_i64.FetchCachedRecipes>()));
-  gh.factory<_i71.RecipeUpdatesBloc>(() =>
-      _i71.RecipeUpdatesBloc(fetchLatestRecipe: get<_i66.FetchLatestRecipe>()));
-  gh.factory<_i72.AgendaBloc>(() => _i72.AgendaBloc(
-      fetchRecipeSchedules: get<_i38.FetchRecipeSchedules>(),
-      fetchRecipe: get<_i67.FetchRecipe>()));
+  gh.factory<_i63.TodayScheduleBloc>(() => _i63.TodayScheduleBloc(
+      fetchTodaySchedule: get<_i43.FetchTodaySchedule>()));
+  gh.factory<_i64.TomorrowScheduleBloc>(() => _i64.TomorrowScheduleBloc(
+      fetchTomorrowSchedule: get<_i44.FetchTomorrowSchedule>()));
+  gh.factory<_i65.UserBloc>(() => _i65.UserBloc(
+      fetchUser: get<_i46.FetchUser>(),
+      initializeUser: get<_i48.InitializeUser>()));
+  gh.factory<_i66.YourStatusBloc>(() => _i66.YourStatusBloc(
+      fetchCategoriesLength: get<_i37.FetchCategoriesLength>(),
+      fetchRecipeSchedulesLength: get<_i41.FetchRecipeSchedulesLength>()));
+  gh.lazySingleton<_i67.CreateCacheRecipe>(
+      () => _i67.CreateCacheRecipe(get<_i54.RecipeRepository>()));
+  gh.lazySingleton<_i68.FetchCachedRecipes>(
+      () => _i68.FetchCachedRecipes(get<_i54.RecipeRepository>()));
+  gh.lazySingleton<_i69.FetchFilteredRecipes>(
+      () => _i69.FetchFilteredRecipes(get<_i54.RecipeRepository>()));
+  gh.lazySingleton<_i70.FetchLatestRecipe>(
+      () => _i70.FetchLatestRecipe(get<_i54.RecipeRepository>()));
+  gh.lazySingleton<_i71.FetchRecipe>(
+      () => _i71.FetchRecipe(get<_i54.RecipeRepository>()));
+  gh.lazySingleton<_i72.FetchRecipes>(
+      () => _i72.FetchRecipes(get<_i54.RecipeRepository>()));
+  gh.factory<_i73.MenuBloc>(() => _i73.MenuBloc(
+      fetchUpcomingRecipeSchedules: get<_i45.FetchUpcomingRecipeSchedules>(),
+      fetchRecipe: get<_i71.FetchRecipe>()));
+  gh.factory<_i74.RecipeBloc>(() => _i74.RecipeBloc(
+      fetchRecipes: get<_i72.FetchRecipes>(),
+      fetchFilteredRecipes: get<_i69.FetchFilteredRecipes>(),
+      createCacheRecipe: get<_i67.CreateCacheRecipe>(),
+      fetchCachedRecipes: get<_i68.FetchCachedRecipes>()));
+  gh.factory<_i75.RecipeUpdatesBloc>(() =>
+      _i75.RecipeUpdatesBloc(fetchLatestRecipe: get<_i70.FetchLatestRecipe>()));
+  gh.factory<_i76.AgendaBloc>(() => _i76.AgendaBloc(
+      fetchRecipeSchedules: get<_i40.FetchRecipeSchedules>(),
+      fetchRecipe: get<_i71.FetchRecipe>()));
   return get;
 }
 
-class _$BoxModule extends _i73.BoxModule {}
+class _$BoxModule extends _i77.BoxModule {}
 
-class _$RemoteModule extends _i74.RemoteModule {}
+class _$RemoteModule extends _i78.RemoteModule {}

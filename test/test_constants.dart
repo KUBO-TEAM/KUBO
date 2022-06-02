@@ -42,6 +42,7 @@ const tColor = Colors.white;
 const tAllDay = false;
 
 final tRecipeScheduleModel = RecipeSchedule(
+  notificationStartId: 1,
   recipe: const Recipe(
     id: tId,
     name: tName,

@@ -6,6 +6,8 @@ import 'package:kubo/core/error/exceptions.dart';
 import 'package:kubo/core/helpers/menu_linked_hashmap.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedule.dart';
+import 'package:kubo/features/food_planner/domain/usecases/delete_recipe_schedule.dart';
+import 'package:kubo/features/food_planner/domain/usecases/edit_recipe_schedule.dart';
 
 abstract class RecipeScheduleLocalDataSource {
   /// create [RecipeScheduleModel] to the cached.
@@ -35,6 +37,13 @@ abstract class RecipeScheduleLocalDataSource {
   Future<RecipeSchedule?> fetchTomorrowRecipeSchedule();
 
   Future<int> fetchRecipeSchedulesLength();
+
+  Future<EditRecipeScheduleResponse> editRecipeSchedule(
+    RecipeSchedule recipeSchedule,
+  );
+  Future<DeleteRecipeScheduleResponse> deleteRecipeSchedule(
+    RecipeSchedule recipeSchedule,
+  );
 }
 
 @LazySingleton(as: RecipeScheduleLocalDataSource)
@@ -54,12 +63,15 @@ class RecipeScheduleLocalDataSourceImpl
       end: params.end,
       color: params.color,
       isAllDay: params.isAllDay,
+      notificationStartId: params.notificationStartId,
       createdAt: DateTime.now(),
     );
 
     recipeScheduleBox.add(recipeScheduleModel);
 
-    return const CreateRecipeScheduleResponse(message: 'Successfully Created!');
+    return const CreateRecipeScheduleResponse(
+      message: 'Successfully save schedule!',
+    );
   }
 
   @override
@@ -67,11 +79,9 @@ class RecipeScheduleLocalDataSourceImpl
     final recipeSchedules = recipeScheduleBox.values.toList();
 
     final today = DateTime.now();
-    final yesterday = DateTime(today.year, today.month, today.day - 1, 23, 59);
 
-    final filteredRecipeSchedule = recipeSchedules
-        .where((element) => element.start.isAfter(yesterday))
-        .toList();
+    final filteredRecipeSchedule =
+        recipeSchedules.where((element) => element.end.isAfter(today)).toList();
 
     return filteredRecipeSchedule;
   }
@@ -204,5 +214,27 @@ class RecipeScheduleLocalDataSourceImpl
     return recipeScheduleBox.values
         .where((element) => element.start.isAfter(DateTime.now()))
         .length;
+  }
+
+  @override
+  Future<EditRecipeScheduleResponse> editRecipeSchedule(
+    RecipeSchedule recipeSchedule,
+  ) async {
+    await recipeSchedule.save();
+
+    return const EditRecipeScheduleResponse(
+      message: 'Successfully edit schedule!',
+    );
+  }
+
+  @override
+  Future<DeleteRecipeScheduleResponse> deleteRecipeSchedule(
+    RecipeSchedule recipeSchedule,
+  ) async {
+    await recipeSchedule.delete();
+
+    return const DeleteRecipeScheduleResponse(
+      message: 'Successfully delete schedule!',
+    );
   }
 }

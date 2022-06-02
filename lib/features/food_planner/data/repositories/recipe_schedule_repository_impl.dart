@@ -9,6 +9,8 @@ import 'package:dartz/dartz.dart';
 
 import 'package:kubo/features/food_planner/domain/repositories/recipe_schedule_repository.dart';
 import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedule.dart';
+import 'package:kubo/features/food_planner/domain/usecases/delete_recipe_schedule.dart';
+import 'package:kubo/features/food_planner/domain/usecases/edit_recipe_schedule.dart';
 
 @LazySingleton(as: RecipeScheduleRepository)
 class RecipeScheduleRepositoryImpl implements RecipeScheduleRepository {
@@ -100,6 +102,32 @@ class RecipeScheduleRepositoryImpl implements RecipeScheduleRepository {
           await recipeScheduleLocalDataSource.fetchRecipeSchedulesLength();
 
       return Right(recipeSchedulesLength);
+    } on CacheException {
+      return Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, EditRecipeScheduleResponse>> editRecipeSchedule(
+      RecipeSchedule params) async {
+    try {
+      final response =
+          await recipeScheduleLocalDataSource.editRecipeSchedule(params);
+
+      return Right(response);
+    } on CacheException {
+      return Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, DeleteRecipeScheduleResponse>> deleteRecipeSchedule(
+      RecipeSchedule params) async {
+    try {
+      final response =
+          await recipeScheduleLocalDataSource.deleteRecipeSchedule(params);
+
+      return Right(response);
     } on CacheException {
       return Left(CacheFailure());
     }

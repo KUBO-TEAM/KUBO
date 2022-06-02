@@ -13,7 +13,7 @@ class Ingredient extends Equatable {
   @HiveField(1)
   final String name;
   @HiveField(2)
-  final int quantity;
+  final double quantity;
 
   @override
   List<Object?> get props => [

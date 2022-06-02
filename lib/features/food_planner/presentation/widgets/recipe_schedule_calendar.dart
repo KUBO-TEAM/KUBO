@@ -83,7 +83,7 @@ class RecipeScheduleCalendar extends StatelessWidget {
         artDialogArgs: ArtDialogArgs(
           type: ArtSweetAlertType.danger,
           title: "Oops...",
-          text: "You can't schedule on that cell.",
+          text: "You can't schedule in the past, and above 1 week",
         ),
       );
     }
@@ -138,7 +138,7 @@ class RecipeScheduleCalendar extends StatelessWidget {
           allowDragAndDrop: allowDragAndDrop,
           minDate: minDate,
           maxDate: maxDate,
-          todayHighlightColor: kGreenPrimary,
+          todayHighlightColor: Colors.green.shade800,
           dataSource: CalenderScheduleDataSource(
             recipeSchedules: recipeSchedules,
             context: context,

@@ -4,6 +4,8 @@ import 'package:dartz/dartz.dart';
 import 'package:kubo/core/error/failures.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedule.dart';
+import 'package:kubo/features/food_planner/domain/usecases/delete_recipe_schedule.dart';
+import 'package:kubo/features/food_planner/domain/usecases/edit_recipe_schedule.dart';
 
 abstract class RecipeScheduleRepository {
   Future<Either<Failure, CreateRecipeScheduleResponse>> createRecipeSchedule(
@@ -22,4 +24,11 @@ abstract class RecipeScheduleRepository {
   Future<Either<Failure, RecipeSchedule?>> fetchTomorrowRecipeSchedule();
 
   Future<Either<Failure, int>> fetchRecipeSchedulesLength();
+
+  Future<Either<Failure, EditRecipeScheduleResponse>> editRecipeSchedule(
+    RecipeSchedule params,
+  );
+  Future<Either<Failure, DeleteRecipeScheduleResponse>> deleteRecipeSchedule(
+    RecipeSchedule params,
+  );
 }
