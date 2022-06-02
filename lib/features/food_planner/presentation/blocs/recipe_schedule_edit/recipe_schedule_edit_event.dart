@@ -7,12 +7,6 @@ abstract class RecipeScheduleEditEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class RecipeScheduleMenuEdited extends RecipeScheduleEditEvent {
-  final RecipeSchedule recipeSchedule;
-
-  const RecipeScheduleMenuEdited({required this.recipeSchedule});
-}
-
 class RecipeScheduleManualEdited extends RecipeScheduleEditEvent {
   final RecipeSchedule recipeSchedule;
   final String? day;
@@ -28,5 +22,3 @@ class RecipeScheduleManualEdited extends RecipeScheduleEditEvent {
     required this.color,
   });
 }
-
-class RecipeScheduleMenuFailed extends RecipeScheduleEditEvent {}

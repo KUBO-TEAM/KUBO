@@ -10,6 +10,7 @@ import 'package:kubo/core/widgets/splash_page.dart';
 import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
+import 'package:kubo/features/food_planner/domain/entities/reminder.dart';
 import 'package:kubo/features/food_planner/domain/entities/user.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/agenda/agenda_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule_delete/recipe_schedule_delete_bloc.dart';
@@ -51,7 +52,8 @@ Future<void> main() async {
     ..registerAdapter(UserAdapter())
     ..registerAdapter(PredictedImageAdapter())
     ..registerAdapter(CategoryAdapter())
-    ..registerAdapter(RecipeScheduleAdapter());
+    ..registerAdapter(RecipeScheduleAdapter())
+    ..registerAdapter(ReminderAdapter());
 
   await configureDependencies();
 

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/core/constants/string_constants.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/icon_title.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/message_dialog.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/pages/camera_page.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 const _title = 'Trained Veggies';
 const _subTitle = 'Available Vegetables';
@@ -73,6 +77,56 @@ class TrainedVeggies extends StatelessWidget {
                 );
               }).toList(),
             ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Divider(
+                  thickness: 1,
+                ),
+                InkWell(
+                  onTap: () async {
+                    if (await Permission.camera.request().isGranted &&
+                        await Permission.storage.request().isGranted) {
+                      Navigator.pushNamed(context, CameraPage.id);
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (_) => const MessageDialog(
+                          title: 'Permission is required!',
+                          message: kPermissionDenniedDialogMessage,
+                        ),
+                      );
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 8.0,
+                      left: 8.0,
+                      right: 8.0,
+                    ),
+                    child: Row(
+                      children: const [
+                        Icon(
+                          Icons.arrow_forward,
+                          color: Colors.black,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Scan ingredients now!',
+                          style: TextStyle(
+                            color: kBlackPrimary,
+                            fontFamily: 'Montserrat',
+                            fontSize: 14.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),

@@ -25,6 +25,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           User user = currentState.user;
           user.remindersSeenAt = DateTime.now();
           user.save();
+          emit(UserSuccess(user: user));
         }
       } else if (event is UserFetched) {
         final failureOrUser = await fetchUser(NoParams());

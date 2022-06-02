@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fraction/fraction.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/ingredient.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
@@ -20,7 +21,7 @@ class _ProcedureTabState extends State<ProcedureTab>
     with AutomaticKeepAliveClientMixin<ProcedureTab> {
   List<Ingredient> selectedIngredients = [];
 
-  int servingsCounter = 1;
+  int? servingsCounter;
 
   bool isIngredientSelected(Ingredient ingredient) {
     if (selectedIngredients.isNotEmpty) {
@@ -31,6 +32,27 @@ class _ProcedureTabState extends State<ProcedureTab>
     }
 
     return false;
+  }
+
+  String _doubleToFraction(double quantity) {
+    final initialServingsCounter = widget.recipe.servings;
+    final finalServingsCounter = servingsCounter;
+
+    if (initialServingsCounter != servingsCounter &&
+        finalServingsCounter != null) {
+      double add = quantity / initialServingsCounter;
+
+      int minus = finalServingsCounter - initialServingsCounter;
+
+      double result = quantity + (add * minus);
+      Fraction fraction = Fraction.fromDouble(result);
+
+      return fraction.toString();
+    }
+
+    Fraction fraction = Fraction.fromDouble(quantity);
+
+    return fraction.toString();
   }
 
   @override
@@ -108,7 +130,9 @@ class _ProcedureTabState extends State<ProcedureTab>
                     DataCell(
                       Center(
                         child: Text(
-                          (ingredient.quantity * servingsCounter).toString(),
+                          _doubleToFraction(
+                            ingredient.quantity,
+                          ),
                           style: const TextStyle(
                             fontSize: 16.0,
                             color: kBlackPrimary,

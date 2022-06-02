@@ -22,32 +22,7 @@ class RecipeScheduleEditBloc
     required this.dateConverter,
   }) : super(RecipeScheduleEditInitial()) {
     on<RecipeScheduleEditEvent>((event, emit) async {
-      if (event is RecipeScheduleMenuEdited) {
-        final recipeSchedule = event.recipeSchedule;
-
-        final failureOrEditRecipeScheduleResponse =
-            await editRecipeSchedule(recipeSchedule);
-
-        failureOrEditRecipeScheduleResponse.fold(
-          (failure) {
-            emit(
-              const RecipeScheduleEditFailure(
-                message: 'Failed to edit schedule',
-              ),
-            );
-          },
-          (response) {
-            _editScheduleNotification(recipeSchedule);
-            emit(RecipeScheduleEditSuccess(message: response.message));
-          },
-        );
-      } else if (event is RecipeScheduleMenuFailed) {
-        emit(
-          const RecipeScheduleEditFailure(
-            message: "You can't schedule in the past, and above 1 week",
-          ),
-        );
-      } else if (event is RecipeScheduleManualEdited) {
+      if (event is RecipeScheduleManualEdited) {
         final recipeSchedule = event.recipeSchedule;
         final start = event.start;
         final end = event.end;

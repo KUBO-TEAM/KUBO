@@ -6,6 +6,8 @@ import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/reminder.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/reminder/reminder_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/user/user_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/pages/recipe_info_page.dart';
+import 'package:kubo/features/food_planner/presentation/widgets/empty_state.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/icon_button.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/list_clipper.dart';
 
@@ -102,6 +104,14 @@ class _ReminderPageState extends State<ReminderPage> {
                         final unseenReminders = unseenRemindersState;
 
                         List<Reminder> reminders = state.reminders;
+
+                        if (reminders.isEmpty) {
+                          return const EmptyState(
+                            message: 'No reminders found',
+                            assetImageUrl: "assets/images/empty_1.png",
+                          );
+                        }
+
                         return ListView.builder(
                           itemCount: reminders.length,
                           itemBuilder: (context, index) {
@@ -110,53 +120,70 @@ class _ReminderPageState extends State<ReminderPage> {
                                     unseenReminders > index
                                 ? Colors.green.withOpacity(0.1)
                                 : null;
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: unseenColor,
-                                border: Border(
-                                  bottom: BorderSide(
-                                    width: 1.0,
-                                    color: Colors.grey.shade300,
+                            return InkWell(
+                              onTap: () {
+                                final recipeSchedule = reminder.recipeSchedule;
+                                if (recipeSchedule != null) {
+                                  Navigator.pushNamed(
+                                    context,
+                                    RecipeInfoPage.id,
+                                    arguments: RecipeInfoPageArguments(
+                                      recipe: recipeSchedule.recipe,
+                                    ),
+                                  );
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: unseenColor,
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      width: 1.0,
+                                      color: Colors.grey.shade300,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: ListTile(
-                                      leading: CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        child: Center(
-                                          child: Image.asset(
-                                            'assets/images/logo.png',
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: ListTile(
+                                        leading: CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          child: Center(
+                                            child: Image.asset(
+                                              'assets/images/logo.png',
+                                            ),
+                                          ),
+                                        ),
+                                        title: Text(
+                                          reminder.title,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          DateFormat.yMMMEd('en_US')
+                                              .add_jm()
+                                              .format(reminder.createdAt),
+                                          style: const TextStyle(
+                                            fontSize: 13,
                                           ),
                                         ),
                                       ),
-                                      title: Text(
-                                        reminder.title,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      subtitle: Text(
-                                        DateFormat.yMMMEd('en_US')
-                                            .add_jm()
-                                            .format(reminder.createdAt),
-                                        style: const TextStyle(
-                                          fontSize: 13,
-                                        ),
-                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             );
                           },
                         );
                       }
-                      return Container();
+                      return const EmptyState(
+                        message: 'No reminders found',
+                        assetImageUrl: "assets/images/empty_1.png",
+                      );
                     },
                   ),
                 ),

@@ -1,8 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/string_constants.dart';
 import 'package:kubo/core/widgets/welcome_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/home_page.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class SplashPage extends StatefulWidget {
   static const String id = 'splash_screen';
@@ -44,17 +47,53 @@ class _SplashPageState extends State<SplashPage> {
     double kScreenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(
-        alignment: Alignment.center,
-        child: AnimatedOpacity(
-          opacity: _visible ? 1.0 : 0.0,
-          duration: const Duration(milliseconds: 2500),
-          child: Image.asset(
-            "assets/images/logo.png",
-            height: kScreenHeight * .4,
-          ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Container(
+              alignment: Alignment.center,
+              child: AnimatedOpacity(
+                opacity: _visible ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 2500),
+                child: Image.asset(
+                  "assets/images/logo.png",
+                  height: kScreenHeight * .4,
+                ),
+              ),
+              height: kScreenHeight,
+            ),
+            Positioned(
+              bottom: 0,
+              child: SizedBox(
+                height: 100,
+                width: MediaQuery.of(context).size.width,
+                child: Center(
+                    child: RichText(
+                  text: TextSpan(
+                    text: 'Visit our website at ',
+                    style: const TextStyle(
+                      fontSize: 17.0,
+                      color: kBlackPrimary,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: ' https://kuboph.dev',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: kGreenPrimary,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            launchUrlString('https://kuboph.dev');
+                          },
+                      ),
+                    ],
+                  ),
+                )),
+              ),
+            ),
+          ],
         ),
-        height: kScreenHeight,
       ),
     );
   }

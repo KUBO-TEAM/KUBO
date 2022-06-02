@@ -7,6 +7,7 @@ import 'package:kubo/core/helpers/notification_reminder.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/entities/user.dart';
 import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedule.dart';
+import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedule_reminder.dart';
 
 part 'recipe_info_create_recipe_schedule_event.dart';
 part 'recipe_info_create_recipe_schedule_state.dart';
@@ -16,10 +17,12 @@ class RecipeInfoCreateRecipeScheduleBloc extends Bloc<
     RecipeInfoCreateRecipeScheduleEvent, RecipeInfoCreateRecipeScheduleState> {
   final CreateRecipeSchedule createRecipeSchedule;
   final DateConverter dateConverter;
+  final CreateRecipeScheduleReminder createRecipeScheduleReminder;
 
   RecipeInfoCreateRecipeScheduleBloc({
     required this.createRecipeSchedule,
     required this.dateConverter,
+    required this.createRecipeScheduleReminder,
   }) : super(RecipeInfoCreateRecipeScheduleInitial()) {
     on<RecipeInfoCreateRecipeScheduleEvent>((event, emit) async {
       if (event is RecipeInfoCreateRecipeScheduleCreated) {
@@ -117,6 +120,9 @@ class RecipeInfoCreateRecipeScheduleBloc extends Bloc<
               user.notificationChannelIdCounter++;
 
               await user.save();
+
+              // Create recipe Schedule Reminder
+              await createRecipeScheduleReminder(response.recipeSchedule);
 
               emit(
                 RecipeInfoCreateRecipeScheduleSuccess(

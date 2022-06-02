@@ -1,8 +1,7 @@
+import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/helpers/utils.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
-import 'package:kubo/features/food_planner/presentation/blocs/recipe_schedule_edit/recipe_schedule_edit_bloc.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalenderScheduleDataSource extends CalendarDataSource<RecipeSchedule> {
@@ -52,13 +51,18 @@ class CalenderScheduleDataSource extends CalendarDataSource<RecipeSchedule> {
         Utils.hoursBetween(DateTime.now(), appointment.startTime) >= 0) {
       customData.start = appointment.startTime;
       customData.end = appointment.endTime;
-      BlocProvider.of<RecipeScheduleEditBloc>(context).add(
-        RecipeScheduleMenuEdited(recipeSchedule: customData),
-      );
+      customData.save();
     } else {
-      BlocProvider.of<RecipeScheduleEditBloc>(context).add(
-        RecipeScheduleMenuFailed(),
-      );
+      Future.delayed(const Duration(microseconds: 500), () {
+        ArtSweetAlert.show(
+          context: context,
+          artDialogArgs: ArtDialogArgs(
+            type: ArtSweetAlertType.danger,
+            title: "Oops...",
+            text: "You can't schedule in the past, and above 1 week",
+          ),
+        );
+      });
     }
 
     return customData;

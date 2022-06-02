@@ -5,13 +5,16 @@ import 'package:kubo/core/constants/string_constants.dart';
 import 'package:kubo/core/error/exceptions.dart';
 import 'package:kubo/features/food_planner/data/models/reminder_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:kubo/features/food_planner/domain/entities/user.dart';
 
 abstract class ReminderRemoteDataSource {
   /// fetch [ReminderModel] in remote
   ///
   /// Throws [ServerException] if no remote data is present.
   ///
-  Future<List<ReminderModel>> fetchReminders();
+  Future<List<ReminderModel>> fetchReminders(
+    User user,
+  );
 }
 
 @LazySingleton(as: ReminderRemoteDataSource)
@@ -21,7 +24,7 @@ class ReminderRemoteDataSourceImpl implements ReminderRemoteDataSource {
   ReminderRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<List<ReminderModel>> fetchReminders() async {
+  Future<List<ReminderModel>> fetchReminders(User user) async {
     try {
       final response = await client.get(
         Uri.parse('$kKuboUrl/api/notification'),
@@ -35,7 +38,11 @@ class ReminderRemoteDataSourceImpl implements ReminderRemoteDataSource {
         List<ReminderModel> reminders = [];
 
         for (var value in data) {
-          reminders.add(ReminderModel.fromJson(value));
+          final reminder = ReminderModel.fromJson(value);
+
+          if (reminder.createdAt.isAfter(user.startedAt)) {
+            reminders.add(reminder);
+          }
         }
 
         return reminders;

@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/core/constants/string_constants.dart';
 import 'package:kubo/core/helpers/notification_reminder.dart';
+import 'package:kubo/core/widgets/splash_page.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/user/user_bloc.dart';
-import 'package:kubo/features/food_planner/presentation/pages/recipes_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/bottom_navigation.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_updates.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/today_schedule.dart';
@@ -41,12 +41,15 @@ class _HomePageState extends State<HomePage> {
 
   void onClickedNotification(String? payload) => Navigator.pushNamed(
         context,
-        RecipesPage.id,
-        arguments: RecipesPageArguments(),
+        SplashPage.id,
       );
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage("assets/images/empty_1.png"), context);
+    precacheImage(const AssetImage("assets/images/empty_2.png"), context);
+    precacheImage(const AssetImage("assets/images/no_events.jpg"), context);
+
     return Scaffold(
       backgroundColor: const Color(0xffeeeeee),
       floatingActionButton: FloatingActionButton(

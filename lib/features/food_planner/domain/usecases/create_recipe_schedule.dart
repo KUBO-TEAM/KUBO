@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:kubo/core/error/failures.dart';
 import 'package:kubo/core/usecases/usecase.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/repositories/recipe_schedule_repository.dart';
 
 @lazySingleton
@@ -24,9 +25,11 @@ class CreateRecipeSchedule
 
 class CreateRecipeScheduleResponse extends Equatable {
   final String message;
+  final RecipeSchedule recipeSchedule;
 
   const CreateRecipeScheduleResponse({
     required this.message,
+    required this.recipeSchedule,
   });
 
   @override

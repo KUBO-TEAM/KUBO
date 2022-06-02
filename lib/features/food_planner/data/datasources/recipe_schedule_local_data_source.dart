@@ -23,6 +23,7 @@ abstract class RecipeScheduleLocalDataSource {
   /// Throws [CacheException] if no cached data is present.
   ///
   Future<List<RecipeSchedule>> fetchRecipeSchedules();
+
   Future<List<RecipeSchedule>> fetchUpcomingRecipeSchedules();
 
   /// Fetch the cached linked list of  [RecipeSchedule]
@@ -41,6 +42,7 @@ abstract class RecipeScheduleLocalDataSource {
   Future<EditRecipeScheduleResponse> editRecipeSchedule(
     RecipeSchedule recipeSchedule,
   );
+
   Future<DeleteRecipeScheduleResponse> deleteRecipeSchedule(
     RecipeSchedule recipeSchedule,
   );
@@ -51,7 +53,9 @@ class RecipeScheduleLocalDataSourceImpl
     implements RecipeScheduleLocalDataSource {
   final Box<RecipeSchedule> recipeScheduleBox;
 
-  RecipeScheduleLocalDataSourceImpl({required this.recipeScheduleBox});
+  RecipeScheduleLocalDataSourceImpl({
+    required this.recipeScheduleBox,
+  });
 
   @override
   Future<CreateRecipeScheduleResponse> createRecipeSchedule(
@@ -69,8 +73,9 @@ class RecipeScheduleLocalDataSourceImpl
 
     recipeScheduleBox.add(recipeScheduleModel);
 
-    return const CreateRecipeScheduleResponse(
+    return CreateRecipeScheduleResponse(
       message: 'Successfully save schedule!',
+      recipeSchedule: recipeScheduleModel,
     );
   }
 

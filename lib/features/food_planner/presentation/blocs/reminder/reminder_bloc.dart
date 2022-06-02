@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:kubo/core/usecases/usecase.dart';
 import 'package:kubo/features/food_planner/domain/entities/reminder.dart';
 import 'package:kubo/features/food_planner/domain/entities/user.dart';
+import 'package:kubo/features/food_planner/domain/usecases/fetch_local_reminders.dart';
 import 'package:kubo/features/food_planner/domain/usecases/fetch_reminders.dart';
 
 part 'reminder_event.dart';
@@ -12,9 +13,11 @@ part 'reminder_state.dart';
 @injectable
 class ReminderBloc extends Bloc<ReminderEvent, ReminderState> {
   final FetchReminders fetchReminders;
+  final FetchLocalReminders fetchLocalReminders;
 
   ReminderBloc({
     required this.fetchReminders,
+    required this.fetchLocalReminders,
   }) : super(ReminderFetchNotificationsInitial()) {
     on<ReminderEvent>((event, emit) async {
       if (event is ReminderNotificationsFetched) {
@@ -24,35 +27,42 @@ class ReminderBloc extends Bloc<ReminderEvent, ReminderState> {
           emit(const ReminderFetchNotificationsInProgress());
         }
 
-        final failureOrNotifications = await fetchReminders(NoParams());
+        final failureOrLocalReminders = await fetchLocalReminders(NoParams());
 
-        failureOrNotifications.fold((failure) {
-          emit(
-            const ReminderFetchNotificationsFailure(
-              message: 'Fail to fetch notifications',
-            ),
-          );
-        }, (reminders) {
-          emit(ReminderFetchNotificationsSuccess(
-            reminders: reminders,
-            unseenReminders: 0,
-          ));
+        await failureOrLocalReminders.fold((failure) {},
+            (localReminders) async {
+          final failureOrRemoteReminders = await fetchReminders(user);
 
-          int unseenReminders = 0;
-          DateTime remindersSeenAt = user.remindersSeenAt;
+          failureOrRemoteReminders.fold((failure) {
+            emit(
+              const ReminderFetchNotificationsFailure(
+                message: 'Fail to fetch notifications',
+              ),
+            );
+          }, (remoteReminders) {
+            List<Reminder> reminders = localReminders + remoteReminders;
 
-          for (Reminder reminder in reminders) {
-            if (remindersSeenAt.isBefore(reminder.createdAt)) {
-              unseenReminders++;
+            reminders.sort(
+              (a, b) => b.createdAt.compareTo(a.createdAt),
+            );
+
+            int unseenReminders = 0;
+
+            DateTime remindersSeenAt = user.remindersSeenAt;
+
+            for (Reminder reminder in reminders) {
+              if (remindersSeenAt.isBefore(reminder.createdAt)) {
+                unseenReminders++;
+              }
             }
-          }
 
-          emit(
-            ReminderFetchNotificationsSuccess(
-              reminders: reminders,
-              unseenReminders: unseenReminders,
-            ),
-          );
+            emit(
+              ReminderFetchNotificationsSuccess(
+                reminders: reminders,
+                unseenReminders: unseenReminders,
+              ),
+            );
+          });
         });
       }
     });
