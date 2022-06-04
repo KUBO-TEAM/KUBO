@@ -120,9 +120,10 @@ class _ReminderPageState extends State<ReminderPage> {
                                     unseenReminders > index
                                 ? Colors.green.withOpacity(0.1)
                                 : null;
+                            final recipeSchedule = reminder.recipeSchedule;
+
                             return InkWell(
                               onTap: () {
-                                final recipeSchedule = reminder.recipeSchedule;
                                 if (recipeSchedule != null) {
                                   Navigator.pushNamed(
                                     context,
@@ -156,12 +157,34 @@ class _ReminderPageState extends State<ReminderPage> {
                                             ),
                                           ),
                                         ),
-                                        title: Text(
-                                          reminder.title,
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w700,
-                                          ),
+                                        title: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            RichText(
+                                              overflow: TextOverflow.ellipsis,
+                                              text: TextSpan(
+                                                text: reminder.title,
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: kBlackPrimary,
+                                                ),
+                                                children: [
+                                                  if (recipeSchedule != null)
+                                                    TextSpan(
+                                                      text: recipeSchedule
+                                                          .recipe.name,
+                                                      style: const TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                      ),
+                                                    ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         subtitle: Text(
                                           DateFormat.yMMMEd('en_US')

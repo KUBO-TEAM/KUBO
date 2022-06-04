@@ -56,7 +56,8 @@ class SmartRecipeSelectionRemoteDataSourceImpl
 
   @override
   Future<List<RecipeSchedule>> generateRecipeSchedules(
-      List<Category> categories) async {
+    List<Category> categories,
+  ) async {
     try {
       List<Map<String, dynamic>> categoriesArrayMap = [];
 

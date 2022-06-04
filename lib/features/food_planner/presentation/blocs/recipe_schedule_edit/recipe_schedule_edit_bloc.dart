@@ -3,8 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/helpers/date_converter.dart';
-import 'package:kubo/core/helpers/notification_reminder.dart';
-import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
+import 'package:kubo/core/helpers/utils.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/usecases/edit_recipe_schedule.dart';
 
@@ -46,7 +45,7 @@ class RecipeScheduleEditBloc
               final failureOrEditRecipeScheduleResponse =
                   await editRecipeSchedule(recipeSchedule);
 
-              failureOrEditRecipeScheduleResponse.fold(
+              await failureOrEditRecipeScheduleResponse.fold(
                 (failure) {
                   emit(
                     const RecipeScheduleEditFailure(
@@ -54,8 +53,10 @@ class RecipeScheduleEditBloc
                     ),
                   );
                 },
-                (response) {
-                  _editScheduleNotification(recipeSchedule);
+                (response) async {
+                  await Utils.scheduleNotification(
+                    recipeSchedule: recipeSchedule,
+                  );
                   emit(RecipeScheduleEditSuccess(message: response.message));
                 },
               );
@@ -64,74 +65,5 @@ class RecipeScheduleEditBloc
         }
       }
     });
-  }
-
-  void _editScheduleNotification(RecipeSchedule recipeSchedule) {
-    int notificationId = recipeSchedule.notificationStartId;
-
-    _scheduleNotification(
-      id: notificationId,
-      startingDate: recipeSchedule.start,
-      timeToSubstract: Duration.zero,
-      recipe: recipeSchedule.recipe,
-      title: 'Upcoming recipe',
-      message: 'Your scheduled recipe is ready, please prepare it now.',
-    );
-
-    notificationId++;
-
-    _scheduleNotification(
-      id: notificationId,
-      startingDate: recipeSchedule.start,
-      timeToSubstract: const Duration(hours: 1),
-      recipe: recipeSchedule.recipe,
-      title: 'Upcoming recipe',
-      message: '1 hour before the latest scheduled recipe.',
-    );
-
-    notificationId++;
-
-    _scheduleNotification(
-      id: notificationId,
-      startingDate: recipeSchedule.start,
-      timeToSubstract: const Duration(minutes: 30),
-      recipe: recipeSchedule.recipe,
-      title: 'Upcoming recipe',
-      message: '30 minutes before the latest scheduled recipe.',
-    );
-
-    notificationId++;
-
-    _scheduleNotification(
-      id: notificationId,
-      startingDate: recipeSchedule.start,
-      timeToSubstract: const Duration(minutes: 15),
-      recipe: recipeSchedule.recipe,
-      title: 'Upcoming recipe',
-      message: '15 minutes before the latest scheduled recipe.',
-    );
-  }
-
-  void _scheduleNotification({
-    required int id,
-    required DateTime startingDate,
-    required Recipe recipe,
-    required Duration timeToSubstract,
-    required String title,
-    required String message,
-  }) {
-    final defferenceStartingDate = startingDate.subtract(timeToSubstract);
-
-    if (defferenceStartingDate.isAfter(DateTime.now())) {
-      NotificationReminder.showScheduledNotification(
-        id: id,
-        title: title,
-        body: message,
-        payload: recipe.name,
-        largeIconUrl: 'https://kuboph.dev/assets/logo.ico',
-        bigPictureUrl: recipe.displayPhoto,
-        scheduledDate: defferenceStartingDate,
-      );
-    }
   }
 }

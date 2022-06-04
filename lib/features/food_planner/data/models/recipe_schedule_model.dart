@@ -32,7 +32,7 @@ class RecipeScheduleModel extends RecipeSchedule {
       createdAt: DateTime.parse(json['createdAt']),
       color: json['color'] ?? kGreenPrimary,
       isAllDay: json['isAllDay'] ?? false,
-      notificationStartId: json['notificationStartId'],
+      notificationStartId: json['notificationStartId'] ?? -1,
     );
   }
 }

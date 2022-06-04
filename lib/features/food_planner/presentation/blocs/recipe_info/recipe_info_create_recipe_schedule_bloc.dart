@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/helpers/date_converter.dart';
-import 'package:kubo/core/helpers/notification_reminder.dart';
+import 'package:kubo/core/helpers/utils.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/entities/user.dart';
 import 'package:kubo/features/food_planner/domain/usecases/create_recipe_schedule.dart';
@@ -74,52 +74,11 @@ class RecipeInfoCreateRecipeScheduleBloc extends Bloc<
                 ),
               );
             }, (response) async {
-              _scheduleNotification(
-                id: user.notificationChannelIdCounter,
-                startingDate: convertedDates.start,
-                timeToSubstract: Duration.zero,
+              await Utils.scheduleNotificationWithUser(
+                start: convertedDates.start,
                 recipe: recipe,
-                title: 'Upcoming recipe',
-                message:
-                    'Your scheduled recipe is ready, please prepare it now.',
+                user: user,
               );
-
-              user.notificationChannelIdCounter++;
-
-              _scheduleNotification(
-                id: user.notificationChannelIdCounter,
-                startingDate: convertedDates.start,
-                timeToSubstract: const Duration(hours: 1),
-                recipe: recipe,
-                title: 'Upcoming recipe',
-                message: '1 hour before the latest scheduled recipe.',
-              );
-
-              user.notificationChannelIdCounter++;
-
-              _scheduleNotification(
-                id: user.notificationChannelIdCounter,
-                startingDate: convertedDates.start,
-                timeToSubstract: const Duration(minutes: 30),
-                recipe: recipe,
-                title: 'Upcoming recipe',
-                message: '30 minutes before the latest scheduled recipe.',
-              );
-
-              user.notificationChannelIdCounter++;
-
-              _scheduleNotification(
-                id: user.notificationChannelIdCounter,
-                startingDate: convertedDates.start,
-                timeToSubstract: const Duration(minutes: 15),
-                recipe: recipe,
-                title: 'Upcoming recipe',
-                message: '15 minutes before the latest scheduled recipe.',
-              );
-
-              user.notificationChannelIdCounter++;
-
-              await user.save();
 
               // Create recipe Schedule Reminder
               await createRecipeScheduleReminder(response.recipeSchedule);
@@ -134,28 +93,5 @@ class RecipeInfoCreateRecipeScheduleBloc extends Bloc<
         }
       }
     });
-  }
-
-  void _scheduleNotification({
-    required int id,
-    required DateTime startingDate,
-    required Recipe recipe,
-    required Duration timeToSubstract,
-    required String title,
-    required String message,
-  }) {
-    final defferenceStartingDate = startingDate.subtract(timeToSubstract);
-
-    if (defferenceStartingDate.isAfter(DateTime.now())) {
-      NotificationReminder.showScheduledNotification(
-        id: id,
-        title: title,
-        body: message,
-        payload: recipe.name,
-        largeIconUrl: 'https://kuboph.dev/assets/logo.ico',
-        bigPictureUrl: recipe.displayPhoto,
-        scheduledDate: defferenceStartingDate,
-      );
-    }
   }
 }

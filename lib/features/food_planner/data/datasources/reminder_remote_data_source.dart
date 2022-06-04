@@ -40,7 +40,8 @@ class ReminderRemoteDataSourceImpl implements ReminderRemoteDataSource {
         for (var value in data) {
           final reminder = ReminderModel.fromJson(value);
 
-          if (reminder.createdAt.isAfter(user.startedAt)) {
+          if (reminder.createdAt.toLocal().isAfter(user.startedAt.toLocal())) {
+            reminder.createdAt.toLocal();
             reminders.add(reminder);
           }
         }

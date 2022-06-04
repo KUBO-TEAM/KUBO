@@ -60,9 +60,10 @@ class PredictedImageInfo extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              VegetableExpirationTimer(
-                predictedImage: predictedImage,
-              ),
+              if (predictedImage.categories.isNotEmpty)
+                VegetableExpirationTimer(
+                  predictedImage: predictedImage,
+                ),
               const SizedBox(
                 height: 8.0,
               ),

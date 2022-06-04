@@ -16,7 +16,8 @@ class CreateGenerateRecipeSchedules
 
   @override
   Future<Either<Failure, CreateGenerateRecipeSchedulesResponse>> call(
-      List<RecipeSchedule> recipeSchedules) async {
+    List<RecipeSchedule> recipeSchedules,
+  ) async {
     return await repository.createGenerateRecipeSchedules(recipeSchedules);
   }
 }

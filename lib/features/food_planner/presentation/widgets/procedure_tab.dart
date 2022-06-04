@@ -181,6 +181,7 @@ class _ProcedureTabState extends State<ProcedureTab>
             height: 8.0,
           ),
           ListView.separated(
+            physics: const NeverScrollableScrollPhysics(),
             padding: EdgeInsets.zero,
             shrinkWrap: true,
             itemBuilder: (context, index) => RichText(

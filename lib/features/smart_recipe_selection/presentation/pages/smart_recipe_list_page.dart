@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/user/user_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/generated_menu_page.dart';
 import 'package:kubo/features/food_planner/presentation/pages/home_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/kubo_app_bars.dart';
@@ -87,11 +88,17 @@ class _SmartRecipeListPageState extends State<SmartRecipeListPage> {
                   ),
                   title: const Text('Save schedule'),
                   onPressed: () async {
-                    BlocProvider.of<SmartRecipeListBloc>(context).add(
-                      SmartRecipeListRecipeSchedulesSaved(
-                        recipeSchedules: recipeSchedules,
-                      ),
-                    );
+                    UserState userState =
+                        BlocProvider.of<UserBloc>(context).state;
+
+                    if (userState is UserSuccess) {
+                      BlocProvider.of<SmartRecipeListBloc>(context).add(
+                        SmartRecipeListRecipeSchedulesSaved(
+                          recipeSchedules: recipeSchedules,
+                          user: userState.user,
+                        ),
+                      );
+                    }
                   },
                 ),
               ],

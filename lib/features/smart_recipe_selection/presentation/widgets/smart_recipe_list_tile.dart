@@ -127,6 +127,26 @@ class _SmartRecipeListTileState extends State<SmartRecipeListTile> {
                 updateRecipeSchedule();
               },
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    child: const Text('Change recipe'),
+                    onPressed: () {},
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: ElevatedButton(
+                    child: const Text('Delete schedule'),
+                    onPressed: () {},
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(
               height: 20.0,
             ),

@@ -5,10 +5,15 @@ import 'package:intl/intl.dart';
 import 'package:kubo/core/constants/date_time_constants.dart';
 import 'package:kubo/core/constants/list_costants.dart';
 import 'package:kubo/core/helpers/date_converter.dart';
+import 'package:kubo/core/helpers/notification_reminder.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category_with_quantity.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
+
+import '../../features/food_planner/domain/entities/user.dart';
 
 class Utils {
   static Future<String> downloadFile(String url, String fileName) async {
@@ -148,5 +153,125 @@ class Utils {
 
   static int hoursBetween(DateTime from, DateTime to) {
     return to.difference(from).inHours;
+  }
+
+  static Future<void> scheduleNotification({
+    required RecipeSchedule recipeSchedule,
+  }) async {
+    _scheduleNotification(
+      id: recipeSchedule.notificationStartId,
+      startingDate: recipeSchedule.start,
+      timeToSubstract: Duration.zero,
+      recipe: recipeSchedule.recipe,
+      title: 'Upcoming recipe',
+      message: 'Your scheduled recipe is ready, please prepare it now.',
+    );
+
+    recipeSchedule.notificationStartId++;
+
+    _scheduleNotification(
+      id: recipeSchedule.notificationStartId,
+      startingDate: recipeSchedule.start,
+      timeToSubstract: const Duration(hours: 1),
+      recipe: recipeSchedule.recipe,
+      title: 'Upcoming recipe',
+      message: '1 hour before the latest scheduled recipe.',
+    );
+
+    recipeSchedule.notificationStartId++;
+
+    _scheduleNotification(
+      id: recipeSchedule.notificationStartId,
+      startingDate: recipeSchedule.start,
+      timeToSubstract: const Duration(minutes: 30),
+      recipe: recipeSchedule.recipe,
+      title: 'Upcoming recipe',
+      message: '30 minutes before the latest scheduled recipe.',
+    );
+
+    recipeSchedule.notificationStartId++;
+
+    _scheduleNotification(
+      id: recipeSchedule.notificationStartId,
+      startingDate: recipeSchedule.start,
+      timeToSubstract: const Duration(minutes: 15),
+      recipe: recipeSchedule.recipe,
+      title: 'Upcoming recipe',
+      message: '15 minutes before the latest scheduled recipe.',
+    );
+  }
+
+  static Future<void> scheduleNotificationWithUser({
+    required DateTime start,
+    required Recipe recipe,
+    required User user,
+  }) async {
+    _scheduleNotification(
+      id: user.notificationChannelIdCounter,
+      startingDate: start,
+      timeToSubstract: Duration.zero,
+      recipe: recipe,
+      title: 'Upcoming recipe',
+      message: 'Your scheduled recipe is ready, please prepare it now.',
+    );
+
+    user.notificationChannelIdCounter++;
+
+    _scheduleNotification(
+      id: user.notificationChannelIdCounter,
+      startingDate: start,
+      timeToSubstract: const Duration(hours: 1),
+      recipe: recipe,
+      title: 'Upcoming recipe',
+      message: '1 hour before the latest scheduled recipe.',
+    );
+
+    user.notificationChannelIdCounter++;
+
+    _scheduleNotification(
+      id: user.notificationChannelIdCounter,
+      startingDate: start,
+      timeToSubstract: const Duration(minutes: 30),
+      recipe: recipe,
+      title: 'Upcoming recipe',
+      message: '30 minutes before the latest scheduled recipe.',
+    );
+
+    user.notificationChannelIdCounter++;
+
+    _scheduleNotification(
+      id: user.notificationChannelIdCounter,
+      startingDate: start,
+      timeToSubstract: const Duration(minutes: 15),
+      recipe: recipe,
+      title: 'Upcoming recipe',
+      message: '15 minutes before the latest scheduled recipe.',
+    );
+    user.notificationChannelIdCounter++;
+
+    await user.save();
+  }
+
+  static void _scheduleNotification({
+    required int id,
+    required DateTime startingDate,
+    required Recipe recipe,
+    required Duration timeToSubstract,
+    required String title,
+    required String message,
+  }) {
+    final defferenceStartingDate = startingDate.subtract(timeToSubstract);
+
+    if (defferenceStartingDate.isAfter(DateTime.now())) {
+      NotificationReminder.showScheduledNotification(
+        id: id,
+        title: title,
+        body: message,
+        payload: recipe.name,
+        largeIconUrl: 'https://kuboph.dev/assets/logo.ico',
+        bigPictureUrl: recipe.displayPhoto,
+        scheduledDate: defferenceStartingDate,
+      );
+    }
   }
 }

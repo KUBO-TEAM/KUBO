@@ -30,52 +30,59 @@ class TrainedVeggies extends StatelessWidget {
       shape: _cardRadius,
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(16.0),
         constraints: const BoxConstraints(
           minHeight: 150,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const IconTitle(
-              icon: _icon,
-              title: _title,
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            const Text(
-              _subTitle,
-              style: TextStyle(
-                color: kBlackPrimary,
-                fontFamily: 'Montserrat Bold',
-                fontSize: 18.0,
-              ),
-            ),
-            const SizedBox(
-              height: 5.0,
-            ),
-            Wrap(
-              spacing: 8.0, // gap between adjacent chips
-              children: kBboxColorClass.entries.map((entry) {
-                return Chip(
-                  backgroundColor: Colors.white,
-                  elevation: 5,
-                  avatar: CircleAvatar(
-                    radius: 6,
-                    backgroundColor: entry.value,
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const IconTitle(
+                    icon: _icon,
+                    title: _title,
                   ),
-                  label: Text(
-                    entry.key,
-                    style: const TextStyle(
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  const Text(
+                    _subTitle,
+                    style: TextStyle(
                       color: kBlackPrimary,
-                      fontFamily: 'Montserrat',
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Montserrat Bold',
+                      fontSize: 18.0,
                     ),
                   ),
-                );
-              }).toList(),
+                  const SizedBox(
+                    height: 5.0,
+                  ),
+                  Wrap(
+                    spacing: 8.0, // gap between adjacent chips
+                    children: kBboxColorClass.entries.map((entry) {
+                      return Chip(
+                        backgroundColor: Colors.white,
+                        elevation: 5,
+                        avatar: CircleAvatar(
+                          radius: 6,
+                          backgroundColor: entry.value,
+                        ),
+                        label: Text(
+                          entry.key,
+                          style: const TextStyle(
+                            color: kBlackPrimary,
+                            fontFamily: 'Montserrat',
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,9 +107,10 @@ class TrainedVeggies extends StatelessWidget {
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(
-                      top: 8.0,
-                      left: 8.0,
-                      right: 8.0,
+                      left: 16.0,
+                      right: 16.0,
+                      top: 10.0,
+                      bottom: 10.0,
                     ),
                     child: Row(
                       children: const [

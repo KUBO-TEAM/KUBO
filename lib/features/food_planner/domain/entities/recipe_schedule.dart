@@ -28,7 +28,7 @@ class RecipeSchedule extends HiveObject {
   final DateTime createdAt;
 
   @HiveField(6)
-  final int notificationStartId;
+  int notificationStartId;
 
   RecipeSchedule({
     required this.recipe,

@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
-import 'package:intl/intl.dart';
 import 'package:kubo/core/error/exceptions.dart';
 import 'package:kubo/features/food_planner/data/models/reminder_model.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
@@ -31,12 +30,13 @@ class ReminderLocalDataSourceImpl implements ReminderLocalDataSource {
     RecipeSchedule recipeSchedule,
   ) async {
     final recipeScheduleModel = Reminder(
-      title:
-          'You have an upcoming schedule! ${DateFormat.jm().format(recipeSchedule.start)} - ${DateFormat.jm().format(recipeSchedule.end)} ${DateFormat.yMMMEd('en_US').format(recipeSchedule.start)} please prepare it',
+      title: 'Time to prepare! ',
       message: 'Please check this',
       createdAt: recipeSchedule.start,
       recipeSchedule: recipeSchedule,
     );
+
+    // ${recipeSchedule.recipe.name} \n ${DateFormat.jm().format(recipeSchedule.start)} - ${DateFormat.jm().format(recipeSchedule.end)} ${DateFormat.yMMMEd('en_US').format(recipeSchedule.start)}
 
     reminderBox.add(recipeScheduleModel);
 

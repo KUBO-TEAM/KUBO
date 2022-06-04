@@ -162,7 +162,8 @@ class SmartRecipeSelectionLocalDataSourceImpl
 
   @override
   Future<CreateGenerateRecipeSchedulesResponse> createGenerateRecipeSchedule(
-      List<RecipeSchedule> recipeSchedules) async {
+    List<RecipeSchedule> recipeSchedules,
+  ) async {
     for (var recipeSchedule in recipeSchedules) {
       recipeScheduleBox.add(recipeSchedule);
     }
