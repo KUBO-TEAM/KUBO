@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe_updates/recipe_updates_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipe_info_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_updates_event_card.dart';
@@ -17,6 +18,7 @@ class _RecipeUpdatesState extends State<RecipeUpdates> {
   @override
   void initState() {
     super.initState();
+
     BlocProvider.of<RecipeUpdatesBloc>(context).add(
       RecipeUpdatesLatestRecipeFetched(),
     );
@@ -31,6 +33,10 @@ class _RecipeUpdatesState extends State<RecipeUpdates> {
 
           return InkWell(
             onTap: () {
+              BlocProvider.of<CreateRecipeScheduleDialogBloc>(context).add(
+                CreateRecipeScheduleDialogInitializeState(),
+              );
+
               Navigator.pushNamed(
                 context,
                 RecipeInfoPage.id,

@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kubo/core/helpers/utils.dart';
+import 'package:kubo/features/food_planner/domain/entities/recipe.dart';
 import 'package:kubo/features/food_planner/domain/entities/recipe_schedule.dart';
 import 'package:kubo/features/food_planner/domain/entities/user.dart';
 import 'package:kubo/features/smart_recipe_selection/domain/entities/category.dart';
@@ -72,6 +73,39 @@ class SmartRecipeListBloc
             recipeSchedules: recipeSchedules,
           ),
         );
+      } else if (event is SmartRecipeListRecipeScheduleRecipeEdited) {
+        final currentState = state;
+        if (currentState is SmartRecipeListFetchSuccess) {
+          final recipeScheduleArrayIndex = event.recipeScheduleArrayIndex;
+          final newRecipe = event.recipe;
+          final recipeSchedules = currentState.recipeSchedules;
+
+          if (recipeSchedules.isNotEmpty) {
+            recipeSchedules[recipeScheduleArrayIndex].recipe = newRecipe;
+
+            emit(
+              SmartRecipeListFetchSuccess(
+                recipeSchedules: recipeSchedules,
+              ),
+            );
+          }
+        }
+      } else if (event is SmartRecipeListRecipeScheduleDeleted) {
+        final currentState = state;
+        if (currentState is SmartRecipeListFetchSuccess) {
+          final recipeScheduleArrayIndex = event.recipeScheduleArrayIndex;
+          final recipeSchedules = currentState.recipeSchedules;
+
+          if (recipeSchedules.isNotEmpty) {
+            recipeSchedules.removeAt(recipeScheduleArrayIndex);
+
+            emit(
+              SmartRecipeListFetchSuccess(
+                recipeSchedules: recipeSchedules,
+              ),
+            );
+          }
+        }
       }
     });
   }

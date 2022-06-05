@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:kubo/core/constants/colors_constants.dart';
+import 'package:kubo/features/food_planner/presentation/blocs/create_recipe_schedule_dialog/create_recipe_schedule_dialog_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/today_schedule/today_schedule_bloc.dart';
 import 'package:kubo/features/food_planner/presentation/pages/recipe_info_page.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/event_card.dart';
@@ -57,6 +58,10 @@ class _TodayScheduleState extends State<TodaySchedule> {
             return InkWell(
               onTap: () {
                 if (recipeSchedule != null) {
+                  BlocProvider.of<CreateRecipeScheduleDialogBloc>(context).add(
+                    CreateRecipeScheduleDialogInitializeState(),
+                  );
+
                   Navigator.pushNamed(
                     context,
                     RecipeInfoPage.id,

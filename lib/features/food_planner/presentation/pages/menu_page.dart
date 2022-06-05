@@ -129,7 +129,7 @@ class _MenuPageState extends State<MenuPage> {
                 minDate = minDate.add(Duration(days: -numDayToday));
               }
 
-              if (numDayToday < 6 && numDayToday != 0) {
+              if (numDayToday <= 6 && numDayToday != 0) {
                 maxDate = maxDate.add(Duration(days: 7 - numDayToday));
               }
 

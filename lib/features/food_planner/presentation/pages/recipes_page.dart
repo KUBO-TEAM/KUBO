@@ -8,12 +8,15 @@ import 'package:kubo/features/food_planner/presentation/widgets/recipe_list_tile
 import 'package:kubo/features/food_planner/presentation/widgets/recipe_list_tile_parallax.dart';
 import 'package:kubo/features/food_planner/presentation/widgets/search_field.dart';
 import 'package:kubo/features/food_planner/presentation/blocs/recipe/recipe_bloc.dart';
+import 'package:kubo/features/smart_recipe_selection/presentation/blocs/smart_recipe_list/smart_recipe_list_bloc.dart';
 
 class RecipesPageArguments {
   final List<Category>? categories;
+  final int? recipeScheduleArrayIndex;
 
   RecipesPageArguments({
     this.categories,
+    this.recipeScheduleArrayIndex,
   });
 }
 
@@ -119,13 +122,26 @@ class _RecipesPageState extends State<RecipesPage> {
                         return RecipeListItemParallax(
                           recipe: recipes[index],
                           onPressed: (recipe) {
-                            Navigator.pushNamed(
-                              context,
-                              RecipeInfoPage.id,
-                              arguments: RecipeInfoPageArguments(
-                                recipe: recipe,
-                              ),
-                            );
+                            final recipeScheduleArrayIndex =
+                                widget.arguments.recipeScheduleArrayIndex;
+                            if (recipeScheduleArrayIndex != null) {
+                              BlocProvider.of<SmartRecipeListBloc>(context).add(
+                                SmartRecipeListRecipeScheduleRecipeEdited(
+                                  recipeScheduleArrayIndex:
+                                      recipeScheduleArrayIndex,
+                                  recipe: recipe,
+                                ),
+                              );
+                              Navigator.pop(context);
+                            } else {
+                              Navigator.pushNamed(
+                                context,
+                                RecipeInfoPage.id,
+                                arguments: RecipeInfoPageArguments(
+                                  recipe: recipe,
+                                ),
+                              );
+                            }
                           },
                         );
                       },

@@ -22,3 +22,21 @@ class SmartRecipeListRecipeSchedulesSaved extends SmartRecipeListEvent {
     required this.user,
   });
 }
+
+class SmartRecipeListRecipeScheduleRecipeEdited extends SmartRecipeListEvent {
+  final int recipeScheduleArrayIndex;
+  final Recipe recipe;
+
+  const SmartRecipeListRecipeScheduleRecipeEdited({
+    required this.recipeScheduleArrayIndex,
+    required this.recipe,
+  });
+}
+
+class SmartRecipeListRecipeScheduleDeleted extends SmartRecipeListEvent {
+  final int recipeScheduleArrayIndex;
+
+  const SmartRecipeListRecipeScheduleDeleted({
+    required this.recipeScheduleArrayIndex,
+  });
+}

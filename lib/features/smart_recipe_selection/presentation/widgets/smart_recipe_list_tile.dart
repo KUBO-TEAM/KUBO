@@ -13,10 +13,15 @@ class SmartRecipeListTile extends StatefulWidget {
     Key? key,
     required this.recipeSchedule,
     required this.onChange,
+    required this.onChangeRecipe,
+    required this.onDeleteRecipeSchedule,
   }) : super(key: key);
 
   final RecipeSchedule recipeSchedule;
   final ValueChanged<RecipeSchedule> onChange;
+  final VoidCallback onChangeRecipe;
+  final VoidCallback onDeleteRecipeSchedule;
+
   @override
   State<SmartRecipeListTile> createState() => _SmartRecipeListTileState();
 }
@@ -133,7 +138,7 @@ class _SmartRecipeListTileState extends State<SmartRecipeListTile> {
                 Expanded(
                   child: ElevatedButton(
                     child: const Text('Change recipe'),
-                    onPressed: () {},
+                    onPressed: widget.onChangeRecipe,
                   ),
                 ),
                 const SizedBox(
@@ -142,7 +147,7 @@ class _SmartRecipeListTileState extends State<SmartRecipeListTile> {
                 Expanded(
                   child: ElevatedButton(
                     child: const Text('Delete schedule'),
-                    onPressed: () {},
+                    onPressed: widget.onDeleteRecipeSchedule,
                   ),
                 ),
               ],
